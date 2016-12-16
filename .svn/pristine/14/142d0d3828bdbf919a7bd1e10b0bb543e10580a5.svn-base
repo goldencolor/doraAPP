@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>主题详情页</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper.min.css"/>
+    <style>
+        .mainContent{
+            background-color: #F8F8F8;
+            padding: 0 0.6rem;
+        }
+        .clearMargin:before{
+            content: '';
+            display: table;
+        }
+        /*主题标题模版样式*/
+        .themeHead{
+            width: 100%;
+        }
+        .themeHead .imgBox{
+            margin-top: 0.6rem;
+            width: 100%;
+            height: 17.55rem;
+            overflow: hidden;
+        }
+        .themeHead .imgBox img{
+            width: 100%;
+            height: 100%;
+        }
+        /*1:1模版样式*/
+        .oneToOne{
+            width: 100%;
+            background-color: #FFFFFF;
+            margin-top: 0.6rem;
+        }
+        .oneToOne .imgBox{
+
+            width: 100%;
+            height: 17.55rem;
+            overflow: hidden;
+        }
+        .oneToOne .imgBox img{
+            width: 100%;
+            height: 100%;
+        }
+
+        /*16:9模版样式*/
+        .sixToNine{
+            width: 100%;
+            background-color: #FFFFFF;
+            margin-top: 0.6rem;
+        }
+        .sixToNine .imgBox{
+
+            width: 100%;
+            height: 10.55rem;
+            overflow: hidden;
+        }
+        .sixToNine .imgBox img{
+            width: 100%;
+            height: 100%;
+        }
+        .sixToNine .discribleBox{
+            width: 100%;
+            text-align: center;
+            height: 2.75rem;
+            background-color: #FFFFFF;
+        }
+        .sixToNine .discribleBox .name{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.5rem;
+            line-height: 0.5rem;
+            color: #464646;
+            margin-top: 0.5rem;
+        }
+        .sixToNine .discribleBox .size{
+            font-family: Arial-BoldMT;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #666666;
+            margin-top: 0.4rem;
+        }
+        .sixToNine .discribleBox .size span{
+            margin: 0 0.25rem;
+        }
+
+        /*2:3模版样式*/
+        .twoToThree{
+            width: 100%;
+            background-color: #FFFFFF;
+            margin-top: 0.6rem;
+        }
+        .twoToThree .imgBox{
+
+            width: 100%;
+            height: 26.35rem;
+            overflow: hidden;
+        }
+        .twoToThree .imgBox img{
+            width: 100%;
+        }
+        .twoToThree .discribleBox{
+            width: 100%;
+            text-align: center;
+            height: 2.75rem;
+            background-color: #FFFFFF;
+        }
+        .twoToThree .discribleBox .name{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.5rem;
+            line-height: 0.5rem;
+            color: #4A4A4A;
+            margin-top: 0.5rem;
+        }
+        .twoToThree .discribleBox .size{
+            font-family: Arial-BoldMT;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #4A4A4A;
+            margin-top: 0.4rem;
+        }
+        .twoToThree .discribleBox .size span{
+            margin: 0 0.25rem;
+        }
+        /*小编模版样式*/
+        .editor{
+            width: 100%;
+            background-color: #FFFFFF;
+        }
+        .editor .info{
+            height: 3.45rem;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        .editor .info img{
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 50%;
+            margin:  0 0.5rem 0 1.05rem;
+        }
+        .editor .info .name{
+            font-family: SourceHanSansCN-Bold;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #3C3C3C;
+        }
+        .editor .discribleBox{
+            width: 100%;
+            padding: 1.4rem 1.05rem;
+        }
+        .editor .discribleBox .title{
+            font-family: SourceHanSansCN-Bold;
+            font-size: 0.9rem;
+            color: #454545;
+            letter-spacing: -0.05rem;
+            line-height: 1.4rem;
+            text-align: justify;
+        }
+        .editor .discribleBox .text{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #777777;
+            letter-spacing: 0;
+            line-height: 1.4rem;
+            text-align: justify;
+        }
+        /*侧滑模版样式*/
+        .sideSlip{
+            width: 100%;
+        }
+        .sideSlip .swiper-wrapper{
+            margin: 0.75rem 0;
+        }
+        .sideSlip .item {
+            width: 6.5rem;
+            height: 12.6rem;
+            background-color: #FFFFFF;
+
+            margin-right: 0.75rem;
+        }
+        .sideSlip .item:last-child {
+            margin-right: 0;
+        }
+        .sideSlip .item .imgBox {
+            width: 100%;
+            height: 9.75rem;
+            overflow: hidden;
+        }
+        .sideSlip .item .imgBox img {
+            width: 100%;
+        }
+        .sideSlip .item .discrible {
+            width: 100%;
+            height: 2.75rem;
+            text-align: center;
+            box-shadow: 0 2px 2px 0 rgba(227, 227, 227, 0.50);
+        }
+        .sideSlip .item .discrible .name {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-top: 0.5rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.5rem;
+            color: #464646;
+        }
+        .sideSlip .item .discrible .size {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-top: 0.4rem;
+            font-family: Arial-BoldMT;
+            font-size: 0.6rem;
+            color: #666666;
+            line-height: 0.6rem;
+        }
+        .sideSlip .item .discrible .size span {
+            margin: 0 0.15rem;
+        }
+        /*商品列表模版样式*/
+        .goodsList{
+            width: 100%;
+        }
+        .goodsList .aui-row{
+            background-color: #F8F8F8;
+        }
+        .goodsList .item{
+            /*width: 8.4rem;*/
+            margin-top: 0.75rem;
+            padding: 0;
+        }
+        .goodsList .item:nth-child(odd){
+            padding-right: 0.375rem;
+        }
+        .goodsList .item:nth-child(even){
+            padding-left: 0.375rem;
+        }
+        .goodsList .item .imgBox{
+            width: 100%;
+            height: 12.6rem;
+            overflow: hidden;
+            background-color: #FFFFFF;
+        }
+        .goodsList .item .imgBox img{
+            width: 100%;
+        }
+        .goodsList .item .discribleBox{
+            width: 100%;
+            background-color: #FFFFFF;
+        }
+        .goodsList .item .discribleBox .name{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.5rem;
+            line-height: 0.5rem;
+            color: #464646;
+            padding-top: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .goodsList .item .discribleBox .size{
+            font-family: Arial-BoldMT;
+            font-size: 0.6rem;
+            color: #4A4A4A;
+            line-height: 0.6rem;
+            padding-top: 0.4rem;
+            padding-bottom: 0.75rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .goodsList .item .discribleBox .size span{
+            margin: 0 0.15rem;
+        }
+    </style>
+</head>
+<body>
+<div class="mainContent" id="mainContent">
+<!--主题标题模版-->
+    <!--<div class="themeHead clearMargin">-->
+        <!--<div class="imgBox">-->
+            <!--<img src="../image/add.png" alt="">-->
+        <!--</div>-->
+    <!--</div>-->
+<!--1:1模版-->
+    <!--<div class="oneToOne clearMargin">-->
+        <!--<div class="imgBox">-->
+            <!--<img src="../image/add.png" alt="">-->
+        <!--</div>-->
+    <!--</div>-->
+<!--16:9模版-->
+    <!--<div class="sixToNine clearMargin">-->
+        <!--<div class="imgBox">-->
+            <!--<img src="../image/add.png" alt="">-->
+        <!--</div>-->
+        <!--<div class="discribleBox clearMargin">-->
+            <!--<div class="name">勤淑女气质连衣裙</div>-->
+            <!--<div class="size">-->
+                <!--<span>S</span>-->
+                <!--<span>M</span>-->
+                <!--<span>L</span>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--2:3模版-->
+    <!--<div class="twoToThree clearMargin">-->
+        <!--<div class="imgBox">-->
+            <!--<img src="../image/hold.jpg" alt="">-->
+        <!--</div>-->
+        <!--<div class="discribleBox clearMargin">-->
+            <!--<div class="name">勤淑女气质连衣裙</div>-->
+            <!--<div class="size">-->
+                <!--<span>S</span>-->
+                <!--<span>M</span>-->
+                <!--<span>L</span>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--侧滑模版-->
+    <!--<div class="sideSlip clearMargin swiper-container">-->
+        <!--<div class="swiper-wrapper">-->
+
+            <!--<div class="swiper-slide item">-->
+                <!--<div class="imgBox">-->
+                    <!--<img src="../image/hold.jpg" alt="">-->
+                <!--</div>-->
+                <!--<div class="discrible">-->
+                    <!--<div class="name">露肩一字领长袖T恤</div>-->
+                    <!--<div class="size">-->
+                        <!--<span>S</span>-->
+                        <!--<span>M</span>-->
+                        <!--<span>L</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="swiper-slide item">-->
+                <!--<div class="imgBox">-->
+                    <!--<img src="../image/hold.jpg" alt="">-->
+                <!--</div>-->
+                <!--<div class="discrible">-->
+                    <!--<div class="name">露肩一字领长袖T恤</div>-->
+                    <!--<div class="size">-->
+                        <!--<span>S</span>-->
+                        <!--<span>M</span>-->
+                        <!--<span>L</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="swiper-slide item">-->
+                <!--<div class="imgBox">-->
+                    <!--<img src="../image/hold.jpg" alt="">-->
+                <!--</div>-->
+                <!--<div class="discrible">-->
+                    <!--<div class="name">露肩一字领长袖T恤</div>-->
+                    <!--<div class="size">-->
+                        <!--<span>S</span>-->
+                        <!--<span>M</span>-->
+                        <!--<span>L</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+        <!--</div>-->
+    <!--</div>-->
+<!--小编模版-->
+    <!--<div class="editor clearMargin">-->
+        <!--<div class="info flex-1 flex flex-vertical-center">-->
+            <!--<img src="../image/expression4.png" alt="">-->
+            <!--<div class="name">小编说</div>-->
+        <!--</div>-->
+        <!--<div class="discribleBox clearMargin">-->
+            <!--<div class="title">带帽的设计让凉凉秋意带来丝丝温暖，让现代感的气息大大上升！</div>-->
+            <!--<div class="text">“经典的字母图样设计，将清新的学院范儿独特的显露出来，带帽的设计让凉凉秋意带来丝丝温暖。”</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--商品列表模版-->
+    <!--<div class="goodsList clearMargin aui-grid">-->
+        <!--<div class="aui-row">-->
+
+            <!--<div class="aui-col-xs-6 item">-->
+                <!--<div class="imgBox">-->
+                    <!--<img src="../image/hold.jpg" alt="">-->
+                <!--</div>-->
+                <!--<div class="discribleBox clearMargin">-->
+                    <!--<div class="name">勤淑女气质连衣裙</div>-->
+                    <!--<div class="size">-->
+                        <!--<span>S</span>-->
+                        <!--<span>M</span>-->
+                        <!--<span>L</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="aui-col-xs-6 item">-->
+                <!--<div class="imgBox">-->
+                    <!--<img src="../image/hold.jpg" alt="">-->
+                <!--</div>-->
+                <!--<div class="discribleBox clearMargin">-->
+                    <!--<div class="name">勤淑女气质连衣裙</div>-->
+                    <!--<div class="size">-->
+                        <!--<span>S</span>-->
+                        <!--<span>M</span>-->
+                        <!--<span>L</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="aui-col-xs-6 item">-->
+                <!--<div class="imgBox">-->
+                    <!--<img src="../image/hold.jpg" alt="">-->
+                <!--</div>-->
+                <!--<div class="discribleBox clearMargin">-->
+                    <!--<div class="name">勤淑女气质连衣裙</div>-->
+                    <!--<div class="size">-->
+                        <!--<span>S</span>-->
+                        <!--<span>M</span>-->
+                        <!--<span>L</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="aui-col-xs-6 item">-->
+                <!--<div class="imgBox">-->
+                    <!--<img src="../image/hold.jpg" alt="">-->
+                <!--</div>-->
+                <!--<div class="discribleBox clearMargin">-->
+                    <!--<div class="name">勤淑女气质连衣裙</div>-->
+                    <!--<div class="size">-->
+                        <!--<span>S</span>-->
+                        <!--<span>M</span>-->
+                        <!--<span>L</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+        <!--</div>-->
+    <!--</div>-->
+</div>
+
+<!--主题标题模版-->
+<script id="themeHead-container-template" type="text/x-dot-template">
+    <div class="themeHead clearMargin">
+        <div class="imgBox">
+            <div class="img-holder bc-grey flex flex-center">
+                <img onload="cacheImgNew(this)" class="opacity0 transition-opacity" src="{{=getImgUrl(imgPath,it.detailImg,CONSTANT.PICTUREOSS.Q5)}}" data-url="{{=getImgUrl(imgPath,it.detailImg,CONSTANT.PICTUREOSS.Q80)}}" width="100%"/>
+            </div>
+        </div>
+    </div>
+</script>
+<!--1:1模版-->
+<script id="oneToOne-container-template" type="text/x-dot-template">
+    <div class="oneToOne clearMargin">
+        <div class="imgBox">
+            <div class="img-holder bc-grey flex flex-center">
+                <img onload="cacheImgNew(this)" class="opacity0 transition-opacity" src="{{=getImgUrl(imgPath,it.image,CONSTANT.PICTUREOSS.Q5)}}" data-url="{{=getImgUrl(imgPath,it.image,CONSTANT.PICTUREOSS.Q80)}}" width="100%"/>
+            </div>
+        </div>
+    </div>
+</script>
+<!--16:9模版-->
+<script id="sixToNine-container-template" type="text/x-dot-template">
+    {{ for(var i = 0; i < it.clothes.length; i++) { }}
+        <div class="sixToNine clearMargin">
+            <div class="imgBox">
+                <div class="img-holder bc-grey flex flex-center" tapmode onclick="{{=getExecScript('showClothes2',[it.clothes[i]._id,null,frameData.from.winName])}}">
+                    <img onload="cacheImgNew(this)" class="opacity0 transition-opacity" src="{{=getImgUrl(colthPath, it.clothes[i].img,CONSTANT.PICTUREOSS.Q5)}}" data-url="{{=getImgUrl(colthPath, it.clothes[i].img,colthPathStyle)}}" width="100%"/>
+                </div>
+            </div>
+            <div class="discribleBox clearMargin">
+                <div class="name">{{=it.clothes[i].name}}</div>
+                <div class="size">
+                    {{~it.clothes[i].size:value:index}}
+                    <span>{{=(value.toUpperCase() == 'J') ? '均码' : value}}</span>
+                    {{~}}
+                </div>
+            </div>
+        </div>
+    {{ } }}
+</script>
+<!--2:3模版-->
+<script id="twoToThree-container-template" type="text/x-dot-template">
+    {{ for(var i = 0; i < it.clothes.length; i++) { }}
+    <div class="twoToThree clearMargin">
+        <div class="imgBox">
+            <div class="img-holder bc-grey flex flex-center" tapmode onclick="{{=getExecScript('showClothes2',[it.clothes[i]._id,null,frameData.from.winName])}}">
+                <img onload="cacheImgNew(this)" class="opacity0 transition-opacity" src="{{=getImgUrl(colthPath, it.clothes[i].img,CONSTANT.PICTUREOSS.Q5)}}" data-url="{{=getImgUrl(colthPath, it.clothes[i].img,colthPathStyle)}}" width="100%"/>
+            </div>
+        </div>
+        <div class="discribleBox clearMargin">
+            <div class="name">{{=it.clothes[i].name}}</div>
+            <div class="size">
+                {{~it.clothes[i].size:value:index}}
+                <span>{{=(value.toUpperCase() == 'J') ? '均码' : value}}</span>
+                {{~}}
+            </div>
+        </div>
+    </div>
+    {{ } }}
+</script>
+<!--侧滑模版-->
+<script id="sideSlip-container-template" type="text/x-dot-template">
+    <div class="sideSlip clearMargin swiper-container">
+        <div class="swiper-wrapper">
+            {{ for(var i = 0; i < it.clothes.length; i++) { }}
+                <div class="swiper-slide item">
+                    <div class="imgBox">
+                        <div class="img-holder bc-grey flex flex-center" tapmode onclick="{{=getExecScript('showClothes2',[it.clothes[i]._id,null,frameData.from.winName])}}">
+                            <img onload="cacheImgNew(this)" class="opacity0 transition-opacity" src="{{=getImgUrl(colthPath, it.clothes[i].img,CONSTANT.PICTUREOSS.Q5)}}" data-url="{{=getImgUrl(colthPath, it.clothes[i].img,colthPathStyle)}}" width="100%" />
+                        </div>
+                    </div>
+                    <div class="discrible">
+                        <div class="name">{{=it.clothes[i].name}}</div>
+                        <div class="size">
+                            {{~it.clothes[i].size:value:index}}
+                            <span>{{=(value.toUpperCase() == 'J') ? '均码' : value}}</span>
+                            {{~}}
+                        </div>
+                    </div>
+                </div>
+            {{ } }}
+        </div>
+    </div>
+</script>
+<!--小编模版-->
+<script id="editor-container-template" type="text/x-dot-template">
+    <div id="editor" class="editor clearMargin">
+        <div class="info flex-1 flex flex-vertical-center">
+            <img onload="cacheImgNew(this,'img')" src="../image/avatar.png" class="opacity0 transition-opacity" data-url="{{=getAvatar(it.avatar,it.isWxAvatar)}}">
+            <div class="name">{{=it.nickname}}</div>
+        </div>
+        <div class="discribleBox clearMargin">
+            <div class="title">{{=it.title}}</div>
+            <div class="text">{{=it.content}}</div>
+        </div>
+    </div>
+</script>
+<!--商品列表模版-->
+<script id="goodsList-container-template" type="text/x-dot-template">
+    <div class="goodsList clearMargin aui-grid">
+        <div class="aui-row">
+            {{ for(var i = 0; i < it.clothes.length; i++) { }}
+            <div class="aui-col-xs-6 item">
+                <div class="imgBox">
+                    <div class="img-holder bc-grey flex flex-center" tapmode onclick="{{=getExecScript('showClothes2',[it.clothes[i]._id,null,frameData.from.winName])}}">
+                        <img onload="cacheImgNew(this)" class="opacity0 transition-opacity" src="{{=getImgUrl(colthPath, it.clothes[i].img,CONSTANT.PICTUREOSS.Q5)}}" data-url="{{=getImgUrl(colthPath, it.clothes[i].img,colthPathStyle)}}" width="100%"/>
+                    </div>
+                </div>
+                <div class="discribleBox clearMargin">
+                    <div class="name">{{=it.clothes[i].name}}</div>
+                    <div class="size">
+                        {{~it.clothes[i].size:value:index}}
+                        <span>{{=(value.toUpperCase() == 'J') ? '均码' : value}}</span>
+                        {{~}}
+                    </div>
+                </div>
+            </div>
+            {{ } }}
+        </div>
+    </div>
+</script>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/swiper.min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script>
+//    测试swiper初始定义
+//    (function(){
+//        var swiper = new Swiper('.swiper-container', {
+//            slidesPerView: 'auto',
+//            freeMode: true,
+//            speed: 100,
+//            resistanceRatio: 0.5
+//        });
+//    }());
+
+    var frameData = null;
+    var id;
+    var currPage = 1;
+
+    apiready = function(){
+        frameData = api.pageParam.data;
+        id = isDefine(frameData.id) ? frameData.id : 0;
+        init(CONSTANT.ACTIONINIT);
+        api.parseTapmode();
+        //测试渲染html
+        //test();
+    };
+    function init(action){
+        if(action == CONSTANT.ACTIONINIT){
+            loadingShow();
+        }
+        var url = serviceNew + 'themes/newDetail2/'+id;
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData({
+            page: currPage,
+            pageSize: CONSTANT.PAGESIZE
+        });
+        var extra = {action:action};
+        _ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+    }
+    function initSuccessCallback(ret,extra) {
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        if(ret.statusCode==200){
+            geThemeHtml(ret);
+        }else{
+            toastMsg(ret.msg);
+        }
+
+    }
+    function initErrorCallback(err,extra){
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            currPage--;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+    //渲染html
+    function geThemeHtml(ret){
+        var themeHtml = doTHtml('themeHead-container-template', ret);
+        var mainContentContainer = $api.byId('mainContent');
+        mainContentContainer.innerHTML = '';
+        $api.append(mainContentContainer, themeHtml);
+        var templates=ret.template;
+        for(var i=0;i<templates.length;i++){
+            switch (templates[i].template) {
+                case 'TEMPA'://小编模版
+                    var editorHtml = doTHtml('editor-container-template', templates[i]);
+                    $api.append(mainContentContainer, editorHtml);
+                    break;
+                case 'TEMPB'://1:1模版
+                    var oneToOneHtml = doTHtml('oneToOne-container-template', templates[i]);
+                    $api.append(mainContentContainer, oneToOneHtml);
+                    break;
+                case 'TEMPC'://商品列表模版
+                    var goodsListHtml = doTHtml('goodsList-container-template', templates[i]);
+                    $api.append(mainContentContainer, goodsListHtml);
+                    break;
+                case 'TEMPD'://16:9模版
+                    var sixToNineHtml = doTHtml('sixToNine-container-template', templates[i]);
+                    $api.append(mainContentContainer, sixToNineHtml);
+                    break;
+                case 'TEMPE'://2:3模版
+                    var twoToThreeHtml = doTHtml('twoToThree-container-template', templates[i]);
+                    $api.append(mainContentContainer, twoToThreeHtml);
+                    break;
+                case 'TEMPF'://侧滑模版
+                    var sideSlipHtml = doTHtml('sideSlip-container-template', templates[i]);
+                    $api.append(mainContentContainer, sideSlipHtml);
+                    var swiper = new Swiper('.swiper-container', {
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        speed: 100,
+                        resistanceRatio: 0.5
+                    });
+                    break;
+            }
+        }
+        api.parseTapmode();
+    }
+
+    //测试方法
+    function test(){
+        var testData={"template":[{"content":"文字模板-内容","template":"TEMPA","title":"文字模板-标题","isWxAvatar":"NO","avatar":"bRiL7EmFrR9TiHpAH/avatar/1478331663257958321","_id":"ign87hcYi24irHWkyb","nickname":"你看看"},{"template":"TEMPB","_id":"jgrfkbgoSdstvFEKng","image":"Y6D5sjE8in.jpg"},{"template":"TEMPC","_id":"aL5ZbHSPA9FeCJ4YBR","clothes":[{"img":"1558103-1.jpg","stockCount":1,"_id":"1558103","size":["M","L"],"name":"中长款刺绣衬衫"},{"img":"1559757-1.jpg","stockCount":6,"_id":"1559757","size":["S","M","L"],"name":"小香风休闲套装"}]},{"template":"TEMPD","_id":"GLic4QzCeGpWiFaEDT","clothes":[{"img":"1559698-1.jpg","stockCount":1,"_id":"1559698","size":["M","L","XL"],"name":"韩版休闲双排扣风衣"}]},{"template":"TEMPE","_id":"MQitxykBoL7wvppzRK","clothes":[{"img":"1557979-1.jpg","stockCount":7,"_id":"1557979","size":["L","XL","M"],"name":"白色蕾丝衫"}]},{"template":"TEMPF","_id":"MaGfa7dMWpjKtWfxvx","clothes":[{"img":"1533169-1.jpg","stockCount":8,"_id":"1533169","size":["XS","S","M","L","XL","J"],"name":"复古纯色上衣"},{"img":"1533798-1.jpg","stockCount":12,"_id":"1533798","size":["M","S"],"name":"金属圆扣打底上衣"},{"img":"1533830-1.jpg","stockCount":19,"_id":"1533830","size":["M","S"],"name":"修身小V领上衣"},{"img":"1535511-1.jpg","stockCount":2,"_id":"1535511","size":["XS","S","M","L","XL"],"name":"修身高领套头上衣"}]}],"statusCode":200,"detailImg":"theme-fenfenda","_id":"49Ra29P842Z7Wvna4","msg":"OK"};
+        geThemeHtml(testData);
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 'auto',
+            freeMode: true,
+            speed: 100,
+            resistanceRatio: 0.5
+        });
+    }
+
+    //拼接头像url
+    function getAvatar(avatar,isWxAvatar){
+        if(isTrue(isWxAvatar)){
+            return avatar;
+        }else if(avatar && avatar.indexOf('../') == -1){
+            return [CONSTANT.PICPRE.RES,avatar].join('');
+        }else{
+            return '';
+        }
+    }
+
+    //公用头部导航栏坐侧点击异步执行的方法
+    function execNavLeftCallback(value){
+        var from = frameData.from;
+        var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+        if(!isDefine(callback)){
+            return;
+        }
+        var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+        var params = {
+            script: getExecScript(callback,new Array(extra,api.winName,value))
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+
+    //公用头部导航栏右侧点击异步执行的方法
+    function execNavRightCallback(value){
+        var name = 'shared_mask';
+        var page = 'shared_mask.html';
+        var rect ={
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto'
+        };
+        var data = {id : id, frameName: "contentFrame"};
+        var bounces = false;
+        openNewFrame(name,page,bounces,rect,data);
+    }
+
+    function execShareWx(index){
+        var scene = '';
+        var contentUrl = shareUrl+"themesDetail/"+id;
+        if(index == 1){
+            scene = 'session';
+        }else if(index == 2){
+            scene = 'timeline';
+        }
+        shareWx(scene,contentUrl);
+    }
+
+    function shareWx(scene,contentUrl){
+        var wx = api.require('wx');
+        if(!isDefine(scene)){
+            return;
+        }
+        wx.shareWebpage({
+            apiKey: CONSTANT.WEIXINAPPKEY,
+            scene: scene,
+            title: "多啦衣梦主题系列",
+            description: "点我了解详情!",
+            thumb: 'widget://image/sharedLogo.png',
+            contentUrl: contentUrl,
+        }, function(ret, err){
+            var msg = '未知错误';
+            if(ret.status==true){
+                msg = '分享成功';
+            }else{
+                if(err.code==-1){
+                    msg = '未知错误';
+                }else if(err.code==0){
+                    msg = '成功';
+                }else if(err.code==1){
+                    msg = 'apiKey非法';
+                }else if(err.code==2){
+                    msg = '你取消了分享';
+                }else if(err.code==3){
+                    msg = '发送失败';
+                }else if(err.code==4){
+                    msg = '授权拒绝';
+                }else if(err.code==5){
+                    msg = '微信服务器返回的不支持错误';
+                }else if(err.code==6){
+                    msg = '当前设备未安装微信客户端';
+                }else if(err.code==7){
+                    msg = '注册SDK失败';
+                }
+            }
+            toastMsg(msg);
+        });
+    }
+
+    function execCloseSharedMask(frameName,index){
+        index = parseInt(index);
+        if(!isNaN(index)){
+            //调用微信模块
+            execShareWx(index);
+        }
+        api.closeFrame({
+            name:frameName
+        });
+    }
+</script>
+</html>

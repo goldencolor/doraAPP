@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>钱包</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html, body{
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .one{
+            height: 12rem;
+            background-image: url("../../image/moneyBg.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .one .text{
+            text-align: center;
+            width: 100%;
+        }
+        .one .text .left{
+            font-family: PingFangSC-Regular;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+        }
+        .one .text .center{
+            font-family: PingFangSC-Regular;
+            font-size: 1.5rem;
+            color: #FFFFFF;
+        }
+        .one .text .right{
+            font-family: ArialMT;
+            font-size: 2.5rem;
+            color: #FFFFFF;
+        }
+        .two{
+            background-color: #303030;
+            height: 3rem;
+        }
+        .two .item{
+            color: #FFFFFF;
+            text-align: center;
+        }
+        .two .item .top{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #E6E6E6;
+            padding-top: 0.6rem;
+            padding-bottom: 0.25rem;
+        }
+        .two .item .bottom{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.9rem;
+            line-height: 0.9rem;
+            color: #FFFFFF;
+        }
+        .two .item .bottom span:first-child{
+            font-size: 0.5rem;
+            line-height: 0.5rem;
+        }
+        .three{
+            background-color: #FFFFFF;
+            padding: 0 1rem;
+        }
+        .three:before{
+            content: '';
+            display: table;
+        }
+        .three .rechargeBtn{
+            width: 100%;
+            height: 2.25rem;
+            line-height: 2.25rem;
+            background-color: #FF6100;
+            color: #FFFFFF;
+            text-align: center;
+            border-radius: 0.1rem;
+            margin-top: 12rem;
+        }
+        .three .deposit{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            color: #6D6D6D;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+    </style>
+</head>
+<body>
+<div class="one flex flex-vertical-center">
+    <div class="text word-wrap">
+        <span class="left">余额</span>
+        <span class="center">￥</span>
+        <span class="right">1314</span>
+    </div>
+</div>
+<div class="two aui-grid">
+    <div class="aui-row">
+        <div class="aui-col-xs-4 item">
+            <div class="top">充值</div>
+            <div class="bottom word-wrap"><span>￥</span>520</div>
+        </div>
+        <div class="aui-col-xs-4 item">
+            <div class="top">赠送</div>
+            <div class="bottom word-wrap"><span>￥</span>520</div>
+        </div>
+        <div class="aui-col-xs-4 item">
+            <div class="top">邀请奖励</div>
+            <div class="bottom word-wrap"><span>￥</span>520</div>
+        </div>
+    </div>
+</div>
+<div class="three">
+    <div class="rechargeBtn">立即充值</div>
+    <div class="deposit">押金￥300</div>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+//        var data = api.pageParam.data;//页面数据object
+//        var frame = data.frame ? data.frame : {};
+//        var frameData = frame.data ? frame.data : {}; //frame 页面参数
+
+        openTransHead();
+    };
+    function openTransHead(){
+//        var name = 'userWallet';
+//        var title = '我的钱包';
+//
+//        var leftIcon = 'duola-iconfont icon-left';
+//        var leftText = '';
+//        var leftCallback = 'execCloseSlefWin';
+//        var leftExtra = '';
+//        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+//
+//        var rightIcon = '';
+//        var rightText = '使用说明';
+//        var rightExtra = '';
+//        var rightCallback = '';
+//        var rightNav = setNavData(rightIcon, rightText, rightCallback, rightExtra);
+//
+//        var headerBg='#FFFFFF';
+//        var border = false;
+//        var bounces = false;
+//        var params = {};
+//        params.nav = setNav(leftNav, border, rightNav,headerBg);
+//        params.frame = setFrame(bounces, {
+//
+//        });
+//        var from = {
+//            winName: api.winName,
+//            frameName: api.frameName
+//        };
+//        var url = 'header_trans.html';
+//        openNewWinFrame(name, title, params, from, url);
+
+        var headerHeight =  api.getPrefs({
+                sync: true,
+                key: 'headerHeight'
+            }) || 50;
+//        api.openFrame({
+//            name: 'header_trans',
+//            url: 'header_trans.html',
+//            rect: {
+//                x:0,
+//                y:0,
+//                w:'auto',
+//                h:headerHeight
+//            },
+//            bounces: false,
+//            pageParam:{
+//                data:params,
+//                from:from
+//            }
+//        });
+        var data = {};
+        var url = 'walletTrans.html';
+        var rect = {
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: headerHeight
+        };
+        openNewFrame(name, url, false, rect, data);
+    }
+
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra, winName, value) {
+        api.closeWin({
+            name: winName
+        });
+    }
+</script>
+</html>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>底部导航</title>
+
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+
+	<style>
+		html,body{
+			background: transparent;
+		}
+		/*底部导航图标*/
+		.duola-bar-tab-item .icon-home-active, .duola-bar-tab-item .icon-home{
+			font-size: 1.05rem !important;
+		}
+		.duola-bar-tab-item .icon-design-active, .duola-bar-tab-item  .icon-design{
+			font-size: 0.9rem !important;
+		}
+		.duola-bar-tab-item .icon-wardrobe-active, .duola-bar-tab-item  .icon-wardrobe{
+			font-size: 0.85rem !important;
+		}
+		.duola-bar-tab-item .icon-myWardrobe-active, .duola-bar-tab-item  .icon-myWardrobe{
+			font-size: 0.9rem !important;
+		}
+		.duola-bar-tab-item .icon-my-active, .duola-bar-tab-item  .icon-my{
+			font-size: 0.9rem !important;
+		}
+	</style>
+</head>
+<body>
+	<footer id="footer" class="duola-footer">
+		<div id="tabbar0" class="tabbar0 flex flex-center duola-bar-tab-item active" tapmode onclick="switchFooter(this,0)">
+			<div>
+				<div class="flex flex-center duola-icon-container">
+					<i class="duola-iconfont icon-home-active"></i>
+					<!--<img class="duola-icon-img" src="image/theme5.png" alt="" />-->
+				</div>
+				<div class="duola-bar-tab-label">首页</div>
+			</div>
+		</div>
+		<div id="tabbar4" class="tabbar4 flex flex-center duola-bar-tab-item" tapmode onclick="switchFooter(this,4)">
+			<div>
+				<div class="flex flex-center duola-icon-container">
+					<i class="duola-iconfont icon-design"></i>
+					<!--<img class="duola-icon-img" src="image/theme5.png" alt="" />-->
+				</div>
+				<div class="duola-bar-tab-label">独立设计</div>
+			</div>
+		</div>
+		<div id="tabbar1" class="tabbar1 flex flex-center duola-bar-tab-item " tapmode onclick="switchFooter(this,1)">
+			<div>
+				<div class="flex flex-center duola-icon-container">
+					<i class="duola-iconfont icon-wardrobe"></i>
+					<!--<img class="duola-icon-img" src="image/theme6.png" alt="" />-->
+				</div>
+				<div class="duola-bar-tab-label">云衣橱</div>
+			</div>
+		</div>
+		<div id="tabbar2" class="tabbar2 flex flex-center duola-bar-tab-item "  tapmode onclick="switchFooter(this,2)">
+			<div>
+				<div class="flex flex-center duola-icon-container">
+					<!--<div class="duola-dot"></div>-->
+					<i class="duola-iconfont icon-myWardrobe"></i>
+					<!--<img class="duola-icon-img" src="image/theme7.png" alt="" />-->
+				</div>
+				<div class="duola-bar-tab-label">我的衣橱</div>
+			</div>
+		</div>
+		<div id="tabbar3" class="tabbar3 flex flex-center duola-bar-tab-item " tapmode onclick="switchFooter(this,3)">
+			<div>
+				<div class="flex flex-center duola-icon-container">
+					<!--<div class="duola-badge">99</div>-->
+					<i class="duola-iconfont icon-my"></i>
+					<!--<img class="duola-icon-img" src="image/theme8.png" alt="" />-->
+				</div>
+				<div class="duola-bar-tab-label">我的</div>
+			</div>
+		</div>
+	</footer>
+</body>
+</html>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+	var footerEl = null;
+	apiready = function() {
+		footerEl = $api.byId('footer');
+		api.parseTapmode();
+	};
+
+	//切换footer
+	function switchFooter(el,index){
+		if($api.hasCls(el,'active')){
+			return;
+		}
+		if (CONSTANT.INDEXLOGIN[index] && !isLogin()) {
+			goLogin();
+			return;
+		}
+		//我的衣橱和我的页面，footer不透明
+		if([2,3].indexOf(index) != -1){
+			$api.css(footerEl,'opacity:1');
+		}else{
+			$api.css(footerEl,'opacity:0.97');
+		}
+
+
+		//移除上一个active class
+		var footerAct = $api.dom(footerEl, '.duola-bar-tab-item.active');
+		$api.removeCls(footerAct, 'active');
+		$api.addCls(el, 'active');
+
+		var iconAct = $api.dom(footerAct, 'i');
+		var oldClass = $api.attr(iconAct, 'class');
+		var newClass = oldClass.substr(0, oldClass.length - 7);
+		$api.attr(iconAct, 'class', newClass);
+
+		var elIcon = $api.dom(el, 'i');
+		var elOldClass = $api.attr(elIcon, 'class');
+		var elNewClass = elOldClass + '-active';
+		$api.attr(elIcon, 'class', elNewClass);
+
+		//执行index.html中切换footer
+		var execScriptFun = getExecScript('execSwitchFooter',[index]);
+		api.execScript({
+			name: 'root',
+			script: execScriptFun
+		});
+	}
+
+	//在index.html异步执行切换Footer
+	function execSwitchFooter(index){
+		var el = $api.byId('tabbar'+index);
+		if(el){
+			switchFooter(el,index);
+		}
+	}
+</script>

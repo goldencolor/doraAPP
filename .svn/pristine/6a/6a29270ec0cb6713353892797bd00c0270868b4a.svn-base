@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>云衣橱</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+
+    <style>
+    	#cloudset{
+    		background: #FFFFFF;
+    	}
+    	.search-container{
+    		height: 2.5rem;
+    		padding: 0.35rem 0.5rem;
+    		background-color: #FFFFFF;
+    	}
+    	.search-container .search{
+    		width: 100%;
+    		height: 1.8rem;
+    		box-sizing:border-box;
+			border: 1px solid #A6A6A6;
+			border-radius: 0.3rem;
+    	}
+		.search-container .search .icon-search{
+			margin-right: 0.2rem;
+			color: #A6A6A6;
+			font-size: 0.7rem;
+		}
+    	.search-container .search span{
+			font-size: 0.7rem;
+			color: #A6A6A6;
+    	}
+    	
+    	#level1-container{
+    		margin: 0.375rem 0.5rem;
+    	}
+    	
+    	.level1{
+    		width: 100%;
+    	}
+    	
+    	.level1 .item{
+			font-size: 0.8rem;
+			text-align: center;
+			padding: 0.975rem 0;
+    	}
+    	
+    	.level1 .normal-color{
+    		color: #404040;
+    	}
+		.level1 .hit-color{
+			color: #ff6100;
+		}
+    	.level2-container{
+    		width: 100%;
+    		background-color: #FAFAFA;
+			padding: 0 0 2.65rem 0
+    	}
+    	.level2-container .arrow-up-wrap{
+    		height: 0.4rem;
+    		background-color: #FFFFFF;
+    	}
+    	.level2-container .arrow-up-wrap .arrow-up{
+    		border-left: 0.4rem solid transparent;
+    		border-right: 0.4rem solid transparent;
+    		border-bottom: 0.4rem solid #FAFAFA;
+    		background-color: #FFFFFF;
+    		width: 0;
+		    height: 0;
+    	}
+    	.level2{
+    		width: 100%;
+    	}
+    	
+    	.level2 .item{
+			font-size: 0.8rem;
+			color: #9fa0a0;
+			text-align: center;
+			padding-top: 2.65rem;
+    	}
+		.level2 .hit-color{
+			color: #ff6100;
+		}
+    </style>
+</head>
+<body>
+
+<!--页码-->
+<div id="pagination">
+	<div class="pagination-bg-1" onclick="changeTop()">
+		<div id="pagination-pag">
+			<div class="pagination-num" id="pagination-page">1页</div>
+			<div class="pagination-name" id="pagination-pageTotal"></div>
+			<!--<em id="pagination_page">111</em>/<em id="pagination_pageTotal">312</em>-->
+
+		</div>
+		<div id="pagination-top" class="pagination-tops hide">
+			<i class="duola-iconfont icon-dingbu"></i>
+		</div>
+	</div>
+</div>
+<div id="cloudset">
+
+	<!--搜索按钮-->
+	<div class="search-container" tapmode onclick="goSearch()">
+		<div class="search flex flex-center">
+			<span><i class="duola-iconfont icon-search"></i>你想要的都在这里</span>
+		</div>
+	</div>
+	<!--一级分类-->
+	<div id="level1-container">
+
+		<!--<div class="level1 flex">-->
+			<!--<div class="item flex-1 normal-color" tapmode onclick="level1Handler(this,0,0)">外套</div>-->
+			<!--<div class="item flex-1 normal-color" tapmode onclick="level1Handler(this,0,1)">上衣</div>-->
+			<!--<div class="item flex-1 normal-color" tapmode onclick="level1Handler(this,0,2)">马夹</div>-->
+			<!--<div class="item flex-1 normal-color" tapmode onclick="level1Handler(this,0,3)">连衣裙</div>-->
+		<!--</div>-->
+		<!--<div id="level1-0-0" class="level2-container aui-hide">-->
+			<!--<div class="arrow-up-wrap flex">-->
+				<!--<div class="flex-1 flex-horizon-center flex">-->
+					<!--<div class="arrow-up"></div>-->
+				<!--</div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-0-0" class="item flex-1" tapmode onclick="level2Handler(this,0,0)">开衫</div>-->
+				<!--<div name="level2-0-1" class="item flex-1" tapmode onclick="level2Handler(this,0,1)">风衣</div>-->
+				<!--<div name="level2-0-2" class="item flex-1" tapmode onclick="level2Handler(this,0,2)">西服</div>-->
+				<!--<div name="level2-0-3" class="item flex-1" tapmode onclick="level2Handler(this,0,3)">防晒外套</div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-1-0" class="item flex-1" tapmode onclick="level2Handler(this,0,4)">棒球服</div>-->
+				<!--<div name="level2-1-1" class="item flex-1" tapmode onclick="level2Handler(this,0,5)">牛仔</div>-->
+				<!--<div name="level2-1-2" class="item flex-1" tapmode onclick="level2Handler(this,0,6)">皮衣</div>-->
+				<!--<div name="level2-1-3" class="item flex-1" tapmode onclick="level2Handler(this,0,7)">毛衣</div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-2-0" class="item flex-1" tapmode onclick="level2Handler(this,0,8)">皮草</div>-->
+				<!--<div name="level2-2-1" class="item flex-1" tapmode onclick="level2Handler(this,0,9)">夹克</div>-->
+				<!--<div name="level2-2-2" class="item flex-1" tapmode onclick="level2Handler(this,0,10)">大衣</div>-->
+				<!--<div name="level2-2-3" class="item flex-1" tapmode onclick="level2Handler(this,0,11)">斗篷</div>-->
+			<!--</div>-->
+		<!--</div>-->
+		<!--<div id="level1-0-1" class="level2-container aui-hide">-->
+			<!--<div class="arrow-up-wrap flex">-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex">-->
+					<!--<div class="arrow-up"></div>-->
+				<!--</div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-0-0" class="item flex-1" tapmode onclick="level2Handler(this,1,0)">T恤</div>-->
+				<!--<div name="level2-0-1" class="item flex-1" tapmode onclick="level2Handler(this,1,1)">吊带背心</div>-->
+				<!--<div name="level2-0-2" class="item flex-1" tapmode onclick="level2Handler(this,1,2)">衬衣</div>-->
+				<!--<div name="level2-0-3" class="item flex-1" tapmode onclick="level2Handler(this,1,3)">卫衣</div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-1-0" class="item flex-1" tapmode onclick="level2Handler(this,1,4)">打底衫</div>-->
+				<!--<div name="level2-1-1" class="item flex-1" tapmode onclick="level2Handler(this,1,5)"></div>-->
+				<!--<div name="level2-1-2" class="item flex-1" tapmode onclick="level2Handler(this,1,6)"></div>-->
+				<!--<div name="level2-1-3" class="item flex-1" tapmode onclick="level2Handler(this,1,7)"></div>-->
+			<!--</div>-->
+		<!--</div>-->
+		<!--<div id="level1-0-2" class="level2-container aui-hide">-->
+			<!--<div class="arrow-up-wrap flex">-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex">-->
+					<!--<div class="arrow-up"></div>-->
+				<!--</div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-0-0" class="item flex-1" tapmode onclick="level2Handler(this,2,0)">长款马夹</div>-->
+				<!--<div name="level2-0-1" class="item flex-1" tapmode onclick="level2Handler(this,2,1)">短款马夹</div>-->
+				<!--<div name="level2-0-2" class="item flex-1" tapmode onclick="level2Handler(this,2,2)"></div>-->
+				<!--<div name="level2-0-3" class="item flex-1" tapmode onclick="level2Handler(this,2,3)"></div>-->
+			<!--</div>-->
+		<!--</div>-->
+		<!--<div id="level1-0-3" class="level2-container aui-hide">-->
+			<!--<div class="arrow-up-wrap flex">-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex">-->
+					<!--<div class="arrow-up"></div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-0-0" class="item flex-1" tapmode onclick="level2Handler(this,3,0)">A字裙</div>-->
+				<!--<div name="level2-0-1" class="item flex-1" tapmode onclick="level2Handler(this,3,1)">包裙</div>-->
+				<!--<div name="level2-0-2" class="item flex-1" tapmode onclick="level2Handler(this,3,2)">长裙</div>-->
+				<!--<div name="level2-0-3" class="item flex-1" tapmode onclick="level2Handler(this,3,3)">鱼尾裙</div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-1-0" class="item flex-1" tapmode onclick="level2Handler(this,3,4)">百褶裙</div>-->
+				<!--<div name="level2-1-1" class="item flex-1" tapmode onclick="level2Handler(this,3,5)">背带裙</div>-->
+				<!--<div name="level2-1-2" class="item flex-1" tapmode onclick="level2Handler(this,3,6)">小礼裙</div>-->
+				<!--<div name="level2-1-3" class="item flex-1" tapmode onclick="level2Handler(this,3,7)">晚礼服</div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-2-0" class="item flex-1" tapmode onclick="level2Handler(this,3,8)">旗袍</div>-->
+				<!--<div name="level2-2-1" class="item flex-1" tapmode onclick="level2Handler(this,3,9)">吊带裙</div>-->
+				<!--<div name="level2-2-2" class="item flex-1" tapmode onclick="level2Handler(this,3,10)">直筒裙</div>-->
+				<!--<div name="level2-2-3" class="item flex-1" tapmode onclick="level2Handler(this,3,11)">背心裙</div>-->
+			<!--</div>-->
+		<!--</div>-->
+		<!--<div class="level1 flex">-->
+			<!--<div class="item flex-1 normal-color" tapmode onclick="level1Handler(this,1,0)">裤装</div>-->
+			<!--<div class="item flex-1 normal-color" tapmode onclick="level1Handler(this,1,1)">半裙</div>-->
+			<!--<div class="item flex-1 normal-color" tapmode onclick="level1Handler(this,1,2)">套装</div>-->
+			<!--<div class="item flex-1 normal-color" tapmode onclick="level1Handler(this,1,3)"></div>-->
+		<!--</div>-->
+		<!--<div id="level1-1-0" class="level2-container aui-hide">-->
+			<!--<div class="arrow-up-wrap flex">-->
+				<!--<div class="flex-1 flex-horizon-center flex">-->
+					<!--<div class="arrow-up"></div>-->
+				<!--</div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-0-0" class="item flex-1" tapmode onclick="level2Handler(this,4,0)">短裤</div>-->
+				<!--<div name="level2-0-1" class="item flex-1" tapmode onclick="level2Handler(this,4,1)">皮裤</div>-->
+				<!--<div name="level2-0-2" class="item flex-1" tapmode onclick="level2Handler(this,4,2)">哈伦裤</div>-->
+				<!--<div name="level2-0-3" class="item flex-1" tapmode onclick="level2Handler(this,4,3)">打底裤</div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-1-0" class="item flex-1" tapmode onclick="level2Handler(this,4,4)">连体裤</div>-->
+				<!--<div name="level2-1-1" class="item flex-1" tapmode onclick="level2Handler(this,4,5)">背带裤</div>-->
+				<!--<div name="level2-1-2" class="item flex-1" tapmode onclick="level2Handler(this,4,6)">正装裤</div>-->
+				<!--<div name="level2-1-3" class="item flex-1" tapmode onclick="level2Handler(this,4,7)">运动裤</div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-2-0" class="item flex-1" tapmode onclick="level2Handler(this,4,8)">直筒裤</div>-->
+				<!--<div name="level2-2-1" class="item flex-1" tapmode onclick="level2Handler(this,4,9)">小脚裤</div>-->
+				<!--<div name="level2-2-2" class="item flex-1" tapmode onclick="level2Handler(this,4,10)">裙裤</div>-->
+				<!--<div name="level2-2-3" class="item flex-1" tapmode onclick="level2Handler(this,4,11)">喇叭裤</div>-->
+			<!--</div>-->
+		<!--</div>-->
+		<!--<div id="level1-1-1" class="level2-container aui-hide">-->
+			<!--<div class="arrow-up-wrap flex">-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex">-->
+					<!--<div class="arrow-up"></div>-->
+				<!--</div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-0-0" class="item flex-1" tapmode onclick="level2Handler(this,5,0)">皮裙</div>-->
+				<!--<div name="level2-0-1" class="item flex-1" tapmode onclick="level2Handler(this,5,1)">百褶裙</div>-->
+				<!--<div name="level2-0-2" class="item flex-1" tapmode onclick="level2Handler(this,5,2)">A字裙</div>-->
+				<!--<div name="level2-0-3" class="item flex-1" tapmode onclick="level2Handler(this,5,3)">鱼尾裙</div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-1-0" class="item flex-1" tapmode onclick="level2Handler(this,5,4)">包臀裙</div>-->
+				<!--<div name="level2-1-1" class="item flex-1" tapmode onclick="level2Handler(this,5,5)">开叉裙</div>-->
+				<!--<div name="level2-1-2" class="item flex-1" tapmode onclick="level2Handler(this,5,6)">蛋糕裙</div>-->
+				<!--<div name="level2-1-3" class="item flex-1" tapmode onclick="level2Handler(this,5,7)">不规则裙</div>-->
+			<!--</div>-->
+			<!--<div class="level2 flex">-->
+				<!--<div name="level2-2-0" class="item flex-1" tapmode onclick="level2Handler(this,5,8)">迷你裙</div>-->
+				<!--<div name="level2-2-1" class="item flex-1" tapmode onclick="level2Handler(this,5,9)">牛仔</div>-->
+				<!--<div name="level2-2-2" class="item flex-1" tapmode onclick="level2Handler(this,5,10)"></div>-->
+				<!--<div name="level2-2-3" class="item flex-1" tapmode onclick="level2Handler(this,5,11)"></div>-->
+			<!--</div>-->
+		<!--</div>-->
+		<!--<div id="level1-1-2" class="level2-container aui-hide">-->
+			<!--<div class="arrow-up-wrap flex">-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+				<!--<div class="flex-1 flex-horizon-center flex">-->
+					<!--<div class="arrow-up"></div>-->
+				<!--</div>-->
+				<!--<div class="flex-1 flex-horizon-center flex"></div>-->
+			<!--</div>-->
+		<!--</div>-->
+
+	</div>
+	<div class="aui-grid">
+		<div id="cloudset-container" class="waterfall aui-row">
+
+			<!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+				<!--<div class="header">-->
+					<!--<img src="" alt="" />-->
+					<!--<div class="label flex flex-space-between">-->
+						<!--<div class="new">new</div>-->
+						<!--<div class="unavailable">抢光了</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="footer flex flex-space-between flex-vertical-center">-->
+					<!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫</div>-->
+					<!--<div class="number"><span class="duola-iconfont icon-love"></span>136</div>-->
+				<!--</div>-->
+				<!--<div class="size">-->
+		 			<!--<span>S</span>-->
+					<!--<span>M</span>-->
+					<!--<span>L</span>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+				<!--<div class="header">-->
+					<!--<img src="" alt="" />-->
+					<!--<div class="label flex flex-space-between">-->
+						<!--&lt;!&ndash;<div class="new">new</div>&ndash;&gt;-->
+						<!--<div class="design">独立设计</div>-->
+						<!--<div class="unavailable">抢光了</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="footer flex flex-space-between flex-vertical-center">-->
+					<!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩</div>-->
+					<!--<div class="number"><span class="duola-iconfont icon-love"></span>136</div>-->
+				<!--</div>-->
+				<!--<div class="size">-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+				<!--<div class="header">-->
+					<!--<img src="" alt="" />-->
+					<!--<div class="label flex flex-space-between">-->
+						<!--<div class="new">new</div>-->
+						<!--<div class="unavailable">抢光了</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="footer flex flex-space-between flex-vertical-center">-->
+					<!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫</div>-->
+					<!--<div class="number"><span class="duola-iconfont icon-love"></span>136</div>-->
+				<!--</div>-->
+				<!--<div class="size">-->
+					<!--<span>S</span>-->
+					<!--<span>M</span>-->
+					<!--<span>L</span>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+				<!--<div class="header">-->
+					<!--<img src="" alt="" />-->
+					<!--<div class="label flex flex-space-between">-->
+						<!--<div class="annual">年费专享</div>-->
+						<!--<div class="unavailable">抢光了</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="footer flex flex-space-between flex-vertical-center">-->
+					<!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩</div>-->
+					<!--<div class="number"><span class="duola-iconfont icon-love"></span>136</div>-->
+				<!--</div>-->
+			<!--</div>-->
+
+		</div>
+	</div>
+	<div id="loading" class="aui-text-center" style="font-size: 12px; color: #999999;">
+		<img src="../icon/loading.gif" width="16" />
+		<div>更多数据加载中</div>
+	</div>
+</div>
+
+<!--  循环 -->
+<script id="level1-container-template" type="text/x-dot-template">
+    {{ for(var i = 0; i < Math.ceil(it.count/4); i++) { }}
+    	<div class="level1 flex">
+    	{{ for(var j = 0; j < 4; j++) { }}
+			<div class="item flex-1 normal-color" tapmode onclick="{{='level1Handler(this,'+i+','+j+')'}}">{{=isDefine(it.list[i*4+j]) ? it.list[i*4+j].value : ''}}</div>
+    	{{ } }}
+    	</div>
+    	
+    	{{ for(var k = 0; k < ((it.count - i * 4) >= 4 ? 4 : (it.count - i * 4)); k++) { }}
+	    	<div id="{{='level1-'+i+'-'+k}}" class="level2-container aui-hide">
+				<div class="arrow-up-wrap flex">
+					<div class="flex-1 flex-horizon-center flex">
+						{{? k == 0 }}
+							<div class="arrow-up"></div>
+						{{?}}
+					</div>
+					<div class="flex-1 flex-horizon-center flex">
+						{{? k == 1 }}
+							<div class="arrow-up"></div>
+						{{?}}
+					</div>
+					<div class="flex-1 flex-horizon-center flex">
+						{{? k == 2 }}
+							<div class="arrow-up"></div>
+						{{?}}
+					</div>
+					<div class="flex-1 flex-horizon-center flex">
+						{{? k == 3 }}
+							<div class="arrow-up"></div>
+						{{?}}
+					</div>
+				</div>
+				{{ for(var m = 0; m < Math.ceil((it.list[i*4+k] && it.list[i*4+k].count) ? it.list[i*4+k].count/4 : 0); m++) { }}
+					<div class="level2 flex">
+						{{ for(var n = 0; n < 4; n++) { }}
+						<div  name="{{='level2-'+m+'-'+n}}" class="item flex-1" tapmode onclick="{{='level2Handler(this,'+(i*4+k)+','+(m*4+n)+')'}}">
+							{{=(isDefine(it.list[i*4+k].list[m*4+n]) && isDefine(it.list[i*4+k].list[m*4+n].value)) ? it.list[i*4+k].list[m*4+n].value : ''}}
+						</div>
+						{{ } }}
+					</div>
+	    		{{ } }}
+    		</div>
+    	{{ } }}
+    {{ } }}
+</script>
+
+<script id="cloudset-container-template" type="text/x-dot-template">
+	{{ for(var i = 0; i < it.count; i++) { }}
+		<div class="item aui-col-xs-6" tapmode onclick="{{='showClothes(\''+ (it.list[i] && it.list[i]._id ? it.list[i]._id : 0) +'\')'}}">
+			<div class="header">
+				<img class="{{='cloudset-img-'+it.list[i]._id}}" src="../image/hold.jpg" alt="多啦衣梦" width="100%"/>
+				<div class="label flex flex-space-between">
+					{{? it.list[i] && isTrue(it.list[i].annualOnly) }}
+						<div class="annual">{{=CONSTANT.TEXT.ANNUALONLY }}</div>
+					{{?? it.list[i] && isDesign(it.list[i].goodsSource)}}
+						<div class="design">{{=CONSTANT.TEXT.DESIGN }}</div>
+					{{??}}
+						<div></div>
+					{{?}}
+					{{? isAvailable(it.list[i] && it.list[i].available)}}
+						<div class="unavailable">抢光了</div>
+					{{?}}
+				</div>
+			</div>
+			<div class="footer flex flex-space-between flex-vertical-center">
+				<div class="name flex-1 aui-ellipsis-1">{{=(it.list[i] && it.list[i].name) ? it.list[i].name : '多啦衣梦'}}</div>
+				<div class="number">
+					<span class="duola-iconfont icon-love"></span>{{=(it.list[i] && it.list[i].like) ? it.list[i].like : 0}}
+				</div>
+			</div>
+			<div class="size">
+				{{~it.list[i].stockedSize:value:index}}
+					<span>{{=value}}</span>
+				{{~}}
+			</div>
+		</div>
+
+	{{ } }}
+	
+</script>
+
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/doT_min.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/components/pagination.js"></script>
+    <script type="text/javascript" src="../script/umeng_sdk.js"></script>
+	<script type="text/javascript">
+	var currPage = 1;
+	var totalPage = 1;
+	//加载更多时候，服务器是否返回，以免用户多次触发
+	var isLoadMoreResponsed = true;
+	var searchFilter = {};
+	apiready = function(){
+		//请求数据拿到一级二级标签
+		//优化，从缓存取一级二级标签
+		getLevels();
+		getCloudset(CONSTANT.ACTIONINIT);
+		api.parseTapmode();
+		loadMore();
+		pullRefresh(loadRefresh);
+		//hack解决，用户退出导致缓存标签数据丢失
+		listenLoginOutEvent();
+		_myScroll("cloudset-container", 'div');
+	};
+
+	function listenLoginOutEvent(){
+		api.addEventListener({
+			name: 'loginOut'
+		}, function(ret, err) {
+			getLevels();
+		});
+	}
+	function loadRefresh(){
+		currPage = 1;
+		getCloudset(CONSTANT.ACTIONREFRESH);
+	}
+	
+	function loadMore(){
+		api.addEventListener({
+		    name:'scrolltobottom',
+		    extra:{threshold:0}
+		}, function(ret, err){
+			if(isLoadMoreResponsed && currPage < totalPage){
+				currPage++;
+				isLoadMoreResponsed = false;
+				getCloudset(CONSTANT.ACTIONLOAD);
+			}
+		});
+	}
+	
+	function goSearch(){
+		var name = 'winSearch_new';
+		var title = '搜索';
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftText = '';
+		var leftCallback = 'execCloseSearch';
+		var leftExtra = '';
+		var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+		var border = false;
+		var bounces = false;
+		var params = {};
+		params.nav= setNav(leftNav,border);
+		params.frame=setFrame(bounces);
+		var from = {
+			winName:api.winName,
+			frameName:api.frameName
+		};
+		var url = 'header_new.html';
+		var animation = '';
+		var page = 'winSearch_new.html';
+		sendEventUmeng(CONSTANT.UMENGEVENT.SEARCH_BTN);
+		openNewWinFrame(name,title,params,from,url,animation,page);
+	}
+	//在搜索页面点击返回关闭搜索页面win
+	function execCloseSearch(extra,winName,value){
+		api.closeWin({
+			name:winName
+		});
+	}
+
+	function getLevels(){
+		//请求一级二级标签数据
+//		loadingShow();
+		var url = serviceNew + 'cloudCloset/searchCategory';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData({
+			labelLimit : CONSTANT.MAXLIEVEL1
+		});
+		var extra = null;;
+		_ajaxData(url,'post',headers,data,getLevelsSuccessCallback,getLevelsErrorCallback,0,extra);
+	}
+	
+	function getLevelsSuccessCallback(ret){
+		loadingHide();
+		if(ret.statusCode==200 && ret.category){
+			$api.setStorage('levels',ret.category.list);
+			getLevelsHtml(ret.category);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	
+	function getLevelsErrorCallback(err){
+		loadingHide();
+		toastMsg(err.msg);
+	}
+	
+	function getLevelsHtml(levels){
+        var html = doTHtml('level1-container-template',levels);
+        var level1Container = $api.byId('level1-container');
+		if(level1Container){
+			level1Container.innerHTML = html;
+			api.parseTapmode();
+		}
+	}
+	function testLevelsHtml(){
+		var levels ={"statusCode":200,"msg":"","category":{"name":"type","value":"分类","count":7,"list":[{"list":[{"value":"开衫","order_no":1},{"value":"风衣","order_no":2},{"value":"西服","order_no":3},{"value":"防晒外套","order_no":4},{"value":"棒球服","order_no":5},{"value":"牛仔","order_no":6},{"value":"皮衣","order_no":7},{"value":"毛衣","order_no":8},{"value":"皮草","order_no":9},{"value":"夹克","order_no":10},{"value":"大衣","order_no":11},{"value":"斗篷","order_no":12}],"name":"coat","value":"外套","count":12},{"list":[{"value":"T恤","order_no":1},{"value":"吊带背心","order_no":2},{"value":"衬衣","order_no":3},{"value":"卫衣","order_no":4},{"value":"打底衫","order_no":5}],"name":"cardigan","value":"上衣","count":5},{"list":[{"value":"长款马夹","order_no":1},{"value":"短款马夹","order_no":2}],"name":"cowboy","value":"马夹","count":2},{"list":[{"value":"A字裙","order_no":1},{"value":"包裙","order_no":2},{"value":"长裙","order_no":3},{"value":"鱼尾裙","order_no":4},{"value":"百褶裙","order_no":5},{"value":"背带裙","order_no":6},{"value":"小礼裙","order_no":7},{"value":"晚礼服","order_no":8},{"value":"旗袍","order_no":9},{"value":"吊带裙","order_no":10},{"value":"直筒裙","order_no":11},{"value":"背心裙","order_no":12}],"name":"dress","value":"连衣裙","count":12},{"list":[{"value":"短裤","order_no":1},{"value":"皮裤","order_no":2},{"value":"哈伦裤","order_no":3},{"value":"打底裤","order_no":4},{"value":"连体裤","order_no":5},{"value":"背带裤","order_no":6},{"value":"正装裤","order_no":7},{"value":"运动裤","order_no":8},{"value":"直筒裤","order_no":9},{"value":"小脚裤","order_no":10},{"value":"裙裤","order_no":11},{"value":"喇叭裤","order_no":12}],"name":"pants","value":"裤装","count":12},{"list":[{"value":"皮裙","order_no":1},{"value":"百褶裙","order_no":2},{"value":"A字裙","order_no":3},{"value":"鱼尾裙","order_no":4},{"value":"包臀裙","order_no":5},{"value":"开叉裙","order_no":6},{"value":"蛋糕裙","order_no":7},{"value":"不规则裙","order_no":8},{"value":"迷你裙","order_no":9},{"value":"牛仔","order_no":10}],"name":"shirts","value":"半裙","count":10},{"name":"suite","value":"套装","count":0,"list":[]}]}};
+		var html = doTHtml('level1-container-template',levels.category);
+//		console.log(html);
+		var level1Container = $api.byId('level1-container');
+		if(level1Container){
+			level1Container.innerHTML = html;
+		}
+	}
+	function level1Handler(el,i,j){
+		//找到hit-color的一级标签，移除hit-color
+		//给当前的一级标签，添加hit-color
+//		var hitLevel1 = $api.dom($api.byId('level1-container'),'.level1 .item.hit-color');
+//		if(hitLevel1){
+//			$api.removeCls(hitLevel1, 'hit-color');
+//		}
+//		if(el != hitLevel1){
+//			$api.addCls(el, 'hit-color');
+//		}
+
+		//找到当前一级标签显示的二级标签，添加aui-hidden
+		//给当前一级标签对应的二级标签，移除aui-hidden
+		var showLevel2 = $api.dom($api.byId('level1-container'),'.level2-container.aui-show');
+		var elLevel2 = $api.byId('level1-'+i+'-'+j);
+		if(showLevel2){
+			$api.removeCls(showLevel2, 'aui-show');
+		}
+//		if(elLevel2 && elLevel2 != showLevel2){
+//			$api.addCls(elLevel2, 'aui-show');
+//		}
+
+		var levels = $api.getStorage('levels');
+		var index1 = i*4+j;
+		if(levels[index1] && isDefine(levels[index1].name)){
+			sendEventUmeng(CONSTANT.UMENGEVENT.LEVEL1,{
+				index:index1,
+				value:levels[index1].value
+			});
+		}
+		//判断是否有二级分类
+		if(!isDefine(elLevel2) || !isDefine($api.text(elLevel2).replace(/\s/g,''))){
+			if(levels[index1] && isDefine(levels[index1].name)){
+				searchFilter.level1 = levels[index1].name;
+				searchFilter.level2 = null;
+				//打开结果页面
+				//打开结果页
+				var name = 'searchLevel';
+				var title = levels[index1].value;
+				var leftIcon = 'duola-iconfont icon-left';
+				var leftText = '';
+				var leftExtra = '';
+				var leftCallback = 'execCloseSearchLevel';
+				var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+				var rightIcon = 'duola-iconfont icon-myWardrobe';
+				var rightText = '';
+				var rightCallback = 'execOpenCloudset';
+				var rightExtra = '';
+				var rightNav = setNavData(rightIcon,rightText,rightCallback,rightExtra);
+				var border = true;
+				var bounces = true;
+				var params = {};
+				params.nav= setNav(leftNav,border,rightNav);
+				params.frame=setFrame(bounces,{
+					level1:index1,
+					level1Value:levels[index1].value,
+					level2:null,
+					level2Value:'所有'
+				});
+				var from = {
+					winName:api.winName,
+					frameName:api.frameName
+				};
+				var url = 'searchLevel_win.html';
+				var animation = '';
+				var page = 'searchLevel.html';
+				var umengPage = CONSTANT.PAGE.LEVEL2;
+				openNewWinFrame(name,title,params,from,url,animation,page,umengPage);
+			}
+		}else{
+			if(elLevel2 && elLevel2 != showLevel2){
+				$api.addCls(elLevel2, 'aui-show');
+			}
+		}
+	}
+	//异步执行二级结果页面
+	function execAysnLevel(level1,level2){
+		if(isNaN(parseInt(level1))){
+			return;
+		}
+		var level1I = parseInt(level1/4);
+		var level1J = parseInt(level1%4);
+		var level2Container = $api.byId('level1-'+level1I+'-'+level1J);
+		var showLevel2 = $api.dom($api.byId('level1-container'),'.level2-container.aui-show');
+
+		if(showLevel2 && showLevel2 != level2Container){
+			$api.removeCls(showLevel2, 'aui-show');
+		}else{
+			if(isDefine($api.text(level2Container).replace(/\s/g,''))){
+				$api.addCls(level2Container, 'aui-show');
+			}
+		}
+		if(isNaN(parseInt(level2))){
+			return;
+		}
+		var hitLevel2 = $api.dom(level2Container,'.level2 .hit-color');
+		var level2I = parseInt(level2/4);
+		var level2J = parseInt(level2%4);
+		var el = $api.dom(level2Container,'.level2 [name="level2-'+level2I+'-'+level2J+'"]');
+		if(hitLevel2 && hitLevel2!=el){
+			$api.removeCls(hitLevel2, 'hit-color');
+			$api.addCls(el, 'hit-color');
+		}else{
+			$api.addCls(el, 'hit-color');
+		}
+	}
+
+	function level2Handler(el,index1,index2){
+		var level1I = parseInt(index1/4);
+		var level1J = parseInt(index1%4);
+		var hitLevel2 = $api.dom($api.byId('level1-'+level1I+'-'+level1J),'.level2 .hit-color');
+		if(hitLevel2 && hitLevel2!=el){
+			$api.removeCls(hitLevel2, 'hit-color');
+			$api.addCls(el, 'hit-color');
+		}else{
+			$api.addCls(el, 'hit-color');
+		}
+
+		//拿到一级标签的下标，二级标签的下标,如果下标越界，不处理
+		var levels = $api.getStorage('levels');
+		if(levels[index1] && isDefine(levels[index1].name) && levels[index1].list[index2] && isDefine(levels[index1].list[index2].value)){
+			searchFilter.level1 = levels[index1].name;
+			searchFilter.level2 = levels[index1].list[index2].value;
+			//打开结果页
+			var name = 'searchLevel';
+			var title = levels[index1].value;
+			var leftIcon = 'duola-iconfont icon-left';
+			var leftText = '';
+			var leftExtra = '';
+			var leftCallback = 'execCloseSearchLevel';
+			var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+			var rightIcon = 'duola-iconfont icon-myWardrobe';
+			var rightText = '';
+			var rightCallback = 'execOpenCloudset';
+			var rightExtra = '';
+			var rightNav = setNavData(rightIcon,rightText,rightCallback,rightExtra);
+			var border = true;
+			var bounces = true;
+			var params = {};
+			params.nav= setNav(leftNav,border,rightNav);
+			params.frame=setFrame(bounces,{
+				level1:index1,
+				level1Value:levels[index1].value,
+				level2:index2,
+				level2Value:levels[index1].list[index2].value
+			});
+			var from = {
+				winName:api.winName,
+				frameName:api.frameName
+			};
+			var url = 'searchLevel_win.html';
+			var animation = '';
+			var page = 'searchLevel.html';
+			var umengPage = CONSTANT.PAGE.LEVEL2;
+			sendEventUmeng(CONSTANT.UMENGEVENT.LEVEL2,{
+				level1:index1,
+				level1Value:levels[index1].value,
+				index2:index2,
+				level2Value:levels[index1].list[index2].value
+			});
+			openNewWinFrame(name,title,params,from,url,animation,page,umengPage);
+		}
+	}
+	//在二级分类页面点击返回关闭二级结果页面win
+	function execCloseSearchLevel(extra,winName,value){
+		if(isDefine(value)){
+			value = JSON.parse(value);
+		}
+		if(isObj(value) && !isNaN(parseInt(value.level1)) && !isNaN(parseInt(value.level2))){
+			execAysnLevel(value.level1,value.level2);
+		}if(isObj(value) && !isNaN(parseInt(value.level1))){
+			execAysnLevel(value.level1);
+		}
+		api.closeWin({
+			name:winName
+		});
+	}
+	//打开我的衣橱
+	function execOpenCloudset(extra,winName,value){
+		if(!isLogin()){
+			goLogin();
+		}else{
+			api.closeToWin({
+				name: 'root'
+			});
+			api.execScript({
+				name:'root',
+				script: 'execGoCloudset()'
+			});
+		}
+	}
+	function getCloudset(action){
+		//请求云衣橱数据，没有任何过滤条件
+		if(action == CONSTANT.ACTIONINIT){
+			loadingShow();
+		}
+		var url = serviceNew + 'cloudCloset/search';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData({
+			page: currPage,
+			pageSize: CONSTANT.PAGESIZE
+		});
+		var extra = {action:action};
+		_ajaxData(url,'post',headers,data,getCloudsetSuccessCallback,getCloudsetErrorCallback,0,extra);
+	}
+	
+	function getCloudsetSuccessCallback(ret,extra){
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else if(action == CONSTANT.ACTIONLOAD){
+			isLoadMoreResponsed = true;
+			loadingHide();
+		}else{
+			loadingHide();
+		}
+		if(ret.statusCode==200 && ret.cloudCloset){
+			currPage = ret.cloudCloset.page;
+			totalPage = ret.cloudCloset.pageTotal;
+			getCloudsetHtml(ret.cloudCloset);
+			_page(currPage,totalPage,ret.cloudCloset.count);
+		}else{
+			toastMsg(ret.msg);
+		}
+		if(currPage >= totalPage){
+			$api.html($api.byId('loading'),'没有更多了');
+		}
+	}
+	
+	function getCloudsetErrorCallback(err,extra){
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else if(action == CONSTANT.ACTIONLOAD){
+			isLoadMoreResponsed = true;
+			currPage--;
+			loadingHide();
+		}else{
+			loadingHide();
+		}
+		toastMsg(err.msg);
+	}
+	
+	function getCloudsetHtml(cloudset){
+        var html = doTHtml('cloudset-container-template',cloudset);
+        var cloudsetContainer = $api.byId('cloudset-container');
+        if(currPage == 1){
+			//首次加载或者刷新
+			//图片也刷新了，闪屏，有待于提升性能
+			cloudsetContainer.innerHTML = '';
+		}
+		$api.append(cloudsetContainer, html);
+		api.parseTapmode();
+		for(var i=0; i<cloudset.count; i++){
+			var url = getImgUrl(colthPath, cloudset.list[i].img,colthPathStyle);
+			_imgCacheUrl2(url, '.cloudset-img-'+cloudset.list[i]._id);
+		}
+	}
+//	testCloudsetHtml();
+		function testCloudsetHtml(){
+//			var cloudset = {"cloudCloset":{"count":20,"pageTotal":403,"page":1,"list":[{"new":"NO","_id":"1526786","name_en":"","name":"纯棉印花坎肩连帽T恤","img":"1526786-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":182,"annualOnly":"NO","size":["S","M","L"],"goodsSource":"consign"},{"new":"NO","_id":"1532026","name_en":"","name":"纯棉别针拼皮卫衣","img":"1532026-1.jpg","available":"YES","stockedSize":["S","M"],"like":86,"annualOnly":"NO","size":["S","M"],"goodsSource":null},{"new":"NO","_id":"1528336","name_en":"","name":"麻料无袖长T连衣裙","img":"1528336-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":322,"annualOnly":"NO","size":["S","M","L"],"goodsSource":null},{"new":"NO","_id":"1528147","name_en":"","name":"圆领拼织带背心开 叉刺绣连衣裙","img":"1528147-1.jpg","available":"YES","stockedSize":["L"],"like":231,"annualOnly":"NO","size":["S","M","L"],"goodsSource":null},{"new":"NO","_id":"1532408","name_en":"","name":"牛仔外套","img":"1532408-1.jpg","available":"YES","stockedSize":["均码"],"like":152,"annualOnly":"NO","size":["均码"],"goodsSource":null},{"new":"NO","_id":"1530990","name_en":"","name":"修身无裙风衣","img":"1530990-1.jpg","available":"YES","stockedSize":["M"],"like":130,"annualOnly":"NO","size":["M","L","XL"],"goodsSource":null},{"new":"NO","_id":"1532028","name_en":"","name":"纯棉拼接印花连帽卫衣","img":"1532028-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":105,"annualOnly":"NO","size":["S","M","L"],"goodsSource":null},{"new":"NO","_id":"1526789","name_en":"","name":"纯棉印花衬衫","img":"1526789-1.jpg","available":"YES","stockedSize":["S"],"like":58,"annualOnly":"NO","size":["S","L"],"goodsSource":null},{"new":"NO","_id":"1532030","name_en":"","name":"拼接西装","img":"1532030-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":80,"annualOnly":"NO","size":["S","M","L"],"goodsSource":null},{"new":"NO","_id":"1532402","name_en":"","name":"牛仔外套","img":"1532402-1.jpg","available":"YES","stockedSize":["XL"],"like":98,"annualOnly":"NO","size":["L","XL"],"goodsSource":null},{"new":"NO","_id":"1530749","name_en":"","name":"白色阔腿裤","img":"1530749-1.jpg","available":"YES","stockedSize":["M"],"like":94,"annualOnly":"NO","size":["M"],"goodsSource":null},{"new":"NO","_id":"1526790","name_en":"","name":"纯棉印花衬衫","img":"1526790-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":63,"annualOnly":"NO","size":["S","M","L"],"goodsSource":null},{"new":"NO","_id":"1532216","name_en":"","name":"条纹蕾丝拼接连衣裙","img":"1532216-1.jpg","available":"YES","stockedSize":["S","XL"],"like":304,"annualOnly":"NO","size":["S","M","L","XL"],"goodsSource":null},{"new":"NO","_id":"1528683","name_en":"","name":"牛仔网纱拼接连衣裙","img":"1528683-1.jpg","available":"YES","stockedSize":["L"],"like":767,"annualOnly":"NO","size":["S","M","L","XL"],"goodsSource":null},{"new":"NO","_id":"1531444","name_en":"","name":"无袖长款马甲","img":"1531444-1.jpg","available":"YES","stockedSize":["M","L"],"like":97,"annualOnly":"NO","size":["M","L"],"goodsSource":null},{"new":"NO","_id":"1530685","name_en":"","name":"蕾丝拼接连衣裙","img":"1530685-1.jpg","available":"YES","stockedSize":["L"],"like":275,"annualOnly":"NO","size":["S","M","L","XL"],"goodsSource":null},{"new":"NO","_id":"1530681","name_en":"","name":"中长款蕾丝连衣裙","img":"1530681-1.jpg","available":"YES","stockedSize":["S"],"like":894,"annualOnly":"NO","size":["S","M","L","XL"],"goodsSource":null},{"new":"NO","_id":"1528313","name_en":"","name":"针织短袖条修身连衣裙","img":"1528313-1.jpg","available":"YES","stockedSize":["XL"],"like":433,"annualOnly":"NO","size":["S","M","L","XL"],"goodsSource":null},{"new":"NO","_id":"1528036","name_en":"","name":"黑色开叉九分裤","img":"1528036-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":33,"annualOnly":"NO","size":["S","M","L"],"goodsSource":null},{"new":"NO","_id":"1530906","name_en":"","name":"长袖连衣裙","img":"1530906-1.jpg","available":"YES","stockedSize":["S"],"like":319,"annualOnly":"NO","size":["S","M"],"goodsSource":null}]},"statusCode":200,"msg":""};
+//			var html = doTHtml('cloudset-container-template',cloudset.cloudCloset);
+//			var cloudsetContainer = $api.byId('cloudset-container');
+//			if(currPage == 1){
+//				//首次加载或者刷新
+//				//图片也刷新了，闪屏，有待于提升性能
+//				cloudsetContainer.innerHTML = '';
+//			}
+//			$api.append(cloudsetContainer, html);
+		}
+	</script>
+</html>

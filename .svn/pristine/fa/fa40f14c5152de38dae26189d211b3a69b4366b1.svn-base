@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            background-color: #F6F6F6;
+        }
+        #wrap {
+            height: 100%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+        }
+
+        #main {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+        
+        #aui-icon-scan{
+    		color: #454545;
+    	}
+	</style>  
+</head>
+<body>
+<div id="wrap" class="flex-wrap flex-vertical" style="border-bottom: 1px solid #F1F1F1">
+	
+    <header id="header" class="aui-bar aui-bar-nav aui-bar-info">
+	   
+	    <a class="aui-btn aui-btn-info aui-pull-left" onclick="closeWin();"> 
+	        <span class="aui-iconfont aui-icon-left"></span>
+	    </a>
+	    
+	    <div id="header-title" class="aui-title"></div>
+	    
+	    <a class="aui-btn aui-btn-info aui-pull-right " id="aui-icon-scan" onclick="reg();"> 
+	        注册
+	    </a>
+	</header>
+	
+    <div id="main" class="flex-con">
+
+    </div>
+
+</div>		
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/umeng_sdk.js"></script>
+	<script type="text/javascript">
+    var title = null;
+	apiready = function(){
+		var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+        
+		var page = api.pageParam.page;
+		title = api.pageParam.title;
+		var bounces = api.pageParam.bounces;
+		var data = api.pageParam.data;
+		var name = api.pageParam.name;
+		var type = api.pageParam.type;
+		var bagNum = api.pageParam.bagNum;
+		var isFrist = api.pageParam.isFrist;
+		var id = api.pageParam.id;
+		
+		var imgUrl = api.pageParam.imgUrl;
+		var clothes = api.pageParam.clothes;
+
+		_setHtmlVal('header-title',title);
+        onPageUmeng(title);
+		
+		api.openFrame({
+            name: page,
+            bounces: bounces,
+            url: page + '.html',
+            vScrollBarEnabled: false,
+            softInputMode:'resize',
+            rect:{
+            	x:0, 
+            	y:headerPos.h, 
+            	w:'auto', 
+            	h:body_h - headerPos.h,
+            	marginBottom:0
+            },
+		    pageParam: {
+		        data: data,
+		        name:name,
+		        bagNum:bagNum,
+		        type:type,
+		        id:id,
+		        isFrist:isFrist,
+		        imgUrl:imgUrl,
+		        clothes:clothes
+		    }
+        });
+	};
+	function show(name){
+		$api.removeCls($api.byId(name),'hide');
+	}
+	function closeWin(){
+        onPageEndUmeng(title);
+		api.closeWin();
+        if(api.pageParam.data && api.pageParam.data.isAd){
+            api.execScript({
+                name: 'root',
+                script: 'execAppAdInit()'
+            });
+        }
+	}
+
+    function reg(){
+        api.openWin({
+            name: 'reg',
+            url: 'win.html', 
+            pageParam:{
+                page: 'reg',
+                title: '注册',
+                name:"reg"
+            }
+        });
+    }
+	</script>
+</html>

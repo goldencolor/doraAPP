@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	.aui-input-row .my-aui-input-st {
+		    font-size: 14px;
+		    font-weight: 400;
+		    line-height: 1;
+		    color: #666;
+		    text-align: center;
+		    display: table-cell;
+		    width: 1%;
+		    white-space: nowrap;
+		    vertical-align: middle;
+		    padding: 5px;padding-left: 15px;
+		}
+		.my-aui-input-color{
+			color:#777;
+		}
+		.my-content-margin-t{
+			margin-top: 15px;
+		}
+		.my-content-margin{
+    		margin: 0px 10px 0px 10px;
+    	}
+    	.my-aui-btn-block{
+    		background-color:#FF6100;
+    		color: #fff;
+    		font-size: 14px;
+    		padding:10px 0px 10px 0px;
+    	}
+    	.my-aui-btn{
+    		background-color:#fff;color: #777;
+    	}
+    	.my-content-padding-btn{
+    		padding:6px 10px;
+    	}
+    	.aui-btner{
+			color: #fff;
+			background-color: #E59C96;
+		}
+		.aui-input-row .my-aui-border {
+		    font-size: 14px;
+		    margin: 0;
+		    display: table-cell;
+		    position: relative;
+		    float: left;
+		    width: 100%;
+		    border:0.5px solid #c8c7cc; 
+		    border-radius:3px;
+		    color:#777;
+		}
+		.my-padding-r{
+			padding-right: 10px;
+		}
+		.my-textarea{
+			margin-bottom: 0px; margin-top: 3px; border:0.5px solid #c8c7cc;
+		}
+    </style>
+</head>
+<body>
+	
+	<div class="aui-form">
+		<div class="aui-input-row">
+			<label class="aui-input-addon">所在省份</label>
+			<select name="s_province" id="s_province" class="aui-input my-aui-border">
+	            			</select>
+		</div>
+		<div class="aui-input-row">
+			<label class="aui-input-addon">所在城市</label>
+			<select name="s_city" id="s_city" class="aui-input my-aui-border" >
+	            			</select>
+		</div>
+		<div class="aui-input-row">
+			<label class="aui-input-addon">所在区县</label>
+			<select name="s_county" id="s_county" class="aui-input my-aui-border" >
+	            			</select>
+		</div>
+		<div class="aui-input-row">
+			<label class="aui-input-addon">所在街道</label>
+			<input type="text" class="aui-input" id="detail" >
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">收 件 人</span>
+			<input type="text" class="aui-input" id="name" >
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">联系电话</span>
+			<input type="number" class="aui-input"  id="phone">
+		</div>
+
+		<div class="aui-btn-row">
+			<div class="aui-btn aui-btn-block my-aui-btn-block" onclick="addrBtn()">确认</div>
+		</div>
+	</div>
+
+	<!--div class="aui-card my-content-margin-t">       
+        <div class="aui-form">
+            <div class="aui-input-row">
+	            <span class="aui-input-addon my-aui-input-st">所在地：</span>
+	            	<div  class="aui-input my-aui-input-color">
+	            		<div  class="aui-col-xs-5 my-padding-r">
+	            			<select name="s_province" id="s_province" class="aui-input my-aui-border">
+	            			</select>
+	            		</div>
+		            	<div  class="aui-col-xs-4 my-padding-r">
+	            			<select name="s_city" id="s_city" class="aui-input my-aui-border" >
+	            			</select>
+	            		</div>
+	            		<div  class="aui-col-xs-5 my-padding-r">
+	            			<select name="s_county" id="s_county" class="aui-input my-aui-border" >
+	            			</select>
+	            		</div>
+					</div>
+	        </div>
+	        <div class="aui-input-row">
+	            <span class="aui-input-addon my-aui-input-st">详细地址：</span>
+	            <div class="aui-input my-aui-input-color my-padding-r"><textarea id="detail" class="my-textarea"  placeholder="请输入您的详细地址"></textarea></div>
+	        </div>
+	        <div class="aui-input-row my-padding-r">
+	            <span class="aui-input-addon my-aui-input-st">手机号：</span>
+	            <input type="number" class="aui-input my-aui-border" id="phone" placeholder="请输入11位手机号">
+	        </div>
+	        <div class="aui-input-row my-padding-r">
+	            <span class="aui-input-addon my-aui-input-st">收货人姓名：</span>
+	            <input type="text" id="name" class="aui-input my-aui-border">
+	        </div>
+	    </div>
+    </div>
+    <div class="aui-content my-content-margin">
+    	<div class="aui-btn aui-btn-block my-aui-btn-block" onclick="addrBtn()">确认</div>
+    </div-->
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/area.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+	var token;
+	var opt0;
+	var frameData = null;
+	apiready = function(){
+		frameData = api.pageParam.data;
+		token = $api.getStorage('token');
+		opt0 = ["省","市","区、县"];//初始值
+		_init_area();
+	};
+
+	function addrBtnSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+			api.sendEvent({
+				name: 'setAddrList',
+				extra: {
+					key: 'OK'
+				}
+			});
+			setTimeout(function(){
+				api.closeWin();
+				onPageEndUmeng(CONSTANT.PAGE.NEWADDR);
+			},1000);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function addrBtnErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+
+	function addrBtn(){
+		var province = $api.val($api.byId('s_province'));
+		var city = $api.val($api.byId('s_city'));
+		var county = $api.val($api.byId('s_county'));
+		var detail = $api.val($api.byId('detail'));
+		var phone = $api.val($api.byId('phone'));
+		var name = $api.val($api.byId('name'));
+		
+		if(!CONSTANT.REG.MOBILE.test(phone))
+		{ 
+		    toastMsg("请输入有效的手机号码");
+		    return false; 
+		} 
+		if(province==''||city==''||county==''||detail==''||phone==''||name==''){
+			toastMsg("信息缺少，请输入完整的信息！");
+			return;
+		}
+		var bodyt = {
+			province:province,
+			city:city,
+			county:county,
+			detail:detail,
+			name:name,
+			phone:phone
+		};
+		var url = serviceNew + 'user/address/add';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData(bodyt);
+		var extra = null;
+		_ajaxData(url,'post',headers,data,addrBtnSuccessCallback,addrBtnErrorCallback,0,extra);
+	}
+
+	//公用头部导航栏坐侧点击异步执行的方法
+	function execNavLeftCallback(value){
+		var from = frameData.from;
+		var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+
+	//公用头部导航栏右侧点击异步执行的方法
+	function execNavRightCallback(value){
+		var from = frameData.from;
+		var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+</script>
+</html>

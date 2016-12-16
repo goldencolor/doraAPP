@@ -1,0 +1,909 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>底部导航</title>
+
+	<link rel="stylesheet" type="text/css" href="css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="css/2_0/aui_2_0.css" />
+	<link rel="stylesheet" type="text/css" href="css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="css/fonts/duola_iconfont2.css"/>
+
+	<style>
+		/*图标大小调整*/
+		.duola-iconfont.icon-news1,.duola-iconfont.icon-Clear{
+			font-size: 1rem;
+			float: right;
+			margin-right: 0.3rem;
+		}
+		.duola-iconfont.icon-search1{
+			font-size: 1rem;
+		}
+
+		/*独立设计标题*/
+		#nav-title .icon-Typeface{
+			font-size: 0.9rem;
+		}
+		/*底部导航图标*/
+		.duola-bar-tab-item .icon-home-active, .duola-bar-tab-item .icon-home{
+			font-size: 1.05rem !important;
+		}
+		.duola-bar-tab-item .icon-design-active, .duola-bar-tab-item  .icon-design{
+			font-size: 0.9rem !important;
+		}
+		.duola-bar-tab-item .icon-wardrobe-active, .duola-bar-tab-item  .icon-wardrobe{
+			font-size: 0.85rem !important;
+		}
+		.duola-bar-tab-item .icon-myWardrobe-active, .duola-bar-tab-item  .icon-myWardrobe{
+			font-size: 0.9rem !important;
+		}
+		.duola-bar-tab-item .icon-my-active, .duola-bar-tab-item  .icon-my{
+			font-size: 0.9rem !important;
+		}
+
+		.aui-tab-item {
+			font-size: 0.9rem;
+			color: #989A9C;
+		}
+		.aui-tab {
+			position: static;
+		}
+		.aui-tab-item.aui-active {
+			color: #1B1B1B;
+			border-bottom: 0;
+			z-index: 100;
+			/*text-decoration:underline;*/
+			text-decoration: none;
+		}
+		.aui-active .tab-span{
+			height: 1.8rem;
+			font-size: 0.9rem;
+			border-bottom: 0.1rem solid #1B1B1B;
+		}
+		#nav-scan,#nav-msg{
+			text-align: right;
+		}
+		#nav-left-hold,#nav-chat{
+			text-align: left;
+		}
+
+		/*aui-tab样式 底部边框*/
+		.aui-tab:after{
+			height: 0;
+		}
+		.duola-iconfont.icon-Clear{
+			position: relative;
+			bottom: 0.2rem;
+		}
+		#nav-msg {
+			position: relative;
+		}
+		#nav-msg .aui-badge {
+			font-size: 0.5rem;
+			padding: 0px 2px;
+			left: 80%;
+			line-height: 0.7rem;
+			border: 1px solid #FF6100;
+			background-color: #FFFFFF;
+			color: #FF6100;
+			top: 0.4rem;
+		}
+		.duola-header .nav-left-icon {
+			margin-right: 0rem;
+			margin-left: 0.3rem;
+		}
+
+	</style>
+</head>
+<body>
+<header id="header" class="duola-header flex border-bottom ">
+
+	<a id="nav-chat" class="duola-icon-area flex-1" tapmode onclick="openMeChats()">
+		<span class="nav-left-icon duola-iconfont icon-service"></span>
+	</a>
+	<a id="aui-tab-left" class="duola-icon-area aui-hide" tapmode onclick="showFNS();" style="min-width: 1.5rem;width: 1.5rem;text-align: left;float: left;">
+		<span class="nav-left-icon duola-iconfont icon-Scan"></span>
+	</a>
+	<a id="nav-left-hold" class="duola-icon-area aui-hide"></a>
+	<!--<div id="nav-title" class="nav-title flex-1"></div>-->
+	<div id="nav-title" class="nav-title flex-1">多啦衣梦</div>
+	<a id="nav-msg" class="duola-icon-area flex-1" tapmode onclick="openMsg()">
+		<span class="nav-right-icon duola-iconfont icon-news1"></span>
+		<!--<span class="duola-dot"></span>-->
+		<div class="aui-badge aui-hide" id="messagesCount"></div>
+	</a>
+	<a id="nav-design" class="duola-icon-area aui-hide" tapmode onclick="openDesignSearch()">
+		<span class="nav-right-icon duola-iconfont icon-search"></span>
+	</a>
+	<div  class="aui-tab aui-hide" id="tab" style="width: 80%;margin-left: -5%">
+		<div class="aui-tab-item aui-active aui-col-xs-6">
+			<span class="tab-span">在库</span></div>
+		<div class="aui-tab-item aui-col-xs-6"><span class="tab-span">暂无货</span></div>
+	</div>
+	<a id="nav-scan" class="duola-icon-area aui-hide" onclick="openDelCloset();">
+		<span class="nav-right-icon duola-iconfont icon-Clear"></span>
+	</a>
+</header>
+
+<footer id="footer" class="duola-footer">
+	<div id="tabbar0" class="tabbar0 flex flex-center duola-bar-tab-item active"  tapmode onclick="randomSwitchBtn(this,'多啦衣梦',0)">
+		<div>
+			<div class="flex flex-center duola-icon-container">
+				<i class="duola-iconfont icon-home-active"></i>
+				<!--<img class="duola-icon-img" src="image/theme5.png" alt="" />-->
+			</div>
+			<div class="duola-bar-tab-label">首页</div>
+		</div>
+	</div>
+	<div id="tabbar4" class="tabbar4 flex flex-center duola-bar-tab-item"  tapmode onclick="randomSwitchBtn(this,'独立设计',4)">
+		<div>
+			<div class="flex flex-center duola-icon-container">
+				<i class="duola-iconfont icon-design"></i>
+				<!--<img class="duola-icon-img" src="image/theme5.png" alt="" />-->
+			</div>
+			<div class="duola-bar-tab-label">独立设计</div>
+		</div>
+	</div>
+	<div id="tabbar1" class="tabbar1 flex flex-center duola-bar-tab-item "  tapmode onclick="randomSwitchBtn(this,'云衣橱',1)">
+		<div>
+			<div class="flex flex-center duola-icon-container">
+				<i class="duola-iconfont icon-wardrobe"></i>
+				<!--<img class="duola-icon-img" src="image/theme6.png" alt="" />-->
+			</div>
+			<div class="duola-bar-tab-label">云衣橱</div>
+		</div>
+	</div>
+	<div id="tabbar2" class="tabbar2 flex flex-center duola-bar-tab-item "  tapmode onclick="randomSwitchBtn(this,'我的衣橱',2)">
+		<div>
+			<div class="flex flex-center duola-icon-container">
+				<!--<div class="duola-dot"></div>-->
+				<i class="duola-iconfont icon-myWardrobe"></i>
+				<!--<img class="duola-icon-img" src="image/theme7.png" alt="" />-->
+			</div>
+			<div class="duola-bar-tab-label">我的衣橱</div>
+		</div>
+	</div>
+	<div id="tabbar3" class="tabbar3 flex flex-center duola-bar-tab-item " tapmode onclick="randomSwitchBtn(this,'我的',3)">
+		<div>
+			<div class="flex flex-center duola-icon-container">
+				<!--<div class="duola-badge">99</div>-->
+				<i class="duola-iconfont icon-my"></i>
+				<!--<img class="duola-icon-img" src="image/theme8.png" alt="" />-->
+			</div>
+			<div class="duola-bar-tab-label">我的</div>
+		</div>
+	</div>
+</footer>
+</body>
+</html>
+
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/uz.js"></script>
+<script type="text/javascript" src="script/url.js"></script>
+<script type="text/javascript" src="script/version.js"></script>
+<script type="text/javascript" src="script/umeng_sdk.js"></script>
+<script type="text/javascript" src="script/meiqia_sdk.js"></script>
+<script type="text/javascript" src="script/2_0/aui_tab.js" ></script>
+<script type="text/javascript" src="script/jpush_sdk.js" ></script>
+<script type="text/javascript" src="script/app_ad.js" ></script>
+<script type="text/javascript">
+	//上次切换的preIndex
+	var preIndex = null;
+	var frameHeight;
+	var headerHeight = 0;
+	//消息数
+	var messagesCount;
+	//全部变量记录头部情况
+	var headerFlag = 'header';
+	var isOpenFrame1Header = false;//是否打开云衣橱的头部
+	//打开frame1Header
+	//hack 是tab 切换 并未真实改变headerFlag
+	function showFrame1ShortHeader2(seasonIndex,sizeIndex,hack){
+		if(headerFlag == 'short-header' && hack != 'hack'){
+			return;
+		}
+		if(isOpenFrame1Header){
+			//从展示头部到折叠头部
+			if(headerFlag == 'all-header'){
+				var execScriptFun = getExecScript('showShortHeader',[seasonIndex,sizeIndex]);
+				api.execScript({
+					frameName: 'frame1Header',
+					script: execScriptFun
+				});
+			}else{
+				var execScriptFun = getExecScript('execSeasonSizeIndex',[seasonIndex,sizeIndex]);
+				api.execScript({
+					frameName: 'frame1Header',
+					script: execScriptFun
+				});
+				api.setFrameAttr({
+					name: 'frame1Header',
+					rect: {
+						x:0,
+						y:0,
+						w:'auto',
+						h:headerHeight
+					},
+					hidden: false
+				});
+			}
+			headerFlag = 'short-header';
+			return;
+		}
+		var name = 'frame1Header';
+		var page = 'html/frame1Header.html';
+		var bounces = false;
+		var rect = {
+			x:0,
+			y:0,
+			w:'auto',
+			h:headerHeight
+		};
+		var data = {
+			headerHeight:headerHeight,
+			seasonIndex:seasonIndex,
+			sizeIndex:sizeIndex
+		};
+		isOpenFrame1Header = true;
+		headerFlag = 'short-header';
+		openNewFrame(name,page,bounces,rect,data,'false');
+	}
+
+	//隐藏frame1Header
+	function hideFrame1Header2(hack){
+		if(headerFlag == 'header'){
+			return;
+		}
+		api.setFrameAttr({
+			name: 'frame1Header',
+			hidden: true
+		});
+		api.execScript({
+			frameName:'frame1Header',
+			script:'execHackShowShortHeader();'
+		});
+		if(hack != 'hack'){
+			headerFlag = 'header';
+		}
+	}
+
+	//显示完整头部
+	function showFrame1AllHeader2(hack){
+		if(headerFlag == 'all-header' && hack != 'hack'){
+			return;
+		}
+		if(isOpenFrame1Header){
+			api.setFrameAttr({
+				name: 'frame1Header',
+				rect: {
+					x:0,
+					y:0,
+					w:'auto',
+					h:headerHeight + parseInt($api.cssVal($api.dom('html'),'font-size')) * 2.5
+				},
+				hidden: false
+			});
+			headerFlag = 'all-header';
+		}
+	}
+
+
+	apiready = function() {
+		var header = $api.byId('header');
+		messagesCount = $api.getStorage('messagesCount') || 0;
+		$api.fixStatusBar(header);
+		api.setStatusBarStyle({
+			style: 'dark'
+		});
+		appAdInit();//开屏广告初始化
+		jpushInit();//极光推送初始化
+		otherInit();//其他初始化事件
+		setAppRepair();//设置云修复版本
+		messages();
+		var tab = new auiTab({
+			element: document.getElementById("tab"),
+			index: 1,
+			repeatClick: false
+		}, function (ret) {
+//			console.log(ret);
+
+			api.sendEvent({
+				name: 'tabClothList',
+				extra: {
+					key: ret.index
+				}
+			});
+		});
+//		var chromeDebug = api.require('chromeDebug');
+//		chromeDebug.openDebug(function(ret, err) {
+//			if (212 == ret.code) {
+//				alert(JSON.stringify(ret));
+//			} else {
+//				alert(JSON.stringify(err));
+//			}
+//		});
+	};
+
+		function otherInit(extra) {
+			api.addEventListener({
+				name: 'resume'
+			}, function (ret, err) {
+				api.bringFrameToFront({
+					from: 'closet_frame',
+					to: 'footer_tab_3'
+				});
+	//			api.sendFrameToBack({
+	//				from: 'footer_tab_3'
+	//              to: 'footer_tab_3'
+	//			});
+			});
+
+			initUmeng();
+			headerHeight = $api.offset($api.byId('header')).h;
+			var footerHeight = $api.offset($api.byId('footer')).h;
+			var bodyHeight = $api.offset($api.dom('html')).h;
+			frameHeight = bodyHeight - headerHeight - footerHeight;
+			$api.setStorage('footerH',footerHeight);
+			api.setPrefs({
+				key: 'headerHeight',
+				value: headerHeight
+			});
+			console.log(getLogStr([{
+				x: 0,
+				y: headerHeight,
+				w: 'auto',
+				h: frameHeight
+			}]));
+			api.openFrameGroup({
+				name: 'footer_tab',
+				scrollEnabled: false,
+				rect: {
+					x: 0,
+					y: headerHeight,
+					w: 'auto',
+					h: frameHeight
+				},
+				index: 0,
+				preload: 0,
+				frames: [
+					{
+						name: 'footer_tab_1',
+						url: 'html/frame0_new.html',
+						bounces: true,
+						vScrollBarEnabled: false
+					}, {
+						name: 'footer_tab_2',
+						url: 'html/frame1_new.html',
+						bounces: true,
+						vScrollBarEnabled: true,
+						pageParam: {
+							headerHeight: headerHeight,
+						}
+					}, {
+						name: 'footer_tab_3',
+						url: 'html/closet/closet.html',
+						bounces: false,
+						vScrollBarEnabled: false,
+					}, {
+						name: 'footer_tab_4',
+						url: 'html/user/user.html',
+						bounces: false,
+						vScrollBarEnabled: false
+					},
+					{
+						name: 'footer_tab_5',
+						url: 'html/frame4_new.html',
+						bounces: true,
+						vScrollBarEnabled: true
+					}
+				]
+			}, function (ret, err) {
+				var index = ret.index;
+				var name = CONSTANT.PAGE.INDEX[index];
+				indexUmeng(index);
+				sendEventUmeng(CONSTANT.UMENGEVENT.FOOTER_TAB, {
+					index: ret.index,
+					name: name
+				});
+				preIndex = index;
+			});
+			listenUserLogout();
+		}
+
+
+		//监听用户退出广播事件
+		function listenUserLogout() {
+			api.addEventListener({
+				name: 'loginOut'
+			}, function (ret, err) {
+				var index = 0;
+				var el = $api.byId('tabbar' + index);
+				var name = CONSTANT.PAGE.INDEX[index];
+				randomSwitchBtn(el, name, index);
+			});
+		}
+
+		//统计frameGroup友盟页面数据
+		function indexUmeng(index) {
+			onPageStartUmeng(CONSTANT.PAGE.INDEX[index]);
+			if (!isNaN(preIndex)) {
+				onPageEndUmeng(CONSTANT.PAGE.INDEX[preIndex]);
+			}
+			listenPageEndUmeng(CONSTANT.PAGE.INDEX[index]);
+		}
+
+		function randomSwitchBtn(el, name, index) {
+			if (CONSTANT.INDEXLOGIN[index] && !isLogin()) {
+				goLogin(CONSTANT.INDEX);
+				return;
+			}
+			if(index == 4){
+				$api.html($api.byId('nav-title'), '<span class="duola-iconfont icon-Typeface"></span>');
+			}else{
+				$api.html($api.byId('nav-title'), name);
+			}
+			var footer = $api.byId('footer');
+			var footerAct = $api.dom(footer, '.duola-bar-tab-item.active');
+			if (footerAct == el) {
+				return;
+			}
+			$api.removeCls(footerAct, 'active');
+			$api.addCls(el, 'active');
+
+			var imgEls = $api.domAll(footer, '.duola-bar-tab-item img');
+			if (imgEls.length == 0) {
+				//是图标
+				var iconAct = $api.dom(footerAct, 'i');
+				var oldClass = $api.attr(iconAct, 'class');
+				var newClass = oldClass.substr(0, oldClass.length - 7);
+				$api.attr(iconAct, 'class', newClass);
+
+				var elIcon = $api.dom(el, 'i');
+				var elOldClass = $api.attr(elIcon, 'class');
+				var elNewClass = elOldClass + '-active';
+				$api.attr(elIcon, 'class', elNewClass);
+			}
+			if (index == 0) {
+				showFrame0Nav();
+				hideFrame2Nav();
+				hideFrame4Nav();
+				hideHeader("show");
+				hideFrame1Header2('hack');
+				messages();
+
+			} else if (index == 1) {
+				if (headerFlag != 'header') {
+					showFrame1ShortHeader2(null, null, 'hack');
+				}
+				hideFrame0Nav();
+				hideFrame2Nav();
+				hideFrame4Nav();
+				hideHeader("show");
+			} else if (index == 2) {
+				hideFrame0Nav();
+				showFrame2Nav();
+				hideFrame4Nav();
+				hideHeader("show");
+				hideFrame1Header2('hack');
+			} else if (index == 3) {
+				hideFrame0Nav();
+				hideFrame2Nav();
+				hideFrame4Nav();
+				hideHeader("hide");
+				hideFrame1Header2('hack');
+				api.execScript({
+					frameName: "footer_tab_4",
+					script: 'updateMessages("' + messagesCount + '");'
+				});
+			} else if (index == 4) {
+				hideFrame0Nav();
+				hideFrame2Nav();
+				hideHeader("show");
+				hideFrame1Header2('hack');
+				showFrame4Nav();
+			}
+			api.setFrameGroupIndex({
+				scroll: false,
+				name: 'footer_tab',
+				index: index
+			});
+		}
+
+		function hideHeader(state) {
+			var header = $api.byId('header');
+			var isShow = $api.hasCls(header, 'aui-hide');
+			if (!isShow && state === "hide") {
+				$api.addCls(header, 'aui-hide');
+				api.setFrameGroupAttr({
+					name: 'footer_tab',
+					rect: {
+						x: 0,
+						y: 0,
+						w: 'auto',
+						h: frameHeight + headerHeight
+					}
+				});
+			} else if (isShow && state === "show") {
+				api.setFrameGroupAttr({
+					name: 'footer_tab',
+					rect: {
+						x: 0,
+						y: headerHeight,
+						w: 'auto',
+						h: frameHeight
+					}
+				});
+				$api.removeCls(header, 'aui-hide');
+			}
+		}
+
+		//隐藏首页的顶部导航栏
+		function hideFrame0Nav() {
+			var navChatEl = $api.byId('nav-chat');
+			var navMsgEl = $api.byId('nav-msg');
+			if (navChatEl) {
+				$api.addCls(navChatEl, "aui-hide");
+			}
+			if (navMsgEl) {
+				$api.addCls(navMsgEl, "aui-hide");
+			}
+		}
+
+		//隐藏独立设计的顶部导航栏
+		function hideFrame4Nav() {
+			var navDesignEl = $api.byId('nav-design');
+			if (navDesignEl) {
+				$api.addCls(navDesignEl, "aui-hide");
+			}
+			var navLeftHoldEl = $api.byId('nav-left-hold');
+			if (navLeftHoldEl) {
+				$api.addCls(navLeftHoldEl, "aui-hide");
+			}
+		}
+
+		//显示首页的顶部导航栏
+		function showFrame0Nav() {
+			var navChatEl = $api.byId('nav-chat');
+			var navMsgEl = $api.byId('nav-msg');
+			$api.removeCls($api.byId('nav-title'), "aui-hide");
+			if (navChatEl) {
+
+				$api.removeCls(navChatEl, "aui-hide");
+			}
+			if (navMsgEl) {
+				$api.removeCls(navMsgEl, "aui-hide");
+			}
+		}
+		//显示独立设计的顶部导航栏
+		function showFrame4Nav() {
+			var navLeftHoldEl = $api.byId('nav-left-hold');
+			if (navLeftHoldEl) {
+				$api.removeCls(navLeftHoldEl, "aui-hide");
+			}
+			var navDesignEl = $api.byId('nav-design');
+			if (navDesignEl) {
+				$api.removeCls(navDesignEl, "aui-hide");
+			}
+		}
+
+		//隐藏我的衣橱的顶部导航栏
+		function hideFrame2Nav() {
+			var navScanEl = $api.byId('nav-scan');
+			var navLeftHoldEl = $api.byId('nav-left-hold');
+			if (navScanEl) {
+				$api.addCls(navScanEl, "aui-hide");
+				$api.addCls($api.byId('tab'), "aui-hide");
+				$api.addCls($api.byId('aui-tab-left'), "aui-hide");
+				$api.removeCls($api.byId('nav-title'), "aui-hide");
+			}
+			if (navLeftHoldEl) {
+				$api.addCls(navLeftHoldEl, "aui-hide");
+			}
+//
+//		api.closeFrame({
+//			name: 'closet_bag'
+//		});
+			api.execScript({
+				name: 'root',
+				frameName: "closet_frame",
+				script: "closeMyBag();"
+			});
+			api.setFrameAttr({
+				name: 'closet_frame',
+				hidden: true
+			});
+
+		}
+
+		//显示我的衣橱的顶部导航栏
+		function showFrame2Nav() {
+			api.execScript({
+				name: 'root',
+				frameName: "footer_tab_3",
+				script: "openFrame();"
+			});
+			var navScanEl = $api.byId('nav-scan');
+			$api.removeCls($api.byId('tab'), "aui-hide");
+			$api.removeCls($api.byId('aui-tab-left'), "aui-hide");
+			$api.addCls($api.byId('nav-title'), "aui-hide");
+			if (navScanEl) {
+				$api.removeCls(navScanEl, "aui-hide");
+			}
+			var navLeftHoldEl = $api.byId('nav-left-hold');
+			if (navLeftHoldEl) {
+				$api.removeCls(navLeftHoldEl, "aui-hide");
+			}
+		}
+
+		//在其他页面异步执行切换到我的衣橱
+		function execGoCloudset() {
+			randomSwitchBtn($api.byId('tabbar2'), '我的衣橱', 2);
+			//异步刷新我的衣橱数据
+			api.execScript({
+				frameName: 'footer_tab_3',
+				script: 'newInit("reInfo")'
+			});
+		}
+
+		//在其他页面异步执行切换到首页
+		function execGoIndex() {
+			randomSwitchBtn($api.byId('tabbar0'), '多啦衣梦', 0);
+		}
+
+		//打开我的消息
+//		function openMsg() {
+//			if (!isLogin()) {
+//				goLogin(CONSTANT.INDEX);
+//				return;
+//			}
+//			sendEventUmeng(CONSTANT.UMENGEVENT.MSG, {
+//				from: '首页'
+//			});
+//			api.openWin({
+//				name: 'msg',
+//				url: 'html/win.html',
+//				pageParam: {
+//					bounces: true,
+//					title: "我的消息",
+//					page: "msg",
+//					name: "msg"
+//				}
+//			});
+//		}
+
+		//打开在线客服
+		function openMeChats() {
+			sendEventUmeng(CONSTANT.UMENGEVENT.ONLINE_SERVICE, {
+				from: '首页'
+			});
+			openChat();
+		}
+
+		function openDelCloset() {
+			api.openWin({
+				name: '整理衣橱',
+				url: 'html/closet/delete_closet_win.html'
+			});
+		}
+
+		function showFNS() {
+			var token = $api.getStorage('token');
+			if (typeof(token) != 'undefined') {
+				var FNScanner = api.require('FNScanner');
+				FNScanner.openScanner({
+					autorotation: true
+				}, function (ret, err) {
+					if ("success" == ret.eventType) {
+						var content = ret.content;
+						checkCode(content, token);
+					}
+				});
+			} else {
+				api.openWin({
+					name: 'login',
+					url: 'html/login.html',
+					animation: {
+						type: 'movein',
+						subType: 'from_bottom'
+					}
+				});
+			}
+		}
+
+		function checkCodeSuccessCallback(ret, extra) {
+			if (ret.statusCode == '200') {
+				exists = [];
+				toastMsg(ret.msg);
+				api.execScript({
+					frameName: "closet_frame",
+					script: 'init();'
+				});
+			} else if (ret.statusCode == '20102') {
+				exists = ret.detail.exists;
+				toastMsg(ret.msg);
+				api.execScript({
+					frameName: "closet_frame",
+					script: 'init();'
+				});
+			} else if (ret.statusCode == '10303') {
+				api.execScript({
+					frameName: "footer_tab_3",
+					script: 'thaw();'
+				});
+			} else {
+				exists = [];
+				toastMsg(ret.msg)
+			}
+		}
+
+		function checkCodeErrorCallback(err, extra) {
+			toastMsg(err.msg);
+		}
+
+		function checkCode(code, token) {
+			if (typeof(code) == 'undefined' || code == '') {
+				api.alert({
+					msg: '图片无法识别'
+				});
+			} else {
+				if (typeof(exists) == 'undefined' || exists == '') {
+					var body = {"added": [code]}
+				} else {
+//				alert(JSON.stringify(exists))
+					var body = {"exists": exists, "added": [code]}
+				}
+				var url = serviceNew + 'dorabag/scan';
+				var headers = _getAjaxHeaders(true, true);
+				var data = _getAjaxData(body);
+				var extra = null;
+				_ajaxData(url, 'post', headers, data, checkCodeSuccessCallback, checkCodeErrorCallback, 0, extra);
+			}
+		}
+
+		function messages() {
+			var url = serviceUser + 'messages/count';
+			var headers = _getAjaxHeaders(true, true);
+			var data = _getAjaxData({
+				type: "unread"
+			});
+			var extra = null;
+			_ajaxData(url, 'post', headers, data, messagesSuccessCallback, messagesErrorCallback, 0, extra);
+		}
+
+		function messagesSuccessCallback(ret) {
+			if (ret.statusCode == '200') {
+				if (messagesCount !== ret.count) {
+					$api.setStorage('messagesCount', ret.count);
+					updateMessages(ret.count);
+				}
+			} else {
+				toastMsg(ret.msg);
+			}
+		}
+
+		function messagesErrorCallback(err) {
+			toastMsg(err.msg);
+		}
+
+		function updateMessages(count) {
+			var messagesCountDom = $api.byId('messagesCount');
+			var isShow = $api.hasCls(messagesCountDom, "aui-hide");
+			if ((!count || count == 0) && !isShow) {
+				$api.addCls(messagesCountDom, 'aui-hide');
+			} else if (count > 0 && count !== messagesCount && !isShow) {
+				$api.html(messagesCountDom, count);
+			} else if (count > 0 && count !== messagesCount && isShow) {
+				$api.removeCls(messagesCountDom, 'aui-hide');
+				$api.html(messagesCountDom, count);
+			}
+			messagesCount = count;
+		}
+
+	function openMsg() {
+		if (!isLogin()) {
+			goLogin(CONSTANT.INDEX);
+			return;
+		}
+		sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+			name:'我的信息'
+		});
+		var name = 'msg';
+		var title = '我的信息';
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftCallback = 'execCloseSlefWin';
+		var leftNav = setNavData(leftIcon,null,leftCallback);
+		var border = false;
+		var params = {};
+		params.nav= setNav(leftNav,border);
+		var from = {
+			winName:api.winName,
+			frameName:api.frameName
+		};
+		var url = 'header_new.html';
+		var animation = {
+			type:"push",                //动画类型（详见动画类型常量）
+			subType:"from_right",       //动画子类型（详见动画子类型常量）
+			duration:300                //动画过渡时间，默认300毫秒
+		};
+		var page = 'msg.html';
+		openNewWinFrame(name,title,params,from,url,animation,page);
+	}
+
+	//点击返回图标异步执行关闭窗口
+	function execCloseSlefWin(extra,winName,value){
+		api.closeWin({
+			name: winName
+		});
+		updateMessages(0);
+	}
+
+	//ping++付款后异步调用关闭
+	function WinWallet(type){
+		if(type=='YES'){
+			api.closeWin({name:'Wallet'});
+		}
+		api.openWin({
+			name: 'Wallet',
+			url: 'html/win.html',
+			pageParam:{
+				page: 'Wallet',
+				title: '我的账户',
+				type:type
+			}
+
+		});
+	}
+
+	//打开独立设计搜索页面
+	function openDesignSearch(){
+		var url = serviceNew + 'cloudCloset/category';
+		var headers = _getAjaxHeaders(false, true);
+		var data = _getAjaxData({
+			"position": "sidebar"
+		});
+		var extra = null;
+		_ajaxData(url, 'post', headers, data, getLevelsSuccessCallback, getLevelsErrorCallback, 0, extra);
+	}
+	function getLevelsSuccessCallback(ret) {
+		if (ret.statusCode == 200 && ret.category) {
+			var gStyle = null;
+			for (var i in ret.category.list) {
+				if (ret.category.list[i].key == 'style') {
+					gStyle = ret.category.list[i].list.map(function (item) {
+						return {value: item.value, keywords: item.keywords}
+					});
+					break;
+				}
+			}
+			if(gStyle){
+				var name = 'winSearch_new';
+				var title = '搜索';
+				var leftIcon = 'duola-iconfont icon-left';
+				var leftNav = setNavData(leftIcon);
+				var border = false;
+				var bounces = false;
+				var params = {};
+				params.nav = setNav(leftNav, border);
+				params.frame = setFrame(bounces, {
+					gStyle: gStyle,
+					isDesign:'isDesign'
+				});
+				var from = {
+					winName: api.winName,
+					frameName: api.frameName
+				};
+				var url = 'header_web.html';
+				var page = 'winSearch_new.html';
+				openNewWinFrame(name, title, params, from, url, null, page);
+			}
+		} else {
+			toastMsg(ret.msg);
+		}
+	}
+	function getLevelsErrorCallback(err) {
+		toastMsg(err.msg);
+	}
+</script>

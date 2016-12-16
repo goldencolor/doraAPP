@@ -1,0 +1,101 @@
+function selectInfo(city,cityID,lon,lat,adcode){
+	var systemType = api.systemType;
+	var cityName=name;
+	var lon=lon;
+	var lat=lat;
+	var deviceId = getDeviceId();
+	var version = api.appVersion;
+	var systemType = api.systemType;
+	var paramSys = systemType + '-version';
+	var repair =  api.getPrefs({
+			sync: true,
+			key: 'appRepair'
+		}) || 0;
+	var headers = {
+		"Content-Type":"application/json"
+	};
+	headers[paramSys] = version + '-repair.'+repair;
+	console.log(JSON.stringify(headers));
+	var url = serviceNew + 'device';
+	var headers = _getAjaxHeaders(true,true);
+	var bodyT = { _id: String(deviceId), // 设备id
+		lng: String(lon), // 经度
+		lat: String(lat), // 纬度
+		cityNumber: String(cityID), // 城市编码
+		os: String(systemType),
+		cityName:String(city.adcode)
+		//adCode:adcode
+	};
+	var data = _getAjaxData(bodyT);
+	var extra = null;
+	_ajaxData(url,'post',headers,data,deviceSuccessCallback,deviceErrorCallback,0,extra);
+}
+function deviceSuccessCallback(){
+
+}
+function deviceErrorCallback(){
+
+}
+
+function getlocation(){
+	if(api.systemType=='ios'){
+		api.startLocation({
+			accuracy: '100m',
+			filter: 1,
+			autoStop: true
+		}, function(ret, err){
+			if(ret && ret.status){
+				getCityID(ret.longitude,ret.latitude);
+			}
+			api.stopLocation();
+		});
+	}else{
+		var aMap = api.require('aMap');
+		if(aMap){
+			aMap.getLocation(function(ret, err) {
+				if (ret.status) {
+					getCityID(ret.lon,ret.lat);
+				} else {
+				}
+			});
+		}else{
+			var amapLocation = api.require('aMapLocation');
+			amapLocation.startLocation({
+				accuracy:100,
+				filter:1,
+				autoStop:true
+			},function(ret, err){
+				if(ret){
+					getCityID(ret.longitude,ret.latitude);
+				}
+				amapLocation.stopLocation();
+			});
+		}
+	}
+}
+
+function getCityID(lon,lat){
+	api.ajax({
+		url : 'http://restapi.amap.com/v3/geocode/regeo',
+		cache: false,
+		method : 'post',
+		timeout : 15,
+		dataType : 'json',
+		returnAll : false,
+		data : {
+			values : {
+				key:'2d4dc71b2ded6889c929306507f3fee4',
+				location:String(lon)+','+String(lat)
+			}
+		}
+	}, function(ret, err) {
+		if(ret.info=='OK'){
+			cityName = ret.regeocode.addressComponent.city;
+			if(cityName=='') cityName=ret.regeocode.addressComponent.district;
+			var city = new Object({adcode:cityName});
+			var cityID =ret.regeocode.addressComponent.citycode;
+			var adcode=ret.regeocode.addressComponent.adcode;
+			selectInfo(city,cityID,lon,lat,adcode);
+		}
+	});
+}

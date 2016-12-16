@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>社区推荐</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        #user{
+            border-bottom: 1px solid #E4E4E4;
+            text-align: center;
+            margin-top: 2.5rem;
+            z-index: -1;
+        }
+        #user .avatar{
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        #user .avatar img{
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+        }
+        #user .name{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.8rem;
+            line-height: 0.8rem;
+            color: #212121;
+            margin-top: 0.6rem;
+            overflow: hidden;
+        }
+        #user .disc{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #9B9B9B;
+            margin: 0.6rem auto 1.1rem;
+        }
+        #user .disc i{
+            color: #FF6100;
+            margin: 0 0.15rem;
+            font-size: 0.6rem;
+        }
+        #user .disc span{
+            color: #212121;
+            margin-left: 0.2rem;
+        }
+        #user .chooseBtnBox{
+            height: 2.5rem;
+            line-height: 2.5rem;
+            overflow: hidden;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #4A4A4A;
+            margin-bottom: -1px;
+        }
+        #user .chooseBtnBox .btn{
+            width: 50%;
+            float: left;
+            z-index: 1000;
+        }
+        #user .chooseBtnBox .btn.active span{
+            width: auto;
+            color: #FF6100;
+            border-bottom: 1px solid #FF6100;
+            display: inline-block;
+            height: 2.5rem;
+        }
+
+        /*时间轴*/
+        #mainContent{
+            padding: 0 1.25rem;
+        }
+        .line{
+            margin-top: 2rem;
+        }
+        .line .time{
+            font-family: Arial-BoldMT;
+            font-size: 1rem;
+            color: #4A4A4A;
+            font-weight: bold;
+            height: 1.1rem;
+        }
+        .line-container{
+            position: relative;
+        }
+        .line-container:after {
+            content: '';
+            position: absolute;
+            top: 1.7rem;
+            bottom: 0rem;
+            width: 1px;
+            background: #E4E4E4;
+            left: 0;
+        }
+        .line .item{
+            margin-left: 0.8rem;
+            margin-top: 0.6rem;
+        }
+        .line .item .imgBox{
+            width: 2.5rem;
+            height: 3.75rem;
+            position: relative;
+        }
+        .line .item .imgBox .size{
+            width: 1.2rem;
+            height: 0.7rem;
+            text-align: center;
+            line-height: 0.7rem;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            background: #212121;
+            opacity: 0.87;
+            font-family: Arial-BoldMT;
+            font-size: 0.4rem;
+            color: #FFFFFF;
+            border-radius: 0 0.2rem 0 0;
+        }
+        .line .item .comment{
+            margin-left: 1rem;
+        }
+        .line .item .comment-header .name{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #757575;
+            margin-right: 0.7rem;
+        }
+        .line .item .comment-header .icon-Stars{
+            font-size: 0.6rem;
+            margin-right: 0.25rem;
+        }
+        .line .item .comment-content{
+            margin-top: 0.3rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #212121;
+            line-height: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="user">
+
+        <!--<div class="avatar"><img src="../image/avatar.png" class="opacity0 transition-opacity" ></div>-->
+        <!--<div class="name">{{=it.nickname}}</div>-->
+        <!--<div class="disc">与我的<i class="duola-iconfont icon-wardrobe"></i>衣橱<span>相似度 {{=it.similar}}</span></div>-->
+        <!--<div class="chooseBtnBox" id="chooseBtnBoxq">-->
+            <!--<div class="leftBtn btn " tapmode onclick="switchPage(this,0)"><span id="closetNumq">衣橱</span></div>-->
+            <!--<div class="rightBtn btn active"><span>下单记录</span></div>-->
+        <!--</div>-->
+
+    </div>
+    <div id="mainContent">
+        <!--<div class="line-container">-->
+            <!--<div class="line">-->
+                <!--<div class="time">2016.11.12</div>-->
+                <!--<div class="item flex">-->
+                    <!--<img src="../image/hold.jpg" alt="" width="100%"  style="width: 50px;height: 75px;"/>-->
+                    <!--<div class="comment flex-1">-->
+                        <!--<div class="comment-header flex-1 flex flex-bottom">-->
+                            <!--<span class="name">杨baobao</span>-->
+                            <!--<span class="duola-iconfont icon-Stars hit-color"></span>-->
+                            <!--<span class="duola-iconfont icon-Stars hit-color"></span>-->
+                            <!--<span class="duola-iconfont icon-Stars hit-color"></span>-->
+                        <!--</div>-->
+                        <!--<div class="comment-content">-->
+                            <!--顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶大大大顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶大大大顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶大大大顶顶大大大-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+    <div id="loading" class="aui-text-center" style="font-size: 12px; color: #999999;">
+        <img src="../icon/loading.gif" width="16" />
+        <div>更多数据加载中</div>
+    </div>
+
+    <script id="user-container-template" type="text/x-dot-template">
+        <div class="avatar">
+            <img onload="cacheImgNew(this,'img','no')" src="../image/avatar.png" class="opacity0 transition-opacity" data-url="{{=getAvatar(it.avatar,it.isWxAvatar)}}" width="100%" />
+        </div>
+        <div class="name">{{=it.nickname}}</div>
+        <div class="disc">与我的<i class="duola-iconfont icon-wardrobe"></i>衣橱<span>相似度 {{=it.similar}}</span></div>
+        <div class="chooseBtnBox" id="chooseBtnBox">
+            <div class="leftBtn btn" tapmode onclick="switchPage()"><span id="closetNum">衣橱</span></div>
+            <div class="rightBtn btn active" ><span>下单记录</span></div>
+        </div>
+    </script>
+
+    <script id="main-container-template" type="text/x-dot-template">
+        {{~it.list:value:index}}
+        <div class="line-container">
+            <div class="line">
+                <div class="time">{{=value.time.replace(/-/g,'.')}}</div>
+                {{~value.clothes:clothes:clothesIndex}}
+                <div class="item flex">
+                    <div class="imgBox bc-grey" tapmode onclick="showClothes('{{=clothes._id}}')">
+                        <img onload="cacheImgNew(this,'img')" src="{{=getImgUrl(colthPath,clothes.img,CONSTANT.PICTUREOSS.CLOTHESLISTQ5)}}" class="opacity0 transition-opacity" data-url="{{=getImgUrl(colthPath,clothes.img,CONSTANT.PICTUREOSS.CLOTHESLIST)}}" width="100%" />
+                        <div class="size">{{=clothes.size}}</div>
+                    </div>
+                    <div class="comment flex-1">
+                        <div class="comment-header flex-1 flex flex-bottom">
+                            <span class="name">{{=clothes.name}}</span>
+                            {{?clothes.star}}
+                                {{~new Array(clothes.star):value:index}}<span class="duola-iconfont icon-Stars hit-color"></span>{{~}}
+                            {{?}}
+                        </div>
+                        {{?clothes.comment}}
+                            <div class="comment-content">
+                                {{=clothes.comment}}
+                            </div>
+                        {{?}}
+                    </div>
+                </div>
+                {{~}}
+            </div>
+        </div>
+        {{~}}
+    </script>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script>
+    var postData = null;
+    var currPage = 1;
+    var totalPage = 1;
+    var isLoadMoreResponsed = true;
+    apiready = function(){
+        postData = api.pageParam.data ? api.pageParam.data : {};
+        getUser();
+        getOrders(CONSTANT.ACTIONINIT);
+        loadMore();
+    };
+
+    //加载更多
+    function loadMore(){
+        api.addEventListener({
+            name:'scrolltobottom',
+            extra:{threshold:0}
+        }, function(ret, err){
+            if(isLoadMoreResponsed && currPage < totalPage){
+                currPage++;
+                isLoadMoreResponsed = false;
+                getOrders(CONSTANT.ACTIONLOAD);
+            }
+        });
+    }
+
+    //获取用户信息
+    function getUser(){
+        var userHtml = doTHtml('user-container-template', postData);
+        var userEl =$api.byId('user');
+        $api.html(userEl, userHtml);
+        userHeight = $api.offset(userEl).h;
+        listenScroll();
+        api.parseTapmode();
+    }
+
+    //监听滚动
+    function listenScroll() {
+        window.onscroll = function () {
+            var yheight = getScrollTop(); //滚动条距顶端的距离
+            var title = '';
+            if (yheight >= userHeight) {
+                title = postData.nickname;
+            }
+            api.execScript({
+                script: getExecScript('execChangeTitle',[title])
+            });
+        };
+    }
+
+    //获取下单数据
+    function getOrders(action){
+        if(action == CONSTANT.ACTIONINIT){
+            loadingShow();
+        }
+        var url = serviceUser + 'similar/orders/'+postData._id;
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData({
+            page: currPage,
+            pageSize: 10
+        });
+        var extra = {action:action};
+        _ajaxData(url,'post',headers,data,getOrdersSuccessCallback,getOrdersErrorCallback,0,extra);
+    }
+
+    function getOrdersSuccessCallback(ret,extra){
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        if(ret.statusCode==200){
+            currPage = ret.page;
+            totalPage = ret.pageTotal;
+            getOrdersHtml(ret);
+        }else{
+            toastMsg(ret.msg);
+        }
+        if(currPage >= totalPage){
+            $api.html($api.byId('loading'),'没有更多了');
+        }
+    }
+
+    function getOrdersErrorCallback(err,extra){
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            currPage--;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+
+    test();
+    //测试数据
+    function test(){
+        var ret = {"statusCode":200,"msg":"OK","count":1,"page":1,"pageSize":20,"pageTotal":1,"total":3,"list":[{"clothes":[{"_id":"1518786","name":"单排扣无袖裙","img":"1518786-1.jpg","star":4,"comment":"适合高挑 喜欢穿休闲宽松连衣裙的","size":"M"},{"_id":"1526109","name":"白色无领对开衬衫","img":"1526109-1.jpg","size":"S"},{"_id":"1516556","name":"简约款隐形拉链短裤","img":"1516556-1.jpg","size":"M"}],"time":"2016-08-26"}]};
+//        var ret = {"total":9,"statusCode":200,"count":4,"pageTotal":1,"page":1,"pageSize":10,"list":[{"clothes":[{"img":"1530252-1.jpg","_id":"1530252","size":"S","name":"针织开衫"},{"img":"1515101-1.jpg","_id":"1515101","size":"S","name":"家居服（西装领衬衫套装）"}],"time":"2016-09-06"},{"clothes":[{"img":"1524990-1.jpg","_id":"1524990","size":"均码","name":"双包落肩连衣裙"},{"img":"1525622-1.jpg","_id":"1525622","size":"S","name":"黑白圆点拼接提花露背无袖连衣裙"}],"time":"2016-08-29"},{"clothes":[{"img":"1525196-1.jpg","_id":"1525196","size":"S","name":"蓝色吊带阔腿裤套装"},{"img":"1524340-1.jpg","_id":"1524340","size":"S","name":"西装领气质灰套装"}],"time":"2016-08-25"},{"clothes":[{"img":"1523912-1.jpg","_id":"1523912","size":"均码","name":"独特设计感印花衬衫裙"},{"img":"1512719-1.jpg","_id":"1512719","size":"均码","name":"复古印花木耳花边收腰连衣裙"},{"img":"1524784-1.jpg","_id":"1524784","size":"S","name":"条纹吊带连衣裙"}],"time":"2016-08-19"}],"msg":"OK"};
+        getOrdersHtml(ret);
+    }
+
+    //渲染下单html
+    function getOrdersHtml(ret){
+        var html = doTHtml('main-container-template',ret);
+        var mainContent =$api.byId('mainContent');
+        if(currPage == 1){
+            $api.html(mainContent, html);
+        }else{
+            $api.append(mainContent, html);
+        }
+        api.parseTapmode();
+    }
+
+    function switchPage(){
+//        var chooseBtnBoxEl=$api.byId('chooseBtnBox');
+//        var chooseBtnActive=$api.dom(chooseBtnBoxEl,'.active');
+//        if(chooseBtnActive==el){
+//            return;
+//        }
+//        $api.removeCls(chooseBtnActive, 'active');
+//        $api.addCls(el, 'active');
+        api.setFrameGroupIndex({
+            name: 'community_tab',
+            index: 0
+        });
+    }
+    //拼接头像url
+    function getAvatar(avatar,isWxAvatar){
+        if(isTrue(isWxAvatar)){
+            return avatar;
+        }else if(avatar && avatar.indexOf('../') == -1){
+            return [CONSTANT.PICPRE.RES,avatar].join('');
+        }else{
+            return '';
+        }
+    }
+</script>
+</html>

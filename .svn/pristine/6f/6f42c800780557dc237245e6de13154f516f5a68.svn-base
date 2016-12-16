@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+		*{
+			-webkit-user-select:text;
+    	}
+    	.my-padding{
+    		padding:10px 10px 0px 10px;
+
+    	}
+    	.my-font-size{
+    		font-size: 12px;
+    	}
+    	.my-margin-b-10{
+    		margin-bottom: 10px; color: #666;
+    	}
+    	.my-margin-b-15{
+    		margin-bottom: 15px;
+    	}
+    	.my-h1-style{
+    		padding: 10px 5px; color: #fff; border-radius: 3px;
+    	}
+    	.my-content-margin{
+    		margin: 0px 40px 10px 40px;
+    	}
+    	.aui-img{
+    		margin:0% 18%;
+    	}
+    </style>
+</head>
+<body>
+	<div class="aui-content-padded">
+    	<ul class="aui-list-view aui-grid-view">
+            <li class="aui-list-view-cell aui-img aui-col-xs-8">
+                <img class="aui-img-object" id="image" src="../image/logo.png">
+            </li>
+     	</ul>
+    </div>
+	<div class="aui-content my-content-margin my-bg-color">
+		<h1 class="aui-text-center my-h1-style " id="code">推荐码</h1>
+	</div>
+	<div class="aui-content my-content-margin  my-bg-color" onclick="WinPromo()">
+		<h1 class="aui-text-center my-h1-style " >我的推荐</h1>
+	</div>
+	<div class="aui-content my-padding">
+		<p class="my-margin-b-10" >使用说明：
+
+		<p class="my-margin-b-15"><em class="aui-text-danger my-font-size">1. 为好友送上 ￥100 的美丽基金，当他们开通会员时，您将获得 ￥100 美丽基金。</em></p>
+		<p class="my-margin-b-15"><em class="aui-text-danger my-font-size">2. 方式一： 扫描上方二维码即可注册。</em></p>
+		<p class="my-margin-b-15"><em class="aui-text-danger my-font-size">3. 方式二：长按上方推荐码进行复制，在缴费前手动输入八位推荐码。</em></p>
+
+		</p>
+	</div>
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript">
+	var token;
+	var userCode;
+	var userCodeImg ;
+	var is_err =1 ;
+	var frameData = null;
+	apiready = function(){
+		frameData = api.pageParam.data;
+		token =$api.getStorage('token');
+		userCode=$api.getStorage('userCode');
+		userCodeImg=$api.getStorage('userCodeImg');
+		if(userCode==undefined||userCode=="undefined"||userCodeImg=="undefined"||userCodeImg==undefined){
+			init();
+		}else{
+			$api.html($api.byId('code'), '推荐码:'+userCode);
+			$api.attr($api.byId('image'), 'src', userCodeImg);
+		}
+	};
+	function initSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+			if(ret.code=='undefined'||ret.code==undefined){
+				ret.code=200;
+			}
+			$api.html($api.byId('code'), '推荐码:'+ret.code);
+			$api.setStorage('userCode',ret.code);
+			img(ret.code);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+	function init(){
+		var url = serviceUser + 'invite_code';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+
+	}
+	function img(userCode){
+		var FNScanner = api.require('FNScanner');
+			FNScanner.encodeImg({
+			    content: 'http://m.duolayimeng.com/inviteCode/'+userCode,
+			    type:'qr_image',
+			    saveToAlbum: false,
+			    saveImg:{
+					    path: 'fs://a.jpg',  //字符串类型；保存的文件路径；若路径不存在，则创建此路径，只支持fs://协议
+   						w: 400,
+        				h: 400
+					}
+			}, function(ret, err){
+				if(ret.status==true){
+					$api.setStorage('userCodeImg',ret.imgPath);
+					$api.attr($api.byId('image'), 'src', ret.imgPath);
+				}
+			});
+	}
+	function WinPromo(){
+		api.openWin({
+			name: 'promo',
+			url: 'win.html',
+			pageParam:{
+				page: 'promo',
+				title: '我的推荐',
+				name:"promo"
+			}
+		});
+	}
+
+	//公用头部导航栏坐侧点击异步执行的方法
+	function execNavLeftCallback(value){
+		var from = frameData.from;
+		var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+
+	//公用头部导航栏右侧点击异步执行的方法
+	function execNavRightCallback(value){
+		var from = frameData.from;
+		var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+</script>
+</html>

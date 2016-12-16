@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/> 
+    <style>
+    	#aui-icon-moreandroid{
+    		color: #454545;
+    	}
+    </style>
+</head>
+<body>
+
+	
+    <header id="header" class="aui-bar aui-bar-nav aui-bar-info">
+	   
+	    <a class="aui-btn aui-btn-info aui-pull-left" tapmode onclick="closeWin();"> 
+	        <span class="aui-iconfont aui-icon-left"></span>
+	    </a>
+	    
+	    <div id="header-title" class="aui-title">头像裁剪</div>
+	    
+ 		<a class="aui-btn aui-btn-info aui-pull-right" id="aui-icon-moreandroid" tapmode onclick="save();"> 
+	       	 确定
+	    </a>
+	</header>
+	
+	
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	
+	var imageClip = '';
+
+	apiready = function(){
+		api.parseTapmode();
+		var header = $api.byId('header');
+        $api.fixStatusBar(header); 
+        var imgPath = api.pageParam.imgPath;        
+        var headerHeight = $api.offset(header).h;
+        var bodyHeight = $api.offset($api.dom('body')).h;
+    	
+    	var w1 = (bodyHeight - headerHeight) * 0.5;
+    	var w2 = api.winWidth * 0.5;
+    	var w = w1 < w2 ? w1 : w2;
+    	var clipRect = {
+    		x: (api.winWidth - w) / 2,
+    		y: (bodyHeight - headerHeight - w) / 2 ,
+    		w: w,
+    		h: w,
+    		fixation:true
+    	};
+    	imageClip = api.require('imageClip');
+		imageClip.open({
+			path:imgPath,
+			bg:'rgba(0,0,0,0)',
+			layerColor:'rgba(0,0,0,150)',
+			x: 0,
+            y: headerHeight,
+            w: 'auto',
+            h: bodyHeight - headerHeight,
+            clipRect:clipRect,
+			borderWidth:1,
+			borderColor: '#0f0'
+		},function(ret, err){
+			if( err ){
+                toastMsg(err.msg);
+            }
+		});
+	};
+
+	function closeWin(){
+		api.closeWin();
+	}
+	
+	//android保存图片
+	function save(){
+		if(!imageClip){
+			toastMsg('图片裁剪错误');
+			return ;
+		}
+		imageClip.save({
+			quality:0.6
+		},function(ret, err){
+			if(ret && ret.savePath){
+				uploadPic(ret.savePath);
+			}else if(err){
+	    		toastMsg(err.msg);
+			}else{
+				toastMsg('图片裁剪错误');
+			}
+		});
+	}
+	function uploadPicSuccessCallback(ret,extra) {
+		_loadingHide();
+		if(ret.statusCode=='200' && ret.result.avatar){
+			var winName = api.pageParam.winName || 'root';
+			var frameName = api.pageParam.frameName || 'footer_tab_4';
+			api.execScript({
+				name: winName,
+				frameName: frameName,
+				script: 'setImg("'+userPhoto+ret.result.avatar+'")'
+			});
+			imageClip.close();
+			closeWin();
+		}else{
+			toastMsg('更改头像失败');
+		}
+	}
+
+	function uploadPicErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	//上传头像
+	function uploadPic(path){
+		console.log(path);
+		api.showProgress({
+		    style: 'default',
+		    animationType: 'fade',
+		    title: '正在上传图片',
+		    text: '请稍候',
+		    modal: true
+		});
+		var url = serviceUser + 'info/changeHeadPort';
+		var headers = _getAjaxHeaders(true,true,'NO');
+		var data = {
+			stream: path
+		};
+		var extra = null;
+		_ajaxData(url,'post',headers,data,uploadPicSuccessCallback,uploadPicErrorCallback,0,extra);
+	}
+	</script>
+</html>

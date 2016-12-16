@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+	<!--<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />-->
+	<!--<link rel="stylesheet" type="text/css" href="../css/2_0/aui_iconfont_2_0.ttf" />-->
+	<!--<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>-->
+	<!--<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>-->
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            background-color: #F6F6F6;
+        }
+
+        #wrap {
+            height: 100%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+        }
+
+        #main {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+        .my-c-btn{
+			height:3rem; background-color: #FFFFFF;
+			position: fixed; left: 0px; right: 0px; bottom: 0px;
+		}
+		.my-c-btn-item{
+			height: 3rem;
+		}
+		#my-c-submit{
+			line-height: 3.5rem; text-align: center; color: #FFFFFF;
+			font-size: 14px;
+		}
+	</style>
+</head>
+<body>
+<div id="wrap" class="flex-wrap flex-vertical">
+
+    <header id="header" class="aui-bar aui-bar-nav aui-bar-info" style="border-bottom: 1px solid #F1F1F1">
+	   	<a class="aui-btn aui-btn-info aui-pull-left" onclick="closeWin();">
+			<span class="aui-iconfont aui-icon-left"></span>
+	    </a>
+	    <div id="header-title" class="aui-title">我的多啦袋</div>
+		<a class="aui-btn aui-btn-info aui-pull-right" tapmode="active-info" onclick="showFNS();">
+	        <span class="aui-iconfont aui-icon-scan"></span>
+	    </a>
+	</header>
+
+    <div id="main" class="flex-con">
+
+    </div>
+    <div class="my-c-btn aui-border-t">
+		<div class="aui-content">
+			<!--<div id="my-c-size" class="my-c-btn-item aui-col-xs-6" onclick="openAddr();">-->
+				<!--<i class="aui-iconfont aui-icon-cascades"></i> 配送地址选择-->
+			<!--</div>-->
+			<div id="my-c-submit" class="my-c-btn-item my-bg-color aui-col-xs-12" onclick="openAddr();">
+				立即下单
+			</div>
+			<!--<div id="choose-btn" class="aui-btn aui-btn-block aui-btn-sm" tapmode onclick="search()">立即下单</div>-->
+		<!---->
+		</div>
+	</div>
+</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/umeng_sdk.js"></script>
+	<script type="text/javascript">
+	var id;
+	var token;
+	var bagClothList=[];
+	var addrId = 'NO_ADDR';
+	var chooseCan;
+	var exists;
+	var myOwnCount;
+	var drabagTCan;
+	var title = null;
+	var addState = "NO";
+	apiready = function(){
+		var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+		var page = api.pageParam.page;
+		title = api.pageParam.title;
+		var tag   = api.pageParam.tag;
+		var check = api.pageParam.check;
+		id = api.pageParam.id;
+		token = $api.getStorage('token');
+		onPageUmeng(title);
+		api.openFrame({
+            name: page,
+            url: page + '.html',
+            vScrollBarEnabled: false,
+            rect:{
+            	x:0,
+            	y:headerPos.h,
+            	w:'auto',
+            	h:body_h - headerPos.h - 40,
+            	marginBottom:40
+            },
+		    pageParam: {
+		        id: id,
+		        tag:tag,
+		        check: check
+		    },
+            bounces: true
+        });
+
+        api.addEventListener({
+		    name: 'clothChooseList'
+		}, function(ret, err){
+			bagClothList = ret.value.key;
+		});
+		api.addEventListener({
+		    name: 'chooseAddrEvent'
+		}, function(ret, err){
+			addrId = ret.value.key;
+			sendBtn();
+		});
+	};
+
+	function sendClothNow(){
+		chooseCan = $api.getStorage('chooseCan');
+		if(chooseCan==0){
+			toastMsg('您已经没有多余的多啦袋了，操作失败')
+			return
+		}
+		var myOwnCount = $api.getStorage('myOwnCount');
+		var myOwnOrder = $api.getStorage('myOwnOrder');
+		var drabagT = $api.getStorage('drabagT');
+		var tt=add(myOwnCount,myOwnOrder);
+		if(tt==drabagT){
+			sendBtn();
+		}else if(drabagT>tt){
+			if(!id){
+				toastMsg('你还需要选择'+chooseCan+'件衣物，才能选择配送哦！');return;
+			}
+			if(drabagT-tt==id.length){
+				checkCloth();
+			}else{
+				toastMsg('你还需要选择'+chooseCan+'件衣物，才能选择配送哦！')
+			}
+
+		}else if(drabagT==myOwnOrder){
+			toastMsg('没有多余的多啦袋了')
+		}else{
+			toastMsg('你还需要选择'+chooseCan+'件衣物，才能选择配送哦！')
+		}
+	}
+	function sendCloth(){
+		if(chooseCan==0){
+			toastMsg('您已经没有多余的多啦袋了，操作失败')
+			return;
+		}
+		if(addrId==''||addrId=='NO_ADDR'){openAddr(); return;}
+		if(!id){
+			toastMsg('你还需要选择'+chooseCan+'件衣物，才能选择配送哦！') ;return;
+		}
+		if(id.length==chooseCan){
+			sendBtn();
+		}else{
+			toastMsg('你需要选择'+chooseCan+'件衣物，才能选择配送哦！');
+    	}
+	}
+	function checkClothSuccessCallback(ret,extra) {
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			if(ret.failed.count==0){
+				sendCloth();
+			}else{
+				//移出锁定失败的衣物
+				api.confirm({
+					msg:ret.msg+' 重新选择',
+					title:'提示信息',
+					bottons:['确定','取消']
+				},function(ret,err){
+					var index=ret.buttonIndex;
+					if(index==2){
+						api.execScript({
+							name:'root',
+							frameName:"footer_tab_3",
+							script: 'init(18200538783)'
+						});
+						setTimeout(closeWin(),5000);
+					}
+				});
+			}
+		}else{
+			toastMsg(ret.msg)
+		}
+	}
+
+	function checkClothErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+
+
+	//锁定服装
+	function checkCloth(){
+		var bodyT = {"clothes":bagClothList};
+		var url = serviceNew + 'dorabag/check';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData(bodyT);
+		var extra = null;
+		_ajaxData(url,'post',headers,data,checkClothSuccessCallback,checkClothErrorCallback,0,extra);
+	}
+
+	function sendBtnSuccessCallback(ret,extra) {
+		if(ret.statusCode=='200'){
+			api.sendEvent({
+				name: 'removeBag',
+				extra: {key: "YES" }
+			});
+			api.openWin({
+				name: 'orderSuccess',
+				url: 'winOrder.html',
+				pageParam:{
+					name: 'orderSuccess',
+					page: 'orderOk',
+					title: '配送成功',
+					name:"orderOk"
+				}
+			});
+		}else{
+			toastMsg(ret.msg)
+		}
+	}
+
+	function sendBtnErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+
+	//配送提交
+	function sendBtn(){
+		if (addrId=='NO_ADDR'){
+			toastMsg('请选择您要配送的地址。');return;
+		}
+		var bodyT = {"address":Number(addrId)};
+		var url = serviceNew + 'dorabag/delivery';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData(bodyT);
+		var extra = null;
+		_ajaxData(url,'post',headers,data,sendBtnSuccessCallback,sendBtnErrorCallback,0,extra);
+	}
+	//选择地址
+	function openAddr(){
+		if (addState === "NO") {
+			openAddress();
+		} else {
+			sendBtn();
+		}
+	}
+	function openAddress(){
+		var url = serviceUser + 'address/list';
+		var headers = _getAjaxHeaders(token,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+	function initSuccessCallback(ret,extra) {
+		_loadingHide();
+		if(ret.statusCode=='200' && ret.list){
+			var	addrList = ret.list.splice(0, 7);
+			if (addrList.length == 0) {
+				api.openWin({
+					name: 'Newly',
+					url: 'win.html',
+					pageParam:{
+						page: 'Newly',
+						name: 'Newly',
+						title: CONSTANT.PAGE.NEWADDR,
+						data: "bag"
+					}
+				});
+				return;
+			}
+			api.openFrame({
+				name: 'address',
+				url: 'addressFoot.html',
+				rect: {
+					x:0,
+					y:0,
+					marginBottom: 40
+				},
+			pageParam: {
+				addList: addrList
+			}
+			});
+			addState = "YES";
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg)
+		}
+	}
+
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+
+
+	function closeMask(){
+		api.closeFrame({
+			name: 'address'
+		});
+		addState = "NO";
+	}
+	function getChoose(num) {
+		addrId = num;
+	}
+	function showFNS(){
+		var token = $api.getStorage('token');
+		if(typeof(token)!='undefined'){
+			var FNScanner = api.require('FNScanner');
+			FNScanner.openScanner({
+			    autorotation: true
+			}, function(ret, err){
+				if("success" == ret.eventType){
+				    var content = ret.content;
+				    checkCode(content,token);
+				}
+			});
+		}else{
+			api.openWin({
+			    name: 'login',
+			    url: 'html/login.html',
+			    animation:{
+			    	type:'movein',
+			    	subType:'from_bottom'
+			    }
+		    });
+		}
+	}
+
+	function checkCodeSuccessCallback(ret,extra) {
+		if(ret.statusCode=='200'){
+			exists=[];
+			toastMsg(ret.msg);
+			api.execScript({
+				frameName:"myDrabag",
+				script: 'init();'
+			});
+		}else if(ret.statusCode=='20102'){
+			exists = ret.detail.exists;
+			toastMsg(ret.msg);
+			api.execScript({
+				frameName:"myDrabag",
+				script: 'init();'
+			});
+		}else{
+			exists=[];
+			toastMsg(ret.msg)
+		}
+	}
+
+	function checkCodeErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+
+	function checkCode(code,token){
+    	if(typeof(code)=='undefined' || code=='' ){
+			api.alert({
+				msg:'图片无法识别'
+            });
+		}else{
+			if(typeof(exists)=='undefined' || exists==''){
+				var body = {"added" : [code]}
+			}else{
+//				alert(JSON.stringify(exists))
+				var body = {"exists" : exists ,"added" : [code]}
+			}
+
+			var url = serviceNew + 'dorabag/scan';
+			var headers = _getAjaxHeaders(true,true);
+			var data = _getAjaxData(body);
+			var extra = null;
+			_ajaxData(url,'post',headers,data,checkCodeSuccessCallback,checkCodeErrorCallback,0,extra);
+		}
+	}
+	function closeWin(){
+		onPageEndUmeng(title);
+		api.closeWin();
+	}
+
+	function sendClothBtnNow(){
+		chooseCan = $api.getStorage('chooseCan');
+		if(chooseCan>0){
+			toastMsg('你还需要选择'+chooseCan+'件衣物，才能选择配送哦！');return;
+		}
+		if(chooseCan==0){
+			sendBtn();
+		}
+	}
+		function  setAddrList() {
+
+		}
+	</script>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	.my-padding{
+    		padding:10px 10px 0px 10px;
+    		
+    	}
+    	.my-font-size{
+    		font-size: 12px;
+    	}  
+    	.my-margin-b-10{
+    		margin-bottom: 10px;
+    	}
+    	.my-margin-b-15{
+    		margin-bottom: 15px;
+    	}
+    	.my-aui-btn-block{
+    		background-color:#FF6100;
+    		color: #fff;
+    		font-size: 14px;
+    		padding:10px 0px 10px 0px;
+    	}
+    	.my-content-margin{
+    		margin: 0px 10px 0px 10px;
+    	}
+    	/*定义*/
+    	.aui-radio {
+			width: 23px;
+			height: 23px;
+			position: relative;
+			margin: 8px 10px;
+			background: #ffffff;
+			border: solid 1px #dddddd;
+			border-radius: 50%;
+			display: table;
+			float: left;
+			-webkit-appearance: none;
+			transition: background-color ease 0.1s;
+		}
+    	.aui-radio.aui-radio-success:checked,
+		.aui-radio.aui-radio-success.aui-checked {
+			background-color: #FF6100;
+			border: solid 1px #FF6100;
+		}
+		.aui-radio:checked:before,
+		.aui-radio.aui-checked:before {
+			position: absolute;
+			left: 4px;
+			top: 1px;
+			font-size: 14px;
+			display: table;
+			font-family: "auiicon";
+			content: "\e645";
+			color: #ffffff;
+		}
+		.aui-radio:checked:after,
+		.aui-radio.aui-checked:after {
+			position: absolute;
+			left: 4px;
+			top: 1px;
+			font-size: 14px;
+			display: table;
+			font-family: "auiicon";
+			content: "\e645";
+			color: #ffffff;
+			pointer-events: none;
+		}
+		
+		.aui-input-row .my-aui-input-addon {
+		    font-size: 14px;
+		    font-weight: 400;
+		    line-height: 1;
+		    color: #666;
+		    text-align: center;
+		    display: table-cell;
+		    width: 1%;
+		    white-space: nowrap;
+		    vertical-align: middle;
+		    padding: 5px 5px 5px 10px;
+		}
+		.my-foot-padding{
+			padding-top: 5px;
+		}
+    </style>
+</head>
+<body>
+	<div class="aui-content my-padding">
+			<p class="my-margin-b-10">请注意，您即将开通会员服务！</p>
+			<p class="my-margin-b-10">正式会员收费标准为249元/月，年费价格为2688元年。<p class="my-margin-b-15"><em class="aui-text-danger my-font-size">特权：同一时间一个多啦袋最多可持有3件服装，可无限制随意更换，洗费邮费全免!</em></p></p>
+			<!--<p class="my-margin-b-10">2.活动会员收费标准为168元/月。<p class="my-margin-b-15"><em class="aui-text-danger my-font-size">特权：校园版用户享受多啦校园配送服务，在开通前，请您确认您所在学校已开通校园版服务，如有疑问可拨打客服热线：4001593880。</em></p></p>-->
+		</div>
+	<div class="aui-content aui-card" style="margin-top: 5px;">
+        <div class="aui-form" >
+        	<div id="choose-list"></div>
+         <!-- <div class="aui-input-row">
+                <label class="aui-input-addon my-aui-input-addon">开通正式会员</label>
+                <input class="aui-pull-right aui-radio aui-radio-success" type="radio" value="member"   name="demo" checked="">
+          </div>
+         <div class="aui-input-row">
+                <label class="aui-input-addon my-aui-input-addon">开通活动会员</label>
+                <input class="aui-pull-right aui-radio aui-radio-success" type="radio" value="activity" name="demo">
+         </div>-->
+        </div>
+    </div>
+    <div class="aui-content my-content-margin" id="submit">
+    	<div class="aui-btn aui-btn-block my-aui-btn-block" onclick="official()">提交</div>
+    </div>
+    <div lass="my-foot-padding"></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript">
+	var type; 
+	var title;
+	var token;
+	var is_err =1;
+	apiready = function(){
+		token =$api.getStorage('token');
+		check();
+	};
+	function official(){
+		if(!isBindPhone()){
+			goWXTelBind();
+			return;
+		}
+		type=$api.dom("input[name='demo']:checked").value;
+//		if(type=='activity'){
+//			title = '活动会员';
+//		}else{
+//			title = '正式会员';
+//		}
+//		api.openWin({
+//            name: 'official',
+//            url: 'win.html',
+//            pageParam:{
+//            	page: 'official',
+//		        title: title,
+//		        type:  type
+//            }
+//        });
+
+		//换成新的header_new.html
+		var name = 'official_new';
+		var title = '输入推荐码';
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftNav = setNavData(leftIcon);
+		var border = true;
+		var bounces = false;
+		var params = {};
+		params.nav= setNav(leftNav,border);
+		params.frame=setFrame(bounces,{
+			type:  type
+		},true);
+		var from = {
+			winName: api.winName,
+			frameName: api.frameName
+		};
+		var url = 'header_web.html';
+		openNewWinFrame(name,title,params,from,url);
+	}
+
+	function checkSuccessCallback(ret,extra) {
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			var html= '';
+			for(var i = 0;ret.count>i;i++){
+				if(ret.list[i].canChoosen=='YES'){
+					html +='<div class="aui-input-row">';
+					html +='<label class="aui-input-addon my-aui-input-addon">开通'+ret.list[i].title+'</label>';
+					html +='<input class="aui-pull-right aui-radio aui-radio-success" type="radio" checked="" value="'+ret.list[i].type+'" name="demo">';
+					html +=' </div>';
+				}
+			}
+			if(html==''){
+				$api.addCls($api.byId('submit'), 'hide');
+			}
+			$api.after($api.byId('choose-list'), html);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+
+	function checkErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function check(){	
+		_loadingShow();
+
+		var url = serviceUser + 'service/open/openMember';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,checkSuccessCallback,checkErrorCallback,0,extra);
+	}
+</script>
+</html>

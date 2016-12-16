@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>年度专享</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        #header{
+            -webkit-transition-property:background;
+            -webkit-transition-duration:0.3s;
+            -webkit-transition-timing-function:linear;
+            border: none;
+        }
+        .headerBtner{
+            text-align: center;
+        }
+        .headerBtner .duola-iconfont{
+            vertical-align: bottom;
+        }
+        .headerBtn{
+            display: inline;
+            vertical-align: top;
+            line-height: 1.1rem;
+        }
+        #switch_yearVip,#switch_yearVip_1{
+            width: 50%;
+            float: left;
+        }
+        span.duola-iconfont{
+            font-size: 0.8rem;
+            vertical-align: bottom;
+        }
+        span.duola-iconfont{
+            font-size: 0.8rem;
+            vertical-align: top;
+            margin-right: 0.5rem;
+        }
+        .icon-dress-active{
+            font-size: 1rem !important;
+        }
+        #nav-switch .active{
+            border-bottom: 1px solid #fff !important;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div id="header-container">
+    <header id="header" class="duola-header flex">
+        <a id="nav-left" class="duola-icon-area" tapmode onclick="navLeftHandler()">
+            <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
+        </a>
+        <div id="nav-title" class="nav-title flex-1"></div>
+        <div id="nav-switch" class="flex-1 aui-hide flex">
+            <div id="switch_yearVip" class="headerBtner flex-1 flex flex-center" tapmode onclick="switchBox(this,'left')">
+                <span class="duola-iconfont icon-newcome-active"></span>
+                <span id="headBtnOne" class="headerBtn active">上新先选</span>
+            </div>
+
+            <div id="switch_yearVip_1" class="headerBtner flex-1 flex flex-center" tapmode onclick="switchBox(this,'right')">
+                <span class="duola-iconfont icon-dress"></span>
+                <span id="headBtnTwo" class="headerBtn">专享华服</span>
+            </div>
+        </div>
+        <a id="nav-right" class="duola-icon-area" tapmode onclick="navRightHandler()">
+            <span id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon"></span>
+        </a>
+    </header>
+</div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/components/pagination.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/push.js"></script>
+<script type="text/javascript" src="../script/version.js"></script>
+<script type="text/javascript">
+    var frameData = null;
+    //加载更多时候，服务器是否返回，以免用户多次触发
+    var currFrameName = 'yearVip_0';
+    var umengPage = null;
+
+    apiready = function(){
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var page = api.pageParam.page;//页面url
+        var name = api.pageParam.name;//页面名称
+        var title = api.pageParam.title;//页面标题
+        umengPage = api.pageParam.umengPage;//友盟页面ID
+        var from = api.pageParam.from;//来源于那个页面
+        var data = api.pageParam.data;//页面数据object
+        //获取frame
+        var frame = data.frame ? data.frame : {};
+        var bounces = frame.bounces ? frame.bounces : false; //页面弹动
+        var frameData = frame.data ? frame.data : {}; //frame 页面参数
+
+        //获取nav
+        var nav = data.nav ? data.nav : {};
+        var leftNav = nav.leftNav ? nav.leftNav : {};//导航栏左侧
+        var rightNav = nav.rightNav ? nav.rightNav : {};//导航栏右侧
+        var border = nav.border ? nav.border : false;//导航栏底部边框
+
+        frameData.from = from;
+        frameData.leftNavCallback = leftNav.callback ? leftNav.callback : '';
+        frameData.leftNavExtra = leftNav.extra ? leftNav.extra : '';
+        frameData.rightNavCallback = rightNav.callback ? rightNav.callback : '';
+        frameData.rightNavExtra = rightNav.extra ? rightNav.extra : '';
+        onPageUmeng(umengPage);
+        getTitle(title);
+        getNavLeft(leftNav);
+        getNavRight(rightNav);
+        getNavBorder(border);
+        api.parseTapmode();
+
+        var headerHeight = $api.offset($api.byId('header-container')).h;
+
+        var rect = {
+            x:0,
+            y:headerHeight,
+            w:'auto',
+            h:'auto'
+        };
+        openNewFrame(name,page,bounces,rect,frameData);
+    };
+
+    //异步设置frame
+    function execSetFrameGroupIndex(index){
+        api.setFrameGroupIndex({
+            scroll: false,
+            name: 'year_tab',
+            index: index
+        });
+    }
+
+    function navLeftHandler(){
+        var callback = 'execNavLeftCallback()';
+        var params = {
+            frameName : api.pageParam.name,
+            script: callback
+        };
+//        console.log(getLogStr([params]));
+        onPageEndUmeng(umengPage);
+        api.execScript(params);
+    }
+
+    function navRightHandler(){
+        var callback = 'execNavRightCallback()';
+        var params = {
+            frameName : api.pageParam.name,
+            script: callback
+        };
+        api.execScript(params);
+    }
+
+    function showNavTitle(){
+        var headTitle = $api.byId('nav-title');
+        var headSwitch = $api.byId('nav-switch')
+        if($api.hasCls(headTitle,'aui-hide')){
+            $api.removeCls(headTitle, 'aui-hide');
+        }
+        if(!$api.hasCls(headSwitch,'aui-hide')){
+            $api.addCls(headSwitch, 'aui-hide');
+            execCloseHeadClor();
+        }
+    }
+    function showNavSwitch(){
+        var headTitle = $api.byId('nav-title');
+        var headSwitch = $api.byId('nav-switch');
+        if(!$api.hasCls(headTitle,'aui-hide')){
+            $api.addCls(headTitle, 'aui-hide');
+        }
+        if($api.hasCls(headSwitch,'aui-hide')){
+            $api.removeCls(headSwitch, 'aui-hide');
+            execShowHeadClor();
+        }
+    }
+    function switchBox(el,name){
+        execSwitchBoxDom(el,name);
+        var scriptFun = getExecScript('switchBoxType',['',name]);
+        var params = {
+            frameName:'yearVipFrame',
+            script: scriptFun
+        };
+        api.execScript(params);
+    }
+
+    function execSwitchBoxDom(el,name){
+        var headBtnOne = $api.byId('headBtnOne');
+        var headBtnTwo = $api.byId('headBtnTwo');
+        if(name=='left'){
+            $api.addCls($api.prev(headBtnOne),'icon-newcome-active');
+            $api.removeCls($api.prev(headBtnOne),'icon-newcome');
+            $api.addCls($api.prev(headBtnTwo),'icon-dress');
+            $api.removeCls($api.prev(headBtnTwo),'icon-dress-active');
+            $api.addCls(headBtnOne, 'active');
+            $api.removeCls(headBtnTwo, 'active');
+        }else if(name=='right'){
+            $api.addCls($api.prev(headBtnOne),'icon-newcome');
+            $api.removeCls($api.prev(headBtnOne),'icon-newcome-active');
+            $api.addCls($api.prev(headBtnTwo),'icon-dress-active');
+            $api.removeCls($api.prev(headBtnTwo),'icon-dress');
+            $api.addCls(headBtnTwo, 'active');
+            $api.removeCls(headBtnOne, 'active');
+        }
+    }
+    function execShowHeadClor(){
+        var headerEl = $api.byId('header');
+        var navLeftIconEl = $api.byId('nav-left-icon');
+        $api.css(headerEl,'background:#1B1B1B;color:#FFFFFF;');
+        $api.css(navLeftIconEl,'color:#FFFFFF !important;');
+    }
+    function execCloseHeadClor(){
+        var headerEl = $api.byId('header');
+        var navLeftIconEl = $api.byId('nav-left-icon');
+        $api.css(headerEl,'background:#FFFFFF;color:#000000;');
+        $api.css(navLeftIconEl,'color:#000000 !important;');
+    }
+</script>
+</html>

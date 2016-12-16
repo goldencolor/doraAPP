@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>尺寸弹出遮罩</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <style>
+        html{
+            background: rgba(0,0,0,0.0);
+        }
+        body{
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+        }
+        #size-container{
+            background: #FFFFFF;
+            overflow: hidden;
+            visibility: hidden;
+        }
+        .size .item{
+            font-size: 0.8rem;
+            color: #9fa0a0;
+            text-align: center;
+            padding: 0.975rem 0;
+        }
+        .size .hit-color{
+            color: #ff6100;
+        }
+    </style>
+</head>
+<body>
+    <div style="height: 100%">
+        <div id="size-container">
+
+            <!--<div class="size flex">-->
+                <!--<div class="item flex-1" tapmode onclick="sizeHandler(el,0,0)">XS</div>-->
+                <!--<div class="item flex-1 hit-color">S</div>-->
+                <!--<div class="item flex-1">M</div>-->
+                <!--<div class="item flex-1">L</div>-->
+            <!--</div>-->
+                <!--<div class="size flex">-->
+                <!--<div class="item flex-1">XL</div>-->
+                <!--<div class="item flex-1">均码</div>-->
+                <!--<div class="item flex-1"></div>-->
+                <!--<div class="item flex-1"></div>-->
+            <!--</div>-->
+
+        </div>
+        <div style="height: 100%" tapmode onclick="closeMask()"></div>
+    </div>
+    <script id="size-container-template" type="text/x-dot-template">
+        {{ for(var i = 0; i < Math.ceil(it.count/4); i++) { }}
+        <div class="size flex">
+            {{ for(var j = 0; j < 4; j++) { }}
+                <div id={{='"size'+i+j+'"'}} class={{='"item flex-1 '+ (i == it.i && j == it.j ? 'hit-color' : '')+'"'}} tapmode onclick="{{='sizeHandler(this,'+i+','+j+')'}}">{{=isDefine(it.list[i*4+j]) ? it.list[i*4+j] : '' }}</div>
+            {{ } }}
+        </div>
+        {{ } }}
+    </script>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+    var currSizeIndex = null;
+    apiready = function(){
+        var data = api.pageParam.data;
+        currSizeIndex = data.size;
+        getSizeHtml();
+        api.parseTapmode();
+    }
+    function getSizeHtml(){
+        var testData = {};
+        testData.count = CONSTANT.SIZES.length;
+        testData.list = CONSTANT.SIZES;
+        if(!isNaN(parseInt(currSizeIndex))){
+            testData.i = Math.floor(currSizeIndex /4);
+            testData.j = currSizeIndex % 4;
+        }
+        var html = doTHtml('size-container-template',testData);
+        var sizeContainer = $api.byId('size-container');
+        if(sizeContainer){
+            sizeContainer.innerHTML = html;
+        }
+        var sizeContainerHeight = $api.cssVal(sizeContainer,'height');
+        $api.css(sizeContainer,'height:0;-webkit-transition:height 500ms;transition:height 500ms;visibility:visible;');
+        setTimeout(function(){
+            $api.css(sizeContainer,'height:'+sizeContainerHeight);
+        },0);
+    }
+
+    function closeMask(i,j,flag){
+        var sizeContainer = $api.byId('size-container');
+        $api.css(sizeContainer,'height:0');
+        var sizeIndex = i*4+j;
+        if(flag){
+            api.execScript({
+                script: 'execCloseSizeMask("'+api.frameName+'","'+sizeIndex+'")'
+            });
+            return;
+        }
+        setTimeout(function(){
+            api.execScript({
+                script: 'execCloseSizeMask("'+api.frameName+'","'+sizeIndex+'")'
+            });
+        },300);
+
+    }
+    function sizeHandler(el,i,j){
+        var hitsize = $api.dom($api.byId('size-container'),'.hit-color');
+        if(hitsize == el){
+            return;
+        }
+        if(hitsize){
+            $api.removeCls(hitsize, 'hit-color');
+        }
+        $api.addCls(el, 'hit-color');
+        //关闭
+        closeMask(i,j,true);
+    }
+
+</script>
+</html>

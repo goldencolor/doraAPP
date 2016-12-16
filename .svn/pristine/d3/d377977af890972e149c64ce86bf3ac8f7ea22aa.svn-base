@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page3</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+		.my-bag{
+			margin: 0px; height: 100px;
+			background-color: #FFFFFF;
+		}
+		.my-c-select{
+			padding: 10px; text-align: center;
+		}
+		.my-c-btn-box{
+			background-color: #FFFFFF; padding: 10px; height: 60px;
+		}
+		.my-bg-color{
+			color: #FFFFFF;
+		}
+		.my-f{
+			margin: 0px; height: 160px;
+		}
+		#mainBox{
+			position: fixed; left: 0px; top: 0px; right: 0px; z-index: 999;
+		}
+
+		.my-clothes-name{
+			font-size: 12px; color: #777777; padding: 0 2px;
+		}
+		.my-clothes-img{
+			border-radius: 8px; position: relative;
+		}
+		.my-size{
+			 border-radius: 8px; position: absolute; top: 15px; left:15px; line-height: 20px; width: 20px;
+			 background-color: rgba(0,0,0,0.5); color: #FFFFFF; z-index:999; font-size: 11px;
+		}
+		.my-choose{
+			position: absolute; bottom: 40px; right: 0px; left: 10px; height:30px;
+			 color: #FFFFFF; line-height: 30px;text-align: center;
+			background-color: rgba(0,0,0,0.2);
+		}
+		.my-choose span{
+			font-size: 13px; color:red; z-index:99;
+		}
+		.my-choose-color{
+			color: #E59C96;
+		}
+		.my-notice-msg{
+			position: absolute; bottom: 50px; right: 0px; left: 10px; height:30px;
+			 color: #FFFFFF !important; line-height: 30px;text-align: center;
+		}
+		.my-clothes-img{
+			height: 8.5rem !important;
+		}
+		#myDraBag{
+			 position: fixed; 
+			 top: 0px;
+			 right:0px;
+			 left:0px;
+			 height:40px;z-index:999;
+		}
+		.my-choose-time{
+			position: absolute; top: 0px; right: 0px; left: 0px; height:40px;
+			 color: #FFFFFF; line-height: 40px;text-align: center;
+			background-color: rgba(0,0,0,0.1);
+		}
+		.my-choose-time span{
+			font-size: 13px; color:#FFFFFF; z-index:99;
+		}
+		.my-choose span{
+			font-size: 13px; color:#FFFFFF; z-index:99;
+		}
+		.aui-content {
+			height: auto;
+		}
+
+
+	</style>  
+</head>
+<body>
+<div id="main">
+	<div id="myDraBag" class="hide">
+		<div class="my-choose-time">
+			<span id="timeInit">锁定倒计时：120 S</span>
+		</div>
+	</div>
+	<div class="aui-content">
+	    <ul class="aui-list-view aui-grid-view" id="my-drabag">
+			<!--<li class="aui-list-view-cell aui-img aui-col-xs-4" onclick="showAlert('J','腰部蝴蝶结礼服')"><img id="img_mybag_01510603" class="aui-img-object my-clothes-img" src="../image/hold.jpg"><div class="aui-img-body"><div class="my-size">J</div><div class="aui-col-xs-12 aui-text-left aui-ellipsis-1 my-clothes-name">腰部蝴蝶结礼服</div></div><div class="my-choose "><span>已持有</span></div></li>-->
+			<!--<li class="aui-list-view-cell aui-img aui-col-xs-4" onclick="showAlert('J','腰部蝴蝶结礼服')"><img id="img_mybag_01510603" class="aui-img-object my-clothes-img" src="../image/hold.jpg"><div class="aui-img-body"><div class="my-size">J</div><div class="aui-col-xs-12 aui-text-left aui-ellipsis-1 my-clothes-name">腰部蝴蝶结礼服</div></div><div class="my-choose "><span>已持有</span></div></li>-->
+			<!--<li class="aui-list-view-cell aui-img aui-col-xs-4" onclick="showAlert('J','腰部蝴蝶结礼服')"><img id="img_mybag_01510603" class="aui-img-object my-clothes-img" src="../image/hold.jpg"><div class="aui-img-body"><div class="my-size">J</div><div class="aui-col-xs-12 aui-text-left aui-ellipsis-1 my-clothes-name">腰部蝴蝶结礼服</div></div><div class="my-choose "><span>已持有</span></div></li>-->
+		</ul>
+	</div>
+</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var token 	 = $api.getStorage('token');
+	var my_drabag=[];
+	var my_own   =[];
+	var myDrabagList;
+	var bagCount = $api.getStorage('count');  //多啦袋数量
+	var bag      = $api.getStorage('perBag'); //每个多啦袋放衣服数量
+	var bagOwn   = $api.getStorage('ownNum'); //用户持有数量
+	var drabagT  = mul(bagCount,bag);         //用户持有多啦袋总量
+	var tag;
+	var reInfoTag="YES";
+	var overTimeInit = 120 ;
+	var is_err = 1 ;
+	apiready = function(){ 
+		reInfo();
+		my_drabag = api.pageParam.id;
+		tag   = api.pageParam.tag;
+		api.addEventListener({
+		    name:'removeBag'
+		}, function(ret, err){  
+			my_drabag=[];      
+			init();
+		});
+//		if(my_drabag.length>0){
+//			checkMyCloth();
+//		}else{
+//			init();
+//		}
+			init();
+	};
+	function reInfo(){
+		api.setRefreshHeaderInfo({
+		    visible: true,
+		    loadingImg: 'widget://image/refresh.png',
+		    bgColor: '#eee',
+		    textColor: '#aaa',
+		    textDown: '下拉刷新多啦袋',
+		    textUp: '松开就刷新',
+		    showTime: false
+		}, function(ret, err){
+			reInfoTag = 'NO';
+		    init();
+		});
+	}
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		if(reInfoTag=="NO"){
+			setTimeout(api.refreshHeaderLoadDone(),3000);
+		}
+		if(ret.statusCode=='200'){
+			my_own   = ret.dorabag.list;
+			bagCount = ret.dorabag.bagCount; 	 //多啦袋数量
+			bag      = ret.dorabag.perBag; 	 	 //多啦袋的容量
+			drabagT  = ret.dorabag.count;    	 //用户持有多啦袋总量
+			bagOwn   = my_own.length; 	 		 //用户持有的多啦袋数量
+			$api.setStorage('count',bagCount);
+			$api.setStorage('perBag',bag);		//每个多啦袋放衣服数量
+			$api.setStorage('ownNum',bagOwn);
+			var chooseCan = drabagT-bagOwn;
+			$api.setStorage('chooseCan',chooseCan); //多啦袋数量
+			setInitbag(my_own,chooseCan);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		if(reInfoTag=="NO"){
+			setTimeout(api.refreshHeaderLoadDone(),3000);
+		}
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function init(){
+		if(reInfoTag=="YES")_loadingShow();
+		var url = serviceNew + 'dorabag';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+	function setInitbag(my_own,chooseCan){
+		$api.html($api.byId('my-drabag'), '');
+		for(var j=0;j<my_own.length;j++){
+			var html='';
+			if(my_own[j].tag=='YES'){
+				html+='<li class="aui-list-view-cell aui-img aui-col-xs-4" onclick="showAlert(\''+my_own[j].size+'\',\''+my_own[j].name+'\')">';
+			}else{
+				html+='<li class="aui-list-view-cell aui-img aui-col-xs-4" onclick="clickImgHander(\''+j+'\',\''+my_own[j].size+'\',\''+my_own[j]._id+'\',\''+my_own[j].online+'\',\''+my_own[j].barcode+'\')">';
+			}
+            html+='<img id="img_mybag_'+j+my_own[j]._id+'" class="aui-img-object my-clothes-img" src="../image/hold.jpg">';
+            html+='<div class="aui-img-body">';
+            html+='<div class="my-size">'+my_own[j].size+'</div>';
+			html+='<div class="aui-col-xs-12 aui-text-left aui-ellipsis-1 my-clothes-name">';
+			html+= my_own[j].name;
+			html+='</div></div>';
+			if(my_own[j].tag=='YES'){
+				html+='<div class="my-choose "><span>已持有</span></div>';
+			}else{
+				html+='<div class="my-choose "><span>可移除</span></div>';
+			}
+	        html+='</li>';
+//			console.log(html);
+			$api.append($api.byId('my-drabag'), html);
+		}
+		for(var j=0;j<my_own.length;j++){
+			var url = colthPath + my_own[j].img+colthPathStyle; 
+			_imgCacheUrl(url,'img_mybag_'+j+my_own[j]._id);
+		}
+		for (var b =chooseCan;b> 0;b--){
+			var html='';
+	  		html+='<li class="aui-list-view-cell aui-img aui-col-xs-4" onclick="showMyCloth()">';
+            html+='<img class="aui-img-object my-clothes-img" src="../image/hold.jpg">';
+            html+='<div class="aui-img-body">';
+			html+='<div class="aui-col-xs-12 aui-text-center aui-ellipsis-1 my-clothes-name">';
+			html+='袋子空着呢';
+			html+='</div></div></li>';
+	  		$api.append($api.byId('my-drabag'), html);
+	  	}
+	}
+	function setDrabag(my_drabag){
+		if(my_drabag){
+			for(var i=0;i<my_drabag.length;i++){
+				var html='';
+				html+='<li class="aui-list-view-cell aui-img aui-col-xs-4" onclick="removeImg(\''+i+'\',\''+my_drabag[i]._id+'\')">';
+	            html+='<img class="aui-img-object my-clothes-img" src="'+my_drabag[i].url+'">';
+	            html+='<div class="aui-img-body">';
+	            html+='<div class="my-size">'+my_drabag[i].size+'</div>';
+				html+='<div class="aui-col-xs-12 aui-text-left aui-ellipsis-1 my-clothes-name">';
+				html+= my_drabag[i].name;
+				html+='</div></div>';
+		        html+='</li>';
+				$api.append($api.byId('my-drabag'), html);
+			}
+		}else{var i=0;}
+		
+		for (var b =drabagT-i-bagOwn;b> 0;b--){
+			var html='';
+	  		html+='<li class="aui-list-view-cell aui-img aui-col-xs-4" onclick="showMyCloth()">';
+            html+='<img class="aui-img-object my-clothes-img" src="../image/hold.jpg">';
+            html+='<div class="aui-img-body">';
+			html+='<div class="aui-col-xs-12 aui-text-left aui-ellipsis-1 my-clothes-name">';
+			html+='袋子空着呢';
+			html+='</div></div></li>';
+	  		$api.append($api.byId('my-drabag'), html);
+	  	}
+	  	api.sendEvent({
+		    name: 'sendClothList',
+		    extra: {
+		        key: my_drabag
+		    }
+		});
+	}
+	function removeImg(index,id){
+//			my_drabag.splice(index,1);
+			api.sendEvent({
+			    name: 'removeClothChoose',
+			    extra: {
+			        id: id,
+			        index:index,
+			        key: my_drabag
+			    }
+			});
+			api.sendEvent({
+			    name: 'removeClothList',
+			    extra: {
+			        key: my_drabag
+			    }
+			});
+		var chooseC = $api.getStorage('chooseCan');
+		$api.setStorage('chooseCan',add(chooseC,1)); 
+		init();
+	}
+	function showMyCloth(){
+		if(tag == 'myCloth'){
+			api.closeWin();
+		}else{
+			api.execScript({
+				name:'root',
+				script: 'randomSwitchBtn(\''+$api.byId("tabbar3")+'\',"我的衣橱",2);'
+			});		
+			setTimeout(api.closeWin(),2000);		
+		}
+	}
+	function showAlert(size,name){
+		toastMsg('('+size+')'+name+' 你已持有')
+	}
+	
+	function clickImgHander(n,size,id,online,barcode){
+		api.actionSheet({
+		    cancelTitle: '取消',
+		    buttons: ['查看详情','移除我的多啦袋'],
+		    style:{
+			    fontNormalColor:'#aaaaaa',    //选项按钮正常状态文字颜色，支持#000、#000000、rgb、rgba，默认值：#007AFF
+			    fontPressColor:'#333333'     //选项按钮按下时文字颜色，支持#000、#000000、rgb、rgba，默认值：#0060F0
+			}
+		}, function(ret, err){
+			var index=ret.buttonIndex;
+		    if(index=='1'){
+		    	showClothes(id);
+		    }else if(index == '2'){
+		    	uncheck(n,size,id,online,barcode);
+		    }
+		});
+	}
+
+	function uncheckSuccessCallback(ret,extra){
+		_loadingHide();
+		var n = extra.n ;
+		var id = extra.id;
+		if(ret.statusCode=="200"){
+			removeImg(n,id);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function uncheckErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function uncheck(n,size,id,online,barcode){
+		api.showProgress({
+		    style: 'default',
+		    animationType: 'fade',
+		    title: '移除中',
+		    text: '请稍候',
+		    modal: true
+		});
+		if(online=='YES'){
+			var body = {
+				"cloth":{
+					"_id": id,
+					"size": size,
+					"tag": n // 原样返回的tag, 可选
+				}
+			}
+		}else{
+			var body = {
+				"cloth":{
+						barcode:[String(barcode)]
+				}
+			
+			}
+		}
+
+		var url = serviceNew + 'dorabag/uncheck';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData(body);
+		var extra = {
+			n:n,
+			size:size,
+			id:id,
+			online:online,
+			barcode:barcode
+		};
+		_ajaxData(url,'post',headers,data,uncheckSuccessCallback,uncheckErrorCallback,0,extra);
+	}
+
+	function checkMyClothSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+			sendClearEvent();
+			if(ret.failed.count==0){
+				my_drabag=[];
+				var chooseC = $api.getStorage('chooseCan');
+				$api.setStorage('chooseCan',sub(chooseC,ret.success.count));
+//						setTimeRun();
+				init();
+			}else{
+				api.confirm({
+					msg:ret.msg+' 重新选择',
+					title:'提示信息',
+					bottons:['确定','取消']
+				},function(ret,err){
+					var index=ret.buttonIndex;
+					if(index==2){
+						setTimeout(api.closeWin(),10000);
+					}else{
+						init();
+					}
+				});
+			}
+
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+			init();
+		}
+	}
+	function checkMyClothErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+
+	//锁定服装
+	function checkMyCloth(){
+		if(my_drabag){
+			var aaaaa = [];
+			for(var i=0;i<my_drabag.length;i++){
+				aaaaa[i] = {
+					"_id":my_drabag[i]['_id'],
+					"size":my_drabag[i]['size'],
+					"tag":String(i)
+				};
+			}
+			myDrabagList = aaaaa;
+		}
+		var bodyT = {"clothes":myDrabagList};
+		var url = serviceNew + 'dorabag/check';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData(bodyT);
+		var extra = null;
+		_ajaxData(url,'post',headers,data,checkMyClothSuccessCallback,checkMyClothErrorCallback,0,extra);
+	}
+	
+	function sendClearEvent(){
+		api.sendEvent({
+		    name: 'sendClothList',
+		    extra: {
+		        key:'CLEAR'
+		    }
+		});
+	}
+	function setTimeRun(){
+		$api.removeCls($api.byId('myDraBag'),'hide');
+//		$api.html($api.byId('timeInit'),'锁定倒计时：'+overTimeInit+' S');
+//		_setHtmlVal('timeInit','锁定倒计时：'+overTimeInit+' S');
+//		var timestamp=Date.parse(new Date());
+//		var overTimestamp = $api.getStorage('overTimestamp');
+//		if(overTimestamp==undefined||overTimestamp=='undefined'){
+//			$api.setStorage('overTimestamp',timestamp);
+//			overTimeInit--;           
+//	        setTimeout(setTimeRun(),1000)
+//		}else{
+//			var time = timestamp - overTimestamp;
+//			if(time>120000){
+
+//				$api.setStorage('overTimestamp',timestamp);
+//				overTimeInit = 120 ;
+//				$api.addCls($api.byId('myDraBag'),'hide');
+//			}else{
+//				overTimeInit--;     
+//				setTimeout(setTimeRun(),1000)
+//			}
+//		}
+	}
+	</script>
+</html>

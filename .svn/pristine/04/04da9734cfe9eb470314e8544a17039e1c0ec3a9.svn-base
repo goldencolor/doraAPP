@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            background-color: #F6F6F6;
+        }
+
+        #wrap {
+            height: 100%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+        }
+
+        #main {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+        .my-input-content{
+        	padding-left: 10px; padding-right: 10px;
+        }
+        .my-padding-right{
+        	padding-right: 10px;
+        }
+        .aui-input-row .aui-input {
+		    font-size: 14px;
+		    margin: 0;
+		    display: table-cell;
+		    position: relative;
+		    float: left;
+		    width: 100%;
+		    border:none;
+		    border-radius: 0;
+		}
+        #my-input-style{
+        	border:0.5px solid #c8c7cc;border-radius: 5px;
+        }
+        #my-aui-btn{
+        	padding: 6px 12px; background-color: #e59c96; color: #fff;
+        }
+	</style>  
+</head>
+<body>
+<div id="wrap" class="flex-wrap flex-vertical">
+	
+    <header id="header" class="aui-bar aui-bar-nav aui-bar-info">
+	    <a class="aui-btn aui-btn-info aui-pull-left" onclick="closeWin();"> 
+	        <span class="aui-iconfont aui-icon-left"></span>
+	    </a>
+	    <div id="header-title" class="aui-title"></div>
+
+	</header>
+	
+    <div id="main" class="flex-con">
+
+    </div>
+	<footer class="aui-nav" id="aui-footer">
+        <div class="aui-input-row my-input-content">
+        	<div class="aui-btn aui-input-addon" id="my-aui-btn">新增收货地址</div>
+        </div>
+    </footer>
+</div>		
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	
+	apiready = function(){
+		var header = $api.byId('header');
+        $api.fixStatusBar(header); 
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+        var foot_h = $api.offset($api.byId('aui-footer')).h;
+		var page = api.pageParam.page;
+		var title = api.pageParam.title;
+		var bounces = api.pageParam.bounces;
+		var data = api.pageParam.data;
+		_setHtmlVal('header-title',title);
+		
+		api.openFrame({
+            name: page,
+            bounces: bounces,
+            url: page + '.html',
+            vScrollBarEnabled: false,
+            rect:{
+            	x:0, 
+            	y:headerPos.h, 
+            	w:'auto', 
+            	h:body_h - headerPos.h - foot_h,
+            	marginBottom:0
+            },
+		    pageParam: {
+		        data: data
+		    }
+        });
+	};
+	
+	function closeWin(){
+		api.closeWin();
+	}
+
+	</script>
+</html>

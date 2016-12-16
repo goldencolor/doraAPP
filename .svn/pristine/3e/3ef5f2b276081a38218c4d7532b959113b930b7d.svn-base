@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>尺码</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+		html, body{
+			background: rgba(0,0,0,0.0);
+		}
+		.my-main{
+			height: 100%;background: rgba(0,0,0,0.3);
+		}
+		.my-main p{
+			font-size: 14px;
+		}
+		/**格子重构**/
+		.aui-grid-sixteen:after {
+			border:none;
+		}
+		.aui-grid-sixteen li:after {
+			border:none;
+		}
+		.aui-grid-sixteen li {
+			padding: 5px 5px;
+		}
+		/**列表重构**/
+		.aui-list-view-cell{
+			font-size: 14px; color: #aaa;
+		}
+	</style>  
+</head>
+<body>
+	<!--<div id="header"></div>-->
+	<div class="my-main">
+		<ul class="aui-grid-sixteen" id="list">  </ul>
+	    <ul class="aui-list-view" onclick="closeMask();">
+	        <li class="aui-list-view-cell aui-text-center">取消</li>
+	    </ul>
+	</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var tag;
+	var data;
+	var page = 1;
+	var pageSize = 10;
+	apiready = function(){
+//		var header = $api.byId('header');
+//      $api.fixStatusBar(header); 
+        tag = api.pageParam.tag;
+        list = api.pageParam.list;
+        setChildren(list);
+	};
+	
+	function closeMask(){
+		api.closeFrame({
+	        name: tag
+        });
+        api.execScript({
+        	name: 'root',
+        	frameName: 'footer_tab_2',
+	        script: 'cancelMask2();'
+        });
+	}
+	function setChildren(list){
+		$api.html($api.byId("list"),' ');
+		for(var i=0;i<list.count;i++){
+			var html = '';
+			var imgPatho = '';
+			//html+='<li class="aui-col-xs-3 aui-text-center" onclick="searchBtn(\''+list.list[i].name+'\',\''+list.list[i].value+'\')">';
+			html+='<li class="aui-col-xs-3 aui-text-center" onclick="setKeywords(\''+list.list[i].name+'\',\''+list.list[i].value+'\')">';
+//			alert(list.list[i].name)
+			html+='<img id="mask_'+list.list[i].name+i+'" src="../image/hold.jpg" width="40" alt="" />';
+			html+=' <p>'+list.list[i].value+'</p></li>';
+			$api.append($api.byId("list"), html);
+		}
+		for(var i=0;i<list.count;i++){
+			if(list.list[i].img){
+				 imgPatho = imgPath+list.list[i].img+OrderColthStyle;
+				 _imgCacheUrl(imgPatho,'mask_'+list.list[i].name+i);
+			}else{
+				if(list.list[i].name=='XS'){
+					imgPatho = '../image/XS.png';
+				}else if(list.list[i].name=='S'){
+					imgPatho = '../image/S.png';
+				}else if(list.list[i].name=='M'){
+					imgPatho = '../image/M.png';
+				}else if(list.list[i].name=='L'){
+					imgPatho = '../image/L.png';
+				}else if(list.list[i].name=='XL'){	
+					imgPatho = '../image/XL.png';
+				}else if(list.list[i].name=='J'){	
+					imgPatho = '../image/J.png';
+				}else if(list.list[i].name=='all'){	
+					imgPatho = '../image/J.png';
+				}else{
+				 	imgPatho = '../image/hold.jpg';	
+				}
+				_imgCacheUrl(imgPatho,'mask_'+list.list[i].name+i);
+			}
+		}
+	}
+	
+	function setKeywords(name,key){
+		api.sendEvent({
+		    name: 'setKeywords',
+		    extra: {
+		        name: name,
+		        key: key
+		    }
+		});
+        setTimeout(closeMask(),2000);
+	}
+	</script>
+</html>

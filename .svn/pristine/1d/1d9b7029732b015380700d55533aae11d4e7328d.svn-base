@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<title>title</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+	<style>
+		.my-aui-colo{
+			color:#E59C96;
+		}
+		.my-content-margin{
+			margin: 0px 10px 0px 10px;
+		}
+		.my-aui-btn-block{
+			background-color:#FF6100;
+			color: #fff;
+			font-size: 14px;
+			padding:10px 0px 10px 0px;
+		}
+		.my-position{
+			position: absolute;top: 0px ;right:0px; padding: 2px;background-color: #FF6100;color:#fff; z-index: 100; font-size: 8px; line-height: 2
+		}
+		.bagchange-rules{
+			margin-top: 20px;
+			padding: 10px 10px;
+			background-color: white;
+		}
+		.bagchange-rules p {
+			font-size: 12px;
+		}
+		.aui-radio:checked{
+			background-color: #FF6100;
+			border: solid 1px #FF6100;
+		}
+	</style>
+</head>
+<body>
+
+
+
+<section class="aui-grid aui-margin-b-15">
+	<div class="aui-row" id="bagList">
+	</div>
+</section>
+
+<div class="aui-content aui-margin-b-15">
+	<ul class="aui-list aui-list-in">
+		<li class="aui-list-item">
+			<div class="aui-list-item-inner" id="bagContent">
+				<!--<div class="aui-list-item-title ">-->
+					<!--单次可选<em class="my-aui-colo" id="choose-clothes-num"></em>件衣服，  <span class="my-aui-colo" id="choose-clothes-money"></span>/月。-->
+				<!--</div>-->
+				<!--<div class="aui-list-item-title ">-->
+					<!--单次可选<em class="my-aui-colo" id="choose-clothes-num"></em>件衣服，  <span class="my-aui-colo" id="choose-clothes-money"></span>/月。-->
+				<!--</div>-->
+				<!--<div class="aui-list-item-title ">-->
+					<!--单次可选<em class="my-aui-colo" id="choose-clothes-num"></em>件衣服，  <span class="my-aui-colo" id="choose-clothes-money"></span>/月。-->
+				<!--</div>-->
+			</div>
+		</li>
+	</ul>
+</div>
+
+<div class="aui-content my-content-margin">
+	<div class="aui-btn aui-btn-block my-aui-btn-block my-bg-color" id="pay-btn" onclick="Pay()">下一步</div>
+</div>
+<div class="bagchange-rules aui-hide" id="bagchange-rule" >
+	<p>变包费用计算规则：</p>
+	<p>
+		1.减包，当前多余订单已终结，即可申请减包。减包剩余会员时间折算为之前的 n / m 倍。例如减包前2个包，减包后1个包，剩余会员时间将折算为之前的2倍。
+	</p>
+	<p>
+		2.加包。剩余会员时间大于30天，将直接折算会员时间，剩余会员时间小于30天，您需要补齐剩余时间费用，并至少缴纳1个月月费。例如您当前剩余会员时间为10天，加包变成两个包，您需要缴费 249 * 0.34 + 498 * 1 ≈ 583元。
+	</p>
+	<p>
+		3.变包在确认或者缴费后即时生效。
+	</p>
+	<p>
+		4.请勿频繁变包。
+	</p>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script id="bagTmpl" type="text/x-dot-template">
+	{{ for(var i in it) { }}
+	<div class="aui-col-xs-4">
+		<label>
+			{{?it[i].bags ==BragCount}}
+			<input class="aui-radio" type="radio" name="demo1" checked onclick="updateBag('{{=it[i].bags}}','{{=it[i].fee}}')">
+			{{??}}
+			<input class="aui-radio" type="radio" name="demo1" onclick="updateBag('{{=it[i].bags}}','{{=it[i].fee}}')">
+			{{?}}
+			{{=it[i].bags}}个
+		</label>
+		{{? it[i].bags == 1}}
+		<div class="my-position">推荐</div>
+		{{?}}
+		</div>
+		{{ } }}
+</script>
+<script id="bagContentTmpl" type="text/x-dot-template">
+	{{ for(var i in it) { }}
+	{{?it[i].bags == BragCount}}
+	<div class="aui-list-item-title" id="{{='bagContent'+it[i].bags}}">
+		单次可选{{=it[i].leaseLimit}}件衣服，  <span class="my-aui-colo">￥{{=it[i].fee}}</span>/月。
+	</div>
+	{{??}}
+	<div class="aui-list-item-title hide" id="{{='bagContent'+it[i].bags}}">
+		单次可选{{=it[i].leaseLimit}}件衣服，  <span class="my-aui-colo">￥{{=it[i].fee}}</span>/月。
+	</div>
+	{{?}}
+		{{ } }}
+</script>
+<script type="text/javascript">
+	var BragCount;
+	var money;
+	var serviceType='serviceFee';
+	var bagNum;
+	var token;
+	var dorabag;
+	var leaseLimit=0;
+	var is_err =1 ;
+	var dueTime ;
+	var dueTime0;
+	var day30 = 30 * 24 * 60 * 60 * 1000;
+	var now = new Date();
+	var userVersion;
+	apiready = function(){
+		token  = $api.getStorage('token');
+		dueTime0 = $api.getStorage('dueTime');
+		userVersion = $api.getStorage('userVersion');
+		dueTime = new Date(dueTime0);
+	    dueTime = dueTime.getFullYear() > 0 ? dueTime : new Date(Date.standardDateStr(dueTime0));
+		init();
+	};
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			doHtml("bagList","bagTmpl",ret.dorabag);
+			doHtml("bagContent","bagContentTmpl",ret.dorabag);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function updateBag(count,fee) {
+		var bagNUms = [1,2,3];
+		if (BragCount == count) {
+			$api.addCls($api.byId('bagchange-rule'), 'aui-hide');
+		}else {
+			$api.removeCls($api.byId('bagchange-rule'), 'aui-hide');
+		}
+		bagNUms.forEach(function (num){
+			if (count == num) {
+				$api.removeCls($api.byId('bagContent'+count), 'hide');
+			} else {
+				$api.addCls($api.byId('bagContent'+num),'hide');
+			}
+		});
+		bagNum = count;
+		money = fee;
+//		$api.addCls($api.byId('bagContent'+count), 'hide');
+//		BragNewCount = count;
+	}
+	function init(){
+		BragCount  = $api.getStorage('count');
+		_loadingShow();
+		var url = serviceNew + 'user/service/dorabag';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+
+	function Pay(){
+		if (userVersion == "promoter") {
+			toastMsg("推广版用户暂时无法在app续费,请到微信端续费");
+			return;
+		}
+		var type = $api.hasCls($api.byId('bagchange-rule'), 'aui-hide');
+
+		if(type || BragCount == bagNum){
+			api.openWin({
+				name: 'Pay',
+				url: 'win.html',
+				pageParam:{
+					page: 'Pay',
+					title: '缴费',
+					bagNum: bagNum || BragCount,
+					money: money,
+					type: serviceType
+				}
+			});
+		}else{
+			if ((isNaN(dueTime.getTime()) )) {
+				toastMsg("操作异常，请退出在试试!");
+				return;
+			}
+			if ((dueTime.getTime() - now.getTime()) >= day30 || BragCount > bagNum) {
+				changeBag(bagNum);
+			} else {
+				if (dueTime.getTime() < now.getTime()) {
+					toastMsg("您的会员已经过期，无法变包");
+					return;
+				}
+
+				api.confirm({
+					msg: '您当前订阅的有'+BragCount+'个多啦袋,本次变包选择'+bagNum+'个多啦袋，确定去缴费嘛?',
+					buttons: ['确定', '取消']
+				}, function(ret, err){
+					if( ret ){
+						if(ret.buttonIndex==1 ){
+							changePay();
+						}
+					}else{
+						api.toast({
+							msg: ret.msg,
+							duration:1000,
+							location: 'bottom'
+						});
+					}
+				});
+
+			}
+		}
+	}
+	function changePay(){
+		api.openWin({
+			name: 'Pay',
+			url: 'win.html',
+			pageParam:{
+				page: 'Pay',
+				title: '变包',
+				data: money,
+				bagNum:bagNum,
+				type: "bagChange"
+			}
+		});
+	}
+	function changeBagSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode==200)	{
+			var num = extra;
+			bagNum = num;
+			$api.setStorage('choose-num',num);
+			$api.setStorage('count',num);
+			api.execScript({
+				name : 'root',
+				frameName : "closet_frame",
+				script : "bagStatus(1);"
+			});
+			if(ret.dueTime){
+				dueTime = new Date(ret.dueTime);
+				dueTime = dueTime.getFullYear() > 0 ? dueTime : new Date(Date.standardDateStr(dueTime0));
+			}
+			init();
+			api.toast({
+				msg: ret.msg,
+				duration:2000,
+				location: 'bottom'
+			});
+//			api.sendEvent({
+//				name: 'sendInit',
+//				extra: {
+//					key:'1'
+//				}
+//			});
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function changeBagErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function changeBag(num){
+		_loadingShow();
+		var url = serviceNew + 'user/service/dorabag/changeBag';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({"bags":Number(num)});
+		var extra = num;
+		_ajaxData(url,'post',headers,data,changeBagSuccessCallback,changeBagErrorCallback,0,extra);
+	}
+</script>
+</html>

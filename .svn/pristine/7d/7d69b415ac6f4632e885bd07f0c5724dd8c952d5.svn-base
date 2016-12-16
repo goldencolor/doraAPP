@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>透明导航栏</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+	<style>
+		html,body,.duola-header{
+			background: transparent;
+		}
+		#header{
+			-webkit-transition-property:background;
+			-webkit-transition-duration:0.1s;
+			-webkit-transition-timing-function:linear;
+		}
+		/*覆盖默认黑色样式*/
+		/*.duola-header .nav-left-icon{*/
+			/*color: #FFFFFF;*/
+		/*}*/
+		/*.duola-header .nav-right-icon{*/
+			/*color: #FFFFFF;*/
+		/*}*/
+		/*.duola-header .nav-title{*/
+			/*color: #FFFFFF;*/
+		/*}*/
+		.leftBg{
+			background: rgba(255,255,255,0.70);
+			width: 1.5rem;
+			height: 1.5rem;
+			text-align: center;
+			line-height: 1.5rem;
+			border-radius: 50%;
+			position: absolute;
+			top: 0.45rem;
+			left: 0.75rem;
+		}
+		.rightBg{
+			background: rgba(255,255,255,0.70);
+			width: 1.5rem;
+			height: 1.5rem;
+			text-align: left;
+			line-height: 1.5rem;
+			border-radius: 50%;
+			position: absolute;
+			top: 0.45rem;
+			left: 0.75rem;
+		}
+	</style>
+</head>
+<body>
+	<header id="header" class="duola-header flex">
+	    <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWebWin()">
+			<div id="leftBg">
+	        	<span id="nav-left-icon" class="nav-left-icon duola-iconfont icon-left"></span><span id="nav-left-text" class="nav-text"></span>
+			</div>
+	    </a>
+	    <div id="nav-title" class="nav-title flex-1"></div>
+		<a id="nav-right" class="duola-icon-area" tapmode onclick="navRightHandler()">
+			<div id="rightBg" style="visibility: hidden">
+				<span style="margin-left:0.15rem" id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon"></span>
+			</div>
+		</a>
+	</header>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+
+<script type="text/javascript">
+	var frameData = null;
+	var rightNav = null;
+	var title = null;
+	var header = null;
+	var navTitle = null;
+	apiready = function() {
+		header = $api.byId('header');
+		$api.fixStatusBar(header);
+		navTitle = $api.byId('nav-title');
+		frameData = api.pageParam;
+		title = frameData.title || '多啦衣梦';
+		if(frameData.transTitle){
+			$api.addCls($api.byId('leftBg'),'leftBg');
+			$api.addCls($api.byId('rightBg'),'rightBg');
+		}else{
+			getTitle(title);
+		}
+		//获取nav
+		var nav = frameData.nav ? frameData.nav : {};
+		var leftNav = nav.leftNav ? nav.leftNav : {};//导航栏左侧
+		rightNav = nav.rightNav ? nav.rightNav : {};//导航栏右侧
+		var border = nav.border ? nav.border : false;//导航栏底部边框
+		var headerBg = nav.headerBg ? nav.headerBg : '';//头部颜色
+		if(headerBg){
+			$api.css($api.dom(header,'.nav-left-icon'),'color: '+headerBg);
+			$api.css($api.dom(header,'.nav-right-icon'),'color: '+headerBg);
+			$api.css($api.dom(header,'.nav-title'),'color: '+headerBg);
+		}
+		getNavLeft(leftNav);
+		getNavRight(rightNav);
+		getNavBorder(border);
+		if(frameData.sharedPage){
+			InstalledWx(function(isIntalled,extra){
+				if(isIntalled){
+					var showWexinEl = $api.byId('rightBg');
+					if(showWexinEl){
+						$api.css(showWexinEl,'visibility:visible');
+					}
+				}
+			});
+		}
+	};
+
+	//异步执行把透明头部变成不透明
+	function execShowColorHeader(){
+		if($api.cssVal(header,'background-color') == 'rgba(0, 0, 0, 0)'){
+			$api.css(header, 'background: #FFFFFF;border-bottom: 1px solid #F1F1F1;');
+			if (isDefine(title)) {
+				setTimeout(function () {
+					$api.html(navTitle, title)
+				}, 100);
+			}
+			if(frameData.transTitle){
+				$api.removeCls($api.byId('leftBg'),'leftBg');
+				$api.removeCls($api.byId('rightBg'),'rightBg');
+			}
+		}
+	}
+
+	//异步执行把不透明头部变成透明
+	function execShowTransHeader(){
+		if($api.cssVal(header,'background-color') != 'rgba(0, 0, 0, 0)'){
+			$api.css(header,'background: transparent;border:none;');
+			$api.html(navTitle,'');
+			if(frameData.transTitle){
+				$api.addCls($api.byId('leftBg'),'leftBg');
+				$api.addCls($api.byId('rightBg'),'rightBg');
+			}
+		}
+	}
+
+	//关闭当前win
+	function closeWebWin(){
+		api.closeWin();
+	}
+
+	//异步更改标题
+	function execChangeTitle(title){
+		if(isDefine(title)){
+			getTitle(title);
+		}
+	}
+
+	//导航栏右侧点击事件
+	function navRightHandler(){
+		var sharedPage = frameData.sharedPage;
+		if(sharedPage){
+			openShareWebPage(sharedPage);
+		}else{
+			var from = frameData.from;
+			var callback = rightNav.callback ? rightNav.callback : '';
+			if(!isDefine(callback)){
+				return;
+			}
+			var extra = rightNav.extra ? rightNav.extra : '';
+			var params = {
+				script: getExecScript(callback,[extra,api.winName])
+			};
+			if(isDefine(from.winName)){
+				params.name = from.winName;
+			}
+			if(isDefine(from.frameName)){
+				params.frameName = from.frameName;
+			}
+//			console.log(getLogStr([params]));
+			api.execScript(params);
+		}
+	}
+
+//打开分享弹出框
+function openShareWebPage(value){
+	if(value.indexOf('http') != 0){
+		return;
+	}
+	var url = value;
+	if(value.indexOf('?tel=') != -1){
+		url = value.substr(0,value.indexOf('?tel='));//分享url去掉电话号码参数
+	}
+	var name = 'shared_mask';
+	var page = 'shared_mask.html';
+	var rect ={
+		x: 0,
+		y: 0,
+		w: 'auto',
+		h: 'auto'
+	};
+	var data = {winName:api.winName,frameName:api.frameName};
+	var bounces = false;
+	openNewFrame(name,page,bounces,rect,data);
+}
+
+//关闭分享弹出框
+function execCloseSharedMask(frameName,index){
+	index = parseInt(index);
+	if(!isNaN(index)){
+		//调用微信模块
+		execShareWx(index);
+	}
+	api.closeFrame({
+		name:frameName
+	});
+}
+
+
+function execShareWx(index){
+	var scene = '';
+	var contentUrl = api.pageParam.sharedPage;
+	var sharedTitle = api.pageParam.sharedTitle || title;
+	if(contentUrl.indexOf('?tel=') != -1){
+		contentUrl = contentUrl.substr(0,contentUrl.indexOf('?tel='));
+	}
+	if(index == 1){
+		scene = 'session';
+	}else if(index == 2){
+		scene = 'timeline';
+	}
+	shareWx(scene,contentUrl,sharedTitle);
+}
+
+function shareWx(scene,contentUrl,title){
+	var wx = api.require('wx');
+	if(!isDefine(scene)){
+		return;
+	}
+	wx.shareWebpage({
+		apiKey: CONSTANT.WEIXINAPPKEY,
+		scene: scene,
+		title: '多啦衣梦',
+		description: title,
+		thumb: 'widget://image/sharedLogo.png',
+		contentUrl: contentUrl,
+	}, function(ret, err){
+		var msg = '未知错误';
+		if(ret.status==true){
+			msg = '分享成功';
+		}else{
+			if(err.code==-1){
+				msg = '未知错误';
+			}else if(err.code==0){
+				msg = '成功';
+			}else if(err.code==1){
+				msg = 'apiKey非法';
+			}else if(err.code==2){
+				msg = '你取消了分享';
+			}else if(err.code==3){
+				msg = '发送失败';
+			}else if(err.code==4){
+				msg = '授权拒绝';
+			}else if(err.code==5){
+				msg = '微信服务器返回的不支持错误';
+			}else if(err.code==6){
+				msg = '当前设备未安装微信客户端';
+			}else if(err.code==7){
+				msg = '注册SDK失败';
+			}
+		}
+		toastMsg(msg);
+	});
+}
+
+</script>
+</html>

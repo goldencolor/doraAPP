@@ -1,0 +1,263 @@
+/**
+ * Created by oHHO on 2016-09-26.
+ */
+
+//定义常量
+var SCHEDULERULE = ['none','group','enterprise'];
+var AGENTGROUP = 'eeedafb3088cf3cfc53531afd27e86f2';
+var MQHTTPCHAT = 'https://static.meiqia.com/dist/standalone.html?eid=33717&groupid=eeedafb3088cf3cfc53531afd27e86f2';
+//初始化美洽
+function mqInit(){
+    var mq = api.require('meiQia');
+    if(!isDefine(mq)){
+        return;
+    }
+    mq.initMeiQia({
+        appkey: CONSTANT.MEIQIAAPPKEY
+    }, function(ret, err) {
+        if(ret && ret.clientId){
+            mqSetTitleColor();
+            mqSetTitleBarColor();
+            mqDevelopClientId(ret.clientId);
+            mqSetClientInfo();
+            mqSetScheduledAgentOrAgentGroup({
+                agentGroup:AGENTGROUP,
+                scheduleRule:SCHEDULERULE[1]
+            });
+        }
+    });
+
+}
+
+//设置title以及按钮颜色
+function mqSetTitleColor(){
+    var mq = api.require('meiQia');
+    if(!isDefine(mq)){
+        return;
+    }
+    mq.setTitleColor({
+        color: "#000"
+    });
+}
+
+//设置title以及按钮颜色
+function mqSetTitleBarColor(){
+    var mq = api.require('meiQia');
+    if(!isDefine(mq)){
+        return;
+    }
+    mq.setTitleBarColor({
+        color: "#FFF"
+    });
+}
+
+//弹出美洽聊天界面
+function mqShow(){
+    var mq = api.require('meiQia');
+    if(!isDefine(mq)){
+        mqHttpChat();
+        return;
+    }
+    mq.show();
+}
+
+//指定分配客服与客服组
+//设置指定分配给某客服
+//none：不转接给任何人，让用户留言
+//group: 转接给组内的人
+//enterprise: 转接给企业其他随机一个人
+function mqSetScheduledAgentOrAgentGroup(scheduleParam){
+    var mq = api.require('meiQia');
+    if(!isDefine(mq) || !isObj(scheduleParam)){
+        return;
+    }
+    mq.setScheduledAgentOrAgentGroup(scheduleParam);
+}
+
+//设置用户信息
+//自定义用户信息将会被传送到美洽服务端，用于对话时显示给客服人员一作参考。这些参数都是可选的，可以选择其中的一个或者多个传递。此接口必须在show之前执行。
+function mqSetClientInfo(){
+    var mq = api.require('meiQia');
+    if(!isDefine(mq)){
+        return;
+    }
+    var infoParam = setClientInfo();
+    console.log(JSON.stringify(infoParam));
+    mq.setClientInfo(infoParam);
+}
+
+//设置美洽顾客的 id 后，该id对应的顾客将会上线。设置后可实现消息漫游
+function mqSetLoginMQClientId(clientId){
+    var mq = api.require('meiQia');
+    if(!isDefine(mq) || !isDefine(clientId)){
+        return;
+    }
+    mq.setLoginMQClientId({
+        id: clientId
+    });
+}
+
+//设置自定义用户Id后，该id对应的顾客将会上线。设置后可实现消息漫游
+function mqDevelopClientId(clientId){
+    var mq = api.require('meiQia');
+    if(!isDefine(mq)){
+        return;
+    }
+    var id = $api.getStorage('userPhone');
+    if(!isDefine(id)){
+        mqSetLoginMQClientId(clientId);
+        return;
+    }
+    mq.setLoginCustomizedId({
+        id: id
+    });
+}
+
+function mqHttpChat(){
+    if(CONSTANT.SWITCH.ONLINECHAT){
+        openOnlineChat();
+        return;
+    }
+    if(isLogin() && MQHTTPCHAT.indexOf('&clientid') == -1){
+        var userPhone = $api.getStorage('userPhone');
+        MQHTTPCHAT += '&clientid=' + userPhone;
+    }
+    if(MQHTTPCHAT.indexOf('&metadata') == -1){
+        var infoParam = setClientInfo();
+        MQHTTPCHAT = MQHTTPCHAT + '&metadata=' + JSON.stringify(infoParam);
+    }
+
+    //换成新的header_new.html
+    var name = 'mqHttpChat';
+    var title = '多啦客服';
+    var leftIcon = 'duola-iconfont icon-left';
+    var leftNav = setNavData(leftIcon);
+    var border = true;
+    var bounces = false;
+    var params = {};
+    params.nav= setNav(leftNav,border);
+    params.frame=setFrame(bounces,null,true,{
+        type:"page",
+        title:"加载中",
+        text:"请稍后",
+        color:"#45C01A"
+    });
+    var from = {
+        winName: api.winName,
+        frameName: api.frameName
+    };
+    var url = 'header_web.html';
+    var page = MQHTTPCHAT;
+    openNewWinFrame(name,title,params,from,url,null,page);
+}
+
+//打开在线客服
+function openOnlineChat(){
+    if(!isLogin()){
+        toLogin();
+    }else{
+        //换成新的header_new.html
+        var name = 'onLineChat';
+        var title = '多啦客服';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftNav = setNavData(leftIcon);
+        var border = true;
+        var bounces = false;
+        var params = {};
+        params.nav= setNav(leftNav,border);
+        params.frame=setFrame(bounces,null,true,{
+            type:"page",
+            title:"加载中",
+            text:"请稍后",
+            color:"#45C01A"
+        });
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'header_web.html';
+        var page = 'http://m.duolayimeng.com/chatService?token=' + $api.getStorage('token');
+        openNewWinFrame(name,title,params,from,url,null,page);
+    }
+}
+
+//打开聊天
+function openChat(){
+    if(CONSTANT.SWITCH.MEIQIA){
+    //if(CONSTANT.SWITCH.MEIQIA && api.systemType == 'android'){
+        mqInit();
+        mqShow();
+    }else{
+        mqHttpChat();
+    }
+}
+
+
+function setClientInfo(){
+    var infoParam = {
+        avatar : 'https://app.meiqia.com/images/logo.png',
+        '登录' : '未登录'
+    };
+
+    if(isLogin()){
+        //登录后才会有某些信息
+        infoParam['登录'] = '已登录';
+        //用户id
+        var id = $api.getStorage('id');
+        infoParam.id = id;
+        //用户电话
+        var userPhone = $api.getStorage('userPhone');
+        infoParam['电话'] = userPhone;
+        infoParam.name = userPhone;
+
+        //用户昵称
+        var userName = $api.getStorage('userName');
+        infoParam['昵称'] = userName;
+
+        //用户头像
+        var userheader = $api.getStorage('userHead');
+        if(isDefine(userheader) && userheader != '../image/defaultHead.jpg'){
+            infoParam.avatar = userheader;
+        }
+
+        //用户版本
+        var userVersion = $api.getStorage('userVersion');
+        infoParam['用户版本'] = userVersion;
+
+        //用户会员类型
+        var isMember = $api.getStorage('isMember');
+        if (isMember == 'monthly') {
+            infoParam['会员类型'] = '月费会员';
+            infoParam.tags = ["月费会员"];
+        }else if (isMember == 'activity') {
+            infoParam['会员类型'] = '活动会员';
+            infoParam.tags = ["活动会员"];
+        }else if (isMember == 'annual') {
+            infoParam['会员类型'] = '年费会员';
+            infoParam.tags = ["年费会员"];
+        }else{
+            infoParam['会员类型'] = '非会员';
+            infoParam.tags = ["非会员"];
+        }
+        //用户多啦袋个数
+        var count = $api.getStorage('count');
+        infoParam['多啦袋个数'] = count;
+
+        //用户押金
+        var deposit = $api.getStorage('deposit');
+        infoParam['押金'] = deposit;
+
+        //用户冻结
+        var frozenAt = $api.getStorage('frozenAt');
+        infoParam['冻结'] = frozenAt;
+
+        //用户会员过期时间
+        var dueTime = $api.getStorage('dueTime');
+        infoParam['会员过期时间'] = dueTime;
+
+        //用户收获地址
+        var shipAddress = $api.getStorage('shipAddress');
+        infoParam['地址'] = shipAddress;
+    }
+    return infoParam;
+}

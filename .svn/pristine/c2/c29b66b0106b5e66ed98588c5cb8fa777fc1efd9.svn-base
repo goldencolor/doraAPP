@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	.no-comment{ margin: 10px; height:50px;text-align: center;line-height: 50px; font-size:16px;}
+    	
+    	.my-bg{
+    		margin-left:10px;
+    	}
+    	.my-bg-color{
+    		background-color: #e59c96 !important;
+    	}
+    	.tip{
+    		width: 8px !important; height:8px !important;
+    		left:29px!important;
+    		border-radius: 8px !important;
+    	}
+    	.now{
+    		/*background-color: #3498db !important;*/
+    		background-color:#f1c40f !important;
+    	}
+    	.now-text{
+    		color:#3498db !important
+    	}
+    	.over{
+    		background-color: #d9d9d9 !important;
+    	}
+    	.hui{
+    		color: #999 !important;
+    	}
+	</style>  
+</head>
+<body>
+	<div id="main">
+		<div class="aui-content">
+			<ul class="aui-list-view">
+		        <li class="aui-list-view-cell aui-img">
+		            <img id="img" class="aui-img-object aui-pull-left" src="../image/logo1.png">
+		            <div class="aui-img-body">
+
+		               	 <p>物流状况  <span class="now-text" id="ischeck"></span></p>
+		                 <p>物流单号：<span class="" id="nu"></span></p>
+
+		                 <!--<p id="condition">F00</p>-->
+		            </div>
+		        </li>
+		    </ul>
+		</div>
+		<div class="aui-content">
+		    <ul class="aui-timeline" id="list">
+				<li class="aui-time-label"><span class="aui-bg-info my-bg my-bg-color">物流跟踪</span></li>
+				<li>
+					<div class="aui-time-label aui-bg-info over tip"></div>
+					<div class="aui-timeline-item">
+						<h4 class="aui-timeline-header hui">多啦衣梦正在通知快递公司揽件</h4>
+						<div class="aui-timeline-footer hui" id="orderTime"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var id;
+	var clothName;
+	var page = 1;
+	var pageSize=10;
+	var url;
+	var state;
+	var exp_no;
+	var orderTime;
+	var is_err = 1;
+	apiready = function(){
+		id=api.pageParam.id;
+		url =api.pageParam.type;
+		exp_no = api.pageParam.exp_no ? api.pageParam.exp_no : api.pageParam.data.exp_no;
+		orderTime =api.pageParam.orderTime;
+
+//		exp_no =api.pageParam.isFrist;
+
+//		$api.attr($api.byId('img'), 'src', url);
+        _setHtmlVal('nu',exp_no);
+        init();
+		if (orderTime) {
+			$api.append($api.byId('orderTime'), orderTime);
+		}
+	};
+	function initSuccessCallback(ret,extra) {
+		_loadingHide();
+		if(ret.statusCode=='200'){
+//					state = _sizeWuLiuState(ret.state);
+			if(ret.com=='undefined'||ret.com==undefined){
+				var com  = ret.com;
+			}
+			_setHtmlVal('ischeck',ret.state);
+			_setHtmlVal('com',com);
+			$api.html($api.byId('list'), ' ');
+			var topHtml = '<li class="aui-time-label"><span class="aui-bg-info my-bg my-bg-color">物流跟踪</span></li>';
+			$api.append($api.byId('list'), topHtml);
+			var html='';
+			for(i=0;i<ret.info.count;i++){
+//						if(i==0){
+//							html+='<li>';
+//				            html+='<div class="aui-time-label aui-bg-info  tip"></div>';
+//				            html+='<div class="aui-timeline-item">';
+//			                html+='<h4 class="aui-timeline-header now-text">'+ret.data[i].context+'</h4>';
+//			                html+='<div class="aui-timeline-footer now-text">'+ret.data[i].time+'</div>';
+//				            html+='</div>';
+//					        html+='</li>';
+//					        $api.append($api.byId('list'), html);
+//						}else{
+				html+='<li>';
+				html+='<div class="aui-time-label aui-bg-info over tip"></div>';
+				html+='<div class="aui-timeline-item">';
+				html+='<h4 class="aui-timeline-header hui">'+ret.info.list[i].context+'</h4>';
+				html+='<div class="aui-timeline-footer hui">'+ret.info.list[i].dateStr+'</div>';
+				html+='</div>';
+				html+='</li>';
+//						}
+			}
+			$api.append($api.byId('list'), html);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+
+	function init(){
+		_loadingShow();
+		var url = serviceUser + 'orders/express';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData({
+			num:String(exp_no)
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+	</script>
+</html>

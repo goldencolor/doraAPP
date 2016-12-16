@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看图片</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        #showCommentImg{
+            padding: 1.65rem 1.8rem 0 1.8rem ;
+            height: 80%;
+            text-align: center;
+        }
+        #showCommentImg img{
+            max-height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .delBtn{
+            height: 20%;
+            text-align: center;
+            padding-top: 1.35rem;
+            padding-bottom: 2.75rem;
+        }
+        .delBtn>span{
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="showCommentImg">
+        <img src="../image/hold.jpg" class="duo-cache-img" title="">
+    </div>
+    <div class="delBtn">
+        <span class="duola-iconfont icon-delete1" tapmode onclick="deleteImg()"></span>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script>
+    var frameData = null;
+    var isArray = false;
+    var path = '';
+    var currImgIndex = 0;
+    var delId='';
+    apiready = function () {
+        frameData = api.pageParam.data;
+        var showCommentImgEl = $api.byId('showCommentImg');
+        //页面url
+        path = frameData.path ? frameData.path : '';
+        delId = frameData.delId ? frameData.delId : '';
+        var isLocal = frameData.isLocal ? frameData.isLocal : false;
+        isArray = typeof path == 'string' ? false : true;
+        if(isArray && path[0]){
+            var showPath = path[0];
+            if(isLocal){
+                $api.attr($api.dom(showCommentImgEl,'img'),'src',showPath);
+            }else{
+                $api.attr($api.dom(showCommentImgEl,'img'),'title',showPath);
+                _imgCacheUrl3(showCommentImgEl);
+            }
+        }else if(!isArray && path){
+            if(isLocal){
+                $api.attr($api.dom(showCommentImgEl,'img'),'src',path);
+            }else{
+                $api.attr($api.dom(showCommentImgEl,'img'),'title',path);
+                _imgCacheUrl3(showCommentImgEl);
+            }
+        }
+//        console.log(getLogStr([path,isLocal,isArray,path.length]));
+        if(isArray && path.length > 1){
+            api.addEventListener({
+                name:'swipeleft'
+            }, function(ret, err){
+                if(currImgIndex == 0){
+                    currImgIndex = path.length - 1;
+                }else{
+                    currImgIndex--;
+                }
+                if(isLocal){
+                    $api.attr($api.dom(showCommentImgEl,'img'),'src',path[currImgIndex]);
+                }else{
+                    $api.attr($api.dom(showCommentImgEl,'img'),'title',path[currImgIndex]);
+                    _imgCacheUrl3(showCommentImgEl);
+                }
+            });
+            api.addEventListener({
+                name:'swiperight'
+            }, function(ret, err){
+                if(currImgIndex == path.length-1){
+                    currImgIndex = 0;
+                }else{
+                    currImgIndex++;
+                }
+                if(isLocal){
+                    $api.attr($api.dom(showCommentImgEl,'img'),'src',path[currImgIndex]);
+                }else{
+                    $api.attr($api.dom(showCommentImgEl,'img'),'title',path[currImgIndex]);
+                    _imgCacheUrl3(showCommentImgEl);
+                }
+            });
+        }
+        api.parseTapmode();
+    };
+
+    function deleteImg(){
+        var execScriptFun = getExecScript('execDelImg',[delId,api.winName]);
+        api.execScript({
+            name:'addCommentWin',
+            frameName:'addCommentFrame',
+            script: execScriptFun
+        });
+    }
+
+    //公用头部导航栏坐侧点击异步执行的方法
+    function execNavLeftCallback(value){
+        var from = frameData.from;
+        var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+        if(!isDefine(callback)){
+            return;
+        }
+        var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+        var params = {
+            script: getExecScript(callback,new Array(extra,api.winName,value))
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+
+    //公用头部导航栏右侧点击异步执行的方法
+    function execNavRightCallback(value){
+        var from = frameData.from;
+        var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+        if(!isDefine(callback)){
+            return;
+        }
+        var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+        var params = {
+            script: getExecScript(callback,new Array(extra,api.winName,value))
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+</script>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            background-color: #F6F6F6;
+        }
+
+        #wrap {
+            height: 100%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+        }
+
+        #main {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+	</style> 
+</head>
+<body>
+<div id="wrap">
+   <header id="header" class="aui-bar aui-bar-nav aui-bar-info" style="border-bottom: 1px solid #F1F1F1">
+	    <a class="aui-btn aui-btn-info aui-pull-left" onclick="closeWindow()">
+	        <span class="aui-iconfont aui-icon-close"></span>
+	    </a>
+	    <div id="header-title" class="aui-title"></div>
+	</header>
+    <div id="main">
+
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+    var title = null;
+    apiready = function () {
+
+        init();
+        
+    };
+
+    function init(){
+        var $header = $api.byId('header');
+        $api.fixStatusBar($header);
+        var $body = $api.dom('body');
+        var header_h = $api.offset($header).h;
+        var body_h = $api.offset($body).h;
+        var rect_h = body_h - header_h;
+		
+		title = api.pageParam.title;
+		var url = api.pageParam.url;
+		$api.html($api.byId('header-title'), title);
+		onPageUmeng(title);
+		api.openFrame({
+            name: 'web',
+            bounces: true,
+            allowEdit:true,
+            progress:{
+				type:"page",        
+				title:"加载中",              
+				text:"请稍后",               
+				color:"#45C01A"
+            },
+            url: url,
+            rect: {x: 0, y: header_h, w: 'auto', h: rect_h}
+        });
+    }
+    
+    function closeWindow(){
+        onPageEndUmeng(title);
+    	api.closeWin();
+    }
+
+</script>
+</html>

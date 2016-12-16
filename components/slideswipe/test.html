@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>slidesipe测试</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css"/>
+    <link rel="stylesheet" type="text/css" href="slideswipe.css"/>
+    <style>
+        #season-slide-swipe .slide-swipe{
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="size-slide-swipe"></div>
+<div id="season-slide-swipe"></div>
+</body>
+
+<script id="slideswipe-template" type="text/x-dot-template">
+    <div class="slide-swipe swiper-container">
+        <div class="swiper-wrapper">
+            {{~it.data:value:index}}
+                <div class="swiper-slide flex flex-center" tapmode onclick="{{="slideSwipeClick(this,'"+index+"','"+value+"','"+it.callback+"')"}}"><span class="{{=index == it.activeIndex ? 'my-hit-color' : ''}}" title="{{=index}}">{{=value}}</span></div>
+            {{~}}
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/doT_min.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>  
+<script type="text/javascript" src="slideswipe.js"></script>
+<script>
+
+    testSizeHtml();
+    function testSizeHtml(){
+		alert(1);
+        initSlideSwipe('size-slide-swipe',['全部'].concat(CONSTANT.SIZES),0,'sizeSlideSwipeClick');
+        initSlideSwipe('season-slide-swipe',['全部'].concat(CONSTANT.SEASON),1,'seasonSlideSwipeClick');
+//        setSlideSwipeHitColor('size-slide-swipe',1);
+//        var size = getSlideSwipeHitColor('size-slide-swipe');
+//        console.log(getLogStr([size]));
+    }
+
+    //size点击每一个内容
+    function sizeSlideSwipeClick(index,value){
+        console.log(index,value);
+    }
+
+    //season点击每一个内容
+    function seasonSlideSwipeClick(index,value){
+        console.log(getLogStr([index,value]));
+    }
+
+
+</script>
+</html>

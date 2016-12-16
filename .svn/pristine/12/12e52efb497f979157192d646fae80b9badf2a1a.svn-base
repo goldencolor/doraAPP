@@ -1,0 +1,99 @@
+/**
+ * Created by yi on 2016-09-08.
+ */
+
+
+/**
+ * 可以复用的分页组件。等待完善。
+ * @param id 必填 开始计算高度的最外层id
+ * @param offset 必填 id 的第一个子元素
+ * @param count 一个ajax 请求返回一页的个数
+ * @return 对象 返回拼接好的header
+ * @remark 需要api对象
+ * @author 杨怡  2016-8-28 17:08:56
+ */
+var pag_page,pag_pageTotal,pag_count,pageScroll = 1;
+function _page(page,pageTotal,count) {
+    pag_page = page === pag_page ? pag_page : page;
+    pag_pageTotal = pageTotal === pag_pageTotal ? pag_pageTotal : pageTotal;
+    pag_count =  count === pag_count ? pag_count :count;
+    pageScroll = page == 1 ? 1: pageScroll;
+    $api.html($api.byId('pagination-page'),page+"页");
+    $api.html($api.byId('pagination-pageTotal'),pageTotal);
+}
+function _myScroll (id, offset,callback,isCurrPageContainer) {
+    var scrollTop =0;
+    var scrollState = true ;
+    var isTop = true;
+   // count = count ? parseInt(count/2) : 1;
+    window.onscroll= function() {
+        var scroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        if(isDefine(callback)){
+            callback(scroll);
+        }
+        if (scrollState && pag_count) {
+            var count = parseInt(pag_count/2) ;
+            var h =	$api.offset($api.first($api.byId(id),offset)).h;
+            if(isCurrPageContainer){
+                scrollTop = h;
+            }else{
+                scrollTop = h * count;
+            }
+            scrollState = false;
+        }
+        if (scroll > 600 && isTop) {
+            isTop = false;
+            $api.addCls($api.byId("pagination-top"),"hide");
+            $api.removeCls($api.byId("pagination-pag"),"hide");
+            setTimeout(goTop,1000)
+        }
+        var number = Math.ceil((scroll + 300) / scrollTop);
+        if(number && number !== pageScroll){
+        
+            if (number > pag_page || number < 1 || pageScroll > pag_pageTotal) {
+                return;
+            }
+            pageScroll = number || 1;
+            $api.html($api.byId('pagination-page'),pageScroll+"页");
+        }
+    };
+    function goTop() {
+        isTop = true;
+        if (pageScroll == 1) {
+            return;
+        }
+        $api.addCls($api.byId("pagination-pag"),"hide");
+        $api.removeCls($api.byId("pagination-top"),"hide");
+
+    }
+
+}
+//isHref 回到某个锚点
+function changeTop(callback,extra,isHref){
+    if(isDefine(isHref)){
+        location.href= isHref;
+        if(isDefine(callback)){
+            callback(extra);
+        }
+        $api.html($api.byId('pagination-page'),"1"+"页");
+        $api.removeCls($api.byId("pagination-pag"),"hide");
+        $api.addCls($api.byId("pagination-top"),"hide");
+        return;
+    }
+    api.pageUp({
+            top:true
+        },
+        function(ret,err){
+            if(!ret.scrolled){
+                toastMsg("已到顶部")
+            }else{
+             $api.html($api.byId('pagination-page'),"1"+"页");
+             $api.removeCls($api.byId("pagination-pag"),"hide");
+     	     $api.addCls($api.byId("pagination-top"),"hide");
+                if(isDefine(callback)){
+                    callback(extra);
+                }
+            }
+        }
+    );
+}

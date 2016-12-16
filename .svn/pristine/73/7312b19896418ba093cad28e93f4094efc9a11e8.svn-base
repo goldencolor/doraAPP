@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page2</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	body{
+    		background-color: #FFFFFF;
+    	}
+		.aui-tab-nav li{
+			font-size: 12px; color: #777777; text-align: center;
+		}
+		.my-search{
+			color: #F76249 !important;
+		}
+		/**图片列表样式**/
+		.aui-list-view,.aui-list-view span{
+			margin-bottom: 0px;  font-size: 15px; color: #777777;
+		}
+		.my-like{
+			font-size: 12px; position: absolute; bottom: 55px; left: 20px;
+			background-color: rgba(0,0,0,0.5); border-radius: 10px; line-height: 20px; 
+			padding: 0 6px; color: #FFFFFF;
+		}
+		.my-like span{
+			font-size: 11px; color: #fff;
+		}
+		.my-clothes-name{
+			font-size: 13px; color: #777777;
+		}
+		.my-clothes-img{
+			border-radius: 8px;
+		}
+		.my-clothes-box{
+			margin-top: 45px;
+		}
+		/****/
+		.my-tap-box{
+			position: fixed; top: 0px; left: 0px; right: 0px; z-index: 999;
+		}
+		.my-tap-name{
+			font-size: 14px;
+		}
+		#loading{
+			padding-bottom: 10px;
+		}
+		#loading p{
+			font-size: 12px; color: #999;
+		}
+		.my-mask{
+			height: 100%;background: rgba(0,0,0,0.3);
+		}
+		.my-mask p{
+			font-size: 12px;
+		}
+		/**格子重构**/
+		.my-mask .aui-grid-sixteen:after {
+			border:none;
+		}
+		.my-mask .aui-grid-sixteen li:after {
+			border:none;
+		}
+		.my-mask .aui-grid-sixteen li {
+			padding: 5px 5px;
+		}
+		/**列表重构**/
+		.my-mask .aui-list-view-cell{
+			font-size: 12px; color: #aaa;
+		}
+		
+		#clothset{
+			 position: fixed; bottom: 30px;right:20px; 
+			 width: 50px;  height:40px;z-index:999;
+		}
+		.clothset-bg-1{
+				border:1px solid #bdbdbd;
+			 background-color:#FFFFFF;
+			 width:50px;height: 50px;
+			 float: left;
+			 border-radius: 50px;
+		}
+		.clothset-num{
+			height:20px;
+			font-size:10px;
+			margin-top:7px;
+			line-height:20px;
+			text-align:center;
+			border-bottom: 1px solid #bdbdbd;
+			color:#333;
+		}
+		.clothset-name{
+			margin:-2px 5px 5px 5px;
+			height:20px;
+			font-size:10px;
+			line-height:20px;
+			text-align:center;
+			color:#333;
+		}
+		.clothset-name span{
+			color:#fff
+		}
+		.my-cloth-box-new{
+			padding-left: 10px; padding-top: 10px; padding-bottom: 5px; position: relative;
+		}
+		.my-cloth-li{
+			padding-right: 10px;
+		}	
+	</style>  
+</head>
+<body>
+<div>
+	<!--页码-->
+	<div id="clothset">
+		<div class="clothset-bg-1" onclick="changeTop();">
+			<div class="clothset-num" id="num"></div>
+			<div class="clothset-name" id="page"></div>
+		</div>
+	</div>
+	<!--一级分类-->
+	<div class="aui-tab aui-border my-tap-box" id="my-menu">
+	    <ul class="aui-tab-nav" id="category" > </ul>
+	</div>	
+	
+	<div class="aui-content my-clothes-box">
+	    <ul class=""  >
+			<li class="my-cloth-li" id="list">
+				 <!--<div class="aui-col-xs-6 my-cloth-box-new" onclick="showClothes('1526788');" tapmode="">
+				   <img id="img_frame1_c_1_1526788" class="my-clothes-img" src="../image/hold.jpg" width="100%" />
+				   <div class="my-clothes-name aui-ellipsis-1">
+				    莫代尔假两件T恤
+				   </div>
+				   <div class=" my-like ">
+				    <span class="aui-iconfont aui-icon-likefill my-color"></span> 136
+				   </div>
+				  </div>
+				 <div class="aui-col-xs-6 my-cloth-box-new" onclick="showClothes('1526788');" tapmode="">
+				   <img id="img_frame1_c_1_1526788" class="my-clothes-img" src="../image/hold.jpg" width="100%" />
+				   <div class="my-clothes-name aui-ellipsis-1">
+				    莫代尔假两件T恤
+				   </div>
+				   <div class=" my-like ">
+				    <span class="aui-iconfont aui-icon-likefill my-color"></span> 136
+				   </div>
+				  </div>-->
+			</li>
+		</ul>
+	</div>
+	<div id="loading" class="aui-text-center"></div>
+</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/2_0/aui-scroll.js"></script>
+	<script type="text/javascript">
+	var isAdd = 'NO';
+	var imgType =[
+		{type:'aui-icon-list'},
+		{type:'aui-icon-evaluate'},
+		{type:'aui-icon-location'},
+		{type:'aui-icon-choiceness'},
+		{type:'aui-icon-form'},
+		{type:'aui-icon-list'},
+		{type:'aui-icon-evaluate'},
+		{type:'aui-icon-location'},
+		{type:'aui-icon-choiceness'},
+		{type:'aui-icon-form'}
+	];
+	var hidePage ='YES';
+	var category='';
+	var thisMask ='';
+	var page =1;
+	var count ='';
+	var pageSize = 20;
+	var pageTotal =10;
+	var nextpage='';
+	var key = '';
+	var filters ='';
+	var filtersList='';
+	var jumpTag;
+	var initType = 'INIT';
+	var bodyT= {"page": 1,"pageSize": 20}
+	var is_err =1;
+	apiready = function(){
+		//监听关键词查询
+		setTypes();
+		//按照二级分类查找
+		api.addEventListener({
+		    name:'setKeywords',
+		}, function(ret, err){   
+			var name = ret.value.name;
+				key = ret.value.key;
+		    searchBtn(key,1);
+		    api.pageUp({
+					top:true
+				});
+		});
+		//监听多条件查询
+		api.addEventListener({
+		    name:'setKeyVal',
+		}, function(ret, err){   
+			var name = ret.value.name;
+				filters = ret.value.filters;
+				key = ret.value.key;
+		    searchKeyMuch(filters,1);
+		});
+		
+		api.addEventListener({
+		    name:'scrolltobottom',
+		    extra:{threshold:0 }
+		}, function(ret, err){
+			if(isAdd == 'YES'){
+				toGoNextPage();
+			}
+
+		});
+
+//		var scroll = new auiScroll({
+//			listen:true, //是否监听滚动高度，开启后将实时返回滚动高度
+//			distance:0 //判断到达底部的距离，isToBottom为true
+//		},function(ret){
+//			console.log("=======>"+ret.scrollTop+"<=========================");
+//			if(ret.isToBottom && isAdd == 'YES'){
+//				console.log(ret.scrollTop);
+//				toGoNextPage();
+//		}
+//		});
+	};
+	
+	function toGoNextPage(){
+		setTimeout(function(){
+			if(initType=='INIT'){
+				init(nextpage);
+			}else if(initType=='SEARCH'){
+				searchBtn(key,nextpage);
+			}else if(initType=='SEARCHMORE'){
+				searchKeyMuch(filters,nextpage)
+			}
+		},500);
+	}
+
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		_showPage();
+		toastMsg(err.msg);
+	}
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		_showPage();
+		if(ret.statusCode=='200'){
+			changeList(ret);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	//获取云衣橱数据
+	function init(page){
+
+		isAdd='NO';
+		if(pageTotal<page){
+			noMore();
+			return
+		}
+		initType = 'INIT';
+		jumpTag = $api.getStorage('jumpTag');
+		if(page==1){
+			_loadingShow();						
+		};
+		if(jumpTag == "1" ){
+			changeTap("newCome");
+			bodyT= {"page": page,"pageSize": 20,"category": "newCome"}
+			
+		}else if(jumpTag == "2" ){
+			bodyT= {"page": page,"pageSize": 20,"sort": {"popularity": -1}}
+		}else{
+			bodyT= {"page": page,"pageSize": 20}
+		}
+
+		var url = serviceNew + 'cloudCloset';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData(bodyT);
+
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+	function reSetInitErrorCallback(err,extra){
+		_loadingHide();
+		_showPage();
+		toastMsg(err.msg);
+	}
+	function reSetInitSuccessCallback(ret,extra){
+		_loadingHide();
+		_showPage();
+		if(ret.statusCode=='200'){
+			changeList(ret);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function reSetInit(m,page){
+		if(pageTotal<page){
+			noMore();
+			return
+		}
+		if(page==1)_loadingShow();
+		if(m == "1" ){
+			bodyT= {"page": page,"pageSize": 20,"category": "newCome"}
+		}else if(jumpTag == "2" ){
+			bodyT= {"page": page,"pageSize": 20,"sort": {"popularity": -1}}
+		}else{
+			bodyT= {"page": page,"pageSize": 20}
+		}
+		var url = serviceNew + 'cloudCloset';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData(bodyT);
+		var extra = null;
+		_ajaxData(url,'post',headers,data,reSetInitSuccessCallback,reSetInitErrorCallback,0,extra);
+	}
+
+	function setTypesErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function setTypesSuccessCallback(ret,extra) {
+		_loadingHide();
+		category = ret.category;
+		if(ret.statusCode=='200'){
+//				alert(JSON.stringify(ret));
+			$api.html($api.byId('category'), ' ');
+			//var search = '<li id="search" class="my-search" onclick="openSearch();" tapmode><i class="aui-iconfont aui-icon-search"></i> 搜索 </li>';
+			var search = "";
+			if(ret.category.count>5){var count = 5;}else{var count = ret.category.count;}
+			for(var i=0;i<count;i++){
+				if(ret.category.list[i].name == '上新'){
+					continue;
+				}
+				var html = '';
+				if(ret.category.list[i].count>0){
+					html+='<li id="'+ret.category.list[i].key+'" class="my-tap" tapmode onclick="openMask(\''+ret.category.list[i].key+'\',\''+i+'\')">';
+				}else{
+					html+='<li id="'+ret.category.list[i].key+'" class="my-tap" onclick="jumpNew(\''+ret.category.list[i].key+'\')">';
+				}
+				html+='<i class="aui-iconfont '+imgType[i].type+'"></i><span class="my-tap-name"> '+ret.category.list[i].name+'</span></li>';
+				$api.append($api.byId('category'), html);
+			}
+			$api.append($api.byId('category'), search);
+			api.parseTapmode();
+			init(page);
+		}else{
+			toastMsg(ret.msg);
+			$api.addCls($api.byId('category'), 'hide');
+		}
+	}
+
+//	获取一级分类
+	function setTypes(){
+		_loadingShow();
+		var url = serviceNew + 'cloudCloset/category';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,setTypesSuccessCallback,setTypesErrorCallback,0,extra);
+	}
+	
+	//拼接云衣橱html
+	function setCloth(cloth,isNull){
+		if(isNull=='YES'){
+			$api.html($api.byId('list'), '');
+		}
+		for(var i=0;i<cloth.count;i++){
+			var html = '';
+			html+='<div class="aui-col-xs-6 my-cloth-box-new" onclick="showClothes(\''+cloth.list[i]._id+'\');" tapmode>';
+			html+='<img id="img_frame1_c_'+page+'_'+cloth.list[i]._id+'" class="my-clothes-img  img_frame1_c_'+page+'_'+cloth.list[i]._id+'" src="../image/hold.jpg" width="100%">';
+//			html+='<div class="aui-img-body">';
+			html+='<div class="my-clothes-name aui-ellipsis-1">';
+			html+= cloth.list[i].name+'</div>';
+			if(isDefine(cloth.list[i].stockedSize)){
+				html+='<div class="my-clothes-name aui-ellipsis-1">';
+				html+= cloth.list[i].stockedSize.join(" ")+'</div>';
+			}else {
+				html+='<div class="my-clothes-name aui-ellipsis-1">&nbsp &nbsp </div>';
+			}
+			html+='<div class=" my-like ">';
+			html+='<span class="aui-iconfont aui-icon-likefill my-text-color"></span>';
+			if(cloth.list[i].like=='undefined'||cloth.list[i].like==undefined){
+				var likeValue = '1';
+			}else{
+				var likeValue = cloth.list[i].like;
+			}
+			html+= ' '+cloth.list[i].like;
+			html+='</div></div>';
+
+	        $api.append($api.byId('list'), html);
+		}
+		for(var i=0;i<cloth.count;i++){
+			var url = colthPath + cloth.list[i].img+colthPathStyle; 
+			_imgCacheUrl2(url,'.img_frame1_c_'+page+'_'+cloth.list[i]._id);
+		}
+		isAdd="YES";
+		api.parseTapmode();
+	}
+	
+	//点击一级菜单,弹出遮罩
+	function openMask(tag,i){
+		//重复点击toggle
+//		var category = $api.byId('category');
+//		if(category){
+//			var doms = $api.domAll(category, '.my-tap');
+//			var activeMyTap = null;
+//			for(var j=0; j<doms.length; j++){
+//				if($api.cssVal(doms[j],'border-bottom')){
+//					activeMyTap = doms[j];
+//					break;
+//				}
+//			}
+//			if(activeMyTap){
+//				var tagId = $api.attr(activeMyTap, 'id');
+//				console.log(tagId);
+//				if(tagId == tag){
+//					
+//				}
+//			}
+//			
+//		}
+		
+//		if(thisMask!=tag){
+			if(thisMask!=''){
+				api.closeFrame({
+			        name: thisMask
+		        });
+			}
+			thisMask = tag;
+			changeTap(tag);
+			var menuHeight = $api.offset($api.byId('my-menu')).h;
+			var yyy = api.pageParam.headerHeight+menuHeight;
+	        api.openFrame({
+		        name: tag,
+		        url: 'mask.html',
+		        bounces:false,
+		        rect: {
+			        x:0,
+			        y:yyy,
+			        w:'auto',
+			        h:'auto'
+		        },
+		        vScrollBarEnabled:false,
+//		        animation:{
+//		        	type:"none",
+//		        	subType:"from_top",
+//		        	duration: 300
+//		        },
+				pageParam: {
+				    list: category.list[i],
+				    tag:tag
+				}
+	        });
+//		}
+	}
+	function jumpNew(tag){
+		if(thisMask!=''){
+			api.closeFrame({
+		        name: thisMask
+	        });
+		}
+		changeTap(tag);
+		api.execScript({
+			name: 'root',
+	        script: 'jumpPage(1);'
+        });
+	}
+	function changeTap(tag){
+		cancelMask();
+		$api.css($api.byId(tag),"border-bottom:4px solid #e59c96;");
+	}
+	
+	function cancelMask(){
+		var doms = $api.domAll('.my-tap');
+		for(var i=0; i<doms.length; i++){
+			$api.css(doms[i],"border-bottom:none;");
+		}
+	}
+	//取消下划线
+	function cancelMask2(){
+		var doms = $api.domAll('.my-tap');
+		for(var i=0; i<doms.length; i++){
+			$api.css(doms[i],"border-bottom:none;");
+		}
+		thisMask="";
+	}
+	
+	function loadMore(){
+		$api.html($api.byId('loading'), '<img src="../icon/loading.gif" width="16" /> <p>更多数据加载中</p>');
+	}
+	function noMore(){
+		$api.html($api.byId('loading'), '<p>没有更多了</p>');
+	}
+	function openSearch(){
+		api.openWin({
+	        name: 'search',
+	        url: 'winSearch.html',
+	        pageParam:{
+	        	 bounces:true,
+	        	title:"搜索",
+	        	page:"search",
+	        	name:"search",
+	        	data:category
+	        }
+        });
+	}
+	
+	function showClothes(id){
+		api.openWin({
+	        name: 'showInfo',
+	        url: 'winShow.html',
+	        pageParam:{
+	        	bounces:true,
+	        	title:"---",
+	        	page:"showInfo",
+	        	name:"showInfo",
+	        	id:id
+	        }
+        });
+	}
+	
+	//是否加载更多,更新页码
+	function changeList(ret){
+		var cloth = ret.cloudCloset;
+		count 	 = cloth.count;
+		if(cloth.page==1){
+			var isNull = 'YES';
+		}else{
+			var isNull = 'NO';
+		}
+		setCloth(cloth,isNull);//结果
+		if(count>0){
+			loadMore();
+			page 	 = cloth.page;
+			nextpage = page+1;
+			pageTotal= cloth.pageTotal;
+			$api.html($api.byId('num'),page+' 页');
+			$api.html($api.byId('page'),pageTotal);			
+		}else{
+			page 	 = cloth.page;
+			nextpage = page;
+			pageTotal= cloth.pageTotal;
+			$api.html($api.byId('num'),page+' 页');
+			$api.html($api.byId('page'),pageTotal);			
+			$api.html($api.byId('loading'), '<p>没有更多了</p>');
+//			toastMsg('没有更多的了');
+		}
+		
+	}
+
+	function searchBtnSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+			changeList(ret)
+		}else{
+			toastMsg(ret.msg)
+		}
+	}
+	function searchBtnErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+
+	//按照二级分类搜索
+	function searchBtn(value,page){
+
+			initType = 'SEARCH';
+			key = value;
+			var bodyT ={
+				"page": page,
+				"pageSize": 20,
+				"keywords": String(key)
+		   	};
+			var url = serviceNew + 'cloudCloset/search';
+			var headers = _getAjaxHeaders(false,true);
+			var data = _getAjaxData(bodyT);
+			var extra = null;
+			_ajaxData(url,'post',headers,data,searchBtnSuccessCallback,searchBtnErrorCallback,0,extra);
+	}
+
+	function searchKeyMuchSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+			changeList(ret)
+		}else{
+			toastMsg(ret.msg)
+		}
+	}
+	function searchKeyMuchErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+
+	function searchKeyMuch(filters,page){
+//		if(pageTotal<page){
+//			noMore();
+//			return
+//		}
+
+		initType = 'SEARCHMORE';
+		setFilters = filters;
+		var arrr     = [];
+		var Post     = [];
+		for(var i=0;i<setFilters.length;i++){
+			var strs=setFilters[i].split("|")
+			var strs0 = strs[0];
+			var strs1 = strs[1];
+			var index = checkArrIn(arrr,strs0);
+			if(index>-1){
+				Post[strs0].push(strs1);
+			}else{
+				arrr.push(strs0)
+				Post[strs0] = [];
+				Post[strs0].push(strs1);
+			}
+		}
+		var html = '';
+		html+='{';
+		for(i=0;i<arrr.length;i++){
+			var M = arrr[i];
+			var t = '';
+			if(Post[M].length>1){
+				t+='[';
+			}
+			for(var b=0;b<Post[M].length;b++){
+				t +='"'+Post[M][b]+'"';
+				if(b<Post[M].length-1){
+					t+=',';
+				}
+			}
+			if(Post[M].length>1){
+				t+=']';
+			}
+			html += '"'+M+'":'+t;
+			
+			if(i<arrr.length-1){
+				html+=',';
+			}
+		}
+		html+='}';
+		var bodyM = {
+			"page": page,
+			"pageSize": 20,
+			"keywords": key,	//全文搜索的关键字
+			"filters":eval('(' + html + ')')  
+		};
+
+		var url = serviceNew + 'cloudCloset/search';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData(bodyM);
+		var extra = null;
+		_ajaxData(url,'post',headers,data,searchKeyMuchSuccessCallback,searchKeyMuchErrorCallback,0,extra);
+	}
+	
+	function showPag(){
+		if(hidePage=="YES"){
+			$api.removeCls($api.byId("hidePage"), "hide");
+			hidePage="NO";
+		}else{
+			$api.addCls($api.byId("hidePage"), "hide");
+			hidePage="YES";
+		}
+	}
+			
+	function changeTop(){
+		api.pageUp({
+				top:true
+			},
+			function(ret,err){
+				if(!ret.scrolled){
+					toastMsg("已到顶部")
+				}
+			}
+		);
+	}
+	
+	
+	</script>
+</html>

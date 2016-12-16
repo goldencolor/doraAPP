@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>微信登录绑定手机号</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+	.aui-input-addon{  
+		padding:0px !important;
+	}
+	.aui-text-pink{
+	    	color: #FF6100 !important;
+	}
+	</style>  
+</head>
+<body>
+	<div class="my-line"></div>
+	<div class="aui-content">       
+        <div class="aui-form">
+            <div class="aui-input-row">
+                <span class="aui-input-addon aui-iconfont  aui-icon-phone aui-text-pink"></span>
+                <input type="number" class="aui-input"  id="phone" placeholder="请输入11位大陆手机号"/>
+            </div>
+
+            <div class="aui-input-row">
+                <input type="number" class="aui-input" id="code" placeholder="请输入收到的验证码"/>
+                <span class="aui-input-addon">
+                    <div class="aui-btn" id="codeBtn" status="1" style="color:#FFFFFF;background-color:#FF6100;"  onclick="verCode()">获取验证码</div>
+                </span>
+            </div>
+            
+            <div class="aui-btn-row hide" id="my-qr-btn">
+                <div class="aui-btn aui-btn-block "
+                style="color:#FFFFFF;background-color:#FF6100;" onclick="verify()">确认</div>
+            </div>
+        </div>
+    </div>	
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/md5.js"></script>
+	<script type="text/javascript">
+	var token;
+	var authKey;
+	var phone;
+	var str;
+	var is_err = 1 ;
+	var key;
+	apiready = function(){
+		$api.rmStorage('wait');
+		token = $api.getStorage('token');
+		if(!isLogin(token)){
+			goLogin();
+			return;
+		}
+		checkWait();
+	};
+	function verCode(){			
+	
+		phone = $api.val($api.byId('phone'));
+		if(phone.length!=11){
+			toastMsg('请输入正确的手机号');  
+        }else{
+        	loadingShow(true,'正在发送验证码','请稍候');
+		   	sendMsg(phone);				 
+		}
+	}
+
+	function sendMsgSuccessCallback(ret,extra) {
+		_loadingHide();
+		if(ret.statusCode=='200'){
+//					$api.setStorage('sendcode',ret.code);
+			$api.removeCls($api.byId('my-qr-btn'), 'hide');
+			timeRun();
+			toastMsg('已发送,请注意查收');
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+
+	function sendMsgErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+
+	function sendMsg(phone){		
+		str = md5_vm_test('appkey=37e08411ef0e84597e073c53c2c7fe5d&mobile='+phone+'&url=/app/user/mobile/bind');
+		var url = serviceUser+'mobile/verify/create';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			mobile : String(phone),
+			sign:str,
+			url:'/app/user/mobile/bind'
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,sendMsgSuccessCallback,sendMsgErrorCallback,0,extra);
+
+	}
+
+	function verifySuccessCallback(ret,extra) {
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			key =  ret.authKey;
+			Bind(ret.authKey);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+
+	function verifyErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+
+	function verify(){
+		_loadingShow();
+		var code = $api.val($api.byId('code'));
+		var url = serviceUser+'mobile/verify';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData({
+			mobile: phone, // 手机号
+			veriCode:code, // 短信验证码
+			sign: str
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,verifySuccessCallback,verifyErrorCallback,0,extra);
+	}
+
+	function BindSuccessCallback(ret,extra) {
+		_loadingHide();
+		if(ret.statusCode=='200' && ret.success){
+			$api.setStorage('userPhone',phone);
+			toastMsg('绑定成功');
+			api.execScript({
+				name:'root',
+				frameName:"footer_tab_4",
+				script: 'setPhone();'
+			});
+			setTimeout(function(){
+				api.closeWin();
+			},500);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+
+	function BindErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+
+	function Bind(key){
+
+		var url = serviceUser + 'mobile/bind';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			authKey: String(key), // 新手机的授权码（验证码校验成功后获得）
+			mobile: String(phone) // 新手机号
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,BindSuccessCallback,BindErrorCallback,0,extra);
+
+	}
+	var wait=0;
+	function checkWait(){
+		var thisWait = $api.getStorage('wait');
+		if(typeof(thisWait)=='undefined'||thisWait==120){
+			wait=120;
+		}else{
+			wait = thisWait;
+			timeRun();
+		}
+	}
+	
+	function timeRun(){	
+		if(wait == 0) {  		
+            $api.addCls($api.byId('codeBtn'), 'codeBtn');
+            $api.removeCls($api.byId('codeBtn'), 'waitBtn'); 
+           	$api.html($api.byId('codeBtn'), '获取验证码');
+           	$api.attr($api.byId('codeBtn'),'onclick','verCode()');
+            wait = 120;
+        } else {  
+            $api.addCls($api.byId('codeBtn'), 'waitBtn');
+            $api.removeCls($api.byId('codeBtn'), 'codeBtn'); 
+            $api.html($api.byId('codeBtn'), '等待'+wait+'s');
+            $api.removeAttr($api.byId('codeBtn'), 'onclick');
+            wait--;           
+            setTimeout(function() {  
+                timeRun()  
+            },  
+            1000)
+        }
+        $api.setStorage('wait',wait);	
+	}
+	</script>
+</html>

@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>云衣橱头部</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/swiper.min.css"/>
+	<link rel="stylesheet" type="text/css" href="../components/slideswipe/slideswipe.css"/>
+	<style>
+		#short-header{
+			padding: 0 0.5rem;
+			height: 2.5rem;
+			overflow: hidden;
+		}
+		#short-header .my-hit-color{
+			background: #F6F6F6;
+			border-radius: 2px;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.8rem;
+			color: #454545;
+			padding: 0.25rem 0.45rem;
+			margin: 0 0.5rem;
+		}
+		#short-header-size{
+
+		}
+		#short-header .icon-lower{
+			font-size: 0.5rem;
+			color: #4A4A4A;
+			margin-right: 0.5rem;
+		}
+		#all-header{
+			height: 0rem;
+			overflow: hidden;
+		}
+		#size-container .slide-swipe{
+			border: none;
+		}
+	</style>
+</head>
+<body>
+
+<div id="frame1-header">
+	<!--尺码和季节-->
+	<div id="short-header" tap onclick="showAllHeader(this)" class="flex flex-vertical-center flex-space-between">
+		<div>
+			<span class="my-hit-color">分类 <samll id="short-header-season"></samll></span>
+			<span class="my-hit-color">尺码 <samll id="short-header-size"></samll></span>
+		</div>
+		<span class="duola-iconfont icon-lower"></span>
+	</div>
+	<div id="all-header">
+		<div id="season-container"></div>
+		<div id="size-container"></div>
+	</div>
+</div>
+
+<script id="slideswipe-template" type="text/x-dot-template">
+	<div class="slide-swipe swiper-container">
+		<div class="swiper-wrapper">
+			{{~it.data:value:index}}
+				<div class="swiper-slide flex flex-center" tapmode onclick="{{="slideSwipeClick(this,'"+index+"','"+value+"','"+it.callback+"')"}}"><span class="{{=index == it.activeIndex ? 'my-hit-color' : ''}}" title="{{=index}}">{{=value}}</span></div>
+			{{~}}
+		</div>
+	</div>
+</script>
+
+</body>
+</html>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/swiper.min.js"></script>
+<script type="text/javascript" src="../components/slideswipe/slideswipe.js"></script>
+<script type="text/javascript">
+	var headerHeight = 0;
+	var gSeasonIndex = 0;
+	var gSizeIndex = 0;
+	var shortHeaderSeasonEl = null;
+	var shortHeaderSizeEl = null;
+	var seasons = null;
+	var sizes = null;
+	apiready = function(){
+		var frame1Header = $api.byId('frame1-header');
+		$api.fixStatusBar(frame1Header);
+		seasons = $api.getStorage('seasons') || CONSTANT.SEASONALL;
+		sizes = $api.getStorage('sizes') || CONSTANT.SIZESALL;
+		var seasonIndex = api.pageParam.data.seasonIndex;
+		var sizeIndex = api.pageParam.data.sizeIndex;
+		headerHeight = api.pageParam.data.headerHeight || 75;
+		if(!isNaN(parseInt(seasonIndex)) && gSeasonIndex != seasonIndex){
+			gSeasonIndex = seasonIndex;
+		}
+		if(!isNaN(parseInt(sizeIndex)) && gSizeIndex != sizeIndex){
+			gSizeIndex = sizeIndex;
+		}
+		//初始化折叠头部的点击色
+		shortHeaderSeasonEl = $api.byId('short-header-season');
+		shortHeaderSizeEl = $api.byId('short-header-size');
+		if(shortHeaderSeasonEl){
+			$api.text(shortHeaderSeasonEl,seasons[gSeasonIndex]);
+		}
+		if(shortHeaderSizeEl){
+			$api.text(shortHeaderSizeEl,sizes[gSizeIndex]);
+		}
+		//初始化展开头部的点击色
+		initSlideSwipe('season-container',seasons,gSeasonIndex,'seasonSlideSwipeClick');
+		initSlideSwipe('size-container',sizes,gSizeIndex,'sizeSlideSwipeClick');
+	};
+
+	//异步更新展开和折叠头部的点击色
+	function execSeasonSizeIndex(seasonIndex,sizeIndex){
+//		console.log(getLogStr([seasonIndex,sizeIndex]));
+		if(!isNaN(parseInt(seasonIndex)) && gSeasonIndex != seasonIndex){
+			gSeasonIndex = seasonIndex;
+			setSlideSwipeHitColor('season-container',gSeasonIndex);
+			if(shortHeaderSeasonEl){
+				$api.text(shortHeaderSeasonEl,seasons[gSeasonIndex]);
+			}
+		}
+		if(!isNaN(parseInt(sizeIndex)) && gSizeIndex != sizeIndex){
+			gSizeIndex = sizeIndex;
+			setSlideSwipeHitColor('size-container',gSizeIndex);
+			if(shortHeaderSizeEl){
+				$api.text(shortHeaderSizeEl,sizes[gSizeIndex]);
+			}
+		}
+	}
+
+	//点击箭头展开头部
+	function showAllHeader(el){
+		$api.css(el,'height:0px;transition:none;');
+		var allHeader = $api.byId('all-header');
+		$api.css(allHeader,'height:5rem;transition: height 0.3s linear;');
+		var execScriptFun = getExecScript('showFrame1AllHeader2');
+		api.execScript({
+			name: 'root',
+			script: execScriptFun
+		});
+	}
+
+	//显示折叠头部
+	function showShortHeader(seasonIndex,sizeIndex){
+		var el = $api.byId('all-header');
+		$api.css(el,'height:0px;transition: height 0.3s linear;');
+		var shortHeader = $api.byId('short-header');
+		setTimeout(function(){
+			execSeasonSizeIndex(seasonIndex,sizeIndex);
+			api.setFrameAttr({
+				name: 'frame1Header',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 'auto',
+					h: headerHeight
+				}
+			});
+			$api.css(shortHeader,'height:2.5rem;transition:none;');
+		},300);
+	}
+
+	//ios hack 仅显示折叠头部
+	function execHackShowShortHeader(){
+		var el = $api.byId('all-header');
+		$api.css(el,'height:0px;transition: none;');
+		var shortHeader = $api.byId('short-header');
+		$api.css(shortHeader,'height:2.5rem;transition:none;');
+	}
+	//侧滑组件季节点击
+	function seasonSlideSwipeClick(index,value){
+		if(!isNaN(parseInt(index)) && gSeasonIndex != index){
+			gSeasonIndex = index;
+			if(shortHeaderSeasonEl){
+				$api.text(shortHeaderSeasonEl,seasons[gSeasonIndex]);
+			}
+			//hack 表示请求数据后滚动到某个锚点
+			var execScriptFun = getExecScript('execGetCloudsetBySeason',[index,value,'hack']);
+			api.execScript({
+				name:'root',
+				frameName: 'footer_tab_2',
+				script: execScriptFun
+			});
+		}
+	}
+	//侧滑组件尺码点击
+	function sizeSlideSwipeClick(index,value){
+		if(!isNaN(parseInt(index)) && gSizeIndex != index){
+			gSizeIndex = index;
+			if(shortHeaderSizeEl){
+				$api.text(shortHeaderSizeEl,sizes[gSizeIndex]);
+			}
+			var execScriptFun = getExecScript('execGetCloudsetBySize',[index,value,'hack']);
+			api.execScript({
+				name:'root',
+				frameName: 'footer_tab_2',
+				script: execScriptFun
+			});
+		}
+	}
+</script>

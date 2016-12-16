@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<title>申请体现详情</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+
+	<style>
+		body{
+
+		}
+
+
+	</style>
+</head>
+<body>
+<!--<div class="aui-content my-content">-->
+<!--<ul class="aui-grid-nine my-aui-grid-nine">-->
+<!--<li class="aui-col-xs-6 aui-text-center my-aui-border-r">-->
+<!--<p class="my-aui-text-size-12 my-aui-text-color">已打款金额-->
+<!--<p class="aui-font-size-16 my-color my-margin-t-5"><em id="b">0</em>元</p>-->
+<!--</p>-->
+<!--</li>-->
+<!--<li class="aui-col-xs-6 aui-text-center">-->
+<!--<p class="my-aui-text-size-12 my-aui-text-color">审核中-->
+<!--<p class="aui-font-size-16 my-color my-margin-t-5"><em id="a">0</em>元</p>-->
+<!--</p>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+
+<section class="aui-grid aui-margin-t-10 aui-margin-b-10">
+	<div class="aui-row">
+		<div class="aui-col-xs-6 my-aui-border-r">
+			<div class="aui-grid-label aui-margin-r-5 ">
+				<p class="aui-font-size-12 aui-text-gray my-color">已打款金额<p> <em id="paid">0</em> 元</p></p>
+			</div>
+		</div>
+		<div class="aui-col-xs-6">
+			<div class="aui-grid-label">
+				<p class="aui-font-size-12 aui-text-gray my-color">审核中</p> <p> <em id="pending">0</em> 元</p>
+			</div>
+		</div>
+	</div>
+</section>
+<div class="aui-content aui-margin-b-15">
+	<ul class="aui-list aui-media-list">
+		<div id="interpolation"></div>
+	</ul>
+</div>
+<script id="interpolationtmpl" type="text/x-dot-template">
+	{{if(it && it.length>0){}}
+	{{for(var i =0;i < it.length; i++){}}
+	<li class="aui-list-item">
+		<div class="aui-info">
+			<div class="aui-info-item">
+				<span >申请提现时间: {{=getDate(it[i].startedAt)}}</span>
+			</div>
+			<div class="aui-info-item aui-margin-r-15">提现金额: {{=it[i].amount}}元</div>
+		</div>
+	</li>
+	{{ } }}
+	{{ } }}
+</script>
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript">
+	var currPage = 1;
+	var token;
+	apiready = function(){
+		token =  $api.getStorage('token');
+		init();
+		loadMore();
+		getCash();
+		pullRefresh(loadRefresh);
+	};
+
+	function loadMore(){
+		api.addEventListener({
+			name:'scrolltobottom',
+			extra:{threshold:0}
+		}, function(ret, err){
+			currPage++;
+			init(CONSTANT.ACTIONLOAD);
+		});
+	}
+	function loadRefresh(){
+		currPage = 1;
+		init(CONSTANT.ACTIONREFRESH);
+	}
+	function getCashErrorCallback(err){
+		toastMsg(err.msg);
+	}
+	function getCashSuccessCallback(ret){
+		console.log(JSON.stringify(ret));
+		if(ret.statusCode==200 && ret.cashTotal){
+			$api.text($api.byId("paid"),ret.cashTotal.paid);
+			$api.text($api.byId("pending"),ret.cashTotal.pending);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function getCash() {
+		var url = serviceNew + 'cash/cashTotal';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,getCashSuccessCallback,getCashErrorCallback,0,extra);
+	}
+	function init(action){
+		loadingShow();
+		var url = serviceNew + 'cash/hisDetails';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			page : currPage,
+			pageSize : CONSTANT.PAGESIZE,
+		});
+		var extra = {action:action};
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+	function initSuccessCallback(ret,extra){
+		var action = extra.action;
+		loadingHide();
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else{
+			loadingHide();
+		}
+		if(ret.statusCode==200 && ret.list){
+			if(action == CONSTANT.ACTIONREFRESH){
+				doHtml("interpolation","interpolationtmpl",ret.list);
+			}else{
+				doAppend("interpolation","interpolationtmpl",ret.list);
+			}
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err){
+		loadingHide();
+		toastMsg(err.msg);
+	}
+</script>
+</html>

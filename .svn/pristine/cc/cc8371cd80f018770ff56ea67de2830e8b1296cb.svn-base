@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<title>提现</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+	<style>
+
+		.my-padding{	
+			background-color:#fff;
+			padding:15px
+		}
+		.aui-text-gray{
+			color: #777;
+		}
+		.my-text-color span {
+			margin-top: 0.2rem;
+		}
+		.aui-padded-b-30{
+			padding-bottom: 1.5rem !important;
+		}
+		.aui-margin-b-40{
+			margin-bottom: 2rem !important;
+		}
+	</style>
+</head>
+<body>
+<section class="aui-content aui-padded-t-10 aui-margin-b-10">
+	<div class="aui-text-center my-padding">
+		<p class="my-color aui-font-size-12 aui-margin-b-10">正在提现</p>
+		<p class="my-color aui-font-size-24 aui-margin-b-10"><em id="pending">0</em>元</p>
+		<p class="my-color aui-font-size-12 aui-margin-b-10">可提现金额</p>
+		<p class="my-color aui-font-size-14"><em id="cashable">0</em>元</p>
+	</div>
+</section>
+
+
+<section class="aui-grid">
+	<div class="aui-row ">
+		<div class="aui-col-xs-6 my-aui-border-r " onclick="Deposit()">
+			<div class="aui-grid-label aui-margin-r-5 ">
+				<p class="aui-font-size-12 aui-text-gray">提现记录</p>
+			</div>
+		</div>
+		<div class="aui-col-xs-6" onclick="Rule()">
+			<div class="aui-grid-label">
+				<p class="aui-font-size-12 aui-text-gray">提现规则</p>
+			</div>
+		</div>
+	</div>
+</section>
+<div class="aui-content aui-margin-b-40 aui-padded-b-30">
+	<ul class="aui-list aui-media-list">
+		<!--<li class="aui-list-header ">-->
+		<!--通讯录样式列表-->
+		<!--</li>-->
+		<div id="interpolation">
+		</div>
+	</ul>
+</div>
+<div id="footer">
+	<!--<footer class="aui-bar aui-bar-tab aui-btn my-bg-color my-text-color aui-padded-b-15 aui-padded-t-15" onclick="getApply()">-->
+		<!--<span>申请提现{{=it.cashable}}元</span>-->
+	<!--</footer>-->
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+
+<script id="interpolationtmpl" type="text/x-dot-template">
+	{{if(it && it.length>0){}}
+	{{for(var i =0;i < it.length; i++){}}
+	<li class="aui-list-item">
+		<div class="aui-media-list-item-inner">
+			<div class="aui-list-item-media">
+				<p class="aui-font-size-20 my-color">{{=it[i].amount}}元</p>
+			</div>
+			<div class="aui-list-item-inner">
+				<div class="aui-list-item-text">
+					<div class="aui-list-item-title aui-font-size-16 aui-text-gray"></div>{{=it[i].typeFront}}
+					<div class="aui-list-item-right">
+						{{?it[i].status == "pending" }}
+						<p class="aui-font-size-20" style="color: #dddddd">{{=it[i].sattusFront}}</p>
+						{{?? it[i].status != "pending"}}
+						<p class="aui-font-size-20 my-color">{{=it[i].sattusFront}}</p>
+						{{??}}
+						{{?}}
+					</div>
+				</div>
+				<div class="aui-list-item-text aui-font-size-14 aui-text-gray">
+					相关用户 {{=it[i].fromMobile}}
+				</div>
+			</div>
+
+		</div>
+	</li>
+	{{ } }}
+	{{ } }}
+</script>
+<script id="footerTmpl" type="text/x-dot-template">
+	{{?it.pending == 0 && it.cashable != 0}}
+	<footer class="aui-bar aui-bar-tab aui-btn my-bg-color my-text-color aui-padded-b-15 aui-padded-t-15" onclick="getApply()">
+		<span>申请提现{{=it.cashable}}元</span>
+	</footer>
+	{{?? it.pending != 0}}
+	<footer class="aui-bar aui-bar-tab aui-btn my-text-color aui-padded-b-15 aui-padded-t-15" style="background-color: #dddddd">
+		<span>提现中{{=it.pending}}元 </span>
+	</footer>
+	{{??}}
+	{{?}}
+</script>
+<script type="text/javascript">
+	var token,pending,cashable,openId;
+	apiready = function(){
+		openId =  $api.getStorage('wxOpenId');
+		token =  $api.getStorage('token');
+		init();
+		pullRefresh(loadRefresh);
+	};
+	function loadMore(){
+		api.addEventListener({
+			name:'scrolltobottom',
+			extra:{threshold:0}
+		}, function(ret, err){
+
+			setTimeout(function(){
+				getCloudset();
+			},200);
+		});
+	}
+	function loadRefresh(){
+		currPage = 1;
+		getCloudset(CONSTANT.ACTIONREFRESH);
+	}
+	function getCloudset() {
+		init("refresh");
+	}
+	function init(action){
+		loadingShow();
+		var url = serviceNew + 'cash/currentCash';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = {action:action};
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+	function initSuccessCallback(ret,extra){
+		loadingHide();
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else{
+			loadingHide();
+		}
+		if(ret.statusCode==200 && ret.cashData.coupons){
+			pending = ret.cashData.pending;
+			cashable = ret.cashData.cashable;
+			$api.text($api.byId("pending"),pending);
+			$api.text($api.byId("cashable"),cashable);
+			doHtml("interpolation","interpolationtmpl",ret.cashData.coupons);
+			doHtml("footer","footerTmpl",{pending: pending,cashable: cashable});
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err){
+		loadingHide();
+		toastMsg(err.msg);
+	}
+	function Deposit(){
+		api.openWin({
+			name: 'Deposit',
+			url: 'win.html',
+			pageParam:{
+				page: 'Deposit',
+				title: '提现记录'
+			}
+		});
+	}
+	function Rule(){
+		api.openWin({
+			name: 'Rule',
+			url: 'win.html',
+			pageParam:{
+				page: 'Rule',
+				title: '提现规则'
+			}
+		});
+	}
+	function getApply(){
+		 if (!openId) {
+			 toastMsg("请先微信登录!");
+			 return;
+		 }
+		loadingShow();
+		var url = serviceNew + 'cash/apply';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			amount:  parseFloat(cashable),
+			channel: "wx_pub"
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,getApplyCallback,getApplyErrorCallback,0,extra);
+	}
+	function getApplyCallback(ret){
+		loadingHide();
+		if(ret.statusCode==200 && ret.msg == "OK"){
+			init("refresh");
+			toastMsg(ret.cash);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function getApplyErrorCallback (err) {
+		loadingHide();
+		toastMsg(err.msg);
+	}
+</script>
+</html>

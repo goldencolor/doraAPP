@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的衣橱</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        #main {
+            padding-bottom: 3rem;
+        }
+        .my-notice span{
+            font-size: 13px; color:red; z-index:99;
+        }
+        .my-notice .my-notice-color{
+            color: #E59C96;
+        }
+
+        .my-choose span{
+            font-size: 26px;
+        }
+        .cleat{
+            width: 100%;
+            text-align: center;
+        }
+        .my-available span{
+            font-size: 13px; color:#ffffff;
+        }
+        .my-season span{
+            font-size: 13px; color:#ffffff;
+        }
+        #loading{
+            padding-bottom: 10px;
+        }
+        #loading p{
+            font-size: 12px; color: #999;
+        }
+        .waterfall .item .footer {
+            padding: 0;
+        }
+        .label .unavailable {
+            right: 0;
+            position: absolute;
+        }
+        .waterfall .item img {
+            width: 100%;
+        }
+        .waterfall .item .footer .number {
+            margin-right: 0.2rem;
+        }
+        .waterfall .item .header .label .new {
+            font-size: 0.5rem;
+            width: 2.7rem;
+        }
+        .waterfall .item img{
+            height: 8.5rem;
+            position: relative;
+        }
+        .shadow-11{
+            width: 100%;
+            height: 0.55rem;
+            background: #F5F5F5;
+            box-shadow: inset 0px 1px 1px 0px rgba(0,0,0,0.15);
+        }
+        .waterfall .item .header .size{
+            font-size: 0.6rem;
+            min-width: 1rem;
+            padding: 0 0.2rem;
+            height: 1rem;
+            line-height: 1rem;
+            text-align: center;
+            background: #000000;
+            color: #FFFFFF;
+            position: absolute;
+            bottom: 0;
+            border-radius: 0 0.2rem 0 0;
+        }
+        .waterfall .item .add-bag{
+            position: relative;
+            text-align: center;
+        }
+        .waterfall .item .add-bag .icon-remove-bag-active{
+            position: absolute;
+            color: #FF6100;
+            font-size: 1.8rem;
+        }
+        .waterfall .item .add-bag .icon-remove-bag{
+            position:relative;
+            font-size: 1.8rem;
+        }
+        .waterfall .item .add-bag .icon-join-bag{
+            position:relative;
+            font-size: 1.8rem;
+        }
+        .aui-grid [class*=aui-col-xs-]:active {
+            background-color: #FFFFFF;
+        }
+        .waterfall .item .footer .name {
+            text-align: center;
+            padding-top: 0.3rem;
+        }
+        #cloudset-container .design-item img {
+            min-height: 10.5rem;
+        }
+        #cloudset-container .design-item .newTag{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4.3rem;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            opacity: 0.6;
+            background: #000000;
+            border-bottom-right-radius: 0.5rem;
+            text-align: center;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.65rem;
+            color: #FFFFFF;
+            z-index: 10;
+        }
+        #cloudset-container .design-item .newTag .one{
+            position: absolute;
+            left: 0;
+            top: 0;
+            color:#FFFFFF;
+            width: 4.3rem;
+            height: 1.5rem;
+            line-height: 1.5rem;
+        }
+        .shadow-13 {
+            width: 100%;
+            height: 0.65rem;
+            background: #F4F4F4;
+        }
+
+        .design-name {
+            height: 2.4rem;
+            line-height: 2.4rem;
+            text-align: left;
+            padding: 0 1.5rem;
+            font-family: SourceHanSansCN-Normal;
+            /*font-family: SourceHanSansCN-Medium;*/
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            letter-spacing: 0px;
+        }
+        .design-name-bold {
+            font-weight: 700;
+        }
+        .icon-line {
+            font-weight: 700;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <div class="aui-grid">
+        <div id="cloudset-container" class="waterfall aui-row">
+        </div>
+    </div>
+    <div  id="myCleat" class="cleat">
+        <p class="aui-flex-middle aui-flex-center"> 请到首页和云衣橱选择衣服吧</p>
+    </div>
+    <!--<div id="loading" class="aui-text-center aui-padded-t-15">-->
+    <!--</div>-->
+    <!--<div id="loading" class="aui-text-center" style="font-size: 12px; color: #999999;">-->
+    <!--<img src="../../icon/loading.gif" width="16"/>-->
+    <!--<div>更多数据加载中</div>-->
+    <!--</div>-->
+</div>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/doT_min.js"></script>
+
+<script id="cloudset-container-template" type="text/x-dot-template">
+    {{ for(var i = 0; i < it.length; i++) { }}
+    <div class="item aui-col-xs-4" >
+        <div class="header">
+            <img src="../../image/hold.jpg"  alt="多啦衣梦" class="{{='cloudset-img-' + it[i]._id}}" width="100%" tapmode onclick="showClothes('{{=it[i]._id}}','{{=isDefine(it[i].preSelBefore)}}',true)"/>
+            <div class="size">{{=it[i].size}}</div>
+            <div class="label flex flex-space-between">
+                {{? it[i].preSelBefore}}
+                <div class="new">{{=it[i].preSelBefore}}</div>
+                {{?? it[i].annualOnly == "YES"}}
+                <div class="annual">{{=CONSTANT.TEXT.ANNUALONLY }}</div>
+                {{?? isDesign(it[i].goodsSource)}}
+                <div class="design">{{=CONSTANT.TEXT.DESIGN }}</div>
+                {{?}}
+            </div>
+        </div>
+        <div class="footer flex flex-space-between flex-vertical-center">
+            <div class="name flex-1 aui-ellipsis-1">{{=it[i].name}}</div>
+        </div>
+        {{? stockStatus != "onlyStockOut"}}
+        <div  class="add-bag">
+            {{? it[i].checkedOnline == 1}}
+            <div id="{{='remove-bag-'+ it[i]._id + it[i].size}}"  tapmode onclick="deleteBag('{{=it[i]._id}}','{{=it[i].size}}')">
+                <i class="duola-iconfont icon-remove-bag-active"></i>
+                <i class="duola-iconfont icon-remove-bag" ></i>
+            </div>
+            <div id="{{='join-bag-'+ it[i]._id + it[i].size}}" class="aui-hide" tapmode onclick="checkCloth('{{=it[i]._id}}','{{=it[i].size}}','{{=it[i].annualOnly}}')">
+                <i class="duola-iconfont icon-join-bag"></i>
+            </div>
+
+            {{??}}
+            <div id="{{='remove-bag-'+ it[i]._id + it[i].size}}"  class="aui-hide" tapmode onclick="deleteBag('{{=it[i]._id}}','{{=it[i].size}}')">
+                <i class="duola-iconfont icon-remove-bag-active"></i>
+                <i class="duola-iconfont icon-remove-bag" ></i>
+            </div>
+            <div id="{{='join-bag-'+ it[i]._id + it[i].size}}" tapmode onclick="checkCloth('{{=it[i]._id}}','{{=it[i].size}}','{{=it[i].annualOnly}}')">
+                <i class="duola-iconfont icon-join-bag"></i>
+            </div>
+            {{?}}
+        </div>
+        {{?}}
+    </div>
+    {{? (i+1)%3 ==0 }}
+    <div class="aui-row shadow-11" ></div>
+    {{?}}
+    {{ } }}
+</script>
+
+<!--  主题图片模板 -->
+<script id="design-container-template" type="text/x-dot-template">
+    <div id="{{=CONSTANT.CACHEPAGEID+'design'+page}}">
+        {{ for(var i = 0; i < it.count; i++) { }}
+        <div class="design-item" tapmode onclick="{{=getExecScript('goDesignDatail',[it.list[i]._id,it.list[i].name,i])}}">
+            {{? it.list[i].tag == "new"}}
+            <div class="newTag"><div class="one">全新入驻</div></div>
+            {{?}}
+            <img src="../../image/hold.jpg" class="{{=CONSTANT.CACHECLASSNAME}}"
+                 title="{{=getImgUrl(CONSTANT.PICPRE.BRAND,it.list[i].img,CONSTANT.PICTUREOSS.Q80)}}"/>
+            <div class="design-name word-wrap" style="{{=getBackgroudColor(it.list[i].bgColor)}}"><span
+                    class="design-name-bold">{{=it.list[i].name}}</span>&nbsp;&nbsp;<span
+                    class="duola-iconfont icon-line"></span>&nbsp;&nbsp;{{=it.list[i].slogan || it.list[i].special}}
+            </div>
+            {{? i != it.count -1}}
+            <div class="shadow-13"></div>
+            {{?}}
+        </div>
+        {{ } }}
+    </div>
+</script>
+<script type="text/javascript">
+
+    var token;
+    var count;
+    var drabag   = 0;
+    var page 	 = 1;
+    var pageSize = 9;
+    var list     = [];
+    var myDrabagList;
+    var reInfoTag="YES";
+    var pageTotal=1;
+    var showNext='NO';
+    var isMember;
+    var winHeight;
+    var winWidth;
+    var dialogBox;
+    var totalPage = 1;
+    var stockStatus = "onlyStocked";
+    //加载更多时候，服务器是否返回，以免用户多次触发
+    var isLoadMoreResponsed = true;
+    apiready = function(){
+        winWidth = api.winWidth;
+        winHeight = api.winHeight;  // 比如： 568
+        isMember = $api.getStorage('isMember');
+        dialogBox = api.require('dialogBox');
+        count  = $api.getStorage('count');
+        //会员类型
+        $api.css($api.byId('myCleat'),'height:'+winHeight/1.5+"px;padding-top:"+winHeight/3+"px;");
+        reInfo();
+        pullRefresh(reInfo);
+        openFrame();
+        loadMore();
+        api.addEventListener({
+            name: 'sendClothList'
+        }, function(ret, err){
+            list = ret.value.key;
+            if(list=='CLEAR'){
+                init("reInfo");
+            }else{
+                setDrabag(list);
+            }
+        });
+        api.addEventListener({
+            name: 'tabClothList'
+        }, function(ret, err){
+            list = ret.value.key;
+            page = 1;
+            if(list == 1){
+                init("reInfo", "onlyStocked");
+                stockStatus = "onlyStocked";
+            } else if(list == 2){
+                init("reInfo","onlyStockOut");
+                stockStatus = "onlyStockOut";
+            }else {
+                stockStatus = "design";
+                getDesign(CONSTANT.ACTIONINIT);
+            }
+        });
+        api.addEventListener({
+            name: 'removeClothChoose'
+        }, function(ret, err){
+            var id = ret.value.id;
+            var index = ret.value.index;
+            init("reInfo");
+            updateInfo(id,index);
+        });
+        api.parseTapmode();
+    };
+    //加载更多
+    function loadMore(){
+        api.addEventListener({
+            name:'scrolltobottom',
+            threshold:20
+        }, function(ret, err){
+            if(page>=pageTotal){
+//                $api.html($api.byId('loading'), '<p>没有更多了</p>');
+            }else{
+                if(showNext=='YES'){
+                    loadMore();
+                    page = parseInt(page)+parseInt(1);
+                    if (stockStatus === "design") {
+                        getDesign('refresh');
+                    }else {
+                        init('refresh');
+                    }
+                }
+            }
+        });
+    }
+    function openFrame(){
+        if(!token){
+            goLogin('no',"../winLogin.html");
+            return;
+        }
+        api.openFrame({
+            name: 'closet_frame',
+            url: 'closet_frame.html',
+            rect: {
+                x:0,
+                y:winHeight-120,
+                w:"auto",           //宽度，若传'auto'，页面从x位置开始自动充满父页面宽度
+                h:70
+            },
+            pageParam: {
+            },
+            vScrollBarEnabled: false
+        });
+
+        //打开新手引导
+        var guideValue =  api.getPrefs({
+                sync: true,
+                key: 'guideKey'
+            }) || {};
+        guideValue=typeof (guideValue)=='string'?JSON.parse(guideValue):guideValue;
+        if(!isDefine(guideValue.three)){
+            api.openFrame({
+                name: 'new_user_guide',
+                url: '../new_user_guide.html',
+                rect: {
+                    x: 0,
+                    y: 0,
+                    w: 'auto',
+                    h: 'auto'
+                },
+                pageParam: {
+                    guideIndex:2
+                },
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false
+            });
+            guideValue.three='yes';
+            api.setPrefs({
+                key: 'guideKey',
+                value: guideValue
+            });
+            setTimeout(function(){
+                api.bringFrameToFront({
+                    from: 'new_user_guide',
+                    to: 'closet_frame'
+                });
+            },300);
+        }
+
+    }
+    function newInit(){
+        page=1;
+        if (stockStatus === "design") {
+            getDesign(CONSTANT.ACTIONREFRESH);
+        }else {
+            init('reInfo');
+        }
+    }
+    function reInfo(){
+        reInfoTag = 'NO';
+        showNext='NO';
+        page=1;
+        if (stockStatus === "design") {
+            getDesign(CONSTANT.ACTIONREFRESH);
+        }else {
+            init('reInfo');
+        }
+    }
+    function removeBag(id, size) {
+        $api.removeCls($api.byId("join-bag-"+ id+ size),'aui-hide');
+        $api.addCls($api.byId("remove-bag-"+ id+ size),'aui-hide');
+        updateMyBag();
+    }
+    function joinBag(id, size) {
+        $api.addCls($api.byId("join-bag-"+ id+ size),'aui-hide');
+        $api.removeCls($api.byId("remove-bag-"+ id+ size),'aui-hide');
+//        goBag("remove-bag-"+ id+ size);
+        upNewMyBag();
+    }
+    function updateMyBag(){
+        api.execScript({
+            frameName:"closet_frame",
+            script: "init();"
+        });
+    }
+    function upNewMyBag(){
+        api.execScript({
+            frameName:"closet_frame",
+            script: "newInit();"
+        });
+    }
+    function initSuccessCallback(ret,extra){
+        if(reInfoTag=="NO"){
+            setTimeout(api.refreshHeaderLoadDone(),3000);
+        }
+        _loadingHide();
+        _showPage();
+        if(ret.statusCode=='200'){
+            var closet = ret.closet;
+            pageTotal = ret.closet.pageTotal;
+            setCloset(closet,extra);
+            if (extra.reInfo =="reInfo"){
+                updateMyBag();
+            }
+//            if (page >= pageTotal) {
+//                $api.html($api.byId('loading'), '没有更多了');
+//            }
+        }else if(ret.statusCode=='10104'){
+            goLogin('no',"../winLogin.html");
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function initErrorCallback(err,extra){
+        if(reInfoTag=="NO"){
+            setTimeout(api.refreshHeaderLoadDone(),3000);
+        }
+        _loadingHide();
+        _showPage();
+        toastMsg(err.msg);
+    }
+    function init(reInfo,newStockStatu){
+
+//        var UILoading = api.require('UILoading');
+//        UILoading.flower({
+//            center: {
+//                x: 160,
+//                y: 240
+//            },
+//            size: 30,
+//            fixed: true
+//        }, function(ret) {
+//            alert(JSON.stringify(ret));
+//        });
+
+        showNext='NO';
+        token  = $api.getStorage('token');
+        myDrabagList='';
+        if(!token){
+            goLogin('no',"../winLogin.html");
+            return;
+        }
+        var body = {
+            "page" :page,
+            "pageSize":pageSize,
+            filters: {
+                stockStatus: newStockStatu || stockStatus
+            }
+        };
+        var bodyt = JSON.stringify(body);
+        if(page==1 && !reInfo){
+            _loadingShow();
+        }
+        var url = serviceNew + 'closet';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData(bodyt);
+        var extra = {reInfo: reInfo,page: page};
+        _ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+    }
+    function setCloset(closet,extra){
+        if (extra.reInfo == "reInfo") {
+            doHtml("cloudset-container","cloudset-container-template",closet.list);
+        } else {
+            doAppend("cloudset-container","cloudset-container-template",closet.list);
+        }
+        if (closet.count == 0){
+            $api.removeCls($api.byId("myCleat"), "hide");
+        } else {
+            $api.addCls($api.byId("myCleat"), "hide");
+        }
+
+        for(var i=0;i<closet.list.length;i++){
+            var url = colthPath + closet.list[i].img + CONSTANT.PICTUREOSS.CLOTHESLIST;
+            _imgCacheUrl2(url,'.cloudset-img-'+closet.list[i]._id);
+        }
+        showNext='YES';
+    }
+    function showDraBag(check){
+        sendEventUmeng(CONSTANT.UMENGEVENT.DORABAG,{
+            from:CONSTANT.PAGE.INDEX[2]
+        });
+        api.openWin({
+            name: 'myDrabag',
+            url: 'winBag.html',
+            pageParam:{
+                title:"我的多啦袋",
+                page:"myDrabag",
+                name:"myDrabag",
+                id:myDrabagList,
+                check:check,
+                tag:'myCloth'
+            }
+        });
+    }
+
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra,winName,value){
+        api.closeWin({
+            name:winName
+        });
+    }
+
+    function checkClothSuccessCallback(ret,extra){
+        _loadingHide();
+        if(ret.statusCode=='200'){
+            var bagClothList = extra.bagClothList;
+            toastMsg(ret.msg);
+            joinBag(extra._id, extra.size);
+        } else if (ret.statusCode =='10303'){
+            thaw();
+        } else if (ret.statusCode == '20302') {
+            dialogBox.sendMessage({
+                texts: {
+                    title: '提示',
+                    content: '当前服装仅限年费用户,如果您想要体' +'                     '+
+                    '验,请立即充值成为我们的年费会员吧',
+                    leftBtnTitle: '再考虑下',
+                    rightBtnTitle: '立即充值'
+                },
+                styles: {
+                    bg: '#fff',
+                    w: 300,
+                    title: {
+                        h: 60,
+                        show: {
+                            marginL: 35,
+                            titleSize: 18,
+                            titleColor: '#000'
+                        }
+                    },
+                    content: {
+                        marginT: 10,
+                        color: '#000',
+                        size: 14
+                    },
+                    left: {
+                        marginB: 20,
+                        marginL: 130,
+                        w: 70,
+                        h: 35,
+                        corner: 2,
+                        bg: '#FFF',
+                        size: 14,
+                        color: '#000'
+                    },
+                    right: {
+                        marginB: 20,
+                        marginL: 10,
+                        w: 70,
+                        h: 35,
+                        corner: 2,
+                        bg: '#FFF',
+                        size: 14,
+                        color: '#FF6100'
+                    }
+                }
+            }, function(ret) {
+                if (ret.eventType !== 'left') {
+                    api.openWin({
+                        name: 'Pay',
+                        url: '../win.html',
+                        pageParam:{
+                            page: 'Pay',
+                            title: '缴费',
+                            bagNum: count ,
+
+                            type: "serviceFee"
+                        }
+                    });
+                }
+                dialogBox.close({
+                    dialogName: 'sendMessage'
+                });
+            });
+        }
+        else{
+            toastMsg(ret.msg)
+        }
+    }
+    function checkClothErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+    function thaw(){
+        dialogBox.sendMessage({
+            texts: {
+                title: '提示',
+                content: '当前会员为冻结状态，需要解冻吗?',
+                leftBtnTitle: '再考虑下',
+                rightBtnTitle: '立即解冻'
+            },
+            styles: {
+                bg: '#fff',
+                w: 300,
+                title: {
+                    h: 60,
+                    show: {
+                        marginL: 35,
+                        titleSize: 18,
+                        titleColor: '#000'
+                    }
+                },
+                content: {
+                    marginT: 10,
+                    color: '#000',
+                    size: 14
+                },
+                left: {
+                    marginB: 20,
+                    marginL: 130,
+                    w: 70,
+                    h: 35,
+                    corner: 2,
+                    bg: '#FFF',
+                    size: 14,
+                    color: '#000'
+                },
+                right: {
+                    marginB: 20,
+                    marginL: 10,
+                    w: 70,
+                    h: 35,
+                    corner: 2,
+                    bg: '#FFF',
+                    size: 14,
+                    color: '#FF6100'
+                }
+            }
+        }, function(ret) {
+            if (ret.eventType == 'left') {
+                dialogBox.close({
+                    dialogName: 'sendMessage'
+                });
+            } else {
+                changeFreeze()
+            }
+        });
+    }
+    function checkCloth(id, size ,annualOnly){
+        sendMathEventUmeng(CONSTANT.UMENGEVENT.BAG_CLOTH,{size:size});
+        var url = serviceNew + 'dorabag/check';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData({"clothes":[{"_id":id,"size":size}]});
+        var extra = {"_id":id,"size":size};
+        _ajaxData(url,'post',headers,data,checkClothSuccessCallback,checkClothErrorCallback,0,extra);
+    }
+
+    function deleteBag(id ,size){
+        var body = {
+            "cloth":{
+                "_id": id,
+                "size": size
+            }
+        };
+        var url = serviceNew + 'dorabag/uncheck';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData(body);
+        var extra = {"_id": id, "size": size};
+        _ajaxData(url,'post',headers,data,uncheckSuccessCallback,uncheckErrorCallback,0,extra);
+    }
+
+    function uncheckSuccessCallback(ret, extra){
+        _loadingHide();
+        if(ret.statusCode=="200"){
+            removeBag(extra._id, extra.size);
+        }else if(ret.statusCode=='10104'){
+            toLogin();
+        }
+        else if (ret.statusCode =='10303'){
+            thaw();
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function uncheckErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+
+    function removeClothSuccessCallback(ret,extra){
+        _loadingHide();
+        if(ret.statusCode=='200'){
+            page =1;
+            init("reInfo");
+        }else if(ret.statusCode=='10104'){
+            goLogin('no',"../winLogin.html");
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function removeClothErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+
+    function removeCloth(id){
+        var url = serviceNew + 'closet/remove';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData({_id:id});
+        var extra = null;
+        _ajaxData(url,'post',headers,data,removeClothSuccessCallback,removeClothErrorCallback,0,extra);
+    }
+    function availableMsg(){
+        toastMsg('已经被抢光了，刷新试试!')
+    }
+    //    function loadMore(){
+    //        $api.html($api.byId('loading'), '<img src="../icon/loading.gif" width="16" /> <p>更多数据加载中</p>');
+    //    }
+    function showCheckWin(){
+        api.confirm({
+            title: '提示信息',
+            msg: '所选衣物已达上限，查看所选衣物',
+            buttons: ['确定', '取消']
+        }, function(ret, err){
+            var index = ret.buttonIndex;
+            if(index==1){
+                showDraBag();
+            }
+        });
+    }
+
+    function removeInfo(){
+        $api.html($api.byId('cloudset-container'), '');
+    }
+
+    function changeFreeze(){
+        var url = serviceNew + 'user/service/frozen/thaw';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,changeFreezeSuccessCallback,changeFreezeErrorCallback,0,extra);
+    }
+    function changeFreezeSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+            toastMsg("解冻成功");
+            dialogBox.close({
+                dialogName: 'sendMessage'
+            });
+        }else if(ret.statusCode=='10104'){
+            toLogin();
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function changeFreezeErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+
+    //发起请求
+    function getDesign(action) {
+        if (action == CONSTANT.ACTIONINIT) {
+            loadingShow();
+        }
+        var url = serviceNew + 'myBrands';
+        var headers = _getAjaxHeaders(false, true);
+        var data = _getAjaxData({
+            page: page,
+            pageSize: CONSTANT.PAGESIZE
+        });
+        var extra = {action: action};
+        _ajaxData(url, 'post', headers, data, designSuccessCallback, designErrorCallback, 0, extra);
+    }
+
+    function designSuccessCallback(ret, extra) {
+        var action = extra.action;
+        if (action == CONSTANT.ACTIONREFRESH) {
+            pullRefreshDone();
+        } else if (action == CONSTANT.ACTIONLOAD) {
+            isLoadMoreResponsed = true;
+            loadingHide();
+        } else {
+            loadingHide();
+        }
+        if (ret.statusCode == 200 ) {
+            if(!ret.list[0]) {
+                doHtml("cloudset-container","design-container-template",[]);
+                return;
+            }
+            page = ret.page;
+            totalPage = ret.pageTotal;
+            getDesignHtml(ret);
+        } else {
+            toastMsg(ret.msg);
+        }
+//        if (page >= totalPage) {
+//            $api.html($api.byId('loading'), '没有更多了');
+//        }
+    }
+    function designErrorCallback(err, extra) {
+        var action = extra.action;
+        if (action == CONSTANT.ACTIONREFRESH) {
+            pullRefreshDone();
+        } else {
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+    //渲染模板
+    function getDesignHtml(data, debug) {
+        var html = doTHtml('design-container-template', data);
+        if (debug)console.log(html);
+        var designContainer = $api.byId('cloudset-container');
+        if (page == 1) {
+            //首次加载或者刷新
+            //图片也刷新了，闪屏，有待于提升性能
+            designContainer.innerHTML = '';
+        }
+        $api.append(designContainer, html);
+        var currPageElId = CONSTANT.CACHEPAGEID + 'design' + page;
+        _imgCacheUrl3(designContainer, currPageElId);
+        api.parseTapmode();
+    }
+
+    //打开品牌详情页面
+    function goDesignDatail(_id, brand, index) {
+        sendEventUmeng(CONSTANT.UMENGEVENT.DESIGN_LIST, {
+            index: index,
+            brand: brand
+        });
+        var name = 'designDetail';
+        var title = '原创设计品牌&nbsp;&nbsp;<span class="duola-iconfont icon-line"></span>&nbsp;&nbsp;' + brand;
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftNav = setNavData(leftIcon);
+        var border = true;
+        var bounces = true;
+        var params = {};
+        params.nav = setNav(leftNav, border);
+        params.frame = setFrame(bounces, {
+            _id: _id
+        });
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = '../header_web.html';
+        openNewWinFrame(name, title, params, from, url, null, null, '原创设计');
+    }
+
+    //更改列表品牌背景颜色
+    function getBackgroudColor(bgColor) {
+        if (!isDefine(bgColor)) {
+            return 'color:#707070;';
+        }
+        bgColor = bgColor.toLowerCase();
+        var style = 'background:' + bgColor + ';';
+        if (bgColor == '#ffffff' || bgColor == '#fff' || bgColor == 'rgb(255,255,255)') {
+            style += 'color:#707070;';
+        }
+        return style;
+    }
+</script>
+</html>

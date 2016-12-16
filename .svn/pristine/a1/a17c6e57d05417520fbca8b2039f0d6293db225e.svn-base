@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>推荐有奖详情</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+    <style>
+        html, body {
+            background: #F4F4F4;
+            box-shadow: inset 0px -1px 1px 0px rgba(76,76,76,0.15);
+            font-family: SourceHanSansCN-Regular;
+        }
+        .img-desc  img{
+            width: 100%;
+            height: auto;
+        }
+        #app {
+            background: #FFFFFF;
+        }
+        .aui-info-item {
+            color: #424242;
+            font-family: ArialMT
+        }
+        .aui-info-item .aui-margin-l-15 {
+            font-size: 0.6rem;
+            color: #969696;
+
+        }
+        .aui-info-item .rank-money{
+            font-size: 0.8rem;
+
+        }
+        .loading {
+            color: #424242;
+            font-size: 0.6rem;
+        }
+    </style>
+</head>
+<body>
+<section id="app" class="aui-margin-b-15">
+    <div class="aui-info aui-padded-l-10 aui-padded-r-10">
+        <div class="aui-info-item">
+            <span class="aui-margin-l-15 rank-money" style="color: #424242">用户</span>
+        </div>
+        <div class="aui-info-item aui-margin-r-15"><span class="rank-money">开通会员时间</span></div>
+    </div>
+    <div v-for="(rank, index) in recomendList" class="aui-info aui-padded-l-10 aui-padded-r-10"  v-bind:style="{ background:index%2 ==0 ?'#F8F8F8':'#FFFFFF'}">
+        <div class="aui-info-item">
+            <img v-bind:src ="rank.user.isWxAvatar == 'YES'? rank.user.avatar : userPhoto + rank.user.avatar+ '@!65w65hrc'" style="width:1.5rem" class="aui-img-round" />
+            <span class="aui-margin-l-15" >{{rank.user.mobile | newMobile}}</span>
+        </div>
+        <div class="aui-info-item aui-margin-r-15"><span class="rank-money" v-text="rank.user.startTime"></span></div>
+    </div>
+    <div class="loading aui-text-center" v-show="loadMore.show">
+        <img src="../../icon/loading.gif" width="16"/>
+        <div v-text="loadMore.text"></div>
+    </div>
+</section>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+
+
+<script type="text/javascript">
+    apiready = function(){
+
+        api.addEventListener({
+            name : 'scrolltobottom',
+            extra : {
+                threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            vm.recommendRank();
+        });
+        var vm = new Vue({
+            el : '#app',
+            data: {
+                loadMore : {
+                    show : false, //控制是否显示 加载更多 默认不显示
+                    text : '加载更多...'
+                },
+                "page": 0,
+                "pageSize": 10,
+                codeImg: "../../image/hold.jpg" ,
+                recomendList: [],
+                userPhoto: userPhoto,
+                completed : false //是否加载了所有数据
+            },
+            filters: {
+                newMobile: function(mobile) {
+                    if (!mobile) return '';
+                    var reg = /^(\d{3})\d{4}(\d{4})$/;
+                    return mobile.replace(reg, "$1****$2");
+                }
+            },
+            methods: {
+                recommendRank: function(){
+                    var self = this;
+                    if (!self.completed) {//判断是否已经加载了所有数据
+                        self.loadMore.show = true;
+                        //显示加载更多模块
+                        self.page++;
+                        var url = serviceUser + 'invite/recommend';
+                        var headers = _getAjaxHeaders(true,true);
+                        var data = _getAjaxData({
+                            "page" : self.page,
+                            "pageSize": self.pageSize
+                        });
+                        var extra = null;
+                        _ajaxData(url,'post',headers,data,function(ret,extra){
+                            if(ret.statusCode == '200' ){
+                                if (ret.recomendList &&  ret.recomendList.length > 0) {
+                                    self.recomendList = ret.recomendList;
+                                }else {
+                                    self.completed = true;
+                                }
+                            }else if(ret.statusCode=='10104'){
+                                goLogin('no',"../winLogin.html");
+                            }else{
+                                toastMsg(ret.msg);
+                            }
+                            if (self.completed) {
+                                self.loadMore.text = '没有数据了!';
+                            }
+                            self.loadMore.show = false;
+                        },function(err,extra){
+                            toastMsg(err.msg);
+                            self.loadMore.show = false;
+                        },0,extra);
+                    }
+                }
+            }
+        });
+        vm.recommendRank();
+    };
+
+
+</script>
+</html>

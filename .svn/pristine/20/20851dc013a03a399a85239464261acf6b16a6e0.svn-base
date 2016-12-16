@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	.my-padding{
+    		padding-top: 30px;
+    	}
+		.my-tip{
+			line-height: 32px; margin: 0px;
+			font-size: 14px; text-align: center;
+		}
+		.my-tip p{
+			font-size: 32px; color: #C0392B;
+		}
+	</style>  
+</head>
+<body>
+<div id="main" class="hide">
+	<div class="my-tip my-padding aui-text-danger" >
+		本期得分
+		<p id="this">0</p>
+	</div>
+	<div class="my-tip my-padding aui-text-danger" >
+		总得分
+		<p id="total">0</p>
+	</div>
+	<div class="my-tip my-padding aui-text-danger" >
+		最高得分
+		<p id="Max">0</p>
+	</div>
+</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var token;
+	var is_err =1 ;
+	apiready = function(){
+		init();
+		
+	};
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		_showPage();
+		toastMsg(err.msg);
+	}
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		_showPage();
+		if(ret.statusCode=='200'){
+			_setHtmlVal('this',ret.result.current);
+			_setHtmlVal('total',ret.result.total);
+			_setHtmlVal('Max',ret.result.max);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+
+
+	function init(){
+		_loadingShow();
+		var url = serviceNew + 'purchase/score';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+	</script>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的收获地址</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+</head>
+<body>
+    <header id="header" class="duola-header flex">
+        <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWin()">
+            <span id="nav-left-icon" class="nav-left-icon duola-iconfont icon-left"></span>
+        </a>
+        <div id="nav-title" class="nav-title flex-1">我的收获地址</div>
+        <a id="nav-right" class="duola-icon-area" tapmode onclick="goAddAdrr()">
+            <span id="nav-right-icon" class="nav-right-icon aui-iconfont aui-icon-plus"></span>
+        </a>
+    </header>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/umeng_sdk.js"></script>
+	<script type="text/javascript">
+        apiready = function(){
+            var header = $api.byId('header');
+            $api.fixStatusBar(header);
+            api.parseTapmode();
+            onPageUmeng(CONSTANT.PAGE.DELIVERY);
+            var headerHeight = $api.offset(header).h;
+            var rect = {
+                x:0,
+                y:headerHeight,
+                w:'auto',
+                h:'auto'
+            };
+            var name = 'addr';
+            var page = 'addr.html';
+            var frameData = api.pageParam.data;
+            openNewFrame(name,page,false,rect,frameData);
+        };
+	
+        function closeWin(){
+            onPageEndUmeng(CONSTANT.PAGE.DELIVERY);
+            api.closeWin();
+        }
+
+        function  goAddAdrr(){
+            var name = 'Newly';
+            var title = CONSTANT.PAGE.NEWADDR;
+            var leftIcon = 'duola-iconfont icon-left';
+            var leftCallback = 'execCloseSlefWin';
+            var leftNav = setNavData(leftIcon,null,leftCallback);
+            var border = false;
+            var bounces = false;
+            var params = {};
+            params.nav= setNav(leftNav,border);
+            params.frame=setFrame(bounces);
+            var from = {
+                winName:api.winName,
+                frameName:api.frameName
+            };
+            var url = 'header_new.html';
+            var animation = '';
+            var page = 'Newly.html';
+            openNewWinFrame(name,title,params,from,url,animation,page);
+        }
+
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra,winName,value){
+        api.closeWin({
+            name:winName
+        });
+    }
+	</script>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>整理衣橱头部</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        /*加粗|*/
+        .aui-tab-item {
+            font-size: 0.9rem;
+            color: #989A9C;
+        }
+        .aui-tab {
+            position: static;
+        }
+        .aui-tab-item.aui-active {
+            color: #1B1B1B;
+            border-bottom: 0;
+            z-index: 100;
+            /*text-decoration:underline;*/
+            text-decoration: none;
+
+        }
+        .aui-active .tab-span{
+            height: 2rem;
+            font-size: 0.9rem;
+            border-bottom: 0.1rem solid #1B1B1B;
+        }
+        #nav-left{
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<header id="header" class="duola-header flex">
+    <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWin();">
+        <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text duola-iconfont icon-left"></span>
+    </a>
+    <div  class="aui-tab" id="tab" style="width: 80%;">
+        <div class="aui-tab-item aui-active aui-col-xs-6">
+            <span class="tab-span">在库</span></div>
+        <div class="aui-tab-item aui-col-xs-6"><span class="tab-span">暂无货</span></div>
+    </div>
+</header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/2_0/aui_tab.js" ></script>
+<script type="text/javascript">
+    var umengPage = null;
+    apiready = function() {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        api.parseTapmode();
+        var headerHeight = $api.offset(header).h;
+        var rect = {
+            x:0,
+            y:headerHeight,
+            w:'auto',
+            h:'auto'
+        };
+        openNewFrame('delete_closet',"delete_closet.html",false,rect,{},null,null,false,false);
+        var tab = new auiTab({
+            element:document.getElementById("tab"),
+            index:1,
+            repeatClick:false
+        },function(ret){
+            api.sendEvent({
+                name: 'tabClothList',
+                extra: {
+                    key: ret.index
+                }
+            });
+        });
+    };
+
+    function closeWebWin(){
+        onPageEndUmeng(umengPage);
+        api.closeWin();
+    }
+
+    //异步更改标题
+    function execChangeTitle(title){
+        if(isDefine(title)){
+            getTitle(title);
+        }
+    }
+</script>
+</html>

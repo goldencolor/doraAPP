@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+	<div class="aui-content aui-content-padded" id="message-content">
+	    <p class="aui-text-center history-date">7-16 20:00</p>
+	    <div class="aui-chat-sender">
+	        <div class="aui-chat-sender-avatar"><img src="../image/header.jpg"></div>
+	        <div class="aui-chat-sender-cont">
+	            <div class="aui-chat-right-triangle"></div>
+	            <span>Hello!!</span>
+	        </div>
+	    </div>
+	    <div class="aui-chat-receiver">
+	        <div class="aui-chat-receiver-avatar"><img src="../image/logo.png"></div>
+	        <div class="aui-chat-receiver-cont">
+	            <div class="aui-chat-left-triangle"></div>
+	            <span>你好！</span>
+	        </div>
+	    </div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+</script>
+</html>

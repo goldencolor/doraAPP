@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>更多</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        .aui-list {
+            margin-top: -1px;
+        }
+        .aui-list .aui-list-item {
+            padding-bottom: 0.4rem;
+            padding-top: 0.4rem;
+        }
+    </style>
+</head>
+<body>
+<div class="aui-content">
+    <ul class="aui-list">
+        <li class="aui-list-item" tapmode onclick="openFeedback(this)">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-title">意见建议</div>
+            </div>
+        </li>
+        <li class="aui-list-item" tapmode onclick="clearCache(this)">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-title">清除缓存</div>
+                <div class="aui-list-item-right">
+                    <div class="aui-badge" style="position:relative;top:0; left:0" id="cache">0M</div>
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-title">当前版本</div>
+                <div class="aui-list-item-right">
+                    <div id="my-version" style="position:relative;top:0; left:0" ></div>
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item" tapmode onclick="myScore(this)">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-title">评价一下</div>
+            </div>
+        </li>
+        <li class="aui-list-item" tapmode onclick="logout(this)">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-title">退出帐号</div>
+            </div>
+        </li>
+
+    </ul>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/doT_min.js"></script>
+
+<script type="text/javascript">
+    var myVersion;
+    apiready = function(){
+        myVersion = getMyVersion();
+        _setHtmlVal('my-version',myVersion);
+        getCache();
+        api.parseTapmode();
+    };
+
+    function getMyVersion(){
+        var version = api.appVersion;
+        var versionArray = version.split('.');
+        var versionTemp =versionArray.map(function(value){
+            return parseInt(value);
+        });
+        var repair =  api.getPrefs({
+                    sync: true,
+                    key: 'appRepair'
+                }) || 0;
+        return 'V'+versionTemp.toString().replace(/,/g,'.')+'_'+repair;
+    }
+    function logout(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.confirm({
+            msg:'是否确定退出?'
+        },function(ret,err){
+            if(ret.buttonIndex=='2'){
+                umengLogout();
+                api.sendEvent({
+                    name: 'loginOut'
+                });
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '正在退出',
+                    text: '请稍候',
+                    modal: true
+                });
+                $api.rmStorage('token');
+                $api.rmStorage('wxOpenId');
+                $api.clearStorage();
+                setTimeout(function(){
+                    api.hideProgress();
+                    api.execScript({
+                        frameName:'footer_tab_3',
+                        script: 'removeInfo()'
+                    });
+                    api.closeToWin({name:'root'});
+                },1000);
+            }
+        });
+    }
+    //打开用户反馈
+    function openFeedback(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'feedback',
+            url: '../win.html',
+            pageParam:{
+                page: 'feedback',
+                title: '意见建议',
+                name:"feedback"
+            }
+        });
+    }
+    //清除缓存
+    function clearCache(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:'清除缓存'
+        });
+        api.clearCache(function(ret,err){
+            api.toast({
+                msg:'清除完成'
+            });
+            $api.html($api.byId('cache'), '0M');
+        });
+    }
+    //获取缓存大小
+    function getCache(){
+        api.getCacheSize(function(ret){
+            var size = ret.size/(1024*1024);
+            $api.html($api.byId('cache'), size.toFixed(1)+'M');
+        });
+    }
+    function openWallet(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'Wallet',
+            url: 'win.html',
+            pageParam:{
+                page: 'Wallet',
+                title: '我的账户',
+                type:'NO'
+            }
+        });
+    }
+    function myScore(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        if (api.systemType == 'android') {
+            var smarket = api.require('marketScore');
+            smarket.myScore({
+                appname: 'com.biku.dorasdream'
+            });
+        } else {
+            api.installApp({
+                appUri: 'https://itunes.apple.com/cn/app/duo-la-yi-meng/id1065704878?mt=8'
+            });
+        }
+
+    }
+</script>
+</html>

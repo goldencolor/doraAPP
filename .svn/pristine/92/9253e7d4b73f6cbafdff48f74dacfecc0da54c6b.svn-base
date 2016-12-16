@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>个人信息</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    .aui-bg-pink{
+   		 background-color: #FF6100 !important;
+    }
+    .aui-input{
+		color:#777;padding:10px 0px;
+    }
+    .aui-text-pink{
+		/*background-color: #E59C96;*/
+		color: #FF6100 !important;
+	}
+	</style>  
+</head>	
+<body>
+	 <div class="aui-content" id="dom2" >
+        <div class="aui-form">
+            <div class="aui-input-row">
+                <span class="aui-input-addon my-aui-input-st">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
+                <input type="text" id="name" class="aui-input" placeholder="请填写您的真实姓名">
+            </div>
+            <div class="aui-input-row">
+                <span class="aui-input-addon my-aui-input-st">昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：</span>
+                <input type="text" id="nickname" class="aui-input" placeholder="请填写您的昵称">
+            </div>
+            <div class="aui-input-row">
+                <span class="aui-input-addon my-aui-input-st">Q&nbsp;&nbsp;Q&nbsp;&nbsp;号：</span>
+                <input type="number" id="qq-number" class="aui-input">
+            </div>
+            <div class="aui-input-row">
+                <span class="aui-input-addon my-aui-input-st">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</span>
+                <input type="text"  id="email" class="aui-input">
+            </div>
+            <div class="aui-input-row">
+                <span class="aui-input-addon my-aui-input-st">入会时间：</span>
+                <input type="text" id="startTime" class="aui-input" readonly="" value="">
+            </div>
+		</div>
+		<div class="my-line"></div>
+		<div class="aui-content my-content-margin-t">
+	        <ul class="aui-list-view">
+	            <!--<li class="aui-list-view-cell" onclick="WinDelivery()">
+		            <a class="aui-arrow-right">
+		            	<i class="aui-iconfont aui-icon-edit aui-bg-pink"></i>配送地址
+		            </a>
+	            </li>-->
+	           <!-- <li class="aui-list-view-cell" onclick="WinAutonym()">
+	           		<a class="aui-arrow-right">
+		            	<i class="aui-iconfont aui-icon-emoji aui-bg-success" ></i>实名认证
+		            </a>
+	            </li>-->
+	            <li class="aui-list-view-cell" onclick="WinFigure()">
+	            	<a class="aui-arrow-right">
+		            	<i class="aui-iconfont aui-icon-favor aui-bg-pink"></i>身材信息
+		            </a>
+	            </li>
+	            <li class="aui-list-view-cell hide" id="bind-phone" onclick="Winbind()">
+	            	<a class="aui-arrow-right">
+		            	<i class="aui-iconfont aui-icon-favor aui-bg-pink"></i>绑定电话
+		            </a>
+	            </li>
+	            <li class="aui-list-view-cell hide" id="change-phone" onclick="WinChangebind()">
+	            	<a class="aui-arrow-right">
+		            	<i class="aui-iconfont aui-icon-favor aui-bg-pink"></i>更改绑定电话
+		            </a>
+	            </li>
+	        </ul>
+    	</div>
+    	
+    	<div class="my-btn-box">
+			<div class="aui-btn my-btn-default aui-btn-block" 
+			style="color:#FFFFFF;background-color:#FF6100;" onclick="submit();">保存信息</div>
+		</div>
+	</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var token;
+	var userPhone;
+	var is_err = 1 ;
+	apiready = function(){
+		init();
+		token =$api.getStorage('token');		
+		if(userPhone ==''){
+			$api.removeCls($api.byId('bind-phone'), 'hide');
+		}else{
+			$api.removeCls($api.byId('change-phone'), 'hide');
+		}
+
+	};
+	function WinDelivery(){
+			api.openWin({
+	            name: 'Delivery',
+	            url: 'win.html', 
+	            pageParam:{
+	            	page: 'Delivery',
+			        title: '配送信息'
+	            }
+            });
+		}
+	function WinAutonym(){
+		api.openWin({
+            name: 'Autonym',
+            url: 'win.html', 
+            pageParam:{
+            	page: 'Autonym',
+		        title: '实名认证'
+            }
+        });
+	}
+	function WinFigure(){
+		api.openWin({
+            name: 'Figure',
+            url: 'win.html', 
+            pageParam:{
+            	page: 'Figure',
+		        title: '身材信息'
+            }
+        });
+	}
+	function Winbind(){
+		api.openWin({
+            name: 'bind',
+            url: 'win.html', 
+            pageParam:{
+            	page: 'bind',
+		        title: '绑定电话'
+            }
+        });
+	}
+	function WinChangebind(){
+		api.openWin({
+            name: 'verify',
+            url: 'win.html', 
+            pageParam:{
+            	page: 'verify',
+		        title: '验证身份'
+            }
+        });
+	}
+	function initSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+			if(isDefine(ret.result.startTime)){
+				$api.val($api.byId('startTime'), ret.result.startTime);
+			}
+			if(isDefine(ret.result.email)){
+				$api.val($api.byId('email'), ret.result.email);
+			}
+			if(isDefine(ret.result.QQ)){
+				$api.val($api.byId('qq-number'), ret.result.QQ);
+			}
+			if(isDefine(ret.result.realName)){
+				$api.val($api.byId('name'), ret.result.realName);
+			}
+			if(isDefine(ret.result.nickname)){
+				$api.val($api.byId('nickname'), ret.result.nickname);
+			}
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+	function init(){
+		var url = serviceUser+'info';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+	function submitSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+			var nickname = extra.nickname;
+			$api.setStorage('userNickname',nickname);
+			api.execScript({
+				name:'root',
+				frameName:"footer_tab_4",
+				script: 'init();'
+			});
+			toastMsg('修改成功!');
+			init();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function submitErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+	function submit(){
+		var nickname = $api.val($api.byId('nickname')).trim();
+		var name = $api.val($api.byId('name')).trim();
+		var number = $api.val($api.byId('qq-number')).trim();
+		var email = $api.val($api.byId('email')).trim();
+		if(!isDefine(nickname)){
+			toastMsg('昵称不能为空!');
+		}
+		if(!isDefine(name)){
+			toastMsg('姓名不能为空!');
+		}
+		var url = serviceUser+'info/update';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			"realName": String(name),
+			"nickname": String(nickname),
+			"QQ": String(number),
+			"email": String(email)
+		});
+		var extra = {nickname:nickname};
+		_ajaxData(url,'post',headers,data,submitSuccessCallback,submitErrorCallback,0,extra);
+	}
+	</script>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>下单</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/uzui.css"/>
+    <style>
+        .aui-content {
+            padding-bottom: 3rem;
+        }
+        .aui-list .aui-list-item {
+            padding-bottom: 0.5rem;
+            padding-top: 0.5rem;
+            padding-left: 1rem;
+        }
+        .aui-list .aui-ellipsis-1 {
+            width: 9rem;
+        }
+        #bag .aui-list-item-text {
+            padding-top: 0.5rem;
+        }
+        #bag .aui-list-item:active {
+            background-color: #FFFFFF;
+            -webkit-transition: background-color 0.2s linear;
+            transition: background-color 0.2s linear;
+        }
+        #bag .aui-list-item-inner {
+            padding-right: 1rem;
+            padding-top: 1.5rem;
+        }
+        #bag .aui-list-item-title {
+            font-size: 0.7rem;
+            color: #424242;
+        }
+        #bag .aui-label-black {
+            background-color: #000000;
+        }
+        #address .aui-list-item-media .aui-list-item-title, .aui-list-item-text {
+            font-size: 0.7rem;
+            color: #6F6F6F;
+        }
+        #address .aui-list-item-title {
+            font-size: 0.7rem;
+            color: #1A1A1A;
+        }
+        #address .aui-list-item-media {
+            padding-right: 0;
+            width: 3rem;
+        }
+        #address .aui-list-item-inner .address-phone-text {
+            color: #1A1A1A;
+        }
+        .my-foot{
+            height:3rem;position: fixed; left: 0px; right: 0px; bottom: 0px;
+            line-height: 3rem;
+            color: #ffffff;
+            z-index: 10;
+            width: 100%;
+            min-height: 2.25rem;
+            font-size: 1rem;
+            text-align: center;
+            display: table;
+        }
+        .my-bg-cancel {
+            background: #DEDEDE;
+        }
+        #address.aui-list{
+           margin-bottom: -1px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="aui-content aui-margin-b-15 ">
+    <ul class="aui-list aui-media-list" id="address">
+
+    </ul>
+    <ul class="aui-list aui-media-list" id="bag">
+        <!--<li class="aui-list-item">-->
+        <!--<div class="aui-media-list-item-inner">-->
+        <!--<div class="aui-list-item-media">-->
+        <!--<img src="http://img.duolayimeng.com/original/1528833-1.jpg@!640w960h90q">-->
+        <!--</div>-->
+        <!--<div class="aui-list-item-inner">-->
+        <!--<div class="aui-list-item-text">-->
+        <!--<div class="aui-list-item-title">舒适显腿高腰裙子</div>-->
+        <!--<div class="aui-list-item-right">-->
+        <!--<i class="aui-iconfont aui-icon-trash"></i>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="aui-list-item-text">-->
+        <!--<b>M</b>-->
+        <!--</div>-->
+        <!--<div class="aui-list-item-text">-->
+        <!--<div class="aui-col-xs-7">-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-5 ">-->
+        <!--<div class="aui-pull-right">-->
+        <!--<span style="font-size: 0.6rem">加入哆啦袋+</span>-->
+        <!--<i class="aui-iconfont aui-icon-calendar "></i>-->
+        <!--</div>-->
+
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--</div>-->
+        <!--</li>-->
+        <!--<li class="aui-list-item">-->
+        <!--<div class="aui-media-list-item-inner">-->
+        <!--<div class="aui-list-item-media">-->
+        <!--<img src="http://img.duolayimeng.com/original/1528833-1.jpg@!640w960h90q">-->
+        <!--</div>-->
+        <!--<div class="aui-list-item-inner">-->
+        <!--<div class="aui-list-item-text">-->
+        <!--<div class="aui-list-item-title" >-->
+        <!--<div class="aui-ellipsis-1">-->
+
+        <!--显腿高腰裙子舒适显腿高腰裙子舒适显腿高腰裙子 显腿高腰裙子舒适显腿高腰裙子舒适显腿高腰裙子 显腿高腰裙子舒适显腿高腰裙子舒适显腿高腰裙子 显腿高腰裙子舒适显腿高腰裙子舒适显腿高腰裙子 显腿高腰裙子舒适显腿高腰裙子舒适显腿高腰裙子-->
+        <!--</div>-->
+
+        <!--<div class="aui-list-item-text">-->
+        <!--<b>M</b>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="aui-list-item-right" >-->
+        <!--&lt;!&ndash;<i class="aui-iconfont aui-icon-trash"></i>&ndash;&gt;-->
+        <!--<div class="aui-label aui-label-danger aui-label-black">借衣中</div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+
+        <!--</div>-->
+
+        <!--</div>-->
+        <!--</li>-->
+        <!--<li class="aui-list-item">-->
+        <!--<div class="aui-media-list-item-inner">-->
+        <!--<div class="aui-list-item-media">-->
+        <!--<img src="http://img.duolayimeng.com/original/1528833-1.jpg@!640w960h90q">-->
+        <!--</div>-->
+        <!--<div class="aui-list-item-inner">-->
+        <!--<div class="aui-list-item-text">-->
+        <!--<div class="aui-list-item-title">舒适显腿高腰裙子-->
+        <!--<div class="aui-list-item-text">-->
+        <!--<b>M</b>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="aui-list-item-right">-->
+        <!--<i class="duola-iconfont icon-remove"></i>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</li>-->
+    </ul>
+
+</div>
+
+<footer class="my-bg-color my-foot aui-hide" id="order" tapmode onclick="sendBtn();">立即配送</footer>
+<footer class="my-bg-cancel my-foot aui-hide" id="need">需要选<em id="bagNum"></em>件后配送</footer>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/doT_min.js"></script>
+<script id="bag-template" type="text/x-dot-template">
+    {{ for(var i = 0; i < it.length; i++) { }}
+    <li class="aui-list-item" id="{{='bag-id-'+i}}">
+        <div class="aui-media-list-item-inner">
+            <div class="aui-list-item-media">
+                <img src="../../image/hold.jpg" tapmode class="{{=CONSTANT.CACHECLASSNAME}}" title="{{=getImgUrl2([colthPath,it[i].img,colthPathStyle])}}">
+            </div>
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-text">
+                    <div class="aui-list-item-title" >
+                        <div class="aui-ellipsis-1">
+                            {{=it[i].name}}
+                        </div>
+                        <div class="aui-list-item-text">
+                            <b>{{=it[i].size}}</b>
+                        </div>
+                    </div>
+                    {{? it[i].tag == "YES"}}
+                    <div class="aui-list-item-right" >
+                        <div class="aui-label aui-label-danger aui-label-black">借衣中</div>
+                    </div>
+                    {{??}}
+                    <div class="aui-list-item-right" >
+                        <i class="duola-iconfont icon-remove" onclick=" {{='deleteBag(\''+ ('bag-id-'+i) +'\',\''+ i +'\',\''+it[i].size+'\',\''+it[i]._id+'\',\''+it[i].online+'\',\''+it[i].barcode+'\')'}}"></i>
+                    </div>
+                    {{?}}
+                </div>
+            </div>
+        </div>
+    </li>
+    {{ } }}
+</script>
+
+<script id="address-template" type="text/x-dot-template">
+    <li class="aui-list-item" onclick="openAdd()">
+        <div class="aui-media-list-item-inner">
+            <div class="aui-list-item-media">
+                <div class="aui-list-item-text">
+                    <div class="aui-list-item-title">配送至
+                        <div class="aui-list-item-text">
+                            收货人
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-text">
+                    <div class="aui-list-item-title aui-ellipsis-1" style="width: 12rem;" >
+                        {{=it.province}}{{=it.city}}{{=it.county}}{{=it.detail}}
+                        <div class="aui-list-item-text address-phone-text">
+                            {{=it.name}} {{=it.phone}}
+                        </div>
+                    </div>
+                    <div class="aui-list-item-right">
+                        <!--<i class="duola-iconfont icon-modify"></i>-->
+                        修改
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+</script>
+<script type="text/javascript">
+    var frameData = null;
+    //    var my_own;
+    //    var bagCount;	 //多啦袋数量
+    //    var bag;      	 	 //多啦袋的容量
+    //    var drabagT;     	 //用户持有多啦袋总量
+    //    var bagOwn;   		 //用户当前持有的多啦袋数量
+    var chooseCan = 0;
+    var addressList;
+    var addressNum = 0;
+    apiready = function(){
+        frameData = api.pageParam.data;
+        init("reInfo");
+        openAddress();
+        api.addEventListener({
+            name: 'sendAddress'
+        }, function(ret, err){
+            openAddress()
+        });
+        api.parseTapmode();
+    };
+
+    function initSuccessCallback(ret,extra){
+        _loadingHide();
+        _showPage();
+        if(ret.statusCode=='200'){
+            var my_own = ret.dorabag.list;
+//            bagCount = ret.dorabag.bagCount; 	 //多啦袋数量
+//            bag      = ret.dorabag.perBag; 	 	 //多啦袋的容量
+//            drabagT  = ret.dorabag.count;    	 //用户持有多啦袋总量
+            var bagOwn = my_own.length; 	 		 //用户当前持有的多啦袋数量
+            chooseCan = ret.dorabag.count - bagOwn; //多啦袋剩下数量
+            if (chooseCan > 0) {
+                $api.removeCls($api.byId("need"), 'aui-hide');
+                $api.html($api.byId("bagNum"),chooseCan);
+            }else {
+                for (var i =0 ;i<bagOwn;i++) {
+                    if (my_own[i].tag == "NO") {
+                        $api.removeCls($api.byId("order"), 'aui-hide');
+                        break;
+                    }
+                }
+            }
+            setCloset(my_own);
+        }else if(ret.statusCode=='10104'){
+            goLogin('no',"../winLogin.html");
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function initErrorCallback(err,extra){
+        if(reInfoTag=="NO"){
+            setTimeout(api.refreshHeaderLoadDone(),3000);
+        }
+        _loadingHide();
+        _showPage();
+        toastMsg(err.msg);
+    }
+    function init() {
+        var url = serviceNew + 'dorabag';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+    }
+
+    function openAddress(){
+        var url = serviceUser + 'address/list';
+        var headers = _getAjaxHeaders(token,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,addressSuccessCallback,initErrorCallback,0,extra);
+    }
+    function addressSuccessCallback(ret,extra ) {
+        if(ret.statusCode=='200' && ret.list){
+            if (ret.list.length > 0) {
+                addressList = ret.list.splice(0, 7);
+                doHtml("address","address-template",addressList[0]);
+            }else {
+                var data = {
+                    province:"暂无地址,点击新增地址",
+                    city:"",
+                    county:"",
+                    detail:"",
+                    name:"",
+                    phone:""
+                };
+                addressList = [];
+                doHtml("address","address-template",data);
+            }
+
+        }else if(ret.statusCode=='10104'){
+            toLogin();
+        }else{
+            toastMsg(ret.msg)
+        }
+    }
+    function openAdd() {
+        api.openFrame({
+            name: 'address',
+            url: '../addressFoot.html',
+            rect: {
+                x:0,
+                y:0,
+                marginBottom: 55
+            },
+            pageParam: {
+                addList: addressList
+            }
+        });
+    }
+    function setCloset(bags){
+
+        doHtml("bag","bag-template",bags);
+        var themeGroupContainer = $api.byId('bag');
+        _imgCacheUrl3(themeGroupContainer);
+    }
+
+    //公用头部导航栏坐侧点击异步执行的方法
+    function execNavLeftCallback(value){
+        var from = frameData.from;
+        var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+        if(!isDefine(callback)){
+            return;
+        }
+        var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+        var params = {
+            script: getExecScript(callback,new Array(extra,api.winName,value))
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+
+    //公用头部导航栏右侧点击异步执行的方法
+    function execNavRightCallback(value){
+        var from = frameData.from;
+        var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+        if(!isDefine(callback)){
+            return;
+        }
+        var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+        var params = {
+            script: getExecScript(callback,new Array(extra,api.winName,value))
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+
+    function foot () {
+        var neenDom = $api.byId("need");
+        var orderDom = $api.byId("order");
+        var needState  = $api.hasCls(neenDom, 'aui-hide');
+        chooseCan = chooseCan + 1;
+        if (needState) {
+            $api.removeCls(neenDom, 'aui-hide');
+            $api.addCls(orderDom, 'aui-hide');
+        }
+        $api.html($api.byId("bagNum"),chooseCan);
+    }
+    function deleteBag (domId,n,size,id,online,barcode) {
+        if(online=='YES'){
+            var body = {
+                "cloth":{
+                    "_id": id,
+                    "size": size,
+                    "tag": n // 原样返回的tag, 可选
+                }
+            }
+        }else{
+            var body = {
+                "cloth":{
+                    barcode:[String(barcode)]
+                }
+
+            }
+        }
+        var url = serviceNew + 'dorabag/uncheck';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData(body);
+        var extra = {domId: domId,'_id': id,"size" : size};
+        _ajaxData(url,'post',headers,data,uncheckSuccessCallback,uncheckErrorCallback,0,extra);
+    }
+    function closeMask(){
+        api.closeFrame({
+            name: 'address'
+        });
+    }
+    function getChoose(num) {
+        addressNum = num;
+        doHtml("address","address-template",addressList[num]);
+        closeMask();
+    }
+    function uncheckSuccessCallback(ret, extra){
+        _loadingHide();
+        if(ret.statusCode=="200"){
+            $api.remove( $api.byId(extra.domId));
+            foot();
+            api.execScript({
+                name : 'root',
+                frameName : "footer_tab_3",
+                script : "removeBag('"+extra._id+"','"+extra.size+"');"
+            });
+            toastMsg("移除成功");
+        }else if(ret.statusCode=='10104'){
+            toLogin();
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function uncheckErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+
+    function sendBtn(){
+        if (!addressList || addressList.length == 0 ) {
+            toastMsg("您未选择地址，请重试。");
+            return;
+        }
+        sendMathEventUmeng(CONSTANT.UMENGEVENT.ORDER_CLOTH);
+        var bodyT = {"address":Number(addressNum)};
+        var url = serviceNew + 'dorabag/delivery';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData(bodyT);
+        var extra = null;
+        _ajaxData(url,'post',headers,data,sendBtnSuccessCallback,sendBtnErrorCallback,0,extra);
+    }
+
+    function sendBtnSuccessCallback(ret,extra) {
+        if(ret.statusCode=='200'){
+            api.execScript({
+                name : 'root',
+                frameName : "closet_frame",
+                script : "bagStatus('YES');"
+            });
+
+            api.openWin({
+                name: 'orderSuccess',
+                url: '../winOrder.html',
+                pageParam:{
+                    name: 'orderSuccess',
+                    page: 'orderOk',
+                    title: '配送成功'
+                }
+            });
+        }else{
+            toastMsg(ret.msg)
+        }
+    }
+    function sendBtnErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+</script>
+</html>

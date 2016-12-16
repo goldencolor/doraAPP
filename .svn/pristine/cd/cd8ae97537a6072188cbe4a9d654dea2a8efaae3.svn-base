@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>推荐有奖</title>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+    <style>
+        html, body {
+            background: #F4F4F4;
+            box-shadow: inset 0px -1px 1px 0px rgba(76,76,76,0.15);
+            font-family: SourceHanSansCN-Normal;
+        }
+        .img-desc  img{
+            width: 100%;
+            height: auto;
+        }
+        .img-desc {
+            margin-bottom: 1rem;
+        }
+        #app {
+            background: #FFFFFF;
+        }
+        .aui-content-padded {
+            padding-left: 15%;
+            padding-right: 15%;
+        }
+        .aui-content-padded  .aui-card-list{
+            text-align: center;
+        }
+        .aui-content-padded  .aui-card-list-content-padded{
+            padding: 0 0.5rem;
+            margin:0 ;
+        }
+        .aui-content-padded .aui-card-list-content-padded img{
+            width: 100%;
+            height: auto;
+        }
+        .aui-card-list-header, .aui-card-list-footer {
+            display:inline;
+            text-align: center;
+            padding: 0;
+        }
+        .aui-card-list-header {
+            font-size: 0.8rem;
+            color: #424242;
+            margin-bottom: -1rem;
+        }
+        .aui-card-list-footer {
+            font-size: 0.6rem;
+            color: #969696;
+        }
+        .aui-card-list-footer .weixin .icon,.aui-card-list-footer .weixinquan .icon{
+            width: 2.9rem;
+            margin-bottom: 0.7rem;
+        }
+        .aui-grid-label {
+            font-size: 0.8rem;
+            color: #424242;
+        }
+        .app-detailed {
+            font-size: 0.6rem;
+            color: #9B9B9B;
+        }
+        .app-detailed .aui-iconfont{
+            font-size: 0.6rem;
+        }
+        .shadow-11{
+            width: 100%;
+            height: 0.55rem;
+            background: #F5F5F5;
+            box-shadow: inset 0px 1px 1px 0px rgba(0,0,0,0.15);
+            margin-top: 1rem;
+        }
+        .week-rank {
+            text-align: center;
+            width: 100%;
+            padding: 0.75rem 0;
+            font-size: 0.8rem;
+            color: #424242;
+        }
+        .aui-info-item {
+            color: #424242;
+        }
+        .aui-info-item .rank-number {
+            width: 3rem;
+            text-align: center;
+            font-size: 1rem;
+            display: inline;
+        }
+        .aui-info-item .aui-margin-l-15 {
+            font-size: 0.6rem;
+            font-family: SourceHanSansCN-Regular;
+            color: #969696;
+
+            display:table-cell;
+            vertical-align:bottom;
+        }
+        .aui-info-item .rank-money{
+            font-size: 1rem;
+        }
+        .rank-one .aui-info-item {
+            color: #FF6100;
+        }
+        .rank-one .aui-info-item .aui-margin-l-15 {
+            color: #FF6100;
+        }
+        .loading {
+            color: #424242;
+            font-size: 0.6rem;
+        }
+    </style>
+</head>
+<body>
+<section id="app" class="aui-margin-b-15">
+    <div class="img-desc" >
+        <img id="img-desc" src="http://img.duolayimeng.com/public/image/Reeyx8QnYT.png@60q" alt=""/>
+    </div>
+    <div class="aui-content-padded">
+        <div class="aui-card-list">
+            <div class="aui-card-list-header">
+                我的推荐码：<span v-text='invite.code'></span>
+            </div>
+            <div class="aui-card-list-content-padded">
+                <img v-bind:src ="codeImg" alt="">
+            </div>
+            <div class="aui-card-list-footer">
+                分享推荐码给小伙伴
+            </div>
+            <div class="aui-card-list-footer" v-show="isWeixin">
+                <div class="aui-row aui-padded-t-15 aui-margin-t-5">
+                    <div class="aui-col-xs-6">
+                        <div class="weixin flex-1 flex flex-vertical flex-center" tapmode onclick="vm.shareWx(1)">
+                            <div class="icon">
+                                <img src="../../image/weixin_bg.png" alt="" width="100%" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="aui-col-xs-6">
+                        <div class="weixinquan flex-1 flex flex-vertical flex-center" tapmode onclick="vm.shareWx(2)">
+                            <div class="icon">
+                                <img src="../../image/weixinquan_bg.png" alt="" width="100%" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="aui-row" style="text-align: center">
+        <div class="aui-col-xs-6" tapmode onclick="vm.openRecomDetails()">
+            <div class="aui-grid-label">已经邀请 <span v-text="invite.promoCount"></span> 人</div>
+            <div class="aui-grid-label app-detailed">查看明细 <i class="aui-iconfont aui-icon-right"></i></div>
+        </div>
+        <div class="aui-col-xs-6" tapmode onclick="vm.openCoupon()">
+            <div class="aui-grid-label">累计奖励 <span v-text="invite.amount"></span> 元</div>
+            <div class="aui-grid-label app-detailed">查看明细 <i class="aui-iconfont aui-icon-right"></i></div>
+        </div>
+    </div>
+    <div class="aui-row shadow-11" ></div>
+    <div class="week-rank">本周分享达人榜</div>
+    <div v-cloak v-for="(rank, index) in rankList" class="aui-info aui-padded-l-10 aui-padded-r-10" v-bind:class="[ index == '0'?'rank-one' : ''  ]" v-bind:style="{ background:index%2 ==0 ?'#F8F8F8':'#FFFFFF'}">
+        <div class="aui-info-item">
+            <div class="rank-number"> {{rank.num | rankNumber}} </div>
+            <img v-bind:src ="rank.user.isWxAvatar == 'YES'? rank.user.avatar : userPhoto + rank.user.avatar + '@!65w65hrc'" style="width:1.5rem" class="aui-img-round" />
+            <span class="aui-margin-l-15" >{{rank.user.mobile | newMobile}}</span>
+        </div>
+        <div class="aui-info-item aui-margin-r-15"><span>获得</span><span class="rank-money" v-text="rank.num * 100"></span><span>元</span></div>
+    </div>
+    <div class="loading aui-text-center" v-show="loadMore.show">
+        <img src="../../icon/loading.gif" width="16"/>
+        <div>加载更多...</div>
+    </div>
+</section>
+</body>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript">
+    var vm,rankNum = 0,rankMoney = 0;
+    apiready = function(){
+        isInstalledWx(function(isIntalled,extra){
+            if(isIntalled){
+                vm.isWeixin = true;
+            }
+        });
+        vm = new Vue({
+            el : '#app',
+            data: {
+                loadMore : {
+                    show : false //控制是否显示 加载更多 默认不显示
+                },
+                isWeixin: false,
+                invite: {},
+                codeImg: "../../image/logo.png" ,
+                rankList: [],
+                userPhoto: userPhoto,
+                isMember: $api.getStorage('isMember')
+            },
+            filters: {
+                newMobile: function(mobile) {
+                    if (!mobile) return '';
+                    var reg = /^(\d{3})\d{4}(\d{4})$/;
+                    return mobile.replace(reg, "$1****$2");
+                },
+                rankNumber: function(money) {
+                    if (money !=rankMoney){
+                        rankNum++;
+                        rankMoney = money;
+                    }
+                    return rankNum;
+                }
+            },
+            methods: {
+                fnInit : function() {
+                    var self = this;
+                    loadingShow();
+                    var url = serviceUser + 'invite';
+                    var headers = _getAjaxHeaders(true,true);
+                    var data = _getAjaxData();
+                    var extra = null;
+                    _ajaxData(url,'post',headers,data,function(ret,extra){
+                        if(ret.statusCode == '200' ){
+                            if(ret.code=='undefined'||ret.code==undefined){
+                                ret.code= 200;
+                            }
+                            self.invite = {
+                                code: ret.code,
+                                promoCount: ret.promoCount,
+                                amount: ret.amount
+                            };
+                            self.userCodeImg(ret.code);
+                        }else if(ret.statusCode=='10104'){
+                            goLogin('no',"../winLogin.html");
+                        }else{
+                            toastMsg(ret.msg);
+                        }
+                        loadingHide();
+                    },function(err,extra){
+                        toastMsg(err.msg);
+                        loadingHide();
+                    },0,extra);
+                },
+                recommendRank: function(){
+                    var self = this;
+                    self.loadMore.show = true;
+                    var url = serviceUser + 'invite/recommend_rank';
+                    var headers = _getAjaxHeaders(true,true);
+                    var data = _getAjaxData();
+                    var extra = null;
+                    _ajaxData(url,'post',headers,data,function(ret,extra){
+                        if(ret.statusCode == '200' ){
+                            self.rankList = ret.rankList;
+                        }else if(ret.statusCode=='10104'){
+                            goLogin('no',"../winLogin.html");
+                        }else{
+                            toastMsg(ret.msg);
+                        }
+                        self.loadMore.show = false;
+                    },function(err,extra){
+                        toastMsg(err.msg);
+                        self.loadMore.show = false;
+                    },0,extra);
+                },
+                userCodeImg: function (userCode) {
+                    var self = this;
+                    var FNScanner = api.require('FNScanner');
+                    FNScanner.encodeImg({
+                        content: 'http://m.duolayimeng.com/coupons/'+userCode,
+                        type:'qr_image',
+                        saveToAlbum: false,
+                        saveImg:{
+                            path: 'fs://a.jpg',  //字符串类型；保存的文件路径；若路径不存在，则创建此路径，只支持fs://协议
+                            w: 200,
+                            h: 200
+                        }
+                    }, function(ret, err){
+                        if(ret.status == true){
+                            self.codeImg = ret.imgPath;
+                        }
+                    });
+                },
+                openCoupon: function() {
+                    var name = 'Coupon';
+                    var title = '我的优惠劵';
+                    var leftIcon = 'duola-iconfont icon-left';
+                    var leftText = '';
+                    var leftExtra = '';
+                    var leftCallback = 'execCloseSlefWin';
+                    var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+                    var border = true;
+                    var bounces = false;
+                    var params = {};
+                    params.nav= setNav(leftNav,border);
+                    params.frame=setFrame(bounces,null,true);
+                    var from = {
+                        winName: api.winName,
+                        frameName: api.frameName
+                    };
+                    var url = '../header_web.html';
+                    var animation = '';
+                    var page = 'Coupon.html';
+                    openNewWinFrame(name,title,params,from,url,animation,page);
+                },
+                openRecomDetails :function() {
+                    var name = 'userRecomDetails';
+                    var title = '推荐详情';
+                    var leftIcon = 'duola-iconfont icon-left';
+                    var leftText = '';
+                    var leftExtra = '';
+                    var leftCallback = 'execCloseSlefWin';
+                    var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+                    var border = true;
+                    var bounces = false;
+                    var params = {};
+                    params.nav= setNav(leftNav,border);
+                    params.frame=setFrame(bounces,null,true);
+                    var from = {
+                        winName:api.winName,
+                        frameName:api.frameName
+                    };
+                    var url = '../header_web.html';
+                    var animation = '';
+                    var page = 'user/userRecomDetails.html';
+                    openNewWinFrame(name,title,params,from,url,animation,page);
+                },
+                shareWx: function(index){
+                    var isMember = this.isMember;
+                    if (!isMember || isMember == null){
+                        toastMsg("非会员无法分享");
+                        return;
+                    }
+                    var scene;
+                    if(index == 1){
+                        scene = 'session';
+                    }else if(index == 2){
+                        scene = 'timeline';
+                    }
+                    shareWx(scene, this.invite.code)
+                }
+            },
+            directives: {
+                'todo-focus': function (el, value) {
+                    if (value) {
+                        el.focus()
+                    }
+                }
+            }
+        });
+        vm.fnInit();
+        vm.recommendRank();
+        api.parseTapmode();
+    };
+    function shareWx(scene,userCode){
+        var wx = api.require('wx');
+        if(!isDefine(scene)){
+            return;
+        }
+        wx.shareWebpage({
+            apiKey: CONSTANT.WEIXINAPPKEY,
+            scene: scene,
+            title: '多啦衣梦送钱啦',
+            description: "多啦衣梦送你100元美丽基金，快来领取吧！",
+            thumb: 'widget://image/sharedLogo.png',
+            contentUrl:  'http://m.duolayimeng.com/coupons/'+userCode
+        }, function(ret, err){
+            var msg = '未知错误';
+            if(ret.status==true){
+                msg = '分享成功';
+            }else{
+                if(err.code==-1){
+                    msg = '未知错误';
+                }else if(err.code==0){
+                    msg = '成功';
+                }else if(err.code==1){
+                    msg = 'apiKey非法';
+                }else if(err.code==2){
+                    msg = '你取消了分享';
+                }else if(err.code==3){
+                    msg = '发送失败';
+                }else if(err.code==4){
+                    msg = '授权拒绝';
+                }else if(err.code==5){
+                    msg = '微信服务器返回的不支持错误';
+                }else if(err.code==6){
+                    msg = '当前设备未安装微信客户端';
+                }else if(err.code==7){
+                    msg = '注册SDK失败';
+                }
+            }
+            toastMsg(msg);
+        });
+    }
+
+</script>
+</html>

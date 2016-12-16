@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+		html, body {
+		    height: 100%; width: 100%; margin: 0px; padding: 0px;background-color: #F6F6F6;
+		}
+		.my-pic{
+			margin: 0px; position: relative;
+		}
+		.my-c-name{
+			background: rgba(0,0,0,0.4); color: #FFFFFF;
+			font-size: 14px; line-height: 20px; position: absolute;
+			left: 0px; right: 0px; bottom: 7px;padding: 5px 10px;
+		}
+
+		.my-top-btn{
+			position: fixed; left: 0px; right: 0px; top: 0px;
+			z-index: 999;
+		}
+		.my-top-btn-icon{
+			font-size: 24px; color: #FFFFFF;
+		}
+		.my-icon-bg{
+			padding: 10px;
+		}
+		.my-icon-bg span{
+			background:rgba(0,0,0,0.2);
+			border-radius:8px; width: 34px; height: 34px; line-height: 34px; text-align: center;
+		}
+		.my-title{
+			line-height: 20px; padding: 0px 5px; font-size: 12px; color: #aaa; 
+		}
+
+		.aui-grid-sixteen li{
+			font-size: 12px; color: #aaa; 
+		}
+		/**格子重构**/
+		.aui-grid-sixteen:after {
+			border:none;
+		}
+		.aui-grid-sixteen li:after {
+			border:none;
+		}
+		.aui-grid-sixteen li {
+			padding: 5px 5px;
+		}
+		/**重构list**/
+
+		.aui-list-view-cell{
+			padding: 8px 15px; color: #333333; 
+		}
+		.aui-list-view-cell span{
+			color: #999; font-size: 12px;
+		}
+		#header{
+			margin: 0px; height: 0px;
+		}
+		.aui-list-view.aui-grid-view{
+			padding:0px;
+		}
+		.aui-list-view.aui-grid-view .aui-list-view-cell{
+			padding:0px;
+		}
+		.aui-list-view{
+		margin-bottom:10px;
+			
+		}
+	</style>  
+</head>
+<body>
+<div id="main" class="">
+	
+	<div class="aui-content my-top-btn" id="header">
+	  <div class="my-icon-bg aui-pull-left" onclick="closeWin();">
+	  	<span class="my-top-btn-icon aui-iconfont aui-icon-left"></span>
+	  </div>
+	 <div class="my-icon-bg aui-pull-right" onclick="shareWxWay()" id="showWeixin" style="display: none">
+	 	<span class="my-top-btn-icon aui-iconfont aui-icon-share"></span>
+	 </div>
+	</div>
+	
+	<div class="my-pic" >
+		<img src="../image/hold.jpg" width="100%" onclick="showImg(0)"  id="topImg"/>
+		<div class="my-c-name" id="clothName"></div>
+	</div>
+	
+	<div class="my-title"><i class="aui-iconfont aui-icon-sort"></i> 尺码对照表</div>
+	<div class="aui-content aui-border-b">
+	    <ul class="aui-grid-sixteen" id="sizeT"></ul>
+	    <div id="sizes"></div>
+	    
+	</div>
+	
+	<!--div class="aui-tab aui-tab-info">
+	    <ul class="aui-tab-nav">
+	        <li class="active">详情</li>
+	        <li onclick="showComment()">查看评论</li>
+	    </ul>
+	</div-->
+	<div class="aui-content">
+	    <ul class="aui-list-view aui-in" id="details"></ul>
+	</div>
+	
+	<div class="aui-content">
+		<div id="clothImg"> </div>
+	    <!--<ul class="aui-list-view aui-grid-view aui-col-xs-12" id="clothImg"> 
+	    	<li class="aui-list-view-cell aui-img">
+	        	<img class="aui-img-object" src="../image/hold.jpg" onclick="showImg('+i+')">
+	       </li>
+	    </ul>
+	    <ul class="aui-list-view aui-grid-view aui-col-xs-12" id="clothImg"> 
+	    	<li class="aui-list-view-cell aui-img">
+	        	<img class="aui-img-object" src="../image/hold.jpg" onclick="showImg('+i+')">
+	       </li>
+	    </ul>
+	    <ul class="aui-list-view aui-grid-view aui-col-xs-12" id="clothImg"> 
+	    	<li class="aui-list-view-cell aui-img">
+	        	<img class="aui-img-object" src="../image/hold.jpg" onclick="showImg('+i+')">
+	       </li>
+	    </ul>-->
+	</div>
+</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/umeng_sdk.js"></script>
+	<script type="text/javascript">
+	var clothImg ;
+	var matches ;
+	var stock ; 
+	var sizes;
+	var details;
+	var clothImgUrl=[];
+	var id;
+	var clothName;
+	var shareUrlPath;
+	var topImg;
+	var is_err =1;
+	var preSoldBefore = null;
+	
+	apiready = function(){
+	    var header = $api.byId('header');
+        $api.fixStatusBar(header); 
+		id = api.pageParam.id;
+		preSoldBefore = api.pageParam.preSoldBefore;
+		isInstalledWx(function(isIntalled,extra){
+			if(isIntalled){
+				showWexin();
+			}
+		});
+		_loadingShow();
+        init(id);
+	};
+	//显示微信登录
+	function showWexin(){
+		var showWexinEl = $api.byId('showWeixin');
+		if(showWexinEl){
+			$api.css(showWexinEl,'display:block');
+		}
+	}
+	function closeWin(){
+		onPageEndUmeng(CONSTANT.PAGE.CLOTHDETAIL);
+		api.closeWin();
+	}
+
+	function initSuccessCallback(ret,extra){
+		_showPage();
+		if(ret.statusCode=='200'){
+			clothImg= ret.img;
+			matches = ret.matches; 	//搭配
+			stock   = ret.stock;	//库存
+			sizes   = ret.sizes;	//尺码
+			details = ret.details;	//详情
+			clothName= ret.name;	//名称
+			//显示第一张图片
+			var topImg = colthPath + clothImg.list[0].img+showInfoStyle;
+			_imgCacheUrl(topImg,'topImg');
+			var topImgEl = $api.byId('topImg');
+			topImgEl.onload = function() {
+				_loadingHide();
+			}
+			shareUrlPath = colthPath + clothImg.list[0].img+shareColthStyle;
+			$api.html($api.byId('clothName'),clothName);
+			clothImgUrl = clothImg.list.map(function(value){
+				return colthPath + value.img +showInfoStyle;
+			});
+//			console.log(getLogStr([clothImg.list,clothImgUrl]));
+//					var comment= ret.comment;
+//					if(!comment){
+//						comment = 0;
+//					}
+//					$api.html($api.byId('comment'),comment);
+			setSizes(sizes,stock); 		//尺码对照表
+			setDetails(details); 	//参数详情
+			setStock(stock);	    //库存
+			//延时加载其他衣服
+			setTimeout(function(){
+				setClothImg(clothImg); 	//衣服图片
+			},200);
+		}else{
+			_loadingHide();
+		}
+	}
+	function initErrorCallback(err,extra){
+		_showPage();
+		toastMsg(err.msg);
+	}
+	function init(id){
+		var url = serviceNew+'cloth/detail/'+id;
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+	function setStock(stock){
+		api.sendEvent({
+		    name: 'myStockEvent',
+		    extra: {
+		        key: stock
+		    }
+		});
+	}
+	function setClothImg(img){
+		$api.html($api.byId('clothImg'), '');
+		//去掉第一张图片
+		for(var i=1;i<img.count;i++){
+			var url = colthPath + img.list[i].img+showInfoStyle; 
+			var html='';
+			html+='<ul class="aui-list-view aui-grid-view aui-col-xs-12" >';
+			html+='<li class="aui-list-view-cell aui-img ">';
+	        html+='<img id="cloth_info_'+i+'" class="aui-img-object" src="'+url+'" onclick="showImg('+i+')">';
+	        html+='</li>';
+	        html+='</ul>';
+	        $api.append($api.byId('clothImg'), html);
+		}
+		for(var j=0;i<img.count;j++){
+			var url = colthPath + img.list[i].img+showInfoStyle;
+			_imgCacheUrl(url,'cloth_info_'+j);
+//			addImgArr(colthPath + img.list[i].img+"@0o_0l_960w_100q",i);
+		}
+	}
+	
+//	function addImgArr(url,i){
+//			clothImgUrl[i]=url;
+//		    api.imageCache({
+//			    url: url,
+//			    thumbnail: false
+//			},function(ret,err){
+//				clothImgUrl[i]=ret.url;
+//			});
+//	}
+
+	function setDetails(details){
+		$api.html($api.byId('details'), '');
+		for(var i=0;i<details.count;i++){
+			var html = '';
+			html+='<li class="aui-list-view-cell">';
+	        html+=details.list[i].name+'<span class="aui-pull-right">'+details.list[i].value+'</span>';
+	        html+='</li>';
+	        $api.append($api.byId('details'), html);
+		}
+	}
+	
+	function setSizes(sizes){
+		
+//		if(isDefine(preSoldBefore)){
+//			sizes =  {
+//			    "count": 6,
+//			    "name": [
+//			      "长度",
+//			      "胸围"
+//			    ],
+//			    "list": [
+//				{
+//			        "size": "XS",
+//			        "values": [
+//			          "84（不含肩带长）",
+//			          "140"
+//			        ]
+//			      },
+//			      {
+//			        "size": "S",
+//			        "values": [
+//			          "84（不含肩带长）",
+//			          "140"
+//			        ]
+//			      },
+//			      {
+//			        "size": "M",
+//			        "values": [
+//			          "86（不含肩带长）",
+//			          "144"
+//			        ]
+//			      },
+//			      {
+//			        "size": "L",
+//			        "values": [
+//			          "88（不含肩带长）",
+//			          "148"
+//			        ]
+//			      },
+//			      {
+//			        "size": "XL",
+//			        "values": [
+//			          "90（不含肩带长）",
+//			          "152"
+//			        ]
+//			      },
+//			      {
+//			        "size": "均码",
+//			        "values": [
+//			          "90（不含肩带长）",
+//			          "152"
+//			        ]
+//			      }
+//			    ]
+//			  };
+//			}
+
+		var titleCount = sizes.name.length;
+		$api.html($api.byId('sizeT'), '');
+		$api.html($api.byId('sizes'), '');
+		for(var i=0;i<titleCount;i++){
+			var htmlT = '';
+			if(i==0){
+				htmlT +='<li class="aui-col-xs-2 aui-text-center">尺码</li>';
+				htmlT +='<li class="aui-col-xs-2 aui-text-center">'+sizes.name[i]+'</li>';
+			}else{
+				htmlT +='<li class="aui-col-xs-2 aui-text-center">'+sizes.name[i]+'</li>';
+			}
+			$api.append($api.byId('sizeT'), htmlT);
+		}
+		
+		for(var j=0;j<sizes.count;j++){
+			var html = '';
+			html += '<ul class="aui-grid-sixteen">'; 
+			html += '<li class="aui-col-xs-2 aui-text-center">'+sizes.list[j].size+'</li>';
+			var size = sizes.list[j];
+			for(var m=0;m<size.values.length;m++){
+				if(!size.values[m])size.values[m]='-'
+				html += '<li class="aui-col-xs-2 aui-text-center">'+size.values[m]+'</li>';
+			}
+			html += '</ul>'; 
+			$api.append($api.byId('sizes'), html);
+		}
+		
+	}
+	function showImg(index){
+		var photoBrowser = api.require('photoBrowser');
+		photoBrowser.open({
+			images:clothImgUrl,
+		    placeholderImg: 'widget://image/hold.jpg',
+		    bgColor: '#000'
+		}, function(ret, err){   
+			if(ret.eventType == 'show'){
+				photoBrowser.setIndex({
+				    index: index
+				});
+			} 
+		    if( ret.eventType == 'click' ){
+		       photoBrowser.close();
+		    }
+		});
+	}
+	function showComment(){
+		api.openWin({
+	        name: 'commentList',
+	        url: 'win.html',
+	        pageParam:{
+	        	bounces:true,
+	        	title:"评论列表",
+	        	page:"commentList",
+	        	name:"commentList",
+	        	data:clothName,
+	        	id:id
+	        }
+        });
+	}
+	function shareWx(scene){
+//		alert(shareUrlPath)
+		var wx = api.require('wx');
+		wx.isInstalled(function(ret, err){
+		    if(ret.installed){
+		        wx.shareWebpage({
+				    apiKey: 'wx4a8df4d0d29958b4',
+				    scene: scene,
+				    title: clothName,
+				    description: clothName,
+				    thumb: shareUrlPath, 
+				    contentUrl: shareUrl+id,
+				}, function(ret, err){
+				    if(ret.status==true){
+				        toastMsg('分享成功');
+				    }else{
+		                if(err.code==-1)var msg = '未知错误';
+		                if(err.code==0) var msg = '成功';
+		                if(err.code==1) var msg = 'apiKey非法';
+		                if(err.code==2) var msg = '用户取消';
+		                if(err.code==3) var msg = '发送失败';
+		                if(err.code==4) var msg = '授权拒绝';
+		                if(err.code==5) var msg = '微信服务器返回的不支持错误';
+		                if(err.code==6) var msg = '当前设备未安装微信客户端';
+		                if(err.code==7) var msg = '注册SDK失败';
+				        toastMsg(msg);
+				    }
+				});
+		    }else{
+		        toastMsg('当前设备未安装微信客户端');
+		    }
+		});
+	}
+	
+	function shareWxWay(){
+		api.actionSheet({
+		    cancelTitle: '取消',
+		    buttons: ['分享给朋友','分享朋友圈']
+		}, function(ret, err){
+			var index=ret.buttonIndex;
+		    if(index=='1'){
+	    		shareWx('session');	
+		    }
+		    if(index=='2'){
+		    	shareWx('timeline');	
+		    }
+		});
+	}
+	</script>
+</html>

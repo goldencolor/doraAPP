@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>查看图片</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+
+    </style>
+</head>
+<body>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script>
+    var frameData = null;
+    var path = '';
+    var headerHeight = '';
+    var currImgIndex = null;
+    apiready = function () {
+        frameData = api.pageParam.data;
+        path = frameData.path ? frameData.path : '';
+        headerHeight = frameData.headerHeight ? frameData.headerHeight : '';
+        currImgIndex = frameData.currIndex ? frameData.currIndex : 0;
+        //console.log(currImgIndex);
+        var photoBrowser = api.require('photoBrowser');
+        if (photoBrowser) {
+            var images = typeof path == 'string' ? [path] : path;
+            photoBrowser.open({
+                images: images,
+                activeIndex: currImgIndex,
+                placeholderImg: 'widget://image/hold.jpg',
+                bgColor: '#000'
+            }, function (ret, err) {
+                //console.log(getLogStr([ret, err, ret.eventType == 'click']));
+                if (ret.eventType == 'show') {
+                    //打开样式frame
+//                    console.log(1 + '/' + images.length);
+
+                    var name = 'imgNavigation';
+                    var indexValue = parseInt(currImgIndex) + 1 + '/' + images.length;
+                    var data = {
+                        indexValue: indexValue
+                    };
+                    var url = 'imgNavigation.html';
+                    var remValue = parseInt($api.cssVal($api.dom('html'), 'font-size'));
+                    var rect = {
+                        x: 0,
+                        y: headerHeight - remValue * 2.5,
+                        w: 'auto',
+                        h: remValue * 2.5
+                    };
+                    openNewFrame(name, url, false, rect, data);
+
+                } else if (ret.eventType == 'change') {
+                    //异步执行更改frame
+                    console.log(ret.index + 1 + '/' + images.length);
+
+                    var indexValue = ret.index + 1 + '/' + images.length;
+                    var scriptFun = getExecScript('changeNav', [indexValue]);
+                    var params = {
+                        script: scriptFun,
+                        frameName: "imgNavigation"
+                    };
+                    api.execScript(params);
+
+                } else if (ret.eventType == 'click') {
+                    photoBrowser.close();
+                    setTimeout(function () {
+                        api.closeWin({
+                            animation: {
+                                type: "fade",                //动画类型（详见动画类型常量）
+                                duration: 300                //动画过渡时间，默认300毫秒
+                            }
+                        });
+                    }, 1);
+                }
+            });
+        } else {
+            //没有该模块
+        }
+    };
+</script>
+</html>

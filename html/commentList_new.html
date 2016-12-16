@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>评价详情</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+
+		/*评论区域*/
+		.comment-item{
+			padding: 1.2rem 0.5rem 0 0.5rem;
+		}
+		.comment-item .flex-1{
+			padding-bottom: 1.2rem;
+			border-bottom: 1px solid #F6F6F6;
+		}
+		.comment-item .avatar{
+			width: 1.9rem;
+			height: 1.9rem;
+			display: block;
+			border-radius: 100%;
+			margin-right: 0.55rem;
+		}
+		.comment-item .comment-header{
+			height: 1.3rem;
+		}
+		.comment-item .comment-header .name{
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.6rem;
+			color: #BBBBBB;
+			margin-right: 0.5rem;
+		}
+		.comment-item .comment-header .time{
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.6rem;
+			color: #969696;
+			max-width: 150px;
+			height: 0.9rem;
+		}
+		.comment-item .comment-header .icon-Stars{
+			font-size: 0.5rem;
+			margin: 0 0.15rem;
+		}
+		.comment-item .comment-text{
+			padding: 0.1rem 0;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.7rem;
+			color: #464646;
+			line-height: 1rem;
+		}
+		.comment-item  .get-more{
+			position: absolute;
+			right: 0;
+			bottom: -0.1rem;
+			background-color: #FFFFFF;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.6rem;
+			color: #BBBBBB;
+			padding-right: 0.3rem;
+			padding-left: 0.6rem;
+		}
+		.comment-item .comment-img{
+			padding: 0.4rem 0;
+			height: 2rem;
+			overflow: hidden;
+
+		}
+		.comment-item .comment-img img{
+			width: 2rem;
+			min-height: 2rem;
+			margin: 0 0.2rem;
+			position: relative;
+			top: 50%;
+			transform: translateY(-50%);
+			-webkit-transform: translateY(-50%);
+		}
+		.comment-item .comment-img img:last-child{
+			margin-right: 0;
+		}
+		.comment-item .comment-img img:first-child{
+			margin-left: 0;
+		}
+
+		.hack-reply-bg{
+			background-color: #F6F6F6;
+			padding: 0.4rem 0.25rem;
+		}
+		.hack-reply-more{
+			border-radius: 1px;
+		}
+		.hack-reply-more .reply-text{
+			font-family: SourceHanSansCN-Regular;
+			font-size: 0.7rem;
+			color: #464646;
+			line-height: 1rem;
+		}
+		.hack-reply-more .reply-more {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			background-color: #FFFFFF;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.6rem;
+			color: #BBBBBB;
+			padding-right: 0.3rem;
+			padding-left: 0.6rem;
+		}
+	</style>
+</head>
+<body>
+	<div id="comment-container">
+
+	</div>
+	<div id="loading" class="aui-text-center" style="font-size: 12px; color: #999999;">
+		<img src="../icon/loading.gif" width="16" />
+		<div>更多数据加载中</div>
+	</div>
+	<!--评论模板-->
+	<script id="comment-container-template" type="text/x-dot-template">
+		<div id="{{=CONSTANT.CACHEPAGEID+'comment'+currPage}}">
+			{{ for(var i = 0; i < it.count; i++) { }}
+			<div class="comment-item flex">
+				<img onload="cacheImgNew(this,'img','local')" src="../image/avatar.png" class="avatar opacity0 transition-opacity" data-url="{{=getAvatar(it.list[i].avatar,it.list[i].isWxAvatar)}}">
+				<div class="flex-1" style="{{=(currPage == totalPage && i == it.count -1) ? 'border:none;' : ''}}">
+					<div class="comment-header flex flex-space-between flex-bottom">
+						<span><span class="name">{{=subStr(it.list[i].nickname,10)}}</span>{{~new Array(it.list[i].rate):value:index}}<span class="duola-iconfont icon-Stars hit-color"></span>{{~}}</span>
+						<span class="time">{{=it.list[i].time}}</span>
+					</div>
+					<div class="hack-get-more" style="max-height: 5rem;position: relative;overflow: hidden;">
+						<div class="comment-text">
+							{{!it.list[i].content}}
+						</div>
+						<span class="get-more aui-hide" tapmode onclick="getMoreComent(this)">查看更多</span>
+					</div>
+
+					{{? it.list[i].photos && it.list[i].photos.count}}
+						<div class="comment-img">
+							{{~it.list[i].photos.list:value:index}}
+								<img tapmode onclick="{{=getExecScript('goShowImg',[index,it.list[i].photos.list.map(function(value){return value.url;}).toString(),it.list[i].userId])}}"
+								 onload="cacheImgNew(this,'img')" class="opacity0 transition-opacity"
+								 src="{{=[CONSTANT.PICPRE.RES,it.list[i].userId,CONSTANT.PICPRE.COMMENT,value.url,'@90w_5q'].join('')}}"
+								 data-url="{{=[CONSTANT.PICPRE.RES,it.list[i].userId,CONSTANT.PICPRE.COMMENT,value.url,CONSTANT.PICTUREOSS.COMMENTIMG].join('')}}"/>
+
+							{{~}}
+						</div>
+					{{?}}
+					{{? it.list[i].replys && it.list[i].replys.length>0}}
+					<div class="hack-reply-bg">
+						<div class="hack-reply-more" style="max-height: 5rem;position: relative;overflow: hidden;">
+							<div class="reply-text">多啦衣梦：{{=it.list[i].replys[0].content}}</div>
+							<span class="reply-more aui-hide" tapmode onclick="getMoreReply(this)">查看更多</span>
+						</div>
+					</div>
+					{{?}}
+				</div>
+			</div>
+			{{ } }}
+		</div>
+
+	</script>
+</body>
+
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript" src="../script/url.js"></script>
+	<script type="text/javascript" src="../script/doT_min.js"></script>
+	<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+	<!--<script type="text/javascript" src="../script/commentList_new.js"></script>-->
+<script>
+	/**
+	 * Created by oHHO on 2016-10-20.
+	 */
+	var frameData = null;
+	var _id;
+	var currPage = 1;
+	var totalPage = 1;
+	//加载更多时候，服务器是否返回，以免用户多次触发
+	var isLoadMoreResponsed = true;
+	apiready = function(){
+		//var chromedebug = api.require('chromeDebug');
+		//chromedebug.openDebug(function(ret, err) {
+		//    alert(JSON.stringify(ret));
+		//    if (212 == ret.code) {
+		//        alert(JSON.stringify(ret));
+		//    } else {
+		//        console.log(ret);
+		//    }
+		//});
+		frameData = api.pageParam.data;
+		_id = isDefine(frameData._id) ? frameData._id : 0;
+		init(CONSTANT.ACTIONINIT);
+		api.parseTapmode();
+		loadMore();
+		pullRefresh(loadRefresh);
+
+	};
+
+
+	//刷新
+	function loadRefresh(){
+		currPage = 1;
+		isLoadMoreResponsed = true;
+		if($api.byId('loading').innerHTML=='没有更多了'){
+			$api.html($api.byId('loading'),'<img src="../icon/loading.gif" width="16" /><div>更多数据加载中</div>');
+		}
+		init(CONSTANT.ACTIONREFRESH);
+	}
+	//加载更多
+	function loadMore(){
+		api.addEventListener({
+			name:'scrolltobottom',
+			extra:{threshold:0}
+		}, function(ret, err){
+			if(isLoadMoreResponsed && currPage < totalPage){
+				currPage++;
+				isLoadMoreResponsed = false;
+				init(CONSTANT.ACTIONLOAD);
+			}
+		});
+	}
+
+
+	function initSuccessCallback(ret,extra) {
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else if(action == CONSTANT.ACTIONLOAD){
+			isLoadMoreResponsed = true;
+			loadingHide();
+		}else{
+			loadingHide();
+		}
+		if(ret.statusCode==200){
+			currPage = ret.page;
+			totalPage = ret.pageTotal;
+			getCommentHtml(ret);
+		}else{
+			toastMsg(ret.msg);
+		}
+		if(currPage >= totalPage){
+			$api.html($api.byId('loading'),'没有更多了');
+		}
+	}
+	function initErrorCallback(err,extra){
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else if(action == CONSTANT.ACTIONLOAD){
+			isLoadMoreResponsed = true;
+			currPage--;
+			loadingHide();
+		}else{
+			loadingHide();
+		}
+		toastMsg(err.msg);
+	}
+	function init(action){
+		if(action == CONSTANT.ACTIONINIT){
+			loadingShow();
+		}
+		var url = serviceNew + 'cloth/comments/'+_id;
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData({
+			page: currPage,
+			pageSize: CONSTANT.PAGESIZE
+		});
+		var extra = {action:action};
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+	//评价评论HTML
+	function getCommentHtml(ret,debug){
+		if(ret.count == 0){
+			return;
+		}
+		var html = doTHtml('comment-container-template',ret);
+		var commentContainer = $api.byId('comment-container');
+		if(currPage == 1){
+			//首次加载或者刷新
+			//图片也刷新了，闪屏，有待于提升性能
+			commentContainer.innerHTML = '';
+		}
+		if(debug)console.log(html);
+		$api.append(commentContainer, html);
+		var commentTextEls = $api.domAll($api.byId(CONSTANT.CACHEPAGEID+'comment'+currPage),'.comment-text');
+		for(var i=0; i<commentTextEls.length; i++){
+			var tempElHeight = parseInt($api.cssVal(commentTextEls[i],'height'));
+			if(parseInt(tempElHeight) > parseInt($api.cssVal($api.dom('html'),'font-size'))*5){
+				$api.removeCls(commentTextEls[i].nextElementSibling,'aui-hide');
+			}
+		}
+		var replyTextEls = $api.domAll($api.byId('comment-container'), '.reply-text');
+		for (var i = 0; i < replyTextEls.length; i++) {
+			var replyElHeight = parseInt($api.cssVal(replyTextEls[i], 'height'));
+			if (parseInt(replyElHeight) > parseInt($api.cssVal($api.dom('html'), 'font-size')) * 5) {
+				$api.removeCls(replyTextEls[i].nextElementSibling, 'aui-hide');
+			}
+		}
+		api.parseTapmode();
+//		_imgCacheUrl3(commentContainer,CONSTANT.CACHEPAGEID+'comment'+currPage);
+	}
+
+//		test();
+	function test(){
+//		var ret = {"statusCode":200,"msg":"OK","count":5,"page":1,"pageTotal":1,"total":5,"list":[{"_id":"65WmxFt8iwEQiwY6K","content":"@#","userId":"BGHk2vdxTFzZoGwtq","rate":4,"nickname":"tiger","time":"6分钟前","photos":{"count":0,"list":[]},"avatar":"BGHk2vdxTFzZoGwtq/avatar/mad6qaoj","isWxAvatar":"NO"},{"_id":"snnB7frgPpB3fNt7g","content":"啊！","userId":"BGHk2vdxTFzZoGwtq","rate":4,"nickname":"tiger","time":"16分钟前","photos":{"count":0,"list":[]},"avatar":"BGHk2vdxTFzZoGwtq/avatar/mad6qaoj","isWxAvatar":"NO"},{"_id":"HusTmiHzf794vDFEz","content":"173748582637","userId":"BGHk2vdxTFzZoGwtq","rate":4,"nickname":"tiger","time":"20分钟前","photos":{"count":0,"list":[]},"avatar":"BGHk2vdxTFzZoGwtq/avatar/mad6qaoj","isWxAvatar":"NO"},{"_id":"8REQgfa8PrEeLYJ9g","content":"陆教练员工上陆陆教练陆教练员工上陆陆教练员工上陆教练员工上网行为管理软件开发网行为管理软件开发教练员工上网行为管理软件开发网行为管理软件开发员工上陆教练员工上网行为管理软件开发网行为管理软件开发教练员工上网行为管理软件开发网行为管理软件开发","userId":"BGHk2vdxTFzZoGwtq","rate":4,"nickname":"tiger","time":"40分钟前","photos":{"count":2,"list":[{"url":"1476256685284965040"},{"url":"1476256685284965040"}]},"avatar":"BGHk2vdxTFzZoGwtq/avatar/mad6qaoj","isWxAvatar":"NO"},{"_id":"cf65RNqZbm2vP53Kb","content":"把你的的的3","userId":"BGHk2vdxTFzZoGwtq","rate":3,"nickname":"tiger","time":"1小时前","photos":{"count":0,"list":[]},"avatar":"BGHk2vdxTFzZoGwtq/avatar/mad6qaoj","isWxAvatar":"NO"}]};
+//		var ret = {"statusCode":200,"msg":"OK","count":1,"page":1,"pageTotal":1,"total":1,"list":[{"_id":"2QtXBmSAMkBFaZNWz","content":"摸着挺薄的，不过还蛮温暖，总体偏长，第一次尝试驼色，多啦衣梦真是太赞了，可以试不同类型的衣服，每天都穿新衣服的感觉棒棒哒～","replys":[{"type":"dora","content":"多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦多啦衣梦"}],"userId":"JiJ5tCJtfmFWECWxa","rate":5,"nickname":"嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟嘟","time":"03-11","photos":{"count":2,"list":[{"url":"2j6g5DZr"},{"url":"dTR3HsB5"}]},"avatar":"http://wx.qlogo.cn/mmopen/7vE5E4PWsgYbWsn73t1Xssdmn3iaP1lzwKcX6HNvvnWfrdPDkWwXAaQ8gnpLY7hz1S3ZzHzdHroNXumPCs8Q6UzdhRjefAZbq/0","isWxAvatar":"YES"}]};
+//		getCommentHtml(ret,true);
+//		var replyTextEls = $api.domAll($api.byId('comment-container'), '.reply-text');
+//		for (var i = 0; i < replyTextEls.length; i++) {
+//			var replyElHeight = parseInt($api.cssVal(replyTextEls[i], 'height'));
+//			if (parseInt(replyElHeight) > parseInt($api.cssVal($api.dom('html'), 'font-size')) * 5) {
+//				$api.removeCls(replyTextEls[i].nextElementSibling, 'aui-hide');
+//			}
+//		}
+	}
+
+
+	//拼接头像url
+	function getAvatar(avatar,isWxAvatar){
+		if(isTrue(isWxAvatar)){
+			return avatar;
+		}else if(avatar && avatar.indexOf('../') == -1){
+			return [CONSTANT.PICPRE.RES,avatar].join('');
+		}else{
+			return '';
+		}
+	}
+
+	//显示更多评论
+	function getMoreComent(el){
+		var commentTextEl = $api.closest(el, '.hack-get-more');
+//			console.log(commentTextEl);
+		$api.css(commentTextEl, 'max-height:none;');
+		$api.addCls(el,'aui-hide');
+	}
+	//显示更多回复
+	function getMoreReply(el) {
+		var commentTextEl = $api.closest(el, '.hack-reply-more');
+		$api.css(commentTextEl, 'max-height:none;');
+		$api.addCls(el, 'aui-hide');
+	}
+
+	//查看大图
+	function goShowImg(index,path,userId){
+		if(!isDefine(path)){
+			return;
+		}
+		path = path.split(',');
+		path = path.map(function(value){
+			return [CONSTANT.PICPRE.RES,userId,CONSTANT.PICPRE.COMMENT,value,CONSTANT.PICTUREOSS.W960].join('');
+		});
+
+		var name = 'showImg';
+		var title = '查看图片';
+		var params = {
+			path: path,
+			headerHeight:frameData.headerHeight,
+			currIndex:index
+		};
+		var from = {
+			winName: api.winName,
+			frameName: api.frameName
+		};
+		var url = 'showImg_new.html';
+		openNewWin(name,title,params,from,url,{
+			type:"fade",                //动画类型（详见动画类型常量）
+			duration:300                //动画过渡时间，默认300毫秒
+		});
+//		openNewWinFrame(name,title,params,from,url);
+	}
+</script>
+</html>

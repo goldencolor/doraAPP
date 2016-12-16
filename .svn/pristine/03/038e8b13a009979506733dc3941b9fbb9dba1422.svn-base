@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>右边列表按钮</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html, body{
+            background: rgba(0,0,0,0.3);
+        }
+        .aui-row {
+            position: relative;
+        }
+        .aui-col-xs-4{
+            float: right;
+            margin-top: 0.3rem;
+            margin-right: 0.5rem;
+        }
+        .aui-list-item {
+            font-family: SourceHanSansCN-Light;
+            font-size: 0.75rem;
+            color: #5F5E5E;
+            letter-spacing: 0px;
+        }
+        .aui-popup-arrow {
+            top: 0.2rem;
+            -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+            right: 0.5rem;
+            margin-top: -0.4rem;
+        }
+    </style>
+</head>
+<body>
+<div class="aui-row">
+    <div class="aui-col-xs-8" style="height: 100%"></div>
+    <div class="aui-col-xs-4">
+        <div class="aui-popup-arrow"></div>
+        <div class="aui-popup-content">
+            <ul class="aui-list aui-list-noborder">
+                <li class="aui-list-item" tapmode onclick="showFNS()">
+                    <div class="aui-list-item-label-icon">
+                        <i class="duola-iconfont icon-Store-selection"></i>
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-middle">
+                       店内选
+                    </div>
+                </li>
+                <li class="aui-list-item" tapmode onclick="openDelCloset()">
+                    <div class="aui-list-item-label-icon">
+                        <i class="duola-iconfont icon-Remove"></i>
+                    </div>
+                    <div class="aui-list-item-inner">
+                        删除服装
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div style="height: 70%" tapmode onclick="closeMask()">
+
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript">
+    var exists = [];
+    apiready = function(){
+        api.parseTapmode();
+    };
+    function showFNS() {
+        var token = $api.getStorage('token');
+        if (typeof(token) != 'undefined') {
+            var FNScanner = api.require('FNScanner');
+            FNScanner.openScanner({
+                autorotation: true
+            }, function (ret, err) {
+                if ("success" == ret.eventType) {
+                    var content = ret.content;
+                    checkCode(content, token);
+                }
+            });
+        } else {
+            api.openWin({
+                name: 'login',
+                url: '../login.html',
+                animation: {
+                    type: 'movein',
+                    subType: 'from_bottom'
+                }
+            });
+        }
+    }
+
+    function checkCodeSuccessCallback(ret, extra) {
+        if (ret.statusCode == '200') {
+            exists = [];
+            toastMsg(ret.msg);
+            api.execScript({
+                frameName: "closet_frame",
+                script: 'init();'
+            });
+        } else if (ret.statusCode == '20102') {
+            exists = ret.detail.exists;
+            toastMsg(ret.msg);
+            api.execScript({
+                frameName: "closet_frame",
+                script: 'init();'
+            });
+        } else if (ret.statusCode == '10303') {
+            api.execScript({
+                frameName: "footer_tab_3",
+                script: 'thaw();'
+            });
+        } else {
+            exists = [];
+            toastMsg(ret.msg)
+        }
+        setTimeout(closeMask(),2000)
+    }
+
+    function checkCodeErrorCallback(err, extra) {
+        toastMsg(err.msg);
+        setTimeout(closeMask(),2000)
+    }
+
+    function checkCode(code, token) {
+        if (typeof(code) == 'undefined' || code == '') {
+            api.alert({
+                msg: '图片无法识别'
+            });
+        } else {
+            if (typeof(exists) == 'undefined' || exists == '') {
+                var body = {"added": [code]}
+            } else {
+//				alert(JSON.stringify(exists))
+                var body = {"exists": exists, "added": [code]}
+            }
+            var url = serviceNew + 'dorabag/scan';
+            var headers = _getAjaxHeaders(true, true);
+            var data = _getAjaxData(body);
+            var extra = null;
+            _ajaxData(url, 'post', headers, data, checkCodeSuccessCallback, checkCodeErrorCallback, 0, extra);
+        }
+    }
+
+    function openDelCloset() {
+        closeMask();
+        api.openWin({
+            name: '整理衣橱',
+            url: 'delete_closet_win.html'
+        });
+    }
+
+    function closeMask(){
+        api.execScript({
+            name: "root",
+            script: "opencategory();"
+        });
+    }
+</script>
+</html>

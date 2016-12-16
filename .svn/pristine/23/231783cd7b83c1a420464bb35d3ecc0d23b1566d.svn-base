@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>多啦带内容</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+
+    <style>
+        html,body{
+            background: rgba(0,0,0,0);
+        }
+
+        .my-main p{
+            font-size: 12px;
+        }
+
+        .aui-grid-sixteen li:after {
+            border:none;
+        }
+        .aui-grid-sixteen li {
+            padding: 5px 5px;
+        }
+
+        #main{
+            position: fixed; bottom: -1rem; left: 0px; right: 0px;
+            /*border-top: 1px solid #6F6F6F;*/
+        }
+        .aui-content{
+            margin-bottom: 0px; padding-bottom: 0px;
+            background-color: #FFFFFF;
+        }
+        .item .swiper-lazy {
+            height: 5.25rem;
+            width: 3.5rem;
+            margin: 1px;
+            position: relative;
+        }
+        .item .swiper-span{
+            position: absolute;
+            background: rgba(0,0,0,0.5);
+            text-align: center;
+            bottom: 2.7rem;
+            line-height: 1rem;
+            color: #FFFFFF;
+            width: 3.5rem;
+            font-size: 0.5rem;
+        }
+        .item .swiper-poor{
+            border: 1px solid #6F6F6F;
+            text-align: center;
+            line-height: 5rem;
+            font-size: 0.6rem;
+            color: #1B1918;
+        }
+        .item .swiper-bag{
+            border: 1px solid #C4C4C4;
+            text-align: center;
+            line-height: 5rem;
+            font-size: 0.5rem;
+            color: #C4C4C4;
+        }
+        .item .swiper-delete{
+            position: relative;
+            text-align: center;
+            top: 0.5rem;
+            color: #000000;
+            width: 3.5rem;
+            font-size: 0.5rem;
+        }
+        .aui-content .aui-header {
+            background: #FFFFFF;height:3rem;line-height: 2.9rem; padding: 0 0.75rem;text-align: center;
+            /*border-top: 1px solid #C4C4C4;*/
+        }
+        .aui-content .aui-header .aui-header-center {
+            font-size: 0.8rem;
+            margin-left: 1rem;
+
+        }
+        .aui-content .aui-header .aui-header-right {
+            float: right;
+            color: #505050;
+            font-size: 0.7rem;
+            padding-right: 0.5rem;
+        }
+        .waterfall .item img {
+            /* width: 100%; */
+            height: 13rem;
+        }
+        .cloudset-container .swiper-container {
+            height: 8rem;
+        }
+    </style>
+</head>
+<body>
+
+<div id="main" class="flex flex-vertical"  style="height: 100%" >
+    <div class="flex-1" tapmode onclick="closeBag()">
+
+    </div>
+    <div class="aui-content aui-margin-b-15">
+        <div  class="aui-header" tapmode onclick="closeBag()">
+            <span class="aui-header-center">我的多啦袋</span>
+            <span class="aui-header-right">关闭</span>
+        </div>
+
+        <div class="cloudset-container" >
+            <div class="swiper-container">
+                <div class="swiper-wrapper" id="bag">
+                    <!--<div class="item swiper-slide" tapmode onclick="showClothes()">-->
+
+                        <!--&lt;!&ndash;<img class="swiper-lazy" src="http://img.duolayimeng.com/original/1517718-1.jpg@320h" alt="" style="height: 5rem"/>&ndash;&gt;-->
+
+                        <!--&lt;!&ndash;<div class="swiper-delete">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<i class="duola-iconfont icon-delete"></i>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--<div class="swiper-lazy swiper-poor">-->
+                            <!--差一件-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="item swiper-slide" tapmode onclick="showClothes()">-->
+                        <!--<img class="duo-cache-img swiper-lazy" src="http://img.duolayimeng.com/original/1517718-1.jpg@320h" alt="" style="height: 5rem"/>-->
+                        <!--<div class="swiper-span">-->
+                            <!--已持有-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="item swiper-slide" tapmode onclick="showClothes()">-->
+                        <!--<img class="duo-cache-img swiper-lazy" src="http://img.duolayimeng.com/original/1517718-1.jpg@320h" alt="" style="height: 5rem"/>-->
+                        <!--<div class="swiper-span">-->
+                            <!--已持有-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="item swiper-slide" tapmode onclick="showClothes()">-->
+                        <!--<div class="swiper-lazy swiper-bag">-->
+                            <!--增减多啦袋-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loading" class="aui-text-center aui-padded-t-15">
+</div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/doT_min.js"></script>
+<script type="text/javascript" src="../../script/swiper.min.js"></script>
+<script id="bag-template" type="text/x-dot-template">
+    {{ for(var i = 0; i < it.length; i++) { }}
+    <div class="item swiper-slide"  id="{{='bag-id-'+i}}">
+        <img  src="../../image/hold.jpg" tapmode class="{{=CONSTANT.CACHECLASSNAME}} swiper-lazy" title="{{=getImgUrl2([colthPath,it[i].img,colthPathStyle])}}" tapmode onclick="showClothes('{{=it[i]._id}}',false,true)">
+        {{? it[i].tag == "YES"}}
+        <div class="swiper-span">
+            已持有
+        </div>
+        {{??}}
+        <div class="swiper-delete" tapmode onclick=" {{='deleteBag(\''+ ('bag-id-'+i) +'\',\''+ i +'\',\''+it[i].size+'\',\''+it[i]._id+'\',\''+it[i].online+'\',\''+it[i].barcode+'\')'}}">
+            <i class="duola-iconfont icon-delete" ></i>
+        </div>
+        {{?}}
+    </div>
+    {{ } }}
+    {{ for(var i = 0; i < bagNum; i++) { }}
+    <div class="item swiper-slide" tapmode onclick="closeBag()">
+        <div class="swiper-lazy swiper-poor">
+            差一件
+        </div>
+    </div>
+    {{ } }}
+    <div class="item swiper-slide" tapmode onclick="goRenew()" id="bag-increase">
+        <div class="swiper-lazy swiper-bag">
+            增减多啦袋
+        </div>
+    </div>
+</script>
+<script type="text/javascript">
+    var chooseCan,bagList,bagNum;
+    apiready = function(){
+        bagList = api.pageParam.bagList;
+        bagNum = api.pageParam.bagNum;
+        setCloset(bagList);
+        api.parseTapmode();
+    };
+    function setCloset(bags){
+        doHtml("bag","bag-template",bags);
+        var themeGroupContainer = $api.byId('bag');
+        _imgCacheUrl3(themeGroupContainer);
+        initSwiper();
+    }
+    function closeBag() {
+        api.execScript({
+            frameName:"closet_frame",
+            script: "closeMyBag();"
+        });
+    }
+    function deleteBag (domId,n,size,id,online,barcode) {
+        if(online=='YES'){
+            var body = {
+                "cloth":{
+                    "_id": id,
+                    "size": size,
+                    "tag": n // 原样返回的tag, 可选
+                }
+            }
+        }else{
+            var body = {
+                "cloth":{
+                    barcode:[String(barcode)]
+                }
+
+            }
+        }
+        var url = serviceNew + 'dorabag/uncheck';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData(body);
+        var extra = {domId: domId,'_id': id,"size" : size};
+        _ajaxData(url,'post',headers,data,uncheckSuccessCallback,uncheckErrorCallback,0,extra);
+        function uncheckSuccessCallback(ret, extra){
+            _loadingHide();
+            if(ret.statusCode=="200"){
+                api.execScript({
+                    name : 'root',
+                    frameName : "footer_tab_3",
+                    script : "removeBag('"+extra._id+"','"+extra.size+"');"
+                });
+                deleteBagDom(extra.domId);
+                toastMsg("移除成功");
+            }else if(ret.statusCode=='10104'){
+                toLogin();
+            }else{
+                toastMsg(ret.msg);
+            }
+        }
+        function uncheckErrorCallback(err,extra){
+            _loadingHide();
+            toastMsg(err.msg);
+        }
+    }
+    function deleteBagDom(domId){
+        $api.remove( $api.byId(domId));
+        var html = '<div class="item swiper-slide" tapmode onclick="closeBag()">'+
+                '<div class="swiper-lazy swiper-poor">'+
+                '差一件 </div> </div>';
+        $api.before($api.byId('bag-increase'), html);
+        initSwiper();
+    }
+
+    function initSwiper(){
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 4,
+            freeMode: true,
+            preloadImages: false,
+            lazyLoading: true,
+            spaceBetween: 0
+        });
+    }
+
+
+    function goRenew(){
+        api.openWin({
+            name: 'Renew',
+            url: '../win.html',
+            pageParam:{
+                page: 'Renew_new',
+                title: '我要续费'
+            }
+        });
+    }
+
+
+</script>
+</html>

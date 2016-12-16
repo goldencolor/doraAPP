@@ -1,0 +1,227 @@
+/**
+ * app云修复版本,存入偏好设置
+ * ###每次云修复必须更改###
+ */
+var appRepair = 1;
+var clientVersionCode = null;
+var rebootInfo = {};
+var isAPICloudRepaired = false;
+var MAXREBOOTTIMES = 1 ;//最大重启次数
+var MAXWAITPUSHTIME = 4*1000;//最长等待APICloud推送更新时间
+function setAppRepair(){
+	api.setPrefs({
+		key: 'appRepair',
+		value: appRepair
+	});
+}
+
+/**
+ * 是否更新当前app版本 
+ */
+function isUpdateVersion(callback,extra){
+	var version = api.appVersion;
+	var systemType = api.systemType;
+	var paramSys = systemType + '-version';
+	var url = serviceNew + 'sys/version/client';
+	var headers = {
+		"Content-Type":'application/json'
+	};
+	var repair =  api.getPrefs({
+		sync: true,
+		key: 'appRepair'
+	}) || 0;
+	headers[paramSys] = version + '-repair.'+repair;
+	console.log(getLogStr(new Array(repair,url,headers)));
+	api.ajax({
+	    url: url,
+	    method: 'post',
+	    dataType : 'json',
+		headers: headers,
+	    returnAll : false,
+	    data : {}
+    },function(ret,err){
+		console.log(getLogStr(new Array(ret,err)));
+    	if(ret && ret.statusCode == 200){
+			//不需要更新
+			if(callback){
+				callback(extra);
+			}
+		}else if(ret && ret.statusCode == 50003 && ret.detail){
+			//提示更新,可以选择
+			var isPrompt = isTrue(ret.detail.prompt);
+			var url = ret.detail.url;
+			var msg = ret.detail.description || '';
+			var title = ret.msg || '多啦衣梦更新啦';
+			rebootInfo.title = title;
+			rebootInfo.msg = msg;
+			if(!isPrompt){
+				clientVersionCode = 50003;
+				if(callback){
+					callback(extra);
+				}
+			}else{
+				api.confirm({
+					title: title,
+					msg: msg,
+					buttons: ['取消','确定']
+				}, function(ret, err) {
+					if(ret && ret.buttonIndex == 2){
+						//点击更新按钮
+						updateMyApp(systemType,url);
+					}else{
+						api.removeEventListener({
+							name: 'resume'
+						});
+						clientVersionCode = 50003;
+						//点击取消
+						if(callback){
+							callback(extra);
+						}
+					}
+				});
+			}
+		}else if(ret && ret.statusCode == 50004 && ret.detail){
+			//有更新，强制更新
+			var isForce = isTrue(ret.detail.force);
+			var url = ret.detail.url;
+			var msg = ret.detail.description;
+			var title = ret.msg || '多啦衣梦更新啦';
+			if(isForce){
+				api.alert({
+					title: title,
+					msg: msg,
+					buttons: ['确定']
+				}, function(ret, err) {
+					if(ret && ret.buttonIndex == 1){
+						//点击更新按钮
+						updateMyApp(systemType,url);
+					}
+				});
+			}
+		}else if(ret && ret.statusCode == 50006 && ret.detail){
+			//云修复
+			//为了收到云修复，重启的次数
+			var msg = ret.detail.description || '';
+			var title = ret.msg || '重启更新';
+			clientVersionCode = 50006;
+			rebootInfo.title = title;
+			rebootInfo.msg = msg;
+			if(callback){
+				callback(extra);
+			}
+			setTimeout(function(){
+				var appRepairTimes = api.getPrefs({
+						key: 'appRepairTimes',
+						sync: true
+					}) || 0;
+				if(appRepairTimes < MAXREBOOTTIMES && !isAPICloudRepaired){
+					rebootApp();
+				}
+			},MAXWAITPUSHTIME);
+		}else{
+			if(callback){
+				callback(extra);
+			}
+			console.error('请求app版本失败!');
+    	}
+    });
+}
+
+//更新app
+function updateMyApp(systemType,appUri){
+	//console.log(getLogStr(new Array(systemType,appUri)));
+	if(systemType == 'android'){
+		//Android用法：
+		api.download({
+            url: appUri,
+            report: true,
+		    cache: true,
+    		allowResume: true
+        }, function(ret, err){
+
+            if(ret && ret.state == 0){
+            	//正在下载
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '正在更新',
+                    text: ret.percent + '%',
+                    modal: true
+                });
+            }else if(ret && ret.state == 1　&& ret.savePath) {
+            	/* 下载完成 */
+            	api.hideProgress();
+                api.installApp({
+                    appUri: ret.savePath
+                });
+            }else{
+            	console.error('updateMyApp : '+ JSON.stringify(ret) + ' : '+ JSON.stringify(err));
+            }
+        });
+	}else if(systemType == 'ios'){
+		//iOS用法
+		api.installApp({
+		    appUri:appUri
+		});
+	}
+}
+
+function listenVersion(){
+	//监听云修复完成后回调
+	api.addEventListener({
+		name:'smartupdatefinish'
+	}, function(ret, err){
+		if(clientVersionCode == 50006 || clientVersionCode == 50003){
+			//App版本是最新，云修复版本不是最新
+			//App版本不是最新，云修复版本也不是最新，点击取消更新App
+			isAPICloudRepaired = true;
+			rebootApp();
+		}
+	});
+	//监听app退出到后台
+	//防止在安装时候点击取消，然后回到应用，并不能强制更新
+	api.addEventListener({
+	    name:'resume'
+	}, function(ret, err){
+	   isUpdateVersion(checkUpdateFinish);
+	});
+}
+
+function exitApp(){
+	api.closeWidget({
+		retData: {name:'closeWidget'},
+		animation: {
+			type: 'flip',
+			subType: 'from_bottom',
+			duration: 500
+		},
+		silent:true
+	});
+}
+
+function rebootApp(){
+	api.alert({
+		title: rebootInfo.title,
+		msg: rebootInfo.msg,
+		buttons: ['请重启']
+	}, function(ret, err) {
+		if(ret && ret.buttonIndex == 1){
+			var appRepairTimes = api.getPrefs({
+				key: 'appRepairTimes',
+				sync: true
+			}) || 0;
+			if(isAPICloudRepaired){
+				appRepairTimes = 0;
+			}else{
+				appRepairTimes++;
+			}
+
+			api.setPrefs({
+				key: 'appRepairTimes',
+				value: appRepairTimes
+			},function(){
+				exitApp();
+			});
+		}
+	});
+}

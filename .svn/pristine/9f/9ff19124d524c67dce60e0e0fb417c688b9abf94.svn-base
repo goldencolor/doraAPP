@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+	    .aui-radio {
+			width: 24px;
+			height: 24px;
+			position: relative;
+			margin: 8px 10px;
+			background: #ffffff;
+			border: solid 1px #FF6100;
+			border-radius: 0px;
+			display: table;
+			float: left;
+			-webkit-appearance: none;
+			transition: background-color ease 0.1s;
+		}
+    	.aui-radio:checked,
+		.aui-radio.aui-checked {
+			background-color: #FF6100;
+			border: solid 1px #FF6100;
+			text-align: center;
+		}
+		.aui-radio:checked:before,
+		.aui-radio.aui-checked:before {
+			position: absolute;
+			left: 4px;
+			top: 1px;
+			font-size: 14px;
+			display: table;
+			font-family: "auiicon";
+			content: "\e645";
+			color: #ffffff;
+		}
+		.aui-radio:checked:after,
+		.aui-radio.aui-checked:after {
+			position: absolute;
+			left: 4px;
+			top: 1px;
+			font-size: 14px;
+			display: table;
+			font-family: "auiicon";
+			content: "\e645";
+			color: #ffffff;
+			pointer-events: none;
+			
+		}
+		
+		.my-aui-input-row:first-child:after {
+		  	border-top: 0px solid #c8c7cc;
+			display: block;
+			content: ''; 
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			-webkit-transform-origin: 0 0;
+			-webkit-transform: scale(1);
+			pointer-events: none;
+		}
+		
+		.my-aui-input-row:last-child:after {
+			border-bottom: 0px solid #c8c7cc;
+		}
+		
+		.my-aui-list-view:after {
+		  	border-top: 0px solid #c8c7cc;
+			display: block;
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			-webkit-transform-origin: 0 0;
+			-webkit-transform: scale(1);
+			pointer-events: none;
+		}
+		.my-aui-li-style:last-child:after {
+		  	border-bottom: 0px solid #c8c7cc;
+		}
+		.aui-radio-name {
+			height: 26px;
+			line-height: 26px;
+			margin: 8px 10px 8px -5px;
+			float: none; 
+			color: #777777;
+			font-size: 14px;
+		}
+		.my-aui-background-f{
+			background-color:#fff;
+		}
+		.my-aui-colo{
+			color:#E59C96;
+		}
+		#my-aui-input-row {
+			width: 100%;
+			position: relative;
+		    display: table;
+		    padding: 0px 0;
+		}
+		.my-aui-li-style{
+			font-size: 12px;
+			color:#777777;
+		}
+		.my-aui-content{
+			margin-top:15px;
+		}
+		.my-content-margin{
+    		margin: 0px 10px 0px 10px;
+    	}
+    	.my-aui-btn-block{
+    		background-color:#FF6100;
+    		color: #fff;
+    		font-size: 14px;
+    		padding:10px 0px 10px 0px;
+    	}
+    	.my-position{
+    		position: absolute;top: 0px ;right:0px; padding: 2px;background-color: #ff830f;color:#fff; z-index: 100; font-size: 8px; line-height: 2
+    	}
+    </style>
+</head>
+<body>
+	<div class="aui-content my-aui-content">
+        <div class="aui-form">
+        	<div class="aui-input-row my-aui-input-row" id="my-aui-input-row">
+                <div id="my-input-id">
+                    <!--<div onclick="change(1)" class="aui-col-xs-4 aui-text-center aui-border-l  my-aui-background-f">
+	                	<input class="aui-radio" type="radio"  name="demo1" value="1" checked="">
+	                    <div class="aui-radio-name">1个</div>
+	                    <div class="my-position">推荐</div>
+                	</div>
+                    <div onclick="change(2)" class="aui-col-xs-4 aui-text-center aui-border-l  my-aui-background-f">
+	                	<input class="aui-radio" type="radio"  name="demo1"  value="2">
+	                    <div class="aui-radio-name">2个</div>
+	                </div>
+	                <div onclick="change(3)" class="aui-col-xs-4 aui-text-center aui-border-l  my-aui-background-f" >
+	                	<input class="aui-radio" type="radio"  name="demo1"  value="3">
+	                    <div class="aui-radio-name">3个</div>
+	                </div>-->
+                </div>
+            </div>
+        </div> 
+    </div>
+    <div class="aui-content">
+	    <ul class="aui-list-view my-aui-list-view">
+	        <li class="aui-list-view-cell my-aui-li-style">
+	           	 单次可选<em class="my-aui-colo" id="choose-clothes-num"></em>件衣服，  <span class="my-aui-colo" id="choose-clothes-money"></span>/月。
+	        </li>
+	    </ul>
+	</div>
+	<div class="aui-content my-content-margin">
+    	<div class="aui-btn aui-btn-block my-aui-btn-block" onclick="Pay()">下一步</div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+	var bagNum =1;
+	var money;
+	var serviceType;
+	var token;
+	var dorabag;
+	var type;
+	var is_err =1 ;
+	apiready = function(){	
+	token = $api.getStorage('token');
+	type = api.pageParam.type;
+	if(type=='activity'){
+		serviceType='activity';
+	}else{
+		serviceType='serviceFee';
+	}
+		init();
+	};
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			var html = '';
+			dorabag=ret.dorabag;
+			for(var i =0;ret.dorabag.length>i;i++){
+				html+='<div  class="aui-col-xs-4 aui-text-center aui-border-l  my-aui-background-f">';
+				html+='<input class="aui-radio" type="radio"  name="demo1" value="'+ret.dorabag[i].bags+'" onclick="change('+ret.dorabag[i].bags+');" id="select-'+ret.dorabag[i].bags+'">';
+				html+='<div class="aui-radio-name">'+ret.dorabag[i].bags+'个</div>';
+				if(i==0){
+					html+='<div class="my-position">推荐</div>';
+				}
+				html+='</div>';
+			}
+			$api.after($api.byId('my-input-id'), html);
+			$api.attr($api.byId('select-1'), 'checked', 'true');
+			change(dorabag[0].bags);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function init(){
+		var url = serviceNew + 'user/service/dorabag';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+	
+	function change(num){	
+			bagNum = num;
+		for(var x in dorabag){
+			if(dorabag[x].bags==num){
+				money=dorabag[x].fee; 	
+				leaseLimit = dorabag[x].leaseLimit;				
+			}
+		}			
+		$api.html($api.byId('choose-count'), num);
+		$api.html($api.byId('choose-clothes-money'), money);
+		$api.html($api.byId('choose-clothes-num'), leaseLimit);
+	}
+	function Pay(){
+		api.openWin({
+            name: 'Pay',
+            url: 'win.html', 
+            pageParam:{
+            	page: 'Pay',
+		        title: '缴费',
+		        data: money,
+		        bagNum:bagNum,
+		        type: serviceType,
+		        isFrist:'YES'
+		        
+            }
+    	});				
+	}
+</script>
+</html>

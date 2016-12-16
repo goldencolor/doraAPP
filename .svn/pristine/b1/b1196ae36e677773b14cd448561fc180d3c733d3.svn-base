@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>筛选页面</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_iconfont_2_0.ttf" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <style>
+        #choose-container{
+            margin: 0.375rem 0.5rem;
+        }
+        #choose-container .label{
+
+        }
+        .level1{
+            width: 100%;
+        }
+
+        .item{
+            /*box-sizing: border-box;*/
+            font-size: 0.8rem;
+            text-align: center;
+            margin: 0.75rem 0;
+        }
+        .item span{
+            color: #454545;
+            /*font-family: SourceHanSansCN-Normal;*/
+            font-family: ArialMT;
+            font-size: 0.8rem;
+            display: inline-block;
+            padding: 0.1rem 0.5rem;
+            width: auto;
+            text-align: center;
+        }
+        .item.hit-color span{
+            margin: -1px;
+            background: #F6F6F6;
+            border-radius: 2px;
+        }
+        .itemHear{
+            font-size: 0.6rem;
+            color: #B6B6B6;
+            margin: 0.8rem 0 0.5rem 0;
+            text-align: center;
+        }
+        .level1 .normal-color{
+            color: #454545;
+        }
+        /*.level1 .hit-color{*/
+        /*!*color: #FFFFFF;*!*/
+        /*color: #FF6100;*/
+        /*!*background: #FF6100;*!*/
+        /*border: 1px solid #FF6100;*/
+        /*border-radius: 0.15rem;*/
+        /*}*/
+        .level1 .label{
+            font-size: 0.6rem;
+            color: #B6B6B6;
+            margin: 0.8rem 0 0.5rem 0;
+        }
+
+        /*筛选条件浮动区*/
+        #choose-area{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0 0.5rem;
+            border-top:1px solid #F1F1F1;
+            background-color: #FFFFFF;
+        }
+        /*确定按钮*/
+        #choose-btn{
+            background: #FF6100;
+            border-radius: 4px;
+            color: #FFFFFF;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            font-size: 1rem;
+            padding: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        #choose-condition{
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+        #choose-condition .aui-col-xs-3{
+            height: 2rem;
+            /*font-family: SourceHanSansCN-Light;*/
+            font-size: 0.8rem;
+            color: #454545;
+            margin-bottom: 0.5rem;
+        }
+        #choose-condition .aui-col-xs-3 div{
+            height: 2rem;
+            text-align: center;
+            line-height: 2rem;
+            position: relative;
+            font-family: ArialMT;
+        }
+        #choose-condition  .aui-icon-close{
+            display: inline-block;
+            height: 0.8rem;
+            line-height: 0.8rem;
+            text-align: center;
+            width: 0.8rem;
+            margin-left: 2px;
+            border-radius: 0.4rem;
+            background-color: #FFFFFF;
+            color: #FF6100;
+            font-size: 0.7rem;
+            position: absolute;
+            top: 0.7rem;
+            right: 0;
+        }
+
+    </style>
+</head>
+<body>
+<div id="choose-container">
+
+    <!--<div id="filter-0">-->
+    <!--<div class="level1 aui-row">-->
+    <!--<div class="itemHear aui-col-xs-3">尺寸</div>-->
+    <!--</div>-->
+    <!--<div id="size-container">-->
+    <!--<div class="aui-row level1">-->
+    <!--<div class="item aui-col-xs-3"><span>XXS</span></div>-->
+    <!--<div class="item aui-col-xs-3 hit-color"><span class="">XS</span></div>-->
+    <!--<div class="item aui-col-xs-3"><span>S</span></div>-->
+    <!--<div class="item aui-col-xs-3"><span>M</span></div>-->
+    <!--<div class="item aui-col-xs-3"><span>L</span></div>-->
+    <!--<div class="item aui-col-xs-3"><span>XL</span></div>-->
+    <!--</div>-->
+
+    <!--</div>-->
+    <!--</div>-->
+
+
+</div>
+<div id="choose-area" class="aui-grid">
+    <div id="choose-condition" class="aui-row">
+
+        <!--<div class="aui-col-xs-3">-->
+        <!--<div >裙啊a<i class="aui-iconfont aui-icon-close"></i></div>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-3">-->
+        <!--<div >裙啊a<i class="aui-iconfont aui-icon-close"></i></div>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-3">-->
+        <!--<div >裙啊a<i class="aui-iconfont aui-icon-close"></i></div>-->
+        <!--</div>-->
+
+        <!--<div class="aui-col-xs-3">-->
+        <!--<div >裙啊a<i class="aui-iconfont aui-icon-close"></i></div>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-3">-->
+        <!--<div >裙啊a<i class="aui-iconfont aui-icon-close"></i></div>-->
+        <!--</div>-->
+
+    </div>
+    <div id="choose-btn" class="aui-btn aui-btn-block aui-btn-sm" tapmode onclick="search()">确定</div>
+</div>
+
+<script id="choose-container-template" type="text/x-dot-template">
+    {{ for(var n = 0; n < it.count; n++) { }}
+        <div id="{{='filter-'+n}}">
+            <div class="level1 aui-row">
+                <div class="itemHear aui-col-xs-3">{{=it.list[n].name}}</div>
+            </div>
+            <div id="{{=it.list[n].key+'-container'}}">
+                <div class="aui-row">
+                    {{ for(var i = 0; i < it.list[n].count; i++){ }}
+                    <div data-index="{{=n+""+i}}" title="{{=it.list[n].key}}" class="item aui-col-xs-3 item normal-color {{=chooseHitColor(it.list[n].key,i,isDefine(it.list[n].list[i]) ? it.list[n].list[i].value : '')}}" tapmode onclick="{{='level1Handler(this,'+n+','+i+')'}}"><span>{{=it.list[n].list[i].value}}</span></div>
+                    {{ } }}
+                </div>
+            </div>
+        </div>
+    {{ } }}
+</script>
+
+<script id="choose-condition-template" type="text/x-dot-template">
+    {{ for(var key in it) { }}
+        {{if((key =='type' && level2) || it[key]=='全部' || it[key]=='all') continue;}}
+        <div class="aui-col-xs-3" tapmode onclick="{{='cancelCondition(this,\''+key+'\',\''+it[key]+'\')'}}">
+            {{=it[key]}}<i class="aui-iconfont aui-icon-close"></i>
+        </div>
+    {{ } }}
+</script>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+//    var getFilter={"filters":{"type":"外套","season":"夏装","size":"L"}};
+//    var chooses = null;
+//    var filters = getFilter.filters;
+//    console.log(filters);
+
+    var filters = null;//全局筛选条件
+    var level2 = null;//二级分类标签
+    var frameData = null;
+    apiready = function(){
+        frameData = api.pageParam.data;
+        filters = isObj(frameData.filters) ? frameData.filters : {};
+//        console.log(getLogStr([filters]));
+        level2 = frameData.level2;
+        changeChooseContainerCss();
+        getChoose();
+        api.parseTapmode();
+    }
+
+    //请求所有筛选条件
+    function getChoose(){
+        loadingShow();
+        var url = serviceNew + 'cloudCloset/category';
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData({
+            "position":"sidebar"
+        });
+        var extra = null;
+        _ajaxData(url,'post',headers,data,getChooseSuccessCallback,getChooseErrorCallback,0,extra);
+    }
+
+    function getChooseSuccessCallback(ret){
+        loadingHide();
+        if(ret.statusCode==200 && ret.category){
+            if(level2){
+                ret.category.list.splice(0,1,{
+                    "key":"keywords",
+                    "name":filters.type,
+                    "order":0,
+                    "multiple":"NO",
+                    "count":level2.length,
+                    "list":level2.map(function(item){return {name:item,value:item}})
+                });
+            }
+            getChooseHtml(ret.category);
+
+            if(isObj(filters)){
+                getConditionHtml();
+            }
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+
+    function getChooseErrorCallback(err){
+        loadingHide();
+        toastMsg(err.msg);
+    }
+    //渲染所有筛选条件HTML
+    function getChooseHtml(category){
+//        console.log(getLogStr([category]));
+        var html = doTHtml('choose-container-template',category);
+//        console.log(html);
+        var chooseContainer = $api.byId('choose-container');
+        if(chooseContainer){
+            chooseContainer.innerHTML = html;
+            api.parseTapmode();
+        }
+    }
+//    testChooseHtml();
+    function testChooseHtml(){
+//        var testData = {"statusCode":200,"msg":"","category":{"count":10,"list":[{"key":"type","name":"分类","order":0,"multiple":"NO","count":6,"list":[{"name":"coat","value":"外套","img":"public/img/overcoat-10-26.png"},{"name":"cardigan","value":"上衣","img":"public/img/coat-10-26.png"},{"name":"dress","value":"连衣裙","img":"public/img/dress-10-26.png"},{"name":"pants","value":"裤装","img":"public/img/trousers-10-26.png"},{"name":"shirts","value":"半裙","img":"public/img/halfSkirt-10-26.png"},{"name":"suite","value":"套装","img":"public/img/suit-10-26.png"}]},{"key":"size","name":"尺寸","order":1,"multiple":"NO","count":8,"list":[{"name":"XXS","value":"XXS"},{"name":"XS","value":"XS"},{"name":"S","value":"S"},{"name":"M","value":"M"},{"name":"L","value":"L"},{"name":"XL","value":"XL"},{"name":"XXL","value":"XXL"},{"name":"J","value":"均码"}]},{"key":"season","name":"季节","order":2,"multiple":"NO","count":4,"list":[{"name":"春秋","value":"春装"},{"name":"夏","value":"夏装"},{"name":"春秋","value":"秋装"},{"name":"冬","value":"冬装"}]},{"key":"style_occasion","name":"场合","order":3,"multiple":"NO","count":4,"list":[{"name":"FEAST","value":"聚会","img":"public/img/feast.png"},{"name":"WORK","value":"通勤","img":"public/img/officeWorker.png"},{"name":"TOURISM","value":"度假","img":"public/img/tourism.png"},{"name":"DAILY","value":"日常","img":"public/img/daily.png"}]},{"key":"style","name":"风格","order":4,"multiple":"NO","count":9,"list":[{"name":"tmka","value":"甜美可爱","keywords":["甜美","日韩"],"img":"public/img/tmka.png"},{"name":"wyfg","value":"文艺复古","keywords":["文艺","复古","民谣","田园"],"img":"public/img/wyfg.png"},{"name":"jyzx","value":"简约中性","keywords":["简约","中性","百搭"],"img":"public/img/jyzx.png"},{"name":"xxyd","value":"休闲运动","keywords":["休闲","运动"],"img":"public/img/xxyd.png"},{"name":"xgns","value":"性感女神","keywords":["性感"],"img":"public/img/xgns.png"},{"name":"dsmd","value":"都市摩登","keywords":["OL风","欧美"],"img":"public/img/dsmd.png"},{"name":"yysn","value":"优雅淑女","keywords":["优雅"],"img":"public/img/yysn.png"},{"name":"ycsj","value":"原创设计","keywords":["原创","潮牌"],"img":"public/img/ycsj.png"},{"name":"jrfq","value":"假日风情","keywords":["度假"],"img":"public/img/jrfq.png"}]},{"key":"color","name":"颜色","order":5,"multiple":"NO","count":18,"list":[{"name":"黑色","value":"黑色"},{"name":"白色","value":"白色"},{"name":"藏蓝","value":"藏蓝"},{"name":"蓝色","value":"蓝色"},{"name":"红色","value":"红色"},{"name":"粉红","value":"粉红"},{"name":"灰色","value":"灰色"},{"name":"绿色","value":"绿色"},{"name":"黄色","value":"黄色"},{"name":"棕色","value":"棕色"},{"name":"驼色","value":"驼色"},{"name":"橙色","value":"橙色"},{"name":"卡其","value":"卡其"},{"name":"紫色","value":"紫色"},{"name":"金色","value":"金色"},{"name":"银色","value":"银色"},{"name":"杏色","value":"杏色"},{"name":"彩色","value":"彩色"}]},{"key":"style_collar","name":"领型","order":6,"multiple":"NO","count":5,"list":[{"name":"V领","value":"V领"},{"name":"圆领","value":"圆领"},{"name":"立领","value":"立领"},{"name":"翻领","value":"翻领"},{"name":"一字领","value":"一字领"}]},{"key":"style_sleeve_length","name":"袖长","order":7,"multiple":"NO","count":6,"list":[{"name":"无袖","value":"无袖"},{"name":"短袖","value":"短袖"},{"name":"长袖","value":"长袖"},{"name":"五分袖","value":"五分袖"},{"name":"七分袖","value":"七分袖"},{"name":"八分袖","value":"八分袖"}]},{"key":"style_model","name":"版型","order":8,"multiple":"NO","count":3,"list":[{"name":"合体","value":"合体"},{"name":"宽松","value":"宽松"},{"name":"修身","value":"修身"}]},{"key":"stockOut","name":"库存","order":9,"multiple":"NO","count":2,"list":[{"name":"yes","value":"有库存"},{"name":"no","value":"无库存"}]}]}};
+//        var data = testData.category;
+//        var html = doTHtml('choose-container-template',data);
+//        var chooseContainer = $api.byId('choose-container');
+//        if(chooseContainer){
+//            chooseContainer.innerHTML = html;
+//        }
+    }
+
+    //渲染已经选择条件HTML
+    function getConditionHtml(){
+        var html = doTHtml('choose-condition-template',filters);
+        var chooseCondition = $api.byId('choose-condition');
+        if(chooseCondition){
+            chooseCondition.innerHTML = html;
+        }
+        changeChooseContainerCss();
+    }
+
+    //条件点击事件
+    function level1Handler(el,n,i){
+        //找出当前组的hit-color,移除hit-color
+        var key = $api.attr(el,'title');
+        var value = $api.dom(el,'span').innerHTML;
+        var hitLevel1 = $api.dom($api.byId(key+'-container'),'.hit-color');
+        if(el == hitLevel1){
+            return;
+        }
+        if(hitLevel1){
+            $api.removeCls(hitLevel1, 'hit-color');
+        }
+        //给当前el添加hit-color
+        if(isDefine(value)){
+            $api.addCls(el, 'hit-color');
+            filters[key] = value;
+            if(key == 'stockOut'){
+                setTimeout(function(){
+                    getConditionHtml();
+                },350);
+            }else{
+                getConditionHtml();
+            }
+        }
+    }
+
+    //点击取消条件
+    function cancelCondition(el,key,value){
+        //更新chooseHtml hit-color
+        var chooseHitEl = $api.dom($api.byId(key+'-container'),'.item.hit-color');
+        if(chooseHitEl){
+            $api.removeCls(chooseHitEl, 'hit-color');
+        }
+        delete filters[key];
+        getConditionHtml();
+    }
+
+    //调整已选择条件样式chooseContainer的margin-bottom
+    function changeChooseContainerCss(){
+        var chooseArea = $api.byId('choose-area');
+        if(chooseArea){
+            var height = $api.cssVal(chooseArea,'height');
+//			height = parseInt(height) + 50 + 'px';
+            var chooseContainer = $api.byId('choose-container');
+            if(chooseContainer){
+                $api.css(chooseContainer,'padding-bottom:'+height);
+            }
+        }
+    }
+    //关闭筛选页面,同步数据全局变量filters
+    function search(){
+//        console.log(getLogStr([filters]));
+        var from = frameData.from;
+        var execScriptFun = getExecScript('execSerchLevelData',[filters]);
+        var params = {
+            script: execScriptFun
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+        execNavLeftCallback();
+    }
+
+    //模板判断点击色
+    function chooseHitColor(key,index,value){
+        var hitColor = '';
+        if(value == filters[key] ){
+            hitColor = 'hit-color';
+        }
+        return hitColor;
+    }
+
+    //公用头部导航栏坐侧点击异步执行的方法
+    function execNavLeftCallback(value){
+        var from = frameData.from;
+        var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+        if(!isDefine(callback)){
+            return;
+        }
+        var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+        var params = {
+            script: getExecScript(callback,new Array(extra,api.winName,value))
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        onPageEndUmeng(CONSTANT.PAGE.FILTER);
+        api.execScript(params);
+    }
+
+    //公用头部导航栏右侧点击异步执行的方法
+    function execNavRightCallback(value){
+        var from = frameData.from;
+        var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+        if(!isDefine(callback)){
+            return;
+        }
+        var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+        var params = {
+            script: getExecScript(callback,new Array(extra,api.winName,value))
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+</script>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    </style>
+</head>
+<body>
+<div class="aui-content aui-margin-b-15">
+    <ul class="aui-list aui-media-list">
+
+        <div id="interpolation">
+
+
+        </div>
+    </ul>
+</div>
+
+
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+
+<script id="interpolationtmpl" type="text/x-dot-template">
+    {{if(it && it.length>0){ }}
+    {{for(var i =0;i < it.length;  i++){}}
+    <li class="aui-list-item" onclick="promoMine('{{=it[i].type}}','{{=it[i].userId}}')">
+        <div class="aui-media-list-item-inner">
+            <div class="aui-list-item-media aui-font-size-16 my-color" style="width: 4rem;">
+                {{=getRealName(it[i].realName)}}
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-text">
+                    <div class="aui-list-item-title aui-font-size-16">   {{=getMobile(it[i].mobile)}}</div>
+                    <div class="aui-list-item-right my-color">   ¥{{=getAmount(it[i].amount)}}</div>
+                </div>
+                <div class="aui-list-item-text">
+                    {{= getHasOrders(it[i].hasOrders)}}
+                </div>
+                <div class="aui-list-item-text">
+                    {{=getIsActive(it[i].isActive)}}
+                </div>
+            </div>
+        </div>
+    </li>
+    {{ } }}
+    {{ } }}
+</script>
+<script type="text/javascript">
+    var name,type,promoName,userId,
+            promoType = {
+                "direct": "indirect",
+                "indirect": "indirect2"
+            },
+            promoTitle = {
+                "direct": "二级推荐详情",
+                "indirect": "三级推荐详情"
+            };
+    apiready = function(){
+        name = api.pageParam.name;
+        userId = api.pageParam.userId;
+        type = api.pageParam.type;
+        promoName = PROMODETAILS[name];
+        init();
+        pullRefresh(loadRefresh);
+    };
+
+    function loadMore(){
+        api.addEventListener({
+            name:'scrolltobottom',
+            extra:{threshold:0}
+        }, function(ret, err){
+
+            setTimeout(function(){
+                getCloudset();
+            },200);
+        });
+    }
+    function loadRefresh(){
+        currPage = 1;
+        init(CONSTANT.ACTIONREFRESH);
+    }
+    function getMobile(mobile) {
+        return mobile ? mobile :"无手机号";
+    }
+
+    function getAmount(amount){
+        return amount?amount:0;
+    }
+    function getIsActive(active){
+        return active === "NO"? "非活跃用户": "活跃用户";
+    }
+    function getRealName(name){
+        return name?name:"无姓名"
+    }
+    function getHasOrders(orders){
+        return orders === "NO" ? "未下单": "已下单";
+    }
+    function promoMine(type, userId) {
+        if (type === "indirect2") {
+            return;
+        }
+        api.openWin({
+            name: type,
+            url: 'win_promo.html',
+            pageParam: {
+                page: 'promoMine',
+                title: promoTitle[type],
+                userId: userId,
+                type: promoType[type]
+            }
+        });
+    }
+    function init(extra){
+        if(!extra){
+            _loadingShow();
+        }
+        var url = serviceNew + 'recommend/details';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData({userId: userId,type: type});
+        _ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+    }
+
+    function initSuccessCallback(ret,action) {
+        if (action == CONSTANT.ACTIONREFRESH) {
+            pullRefreshDone();
+        } else {
+            loadingHide();
+        }
+        if (ret.statusCode == 200 && ret.info) {
+            var data = ret.info.list;
+            doHtml("interpolation", "interpolationtmpl", data);
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+    function goDetails(name, text){
+        alert(name);
+        alert(text.replace(/[\s：:]+/, ''));
+
+    }
+
+    function initErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+</script>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<title>新增地址修改地址</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<style>
+		.aui-content{
+			margin-bottom: 1rem;
+		}
+		input,select,textarea,.aui-list-item-label{
+			color: #707070 !important;
+		}
+		input[placeholder], [placeholder], *[placeholder] {
+			color: #707070 !important;
+		}
+		.my-aui-btn-block{
+			background-color:#FF6100;
+			color: #FFFFFF;
+		}
+		.aui-btn:active {
+			color: #FFFFFF;
+			background-color:#FF6100;
+			opacity: 0.9;
+		}
+		.aui-list-item:first-child{
+			border: none;
+		}
+	</style>
+</head>
+<body>
+<div class="aui-content">
+	<ul class="aui-list aui-form-list">
+		<li class="aui-list-item">
+			<div class="aui-list-item-inner">
+				<div class="aui-list-item-label">
+					收件人
+				</div>
+				<div class="aui-list-item-input">
+					<input type="text" id="name" placeholder="请输入收件人"/>
+				</div>
+			</div>
+		</li>
+		<li class="aui-list-item">
+			<div class="aui-list-item-inner">
+				<div class="aui-list-item-label">
+					手机号
+				</div>
+				<div class="aui-list-item-input">
+					<input type="tel" placeholder="请输入手机号" id="phone"/>
+				</div>
+			</div>
+		</li>
+		<li class="aui-list-item">
+			<div class="aui-list-item-inner">
+				<div class="aui-list-item-label">
+					省份
+				</div>
+				<div class="aui-list-item-input">
+					<select name="s_province" id="s_province" class="aui-input my-aui-border"></select>
+				</div>
+			</div>
+		</li>
+		<li class="aui-list-item">
+			<div class="aui-list-item-inner">
+				<div class="aui-list-item-label">
+					城市
+				</div>
+				<div class="aui-list-item-input">
+					<select name="s_city" id="s_city" class="aui-input my-aui-border" ></select>
+				</div>
+			</div>
+		</li>
+		<li class="aui-list-item">
+			<div class="aui-list-item-inner">
+				<div class="aui-list-item-label">
+					区县
+				</div>
+				<div class="aui-list-item-input">
+					<select name="s_county" id="s_county" class="aui-input my-aui-border" ></select>
+				</div>
+			</div>
+		</li>
+		<li class="aui-list-item">
+			<div class="aui-list-item-inner">
+				<div class="aui-list-item-label">
+					街道
+				</div>
+				<div class="aui-list-item-input">
+					<!--<textarea placeholder="请输入你的街道" id="detail"></textarea>-->
+					<input type="text" placeholder="请输入你的街道" id="detail"/>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
+<div class="aui-btn aui-btn-block my-aui-btn-block" tapmode onclick="addrBtn()">提交</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/area.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+	var frameData = null;
+	var isChange = false;
+	var id = null;
+	var list = null;
+
+	apiready = function(){
+		frameData = api.pageParam.data;
+
+		if(isDefine(frameData.id) && isDefine(frameData.list)){
+			isChange = true;
+			id = frameData.id;
+			list = frameData.list;
+		}
+		console.log(getLogStr([id,list]));
+		_init_area();
+		if(isChange){
+			_setInputVal('detail',list['detail']);
+			_setInputVal('phone',list['phone']);
+			_setInputVal('name',list['name']);
+			var county = list.county;
+			var province = list.province;
+			var city = list.city;
+			if(isDefine(province)){
+				var provinceEl = $api.byId('s_province');
+				var provinceIndex = dsy.Items[0].indexOf(province);
+				provinceEl.options[provinceIndex+1].selected = true;
+				if(isDefine(city) && provinceIndex != -1){
+					var cityEl = $api.byId('s_city');
+					var cityIndex = dsy.Items['0_'+provinceIndex].indexOf(city);
+					dsy.Items['0_'+(provinceIndex)].map(function (item){
+						cityEl.options.add(new Option(item,item));
+					});
+					cityEl.options[cityIndex+1].selected = true;
+					if(isDefine(county) && cityIndex != -1){
+						var countyEl = $api.byId('s_county');
+						var countyIndex = dsy.Items['0_'+provinceIndex+'_'+cityIndex].indexOf(county);
+						dsy.Items['0_'+provinceIndex+'_'+cityIndex].map(function (item){
+							countyEl.options.add(new Option(item,item));
+						});
+						countyEl.options[countyIndex+1].selected = true;
+					}
+				}
+			}
+		}
+	};
+//	testChange();
+	function testChange(){
+		_init_area();
+		var province = '四川省';
+		var city = '成都市aa';
+		var county = '温江区';
+		if(isDefine(province)){
+			var provinceEl = $api.byId('s_province');
+			var provinceIndex = dsy.Items[0].indexOf(province);
+			provinceEl.options[provinceIndex+1].selected = true;
+			if(isDefine(city) && provinceIndex != -1){
+				var cityEl = $api.byId('s_city');
+				var cityIndex = dsy.Items['0_'+provinceIndex].indexOf(city);
+				dsy.Items['0_'+(provinceIndex)].map(function (item){
+					cityEl.options.add(new Option(item,item));
+				});
+				cityEl.options[cityIndex+1].selected = true;
+				if(isDefine(county) && cityIndex != -1){
+					var countyEl = $api.byId('s_county');
+					var countyIndex = dsy.Items['0_'+provinceIndex+'_'+cityIndex].indexOf(county);
+					dsy.Items['0_'+provinceIndex+'_'+cityIndex].map(function (item){
+						countyEl.options.add(new Option(item,item));
+					});
+					countyEl.options[countyIndex+1].selected = true;
+				}
+			}
+		}
+	}
+	function newOrder() {
+
+		api.confirm({
+			msg: "确定此地址，直接下单吗?",
+			buttons: ['确定', '取消']
+		}, function(ret, err){
+			if (ret) {
+				api.sendEvent({
+					name: 'chooseAddrEvent',
+					extra: {
+						key: "0"
+					}
+				});
+			}
+			closeNewly();
+		})
+
+	}
+	function addrBtnSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+			api.sendEvent({
+				name: 'setAddrList',
+				extra: {
+					key: 'OK'
+				}
+			});
+			if (frameData === "bag") {
+				newOrder();
+				return;
+			}
+			closeNewly();
+		}else if(ret.statusCode=='10104'){
+			toastMsg(ret.msg);
+			setTimeout(function(){
+				toLogin();
+			},1000);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function addrBtnErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+
+	function  closeNewly(){
+		toastMsg('保存成功');
+		setTimeout(function(){
+			api.closeWin();
+			onPageEndUmeng(CONSTANT.PAGE.NEWADDR);
+		},1000);
+	}
+
+	function addrBtn(){
+		var name = $api.val($api.byId('name')).trim();
+		var phone = $api.val($api.byId('phone')).trim();
+		var province = $api.val($api.byId('s_province'));
+		var city = $api.val($api.byId('s_city'));
+		var county = $api.val($api.byId('s_county')).trim();
+		var detail = $api.val($api.byId('detail')).trim();
+		if(!isDefine(name)){
+			//focus 导致弹出键盘挡住提示
+//			$api.byId('name').focus();
+			toastMsg("收件人不能为空");
+			return;
+		}
+		if(!CONSTANT.REG.MOBILE.test(phone)) {
+//			$api.byId('phone').focus();
+			toastMsg("请输入有效的手机号码");
+			return false;
+		}
+		if(!isDefine(province) || province == opt0[0]){
+			toastMsg("省份不能为空");
+			return;
+		}
+		if(!isDefine(city) || city == opt0[1]){
+			toastMsg("城市不能为空");
+			return;
+		}
+		if(!isDefine(county) || county == opt0[2]){
+			if($api.byId('s_county').options.length == 1){
+				county = '';
+			}else{
+				toastMsg("区县不能为空");
+				return;
+			}
+		}
+		if(!isDefine(detail)){
+//			$api.byId('detail').focus();
+			toastMsg("街道不能为空");
+			return;
+		}
+		var url = serviceNew + 'user/address/add';
+		if(isChange){
+			url = serviceNew + 'user/address/update/'+id;
+		}
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			province:province,
+			city:city,
+			county:county,
+			detail:detail,
+			name:name,
+			phone:phone
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,addrBtnSuccessCallback,addrBtnErrorCallback,0,extra);
+	}
+
+	//公用头部导航栏坐侧点击异步执行的方法
+	function execNavLeftCallback(value){
+		var from = frameData.from;
+		var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+
+	//公用头部导航栏右侧点击异步执行的方法
+	function execNavRightCallback(value){
+		var from = frameData.from;
+		var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+</script>
+</html>

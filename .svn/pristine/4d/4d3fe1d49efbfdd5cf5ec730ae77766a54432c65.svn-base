@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>模板</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        body{
+
+        }
+    </style>
+</head>
+<body>
+<div id="body"></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/components/pagination.js"></script>
+<script type="text/javascript">
+    var fileName = "home.template.html";
+    apiready = function(){
+        getTemplate();
+    };
+    function getTemplate() {
+        loadingShow();
+        var url = serviceNew + '/files/'+fileName;
+        var headers = _getAjaxHeaders(false,true,"text/html");
+        var data = _getAjaxData({
+
+            input : '555'
+
+        });
+        _ajaxData(url,'get',headers,data,getTemplateSuccessCallback,getTemplateErrorCallback,0,0,'text');
+    }
+    function getTemplateSuccessCallback (ret) {
+        loadingHide();
+        $api.html($api.byId("body"),ret);
+
+    }
+    function getTemplateErrorCallback(err) {
+        loadingHide();
+        toastMsg(err.msg);
+    }
+
+
+</script>
+
+</html>

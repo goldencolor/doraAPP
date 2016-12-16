@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>衣服详情页</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+		html,body,.duola-header{
+			background: transparent;
+		}
+		#nav-right{
+			visibility: hidden;
+			opacity: 0;
+
+			-webkit-transition-property:visibility;
+			-webkit-transition-duration:0s;
+			-webkit-transition-property:opacity;
+			-webkit-transition-duration:0.3s;
+			-webkit-transition-timing-function:linear;
+		}
+		#header{
+			-webkit-transition-property:background;
+			-webkit-transition-duration:0.3s;
+			-webkit-transition-timing-function:linear;
+		}
+		.leftBg{
+			background: rgba(255,255,255,0.70);
+			/*background-color: #ddd;*/
+			width: 1.5rem;
+			height: 1.5rem;
+			text-align: center;
+			line-height: 1.5rem;
+			border-radius: 50%;
+			position: absolute;
+			top: 0.45rem;
+			left: 0.75rem;
+		}
+		.leftBg #nav-left-icon{
+			color: #646464;
+		}
+		.duola-header .duola-icon-area{
+			position: relative;
+		}
+	</style>
+</head>
+<body>
+	<header id="header" class="duola-header flex">
+		<a id="nav-left" class="duola-icon-area" tapmode onclick="closeWin()">
+			<div class="leftBg">
+				<span id="nav-left-icon" class="nav-left-icon duola-iconfont icon-left"></span>
+			</div>
+		</a>
+		<div id="nav-title" class="nav-title flex-1"></div>
+		<a id="nav-right" class="duola-icon-area" tapmode onclick="sharedHandler()">
+			<span id="nav-right-icon" class="nav-right-icon duola-iconfont icon-share "></span>
+		</a>
+	</header>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/umeng_sdk.js"></script>
+	<script type="text/javascript">
+		var sharedIconEl = null;
+		var header = null;
+		var navTitle = null;
+
+		apiready = function() {
+			header = $api.byId('header');
+			$api.fixStatusBar(header);
+			navTitle = $api.byId('nav-title');
+			sharedIconEl = $api.byId('nav-right');
+		}
+
+		//导航栏右侧图标点击
+
+		function sharedHandler(){
+			api.execScript({
+				name: 'winShow_new',
+				script: 'execOpenSharedMask()'
+			});
+		}
+
+		function openSharedMask(id){
+			var name = 'shared_mask';
+			var page = 'shared_mask.html';
+			var rect ={
+				x: 0,
+				y: 0,
+				w: 'auto',
+				h: 'auto'
+			};
+			var data = {id : id};
+			var bounces = false;
+			openNewFrame(name,page,bounces,rect,data);
+		}
+
+		//在分享遮罩层调用
+		function execCloseSharedMask(frameName,index){
+			index = parseInt(index);
+			if(!isNaN(index)){
+				//调用微信模块
+				var scriptFun = getExecScript('execShareWx',[index]);
+				api.execScript({
+					name: 'winShow_new',
+					script: scriptFun
+				});
+			}
+			api.closeFrame({
+				name:frameName
+			});
+		}
+
+		//导航栏左侧图标点击
+		function closeWin(){
+			onPageEndUmeng(CONSTANT.PAGE.CLOTHDETAIL);
+			api.closeWin();
+		}
+
+		//异步执行隐藏分享icon
+		function execHideSharedIconEl(){
+			if(sharedIconEl && $api.cssVal(sharedIconEl,'opacity') == 1){
+				$api.css(sharedIconEl,'visibility: hidden;opacity: 0;');
+				$api.css(header,'background: transparent;border:none;');
+				$api.text(navTitle,'');
+			}
+		}
+		//异步执行显示分享icon
+		function execShowSharedIconEl(title){
+			if(sharedIconEl && $api.cssVal(sharedIconEl,'opacity') == 0){
+				$api.css(sharedIconEl,'visibility: visible;opacity: 1;');
+				$api.css(header,'background: #FFFFFF;border-bottom: 1px solid #F1F1F1;');
+				if(isDefine(title)){
+					$api.text(navTitle,title);
+				}
+			}
+		}
+	</script>
+</html>

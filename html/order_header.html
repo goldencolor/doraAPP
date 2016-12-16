@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>导航栏</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        .headerBtnBox.active {
+            color: #ff6100;
+        }
+        .buy{
+            height: 1.5rem;
+            line-height: 1.5rem;
+            border: 1px solid #ff6100;
+            font-size: 0.6rem;
+            text-align: center;
+            color: #ff6100;
+            border-radius: 0.15rem;
+            width: 2.5rem;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+<header id="header" class="duola-header flex">
+    <a id="nav-left" class="duola-icon-area" tapmode onclick="closeOrderGroup()">
+        <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
+    </a>
+    <div id="nav-switch" class="flex-1 flex">
+        <div id="switch_now_order" class="headerBtnBox active flex-1 flex flex-center" tapmode
+             onclick="switchBtn(this,'当前订阅',0)">
+            <!--<span class="duola-iconfont icon-newcome-active"></span>-->
+            <span id="headBtnOne" class="headerBtn active">目前订阅</span>
+        </div>
+
+        <div id="switch_his_order" class="headerBtnBox flex-1 flex flex-center" tapmode
+             onclick="switchBtn(this,'历史订阅',1)">
+            <!--<span class="duola-iconfont icon-dress"></span>-->
+            <span id="headBtnTwo" class="headerBtn">历史订阅</span>
+        </div>
+    </div>
+    <a id="nav-right" class="duola-icon-area">
+        <span id="nav-right-text" class="nav-text"><div id="buy" class="buy aui-hide" tapmode onclick="openBuy()">购买</div></span><span id="nav-right-icon" class="nav-right-icon"></span>
+    </a>
+</header>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+    var umengPage = null;
+    var betaUser=null;
+    apiready = function () {
+        //标记为betaUser的用户才能看见购买按钮
+        betaUser=!CONSTANT.SWITCH.BETAUSER||$api.getStorage('betaUser');
+        if(!!betaUser){
+            $api.removeCls($api.byId('buy'), 'aui-hide');
+        }
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var page = api.pageParam.page;//页面url
+        var name = api.pageParam.name;//页面名称
+        var title = api.pageParam.title;//页面标题
+        umengPage = api.pageParam.umengPage;//友盟页面ID
+        var from = api.pageParam.from;//来源于那个页面
+        var data = api.pageParam.data;//页面数据object
+        //获取frame
+        var frame = data.frame ? data.frame : {};
+        var bounces = frame.bounces ? frame.bounces : false; //页面弹动
+        var progress = frame.progress ? frame.progress : false; //页面加载进度条
+        var allowEdit = frame.allowEdit ? frame.allowEdit : false; //长按页面是否可以编辑
+        var scaleEnabled = frame.scaleEnabled ? frame.scaleEnabled : false; //页面缩放
+        var frameData = frame.data ? frame.data : {}; //frame 页面参数
+
+        //获取nav
+        var nav = data.nav ? data.nav : {};
+        var leftNav = nav.leftNav ? nav.leftNav : {};//导航栏左侧
+        var rightNav = nav.rightNav ? nav.rightNav : {};//导航栏右侧
+        var border = nav.border ? nav.border : false;//导航栏底部边框
+
+        frameData.from = from;
+        frameData.leftNavCallback = leftNav.callback ? leftNav.callback : '';
+        frameData.leftNavExtra = leftNav.extra ? leftNav.extra : '';
+        frameData.rightNavCallback = rightNav.callback ? rightNav.callback : '';
+        frameData.rightNavExtra = rightNav.extra ? rightNav.extra : '';
+
+        onPageUmeng(umengPage);
+        getTitle(title);
+        getNavLeft(leftNav);
+        getNavRight(rightNav);
+        getNavBorder(border);
+        api.parseTapmode();
+
+        var headerHeight = $api.offset(header).h;
+
+        api.openFrameGroup({
+            name: 'order_tab',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                y: headerHeight,
+                w: 'auto',
+                h: 'auto'
+            },
+            index: 0,
+            preload: 0,
+            frames: [
+                {
+                    name: 'order_one',
+                    url: 'order_frm.html',
+                    bounces: bounces,
+                    vScrollBarEnabled: false,
+                    pageParam: {
+                        data: frameData
+                    }
+                }, {
+                    name: 'order_two',
+                    url: 'historyOrder.html',
+                    bounces: bounces,
+                    vScrollBarEnabled: false,
+                    pageParam: {
+                        data: frameData
+                    }
+                }
+            ]
+        }, function (ret, err) {
+
+        });
+
+    };
+
+    function switchBtn(el, name, index) {
+        var header = $api.byId('nav-switch');
+        var headerAct = $api.dom(header, '.headerBtnBox.active');
+        if (headerAct == el) {
+            return;
+        }
+//        $api.removeCls(headerAct, 'active');
+//        $api.addCls(el, 'active');
+        switchActive(index);
+        if (index == 0) {
+
+        } else if (index == 1) {
+
+        }
+        api.setFrameGroupIndex({
+            scroll: false,
+            name: 'order_tab',
+            index: index
+        });
+    }
+    function switchActive(index) {
+        if (index == 0) {
+            $api.addCls($api.byId('switch_now_order'), 'active');
+            $api.removeCls($api.byId('switch_his_order'), 'active');
+            //标记为betaUser的用户才能看见购买按钮
+            if(!!betaUser){
+                $api.removeCls($api.byId('buy'), 'aui-hide');
+            }
+        } else if (index == 1) {
+            $api.removeCls($api.byId('switch_now_order'), 'active');
+            $api.addCls($api.byId('switch_his_order'), 'active');
+            $api.addCls($api.byId('buy'), 'aui-hide');
+
+        }
+    }
+
+    function closeOrderGroup() {
+        onPageEndUmeng(umengPage);
+        closeWin();
+    }
+
+    function openBuy(){
+        sendEventUmeng(CONSTANT.UMENGEVENT.BUY_BTN);
+        var name = 'buyClothes';
+        var title = '购买';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftText = '';
+        var leftExtra = '';
+        var leftCallback = 'execCloseSlefWin';
+        var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+
+        var rightIcon = '';
+        var rightText = '须知';
+        var rightExtra = '';
+        var rightCallback = 'execOpenBuyInfo';
+        var rightNav = setNavData(rightIcon, rightText, rightCallback, rightExtra);
+
+        var border = true;
+        var bounces = false;
+        var params = {};
+        params.nav= setNav(leftNav,border,rightNav);
+        params.frame=setFrame(bounces,null,null,null,null,'false');
+        var from = {
+            winName:api.winName,
+            frameName:api.frameName
+        };
+        var url = 'header_new.html';
+        var animation = {
+            type:"push",                //动画类型（详见动画类型常量）
+            duration:300                //动画过渡时间，默认300毫秒
+        };
+        var page = 'buyClothes.html';
+        openNewWinFrame(name,title,params,from,url,animation,page);
+    }
+
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra,winName,value){
+        api.closeWin({
+            name:winName
+        });
+    }
+
+    //点击右侧说明打开连接
+    function execOpenBuyInfo(extra,winName,value){
+        goWebUrl('openBuyInfo','http://mp.weixin.qq.com/s?__biz=MzIyMjA0ODAwMg==&mid=503556041&idx=1&sn=99a27fa7f238cb76f3807a1a5089b00d&chksm=73c47da444b3f4b23b8a5cd72aa947124a714f074863970a4eb2dedeb4385ad7e863cd0b7764&scene=20#wechat_redirect','购买须知');
+    }
+</script>
+</html>

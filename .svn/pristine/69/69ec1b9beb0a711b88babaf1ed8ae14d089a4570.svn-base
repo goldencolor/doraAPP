@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>导航栏</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+	<style>
+		/*加粗|*/
+		.icon-line{
+			font-weight: 600;
+			font-size: 0.8rem;
+		}
+
+		/*navTab*/
+		.duola-header .nav-title .nav-tab-right{
+			margin-left: 1rem;
+			padding-bottom: 0.2rem;
+			font-style:normal;
+		}
+		.duola-header .nav-title .nav-tab-left{
+			margin-right: 1rem;
+			padding-bottom: 0.2rem;
+			font-style:normal;
+		}
+		.duola-header .nav-title .nav-tab-right i{
+			font-style:normal;
+			-webkit-text-stroke-width:0;
+			-webkit-font-smoothing:none;
+		}
+		.duola-header .nav-title .nav-tab-left i{
+			font-style:normal;
+			-webkit-text-stroke-width:0;
+			-webkit-font-smoothing:none;
+		}
+
+		/*navTab active border color icon text*/
+		.nav-tab-hit-color{
+			color: #00a5e0;
+			border-bottom: 2px solid red;
+		}
+		.nav-tab-hit-color i{
+		}
+
+	</style>
+</head>
+<body>
+	<header id="header" class="duola-header flex">
+	    <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWebWin()">
+	        <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
+	    </a>
+	    <div id="nav-title" class="nav-title flex-1">
+		</div>
+		<a id="nav-right" class="duola-icon-area">
+			<span id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon"></span>
+		</a>
+	</header>
+</body>
+<script id="nav-template" type="text/x-dot-template">
+	<i id="nav-left-tab" class="{{=getNavLeftTabClass(it.leftTab.activeIcon,it.leftTab.icon,it.hitColor,it.leftTab.class)}}" style="{{=it.leftTab.style ? it.leftTab.style : ''}}" tapmode onclick="{{=getExecScript('navLeftTabClick',[it.hitColor,it.leftTab.activeIcon,it.leftTab.icon,it.rightTab.activeIcon,it.rightTab.icon,it.leftTab.callback,it.leftTab.extra])}}"><i>{{=it.leftTab.text ? it.leftTab.text : ''}}</i></i>
+	<i id="nav-right-tab" class="{{=getNavRightTabClass(it.rightTab.icon,it.rightTab.class)}}" style="{{=it.rightTab.style ? it.rightTab.style : ''}}" tapmode onclick="{{=getExecScript('navRightTabClick',[it.hitColor,it.rightTab.activeIcon,it.rightTab.icon,it.leftTab.activeIcon,it.leftTab.icon,it.rightTab.callback,it.rightTab.extra])}}"><i>{{=it.rightTab.text ? it.rightTab.text : ''}}</i></i>
+</script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+
+<script type="text/javascript">
+	
+//	var navTab = {
+//		"hitColor":"nav-tab-hit-color",
+//		"leftTab":{
+//			"class":"a",
+//			"style":"font-size:0.85rem;",
+//			"activeIcon":"icon-Stars",//单个不能有空格
+//			"icon":"icon-search",
+//			"text":"在库",
+//			"callback":"",
+//			"extra":""
+//		},
+//		"rightTab":{
+//			"class":"b",
+//			"style":"font-size:0.85rem;",
+//			"icon":"icon-search",
+//			"activeIcon":"icon-love",
+//			"text":"无库",
+//			"callback":"",
+//			"extra":""
+//		}
+//	};
+//
+//	getNavLeft({"icon":"duola-iconfont icon-left","text":"我","callback":function(){alert(1)},"extra":""});
+//	getNavRight({"icon":"duola-iconfont icon-left","text":"我","callback":function(){alert(1)},"extra":""});
+//	getNavBorder(true);
+//	getNavTab(navTab);
+//	getTitle('标题标');
+
+	var umengPage = null;
+	apiready = function() {
+		var header = $api.byId('header');
+		$api.fixStatusBar(header);
+		var page = api.pageParam.page;//页面url
+		var name = api.pageParam.name;//页面名称
+		var title = api.pageParam.title;//页面标题
+		umengPage = api.pageParam.umengPage;//友盟页面ID
+		var from = api.pageParam.from;//来源于那个页面
+		var data = api.pageParam.data;//页面数据object
+		//获取frame
+		var frame = data.frame ? data.frame : {};
+		var bounces = frame.bounces ? frame.bounces : false; //页面弹动
+		var progress = frame.progress ? frame.progress : false; //页面加载进度条
+		var allowEdit = frame.allowEdit ? frame.allowEdit : false; //长按页面是否可以编辑
+		var frameData = frame.data ? frame.data : {}; //frame 页面参数
+
+		//获取nav
+		var nav = data.nav ? data.nav : {};
+		var tab = data.tab ? data.tab : {};
+		var leftNav = nav.leftNav ? nav.leftNav : {};//导航栏左侧
+		var border = nav.border ? nav.border : false;//导航栏底部边框
+
+		frameData.from = from;
+		onPageUmeng(umengPage);
+		getNavLeft(leftNav);
+		getNavBorder(border);
+		if(isObj(tab)){
+			getNavTab(tab);
+		}else{
+			getTitle(title);
+		}
+		api.parseTapmode();
+		var headerHeight = $api.offset(header).h;
+		frameData.headerHeight = headerHeight;
+		var rect = {
+			x:0,
+			y:headerHeight,
+			w:'auto',
+			h:'auto'
+		};
+		openNewFrame(name,page,bounces,rect,frameData,null,null,allowEdit,progress);
+	}
+
+	function closeWebWin(){
+		onPageEndUmeng(umengPage);
+		api.closeWin();
+	}
+
+	//异步更改标题
+	function execChangeTitle(title){
+		if(isDefine(title)){
+			getTitle(title);
+		}
+	}
+
+	//左侧NavTab点击事件
+	function navLeftTabClick(hitColor,leftActiveIcon,leftIcon,rightActiveIcon,rightIcon,callback,extra){
+		var navLeftTabEl = $api.byId('nav-left-tab');
+		var navRightTabEl = $api.byId('nav-right-tab');
+		if($api.hasCls(navRightTabEl,hitColor)){
+			$api.removeCls(navRightTabEl,hitColor);
+			$api.removeCls(navRightTabEl,rightActiveIcon);
+			$api.addCls(navRightTabEl,rightIcon);
+		}
+		if($api.hasCls(navLeftTabEl,hitColor)){
+			return;
+		}else{
+			$api.addCls(navLeftTabEl,hitColor);
+			$api.addCls(navLeftTabEl,leftActiveIcon);
+			$api.removeCls(navLeftTabEl,leftIcon);
+		}
+		if(isDefine(callback)){
+			var from = api.pageParam.from;//来源于那个页面
+			var frameName = api.pageParam.name;//页面名称
+			var params = {
+				script: getExecScript(callback,new Array(extra,api.winName,frameName,'tab0'))
+			};
+			if(isDefine(from.winName)){
+				params.name = from.winName;
+			}
+			if(isDefine(from.frameName)){
+				params.frameName = from.frameName;
+			}
+			api.execScript(params);
+		}
+	}
+	//右侧NavTab点击事件
+	function navRightTabClick(hitColor,rightActiveIcon,rightIcon,leftActiveIcon,leftIcon,callback,extra){
+		var navLeftTabEl = $api.byId('nav-left-tab');
+		var navRightTabEl = $api.byId('nav-right-tab');
+		if($api.hasCls(navLeftTabEl,hitColor)){
+			$api.removeCls(navLeftTabEl,hitColor);
+			$api.removeCls(navLeftTabEl,leftActiveIcon);
+			$api.addCls(navLeftTabEl,leftIcon);
+		}
+		if($api.hasCls(navRightTabEl,hitColor)){
+			return;
+		}else{
+			$api.addCls(navRightTabEl,hitColor);
+			$api.addCls(navRightTabEl,rightActiveIcon);
+			$api.removeCls(navRightTabEl,rightIcon);
+		}
+		if(isDefine(callback)){
+			var from = api.pageParam.from;//来源于那个页面
+			var frameName = api.pageParam.name;//页面名称
+			var params = {
+				script: getExecScript(callback,new Array(extra,api.winName,frameName,'tab1'))
+			};
+			if(isDefine(from.winName)){
+				params.name = from.winName;
+			}
+			if(isDefine(from.frameName)){
+				params.frameName = from.frameName;
+			}
+			api.execScript(params);
+		}
+	}
+
+	//左侧导航tab
+	function getNavLeftTabClass(activeIcon,icon,hitColor,extraClass) {
+		var navLeftClass = 'nav-tab-left duola-iconfont ';
+		if (isDefine(activeIcon)) {
+			navLeftClass = navLeftClass + activeIcon + ' ';
+		}else if (isDefine(icon)) {
+			navLeftClass = navLeftClass + icon + ' ';
+		}
+		if (isDefine(extraClass)) {
+			navLeftClass = navLeftClass + extraClass + ' ';
+		}
+		if (isDefine(hitColor)) {
+			navLeftClass = navLeftClass + hitColor + ' ';
+		}
+		return navLeftClass;
+	}
+
+	//右侧导航tab
+	function getNavRightTabClass(icon,extraClass){
+		var navRightClass = 'nav-tab-right duola-iconfont ';
+		if(isDefine(icon)){
+			navRightClass = navRightClass + icon + ' ';
+		}
+		if(isDefine(extraClass)){
+			navRightClass = navRightClass + extraClass + ' ';
+		}
+		return navRightClass;
+	}
+
+	//渲染NavTab
+	function getNavTab(navTab){
+		var navTitleEl = $api.byId('nav-title');
+		if(navTitleEl){
+			$api.html(navTitleEl,doTHtml('nav-template',navTab));
+		}
+	}
+</script>
+</html>

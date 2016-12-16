@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>预选</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_iconfont_2_0.ttf" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_slide.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+
+    <style>
+    	#season{
+    		background: #FFFFFF;
+    	}
+		
+		/*分类滑块*/
+		#search-level-slide{
+			padding: 0 0.5rem;
+			position: fixed;
+			top: 0;
+			right: 0;
+			width: 100%;
+			background-color: #FFFFFF;
+			z-index: 99;
+		}
+		
+		#search-level-slide .flex{
+			height: 100%;
+		}
+		#search-level-slide .icon-container{
+			height: 2.5rem;
+		}
+        #search-level-slide div.item{
+        	height: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        #search-level-slide .aui-slide-page-wrap{
+			display: none;
+		}
+
+		/*预选介绍图*/
+		.img-desc  img{
+			width: 100%;
+			height: auto;
+		}
+		.img-desc {
+			/*padding-top: 2.5rem;*/
+		}
+    </style>
+</head>
+<body>
+
+<!--页码-->
+<div id="pagination">
+	<div class="pagination-bg-1" onclick="changeTop()">
+		<div id="pagination-pag">
+			<div class="pagination-num" id="pagination-page">1页</div>
+			<div class="pagination-name" id="pagination-pageTotal"></div>
+			<!--<em id="pagination_page">111</em>/<em id="pagination_pageTotal">312</em>-->
+
+		</div>
+		<div id="pagination-top" class="pagination-tops hide">
+			<i class=" duola-iconfont icon-dingbu"></i>
+		</div>
+	</div>
+</div>
+<div id="season">
+	<!--一级分类-->
+	<!--<div id="search-level-slide" class="flex aui-hide">-->
+		<!--<div class="icon-container flex flex-center">-->
+			<!--<span class="duola-iconfont"></span>-->
+		<!--</div>-->
+        <!--<div id="level1-container" class="flex-1">-->
+
+        	<!--<div class="aui-slide-wrap"  >-->
+	            <!--<div class="aui-slide-node">-->
+	                <!--<div class="flex">-->
+	                    <!--<div class="item normal-color flex-1 flex flex-center">外套</div>-->
+	                    <!--<div class="item normal-color flex-1 flex flex-center">上衣</div>-->
+	                    <!--<div class="item normal-color flex-1 flex flex-center">马夹</div>-->
+	                    <!--<div class="item normal-color flex-1 flex flex-center">连衣裙</div>-->
+	                <!--</div>-->
+	            <!--</div>-->
+	            <!--<div class="aui-slide-node">-->
+	                <!--<div class="flex">-->
+	                    <!--<div class="item hit-color flex-1 flex flex-center">1</div>-->
+	                    <!--<div class="item flex-1 flex flex-center">1</div>-->
+	                    <!--<div class="item flex-1 flex flex-center">1</div>-->
+	                    <!--<div class="item flex-1 flex flex-center">1</div>-->
+	                <!--</div>-->
+	            <!--</div>-->
+	        <!--</div>-->
+	        <!--<div class="aui-slide-page-wrap"></div>-->
+
+        <!--</div>-->
+        <!--<div class="icon-container flex flex-center" >-->
+			<!--<span id="tip-icon" class="duola-iconfont icon-right"></span>-->
+		<!--</div>-->
+        <!---->
+        <!---->
+    <!--</div>-->
+    
+	<!--大图-->
+	<div id="img-desc-container" class="img-desc" >
+		<img id="img-desc" src="http://img.duolayimeng.com/public/image/spring2.png@!768w60q" alt=""/>
+	</div>
+	<!--衣服列表-->
+	<div class="aui-grid">
+		<div id="season-container" class="cloudset-container waterfall aui-row">
+
+			<!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+				<!--<div class="header">-->
+					<!--<img src="" alt=""/>-->
+					<!--<div class="label flex flex-space-between">-->
+						<!--<div class="new">new</div>-->
+						<!--<div class="unavailable">抢光了</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="footer flex flex-space-between flex-vertical-center">-->
+					<!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩</div>-->
+					<!--<div class="number"><span class="iconfont icon-love"></span>136</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+				<!--<div class="header">-->
+					<!--<img src="" alt=""/>-->
+					<!--<div class="label flex flex-space-between">-->
+						<!--<div class="new">new</div>-->
+						<!--<div class="unavailable">抢光了</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="footer flex flex-space-between flex-vertical-center">-->
+					<!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫</div>-->
+					<!--<div class="number"><span class="iconfont icon-love"></span>136</div>-->
+				<!--</div>-->
+			<!--</div>-->
+
+		</div>
+	</div>
+	<div id="loading" class="aui-text-center" style="font-size: 12px; color: #999999;">
+		<img src="../icon/loading.gif" width="16" />
+		<div>更多数据加载中</div>
+	</div>
+</div>
+
+<!--  分类标签模板 -->
+<script id="level1-container-template" type="text/x-dot-template">
+	<div class="aui-slide-wrap">
+    {{ for(var i = 0; i < Math.ceil((it.count+1)/4); i++) { }}
+    	<div class="aui-slide-node">
+        	<div class="flex">
+        	{{? i == 0 }}
+	        	<div class="item flex-1 normal-color flex flex-center" tapmode onclick="{{='level1Handler(this,-1,-1)'}}">所有</div>
+	        	{{ for(var j = 0; j < 3; j++) { }}
+					<div class="item flex-1 normal-color flex flex-center" tapmode onclick="{{='level1Handler(this,'+i+','+j+')'}}">{{=isDefine(it.list[i*3+j]) ? it.list[i*3+j].value : ''}}</div>
+		    	{{ } }}
+        	{{?? i == 1}}
+		    	{{ for(var j = 0; j < 4; j++) { }}
+					<div class="item flex-1 normal-color flex flex-center" tapmode onclick="{{='level1Handler(this,'+i+','+j+')'}}">{{=isDefine(it.list[i*3+j]) ? it.list[i*3+j].value : ''}}</div>
+		    	{{ } }}
+	    	{{??}}
+	    		{{ for(var j = 0; j < 4; j++) { }}
+					<div class="item flex-1 normal-color flex flex-center" tapmode onclick="{{='level1Handler(this,'+i+','+j+')'}}">{{=isDefine(it.list[i*4+j]) ? it.list[i*4+j].value : ''}}</div>
+		    	{{ } }}
+	    	{{?}}
+    		</div>
+    	</div>
+    {{ } }}
+    </div>
+    <div class="aui-slide-page-wrap"></div>
+</script>
+
+<!--  衣服数据模板 -->
+<script id="season-container-template" type="text/x-dot-template">
+	{{ for(var i = 0; i < it.count; i++) { }}
+		<div class="item aui-col-xs-6" tapmode onclick="{{=getClothesId(it.list[i]._id,'YES')}}">
+			<div class="header">
+				<img id="{{='season-img-'+it.list[i]._id}}"  class="{{='season-img-'+it.list[i]._id}}" src="../image/hold.jpg" alt="多啦衣梦"/>
+			</div>
+			<div class="footer flex flex-space-between flex-vertical-center">
+				<div class="name flex-1 aui-ellipsis-1">{{=(it.list[i] && it.list[i].name) ? it.list[i].name : '多啦衣梦'}}</div>
+				<div class="number">
+					<span class="duola-iconfont icon-love"></span>{{=(it.list[i] && it.list[i].like) ? it.list[i].like : 0}}
+				</div>
+			</div>
+		</div>
+	{{ } }}
+</script>
+
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/aui_slide.js"></script>
+    <script type="text/javascript" src="../script/doT_min.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/components/pagination.js"></script>
+	<script type="text/javascript">
+
+//	function slideToPage(el){
+//		var left = $api.hasCls(el, 'aui-icon-left');
+//		var width = $api.byId("level1-container");
+//		if(slide){
+//			var dist = left ? -1 * width : width;
+//			auiSlide.slideTo(0, dist, 300);
+//		}
+//	}
+	
+	function openSlideLevel(){
+		var level1Container = $api.byId("level1-container");
+		if(!level1Container){
+			return ;
+		}
+		var searchLevelslide = $api.byId("search-level-slide");
+		if(!searchLevelslide){
+			return ;
+		}
+		$api.removeCls(searchLevelslide, 'aui-hide');
+		var width = level1Container.width;
+		var height = 2.5 * CONSTANT.REM;
+		var slide = new auiSlide({
+	        container: level1Container,
+	        "height": height,
+	        "width": width,
+			"loop": false,
+			"distance":20,//触发滑动事件水平距离
+			"speed": 300,
+			currentPage:function(index){
+				var el = $api.byId('tip-icon');
+				if(index > 0){
+					$api.removeCls(el, 'icon-right');
+					$api.addCls(el, 'icon-left');
+				}else{
+					$api.addCls(el, 'icon-right');
+					$api.removeCls(el, 'icon-left');
+				}
+			}
+	    });
+	    
+	}
+//	function testLevels(){
+//		var sss = {"statusCode":200,"msg":"","category":{"count":6,"value":"分类","list":[{"count":12,"value":"连衣裙","list":[{"value":"A字裙","order_no":1},{"value":"包裙","order_no":2},{"value":"长裙","order_no":3},{"value":"鱼尾裙","order_no":4},{"value":"百褶裙","order_no":5},{"value":"背带裙","order_no":6},{"value":"小礼裙","order_no":7},{"value":"晚礼服","order_no":8},{"value":"旗袍","order_no":9},{"value":"吊带裙","order_no":10},{"value":"直筒裙","order_no":11},{"value":"背心裙","order_no":12}],"name":"dress"},{"count":5,"value":"上衣","list":[{"value":"T恤","order_no":1},{"value":"吊带背心","order_no":2},{"value":"衬衣","order_no":3},{"value":"卫衣","order_no":4},{"value":"打底衫","order_no":5}],"name":"cardigan"},{"count":12,"value":"外套","list":[{"value":"风衣","order_no":1},{"value":"开衫","order_no":2},{"value":"西服","order_no":3},{"value":"防晒外套","order_no":4},{"value":"棒球服","order_no":5},{"value":"牛仔","order_no":6},{"value":"皮衣","order_no":7},{"value":"毛衣","order_no":8},{"value":"皮草","order_no":9},{"value":"夹克","order_no":10},{"value":"大衣","order_no":11},{"value":"斗篷","order_no":12}],"name":"coat"},{"count":2,"value":"马夹","list":[{"value":"长款马夹","order_no":1},{"value":"短款马夹","order_no":2}],"name":"cowboy"},{"count":12,"value":"裤装","list":[{"value":"短裤","order_no":1},{"value":"皮裤","order_no":2},{"value":"哈伦裤","order_no":3},{"value":"打底裤","order_no":4},{"value":"连体裤","order_no":5},{"value":"背带裤","order_no":6},{"value":"正装裤","order_no":7},{"value":"运动裤","order_no":8},{"value":"直筒裤","order_no":9},{"value":"小脚裤","order_no":10},{"value":"裙裤","order_no":11},{"value":"喇叭裤","order_no":12}],"name":"pants"},{"count":8,"value":"半裙","list":[{"value":"皮裙","order_no":1},{"value":"鱼尾裙","order_no":4},{"value":"包臀裙","order_no":5},{"value":"开叉裙","order_no":6},{"value":"蛋糕裙","order_no":7},{"value":"不规则裙","order_no":8},{"value":"迷你裙","order_no":9},{"value":"牛仔","order_no":10}],"name":"shirts"}],"name":"type"}};
+//
+//		getLevelsHtml(sss.category);
+//	}
+
+	function testSeason(){
+		var ret = {"cloudCloset":{"count":5,"pageTotal":1,"page":1,"list":[{"img":"50956-00-1.jpg","available":"YES","stockedSize":["均码"],"like":18,"_id":"50956-00","size":["均码"],"name":"皮半裙"},{"img":"51181-91-1.jpg","available":"YES","stockedSize":["M","L"],"like":11,"_id":"51181-91","size":["S","M","L"],"name":"洗水皮短裙"},{"img":"1509193-1.jpg","available":"YES","stockedSize":["均码"],"like":11,"_id":"1509193","size":["均码"],"name":"A字皮短裙"},{"img":"1509125-1.jpg","available":"YES","stockedSize":["均码"],"like":50,"_id":"1509125","size":["均码"],"name":"皮半裙"},{"img":"1509124-5.jpg","available":"YES","stockedSize":["均码"],"like":20,"_id":"1509124","size":["均码"],"name":"皮质中长大摆裙"}]},"statusCode":200,"msg":""};
+		getSeasonHtml(ret.cloudCloset);
+	}
+
+	var frameData = null;
+	var currPage = 1;
+	var totalPage = 1;
+	var isLoadMoreResponsed = true;
+	var searchFilter = {};
+	var chooseLevel1Index = -1;
+	apiready = function(){
+		frameData = api.pageParam.data;
+		//请求数据拿到一级二级标签
+//		imgDesc();
+//		getLevels();
+		getSeason(CONSTANT.ACTIONINIT);
+		api.parseTapmode();
+		loadMore();
+		_myScroll('season-container','div');
+//		pullRefresh(loadRefresh);
+	}
+	//缓存第一张大图
+	function imgDesc(){
+		var url = 'http://img.duolayimeng.com/%E7%A7%8B%E5%AD%A3%E9%A2%84%E9%80%89.jpg';
+		_imgCacheUrl(url,'img-desc','../image/choose.jpg');
+	}
+	function loadRefresh(){
+		currPage = 1;
+		getSeason(CONSTANT.ACTIONREFRESH);
+	}
+
+	function loadMore(){
+		api.addEventListener({
+		    name:'scrolltobottom',
+		    extra:{threshold:0}
+		}, function(ret, err){
+			if(isLoadMoreResponsed && currPage < totalPage){
+				currPage++;
+				isLoadMoreResponsed = false;
+				getSeason(CONSTANT.ACTIONLOAD);
+			}
+		});
+	}
+
+	
+	function getLevels(){
+		//请求一级二级标签数据
+//		loadingShow();
+		var url = serviceNew + 'cloudCloset/searchCategory';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData({
+			labelLimit : CONSTANT.MAXLIEVEL1
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,getLevelsSuccessCallback,getLevelsErrorCallback,0,extra);
+	}
+	
+	function getLevelsSuccessCallback(ret){
+		loadingHide();
+		if(ret.statusCode==200 && ret.category){
+			$api.setStorage('levels',ret.category.list);
+			getLevelsHtml(ret.category);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	
+	function getLevelsErrorCallback(err){
+		loadingHide();
+		toastMsg(err.msg);
+	}
+	
+	function getLevelsHtml(levels){
+        var html = doTHtml('level1-container-template',levels);
+        var level1Container = $api.byId('level1-container');
+        level1Container.innerHTML = html;
+        openSlideLevel();
+        api.parseTapmode();	
+	}
+
+	function level1Handler(el,i,j){
+		//找到hit-color的一级标签，移除hit-color
+		//给当前的一级标签，添加hit-color
+		var hitLevel1 = $api.dom($api.byId('level1-container'),'.item.hit-color');
+		var imgSrcEl = $api.byId('img-desc-container');
+		if(el == hitLevel1){
+			return;
+		}
+		if(hitLevel1){
+			$api.removeCls(hitLevel1, 'hit-color');
+		}
+		$api.addCls(el, 'hit-color');
+		if(i == -1 && j == -1){
+			chooseLevel1Index = -1;
+			if(imgSrcEl){
+				$api.removeCls(imgSrcEl, 'aui-hide');
+			}
+			
+		}else{
+			if(i == 1){
+				chooseLevel1Index = i*3 +　j;
+			}else{
+				chooseLevel1Index = i*4 +　j;
+			}
+			if(imgSrcEl){
+				$api.addCls(imgSrcEl, 'aui-hide');
+			}
+		}
+		
+		currPage = 1;
+		getSeason();
+	}
+
+
+	function getSeason(action){
+		//请求云衣橱数据，没有任何过滤条件
+		if(action != CONSTANT.ACTIONREFRESH){
+			loadingShow();
+		}
+		var url = serviceNew + 'cloudCloset/search';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData({
+			page : currPage,
+			pageSize : CONSTANT.PAGESIZE,
+			preSelBefore: 'YES'
+		});
+		if(chooseLevel1Index!=-1){
+			var levels = $api.getStorage('levels');
+			var level1 = levels[chooseLevel1Index] ? levels[chooseLevel1Index].value : '';
+			data.body.category = 'type';
+			data.body.value = level1;
+		}
+		data.body.filters = {
+			stockOut: "all"
+		};
+		var extra = {action:action};
+		_ajaxData(url,'post',headers,data,getSeasonSuccessCallback,getSeasonErrorCallback,0,extra);
+	}
+	
+	function getSeasonSuccessCallback(ret,extra){
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else if(action == CONSTANT.ACTIONLOAD){
+			isLoadMoreResponsed = true;
+			loadingHide();
+		}else{
+			loadingHide();
+		}
+		if(ret.statusCode==200 && ret.cloudCloset){
+			currPage = ret.cloudCloset.page;
+			totalPage = ret.cloudCloset.pageTotal;
+			count = ret.cloudCloset.count;
+			_page(currPage,totalPage,count);
+			getSeasonHtml(ret.cloudCloset);
+		}else{
+			toastMsg(ret.msg);
+		}
+		if(currPage >= totalPage){
+			$api.html($api.byId('loading'),'没有更多了');
+		}
+	}
+	
+	function getSeasonErrorCallback(err,extra){
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else if(action == CONSTANT.ACTIONLOAD){
+			isLoadMoreResponsed = true;
+			currPage--;
+			loadingHide();
+		}else{
+			loadingHide();
+		}
+		toastMsg(err.msg);
+	}
+	
+	function getSeasonHtml(season){
+        var html = doTHtml('season-container-template',season);
+        var cloudsetContainer = $api.byId('season-container');
+        if(currPage == 1){
+			//首次加载或者刷新
+			//图片也刷新了，闪屏，有待于提升性能
+			cloudsetContainer.innerHTML = '';
+		}
+		$api.append(cloudsetContainer, html);
+		api.parseTapmode();
+		for(var i=0; i<season.count; i++){
+			var url = getImgUrl(colthPath, season.list[i].img,colthPathStyle);
+			_imgCacheUrl2(url, '.season-img-'+season.list[i]._id);
+		}
+		
+	}
+
+	//公用头部导航栏坐侧点击异步执行的方法
+	function execNavLeftCallback(value){
+		var from = frameData.from;
+		var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+
+	//公用头部导航栏右侧点击异步执行的方法
+	function execNavRightCallback(value){
+		var from = frameData.from;
+		var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+	</script>
+</html>

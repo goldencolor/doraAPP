@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+        html, body {
+            height: 100%; width: 100%; margin: 0px; padding: 0px; background-color: #F6F6F6;
+        }
+           #wrap {
+            height: 100%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+        }
+    	.my-bg-color{
+			background-color: #ff4181;
+			color:#fff;
+		}
+		.line{
+			background:#eee;
+			height:10px;
+			width:100%;
+		}
+		.btn{
+			width:95%;
+			margin:auto;
+			margin-top:10px;
+			background-color: #ff4181;
+			color:#fff;
+		}
+		.code{
+			position:relative;
+		}
+		#codeBtn{
+			position:absolute;
+			right:8%;
+			top:20%;
+			height:30px; width: 80px; border: 1px solid #ddd;  background-color: #eee;
+			margin: auto; font-size: 12px; color: #666699; -webkit-border-radius: 6px;
+			line-height: 30px; text-align:center;
+		}
+		#waitBtn{
+			position:absolute;
+			right:8%;
+			top:20%;
+			height:30px; width: 80px; border: 1px solid #ddd;  background-color: #fff;
+			margin: auto; font-size: 12px; color: #666699; -webkit-border-radius: 6px;
+			line-height: 30px; text-align:center;
+		}
+		html, body {
+            height: 100%; width: 100%; margin: 0px; padding: 0px; background-color: #F6F6F6;
+        }
+        .aui-input-row{
+        	padding-left: 5px;
+        }
+        #my-logo-box{
+        	margin: 15px 0px; text-align: center;
+        }
+        #my-btn-forget{
+        	margin: 0px; height: 30px; line-height: 30px; text-align:center;
+        	color: #666; font-size: 13px;
+        }
+        .aui-text-pink{
+        	color: #FF6100 !important;
+        }
+	</style>  
+</head>
+<body>
+	<div class="my-line"></div>
+	<div class="aui-card">
+		<div class="aui-form">
+	        <div class="aui-input-row">
+	            <i class="aui-input-addon aui-text-pink  aui-iconfont aui-icon-unlock"></i>
+	            <input  type="text" class="aui-input"  name="phone" id="old-password" placeholder="请输入旧密码"/>
+	        </div>
+	        <div class="aui-input-row">
+	            <i class="aui-input-addon aui-text-pink  aui-iconfont aui-icon-lock"></i>
+	            <input 	type="password" class="aui-input" name="pwd" id="new-password" placeholder="请输入新密码"/>
+	        </div>
+	        <div class="aui-input-row">
+	            <i class="aui-input-addon aui-text-pink  aui-iconfont aui-icon-lock"></i>
+	            <input  type="password" class="aui-input"  name="pwd1" id="new-password-1" placeholder="确认新密码"/>
+	        </div>
+	       
+        </div>
+	    </div>
+	</div>
+	
+	<div class="my-btn-box">
+		<div class="aui-btn my-btn-default aui-btn-block"  style="color:#FFFFFF;background-color:#FF6100;" onclick="submit();">立即修改</div>
+	</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/sha_256.js"></script>
+    <script type="text/javascript" src="../script/umeng_sdk.js"></script>
+	<script type="text/javascript">
+	var is_err =1 ;
+	apiready = function(){	
+		var header = $api.byId('header');
+        $api.fixStatusBar(header);
+		api.setStatusBarStyle({
+			style: 'light'
+        });
+	};
+
+	function submitSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode=='200'||ret.statusCode=='10502'||ret.statusCode=='10104'){
+			api.toast({
+				msg: ret.msg,
+				duration:1000,
+				location: 'bottom'
+			});
+			$api.rmStorage('token');
+			api.execScript({
+				name:'root',
+				script: 'execGoIndex()'
+			});
+			setTimeout(function(){
+				api.closeToWin({name:'root'});
+				api.closeWin();
+				onPageEndUmeng(CONSTANT.PAGE.UPDATEPWD);
+				toLogin();
+			},1000);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function submitErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function submit(myPhone){
+		var new_pwd = $api.val($api.byId('new-password'));
+		var new_pwd1 = $api.val($api.byId('new-password-1'));
+		var old_pwd = $api.val($api.byId('old-password'));
+		var token = $api.getStorage('token');
+		if(new_pwd=='' ||new_pwd1=='' ||old_pwd==''){
+			api.toast({
+			    msg: '输入的新密码或旧密码为空',
+			    duration:2000,
+			    location: 'bottom'
+			});
+			return;
+		}else if(new_pwd!=new_pwd1){
+			api.toast({
+			    msg: '两次输入的新密码不一致',
+			    duration:2000,
+			    location: 'bottom'
+			});
+			return;
+		}
+			new_pwd = sha256_vm_test(new_pwd);
+			old_pwd = sha256_vm_test(old_pwd);
+		api.showProgress({
+		    style: 'default',
+		    animationType: 'fade',
+		    title: '修改中',
+		    text: '请稍候'
+		});
+		var url = serviceNew + 'user/settings/password/change';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			oldPassword:{digest:String(old_pwd)},
+			newPassword:{digest:String(new_pwd)}
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,submitSuccessCallback,submitErrorCallback,0,extra);
+
+	}
+
+	</script>
+</html>

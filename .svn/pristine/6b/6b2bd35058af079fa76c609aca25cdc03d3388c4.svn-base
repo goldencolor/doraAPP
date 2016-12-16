@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>导航栏</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+	<style>
+		/*加粗|*/
+		.icon-line{
+			font-weight: 600;
+			font-size: 0.8rem;
+		}
+	</style>
+</head>
+<body>
+	<header id="header" class="duola-header flex">
+	    <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWebWin()">
+	        <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
+	    </a>
+	    <div id="nav-title" class="nav-title flex-1"></div>
+		<a id="nav-right" class="duola-icon-area">
+			<span id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon"></span>
+		</a>
+	</header>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+//	getNavLeft({"icon":"duola-iconfont icon-left","text":"我","callback":function(){alert(1)},"extra":""});
+//	getNavBorder(true);
+//	getTitle('标题标');
+	var umengPage = null;
+	apiready = function() {
+		var header = $api.byId('header');
+		$api.fixStatusBar(header);
+		var page = api.pageParam.page;//页面url
+		var name = api.pageParam.name;//页面名称
+		var title = api.pageParam.title;//页面标题
+		umengPage = api.pageParam.umengPage;//友盟页面ID
+		var from = api.pageParam.from;//来源于那个页面
+		var data = api.pageParam.data;//页面数据object
+		//获取frame
+		var frame = data.frame ? data.frame : {};
+		var bounces = frame.bounces ? frame.bounces : false; //页面弹动
+		var progress = frame.progress ? frame.progress : false; //页面加载进度条
+		var allowEdit = frame.allowEdit ? frame.allowEdit : false; //长按页面是否可以编辑
+		var frameData = frame.data ? frame.data : {}; //frame 页面参数
+
+		//获取nav
+		var nav = data.nav ? data.nav : {};
+		var leftNav = nav.leftNav ? nav.leftNav : {};//导航栏左侧
+		var border = nav.border ? nav.border : false;//导航栏底部边框
+
+		frameData.from = from;
+		onPageUmeng(umengPage);
+		getTitle(title);
+		getNavLeft(leftNav);
+		getNavBorder(border);
+		api.parseTapmode();
+		var headerHeight = $api.offset(header).h;
+		frameData.headerHeight = headerHeight;
+		var rect = {
+			x:0,
+			y:headerHeight,
+			w:'auto',
+			h:'auto'
+		};
+		openNewFrame(name,page,bounces,rect,frameData,null,null,allowEdit,progress);
+	}
+
+	function closeWebWin(){
+		onPageEndUmeng(umengPage);
+		api.closeWin();
+	}
+
+	//异步更改标题
+	function execChangeTitle(title){
+		if(isDefine(title)){
+			getTitle(title);
+		}
+	}
+</script>
+</html>

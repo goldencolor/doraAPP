@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>添加评论</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+
+    <style>
+        /*--------------------------自定义样式-------------------------*/
+        .expressionBox {
+            text-align: center;
+            border-top: 1px solid transparent;
+        }
+
+        .expressionImg {
+            width: 3.1rem;
+            height: 3.1rem;
+            margin: 1rem auto 0.5rem;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .expressionImg img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3.1rem;
+        }
+
+        .expressionText {
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #A2A2A2;
+            line-height: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .startBox img {
+            width: 1.55rem;
+            height: 1.45rem;
+            font-size: 0;
+            float: left;
+        }
+
+        .startBox img:not(:first-child) {
+            margin-left: 1rem;
+        }
+
+        .comment {
+            margin: 1.65rem 0 1.35rem;
+            border-top: 1px solid #EAEAEA;
+            border-bottom: 1px solid #EAEAEA;
+        }
+
+        .my-textarea {
+            padding: 0.65rem 1rem;
+            border-radius: 0.3rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.75rem;
+            color: #9B9B9B;
+            line-height: 1.25rem;
+            overflow-y: scroll;
+        }
+
+        .photo-list-box {
+            padding: 0 0.5rem;
+        }
+
+        .commentImgBox {
+            padding: 0.5rem;
+            height: 3.5rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .commentImgBox img{
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+        }
+        .addBtnImg {
+            width: 100%;
+            text-align: center;
+        }
+
+        .addBtnImg i {
+            color: #464646;
+            font-size: 1.5rem;
+            line-height: 1.5rem;
+        }
+
+        .addBtnText {
+            width: 100%;
+            font-family: SourceHanSansCN-Normal;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #464646;
+            margin-top: 0.5rem;
+        }
+
+        /*滑动评分style*/
+        #start-container {
+            width: 60%;
+            height: 1.5rem;
+            margin: 0 auto;
+            color: #C4C4C4;
+        }
+
+        #start-container span {
+            font-size: 1.5rem;
+            line-height: 1.5rem;
+
+        }
+
+        span.hit-color {
+            color: #FF6100;
+        }
+        .textColor{
+            color: #4a4a4a;
+        }
+    </style>
+</head>
+<body>
+<div class="aui-content">
+    <div class="header">
+        <div class="expressionBox">
+            <div class="expressionImg" id="expressionImg">
+                <img class="aui-hide expressionImg1" src="../image/expression1.png">
+                <img class="aui-hide expressionImg2" src="../image/expression2.png">
+                <img class="aui-hide expressionImg3" src="../image/expression3.png">
+                <img class="aui-hide expressionImg4" src="../image/expression4.png">
+                <img class="aui-hide expressionImg5" src="../image/expression5.png">
+            </div>
+            <div class="expressionText" id="expressionText">滑动星星评分</div>
+        </div>
+        <div id="start-container" class="flex flex-space-between">
+            <span class="duola-iconfont icon-kstars" tapmode onclick="getStart(this,1)"></span>
+            <span class="duola-iconfont icon-kstars" tapmode onclick="getStart(this,2)"></span>
+            <span class="duola-iconfont icon-kstars" tapmode onclick="getStart(this,3)"></span>
+            <span class="duola-iconfont icon-kstars" tapmode onclick="getStart(this,4)"></span>
+            <span class="duola-iconfont icon-kstars" tapmode onclick="getStart(this,5)"></span>
+        </div>
+    </div>
+    <div class="comment">
+        <textarea rows="7" class="my-textarea" id="textarea-text" placeholder="这里说说你对这款衣服的感受吧······"></textarea>
+    </div>
+    <ul class="aui-row photo-list-box">
+        <div id="photo-list">
+
+            <!--<div class="commentImgBox aui-col-xs-3"-->
+            <!--data-path="/storage/emulated/0/UZMap/A6918652765044/picture/p-c7786c40.jpg" id="photo-list-3" tapmode=""-->
+            <!--onclick="showCommentImg('/storage/emulated/0/UZMap/A6918652765044/picture/p-c7786c40.jpg','3')"><img-->
+            <!--src="../image/hold.jpg" class="duo-cache-img" title=""/>-->
+            <!--</div>-->
+
+            <!--<div class="commentImgBox aui-col-xs-3"-->
+            <!--data-path="/storage/emulated/0/UZMap/A6918652765044/picture/p-c7786c40.jpg" id="photo-list-3" tapmode=""-->
+            <!--onclick="showCommentImg('/storage/emulated/0/UZMap/A6918652765044/picture/p-c7786c40.jpg','3')"><img-->
+            <!--src="../image/hold.jpg" class="duo-cache-img" title=""/>-->
+            <!--</div>-->
+
+            <!--<div class="commentImgBox aui-col-xs-3"-->
+            <!--data-path="/storage/emulated/0/UZMap/A6918652765044/picture/p-c7786c40.jpg" id="photo-list-3" tapmode=""-->
+            <!--onclick="showCommentImg('/storage/emulated/0/UZMap/A6918652765044/picture/p-c7786c40.jpg','3')"><img-->
+            <!--src="../image/hold.jpg" class="duo-cache-img" title=""/>-->
+            <!--</div>-->
+
+            <!--<div class="commentImgBox aui-col-xs-3"-->
+            <!--data-path="/storage/emulated/0/UZMap/A6918652765044/picture/p-c7786c40.jpg" id="photo-list-3" tapmode=""-->
+            <!--onclick="showCommentImg('/storage/emulated/0/UZMap/A6918652765044/picture/p-c7786c40.jpg','3')"><img-->
+            <!--src="../image/expression1.png" class="duo-cache-img" title=""/>-->
+            <!--</div>-->
+
+            <!--<div class="commentImgBox aui-col-xs-3"-->
+            <!--data-path="/storage/emulated/0/UZMap/A6918652765044/picture/p-c7786c40.jpg" id="photo-list-3" tapmode=""-->
+            <!--onclick="showCommentImg('/storage/emulated/0/UZMap/A6918652765044/picture/p-c7786c40.jpg','3')"><img-->
+            <!--src="../image/expression1.png" class="duo-cache-img" title=""/>-->
+            <!--</div>-->
+
+        </div>
+        <div class="commentImgBox aui-col-xs-3 addBtn" id="add-img" tapmode onclick="addPhoto();">
+            <!--<img class="" src="../image/takePhoto.png">-->
+            <div class="addBtnImg"><i class="duola-iconfont icon-Photograph"></i></div>
+            <div class="addBtnText">拍个照</div>
+        </div>
+    </ul>
+</div>
+<script id="img-li-template" type="text/x-dot-template">
+    <div class="commentImgBox aui-col-xs-3"
+        data-path="{{=it.path}}" id="{{='photo-list-'+it.id}}" tapmode
+        onclick="{{=getExecScript('showCommentImg',[it.path,it.id])}}"><img
+        src="{{=it.path}}" class="duo-cache-img" title=""/>
+    </div>
+</script>
+<script id="content-template" type="text/x-dot-template">
+    {{!it}}
+</script>
+<div class="my-line"></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/oss.js"></script>
+<script type="text/javascript" src="../script/uploadImg2.js"></script>
+<script src="../script/hammer.min.js"></script>
+<script type="text/javascript">
+    var clothesId;
+    var numStar = 5;
+    var imgId = 0;
+    var frameData = null;
+    var isStar = false;
+    var orderType='';
+    apiready = function () {
+        frameData = api.pageParam.data;
+        clothesId = frameData.id ? frameData.id : '';
+        orderType = frameData.orderType;
+        api.parseTapmode();
+    };
+
+    function submitErrorCallback(err, extra) {
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+
+    function submitSuccessCallback(ret, extra) {
+        _loadingHide();
+        if (ret.statusCode == '200') {
+            api.alert({
+                title: '提示',
+                msg: '评论成功'
+            }, function (ret, err) {
+                var execScriptFun = getExecScript('init',['execInt']);
+                api.execScript({
+                    name:'order_headerWin',
+                    frameName:orderType,
+                    script: execScriptFun
+                });
+                closeWin();
+            });
+            setTimeout(function () {
+                api.closeWin({name: 'addComment'});
+            }, 1000);
+        } else if (ret.statusCode == '10104') {
+            toLogin()
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+
+    //    提交评论内容
+    function submitComment() {
+        var star = numStar;
+        var content = doTHtml('content-template',$api.val($api.byId('textarea-text')));
+        var imgBox = $api.byId('photo-list');
+        var imgs = $api.domAll(imgBox, '.commentImgBox');
+        var paths = [];
+        var ossPaths = [];
+        for (var i = 0; i < imgs.length; i++) {
+            paths.push(imgs[i].getAttribute('data-path'));
+        }
+        if (!isStar) {
+            toastMsg('亲,打个星吧');
+            return;
+        }else if (content.length > 500) {
+            toastMsg('评论字数不得超过500字');
+            return;
+        }
+        _loadingShow();
+
+        if (paths.length == 0) {
+            var url = serviceNew + 'cloth/addComments/' + clothesId;
+            var headers = _getAjaxHeaders(true, true);
+            var data = _getAjaxData({
+                star: star,
+                content: content,
+                images: []
+            });
+            var extra = null;
+            _ajaxData(url, 'post', headers, data, submitSuccessCallback, submitErrorCallback, 0, extra);
+        } else {
+            getSignature(function(signatureParam){
+                for (var i = 0; i < paths.length; i++) {
+                    uploadComment(paths[i], signatureParam,function (key, extra) {
+                        if (!extra) {
+                            ossPaths.push(key);
+                        }
+                        if (ossPaths.length == paths.length && !extra) {
+                            var url = serviceNew + 'cloth/addComments/' + clothesId;
+                            var headers = _getAjaxHeaders(true, true);
+                            var data = _getAjaxData({
+                                star: star,
+                                content: content,
+                                images: ossPaths
+                            });
+                            var extra = null;
+                            _ajaxData(url, 'post', headers, data, submitSuccessCallback, submitErrorCallback, 0, extra);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    //    表情包及对应文字说明变化
+    function changeExpression(num) {
+        var expText = '非常棒';
+        var expImg = 'expressionImg5';
+        var expressionTextEl = $api.byId('expressionText');
+        var expressionImgEl = $api.byId('expressionImg');
+        switch (parseInt(num)) {
+            case 1:
+                expText = '太差了';
+                expImg = '.expressionImg1';
+                break;
+            case 2:
+                expText = '不满意';
+                expImg = '.expressionImg2';
+                break;
+            case 3:
+                expText = '一般般';
+                expImg = '.expressionImg3';
+                break;
+            case 4:
+                expText = '还不错';
+                expImg = '.expressionImg4';
+                break;
+            case 5:
+                expText = '非常棒';
+                expImg = '.expressionImg5';
+                break;
+        }
+        $api.html(expressionTextEl, expText);
+//        $api.domAll(expressionImgEl,'img').map(function(item){
+//            $api.addCls(item,'aui-hide');
+//        });
+        var imgELAll = $api.domAll(expressionImgEl, 'img');
+        for (var i = 0; i < imgELAll.length; i++) {
+            $api.addCls(imgELAll[i], 'aui-hide');
+        }
+        $api.removeCls($api.dom(expressionImgEl, expImg), 'aui-hide');
+    }
+
+    //    添加图片
+    function addPhoto() {
+        var photoList=$api.byId('photo-list');
+        var imgLength=$api.domAll(photoList,'.commentImgBox').length;
+        if (imgLength >= 6) {
+//            toastMsg("只能添加6张图片哦");
+            api.alert({
+                title: '提示',
+                msg: '最多只能添加6张图片哦'
+            });
+            return;
+//            $api.addCls($api.byId('add-img'), 'hide');
+        }
+        openCameraMask();
+    }
+
+
+    //打开相机弹出层
+    function openCameraMask(){
+        var name = 'camera_mask';
+        var page = 'camera_mask.html';
+        var rect ={
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto'
+        };
+        var bounces = false;
+        openNewFrame(name,page,bounces,rect);
+    }
+
+    function setImg(path) {
+        if(!isDefine(path)){
+            return;
+        }
+        imgId = parseInt(imgId) + 1;
+        var photoList=$api.byId('photo-list');
+        var imgLength=$api.domAll(photoList,'.commentImgBox').length;
+//        if (imgLength >= 6) {
+//            toastMsg("只能添加6张图片哦");
+//            api.alert({
+//                title: '提示',
+//                msg: '最多只能添加6张图片哦'
+//            });
+//            return;
+//            $api.addCls($api.byId('add-img'), 'hide');
+//        }
+        var html = doTHtml('img-li-template', {id: imgId, path: path});
+        $api.append($api.byId('photo-list'), html);
+    }
+
+    //    删除图片
+    function del(id) {
+        if($api.hasCls($api.byId('add-img'),'hide')){
+            $api.removeCls($api.byId('add-img'), 'hide');
+        }
+        $api.remove($api.byId('photo-list-' + id));
+    }
+
+    //    查看大图
+    function showCommentImg(path, delId) {
+        var name = 'showComImg';
+        var title = '查看图片';
+
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftText = '';
+        var leftCallback = 'execCloseSlefWin';
+        var leftExtra = '';
+        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+
+        var rightIcon = '';
+        var rightText = '';
+        var rightExtra = delId;
+        var rightCallback = '';
+        var rightNav = setNavData(rightIcon, rightText, rightCallback, rightExtra);
+
+        var border = true;
+        var bounces = false;
+        var params = {};
+        params.nav = setNav(leftNav, border, rightNav);
+        params.frame = setFrame(bounces, {
+            isLocal:true,
+            path: path,
+            delId:delId
+        });
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'header_new.html';
+        openNewWinFrame(name, title, params, from, url);
+
+    }
+
+    function execDelImg(extra, winName, value) {
+        //console.log(getLogStr([extra,winName,value]));
+        var delId = extra;
+        api.confirm({
+            title: '温馨提示',
+            msg: '是否删除',
+            buttons: ['确定', '取消']
+        }, function (ret, err) {
+            var index = ret.buttonIndex;
+            if (index == 1) {
+//                console.log(getLogStr([delId]));
+                del(delId);
+                api.closeWin({
+                    name: winName
+                });
+            }
+        });
+    }
+    //    滑动星星评分
+    var preActiveStart = 0;
+    var containerEl = document.getElementById('start-container');
+    startHammer();
+    function startHammer() {
+        var containerWidth = parseInt($api.cssVal(containerEl, 'width'));
+        var startWidth = parseInt($api.cssVal($api.dom(containerEl, 'span'), 'width'));
+        ;
+        var swipeItemWidth = startWidth + (containerWidth / 5 - startWidth) / 2;
+        var hammertime = new Hammer(containerEl);
+
+        hammertime.on('swipe pan panstart panmove panend pancancel multipan press pressup pinch rotate', function (ev) {
+            var activeStartEls = $api.domAll(containerEl, 'span.hit-color');
+            if (ev.type == 'panstart') {
+                preActiveStart = activeStartEls.length || 0;
+            }
+            if (ev.type == 'panmove' && Math.abs(ev.deltaY) < 30) {
+                if (parseInt(ev.deltaX / swipeItemWidth) + preActiveStart != (activeStartEls.length || 0)) {
+                    var level = parseInt(ev.deltaX / swipeItemWidth) + preActiveStart;
+                    getStart('', level);
+                }
+            }
+        });
+    }
+    function getStart(el, level) {
+        if (isStar == false) {
+            isStar = true;
+        }
+        var startEls = $api.domAll(containerEl, 'span');
+        if (el) {
+            preActiveStart = level;
+        }
+        if (level <= 0 || level > startEls.length) {
+            return;
+        }
+        for (var i = 0; i < startEls.length; i++) {
+            var tempEl = startEls[i];
+            if (i < level && !$api.hasCls(tempEl, 'hit-color')) {
+                $api.addCls(tempEl, 'hit-color');
+                $api.removeCls(tempEl, 'icon-kstars');
+                $api.addCls(tempEl, 'icon-Stars');
+            } else if (i >= level && $api.hasCls(tempEl, 'hit-color')) {
+                $api.removeCls(tempEl, 'hit-color');
+                $api.removeCls(tempEl, 'icon-Stars');
+                $api.addCls(tempEl, 'icon-kstars');
+            }
+        }
+        numStar = $api.domAll(containerEl, 'span.hit-color').length;
+        changeExpression(numStar);
+        var expressionTextEl=$api.byId('expressionText');
+        if(!$api.hasCls(expressionTextEl,'textColor')){
+            $api.addCls(expressionTextEl,'textColor');
+        }
+//        console.log(numStar);
+    }
+
+    //--------------------------------------关闭窗口-----------------------------------
+    function closeOrderGroup() {
+        onPageEndUmeng(umengPage);
+        closeWin();
+    }
+
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra, winName, value) {
+        api.closeWin({
+            name: winName
+        });
+    }
+
+    //异步关闭遮罩层调用
+    function execCloseCameraMask(frameName,index){
+        index = parseInt(index);
+        if(!isNaN(index)){
+            if(index==1){
+                getPic('library',false,function(path){setImg(path)});
+            }else if(index==2){
+                getPic('camera',false,function(path){setImg(path)});
+            }
+        }
+        api.closeFrame({
+            name:frameName
+        });
+    }
+
+    //公用头部导航栏坐侧点击异步执行的方法
+    function execNavLeftCallback(value) {
+        var from = frameData.from;
+        var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+        if (!isDefine(callback)) {
+            return;
+        }
+        var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+        var params = {
+            script: getExecScript(callback, new Array(extra, api.winName, value))
+        };
+        if (isDefine(from.winName)) {
+            params.name = from.winName;
+        }
+        if (isDefine(from.frameName)) {
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+
+    //公用头部导航栏右侧点击异步执行的方法
+    function execNavRightCallback(value) {
+        var from = frameData.from;
+        var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+        if (!isDefine(callback)) {
+            return;
+        }
+        var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+        var params = {
+            script: getExecScript(callback, new Array(extra, api.winName, value))
+        };
+        if (isDefine(from.winName)) {
+            params.name = from.winName;
+        }
+        if (isDefine(from.frameName)) {
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+</script>
+</html>

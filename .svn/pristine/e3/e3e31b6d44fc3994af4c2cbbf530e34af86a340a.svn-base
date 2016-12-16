@@ -1,0 +1,75 @@
+html, body {
+    height: 100%; width: 100%; margin: 0px; padding: 0px; background-color: #F6F6F6;
+}
+.my-row{
+ 	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient:horizontal;
+    -webkit-flex-flow: row;
+    flex-flow: row; 
+}
+.my-row-col{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.hide{
+	display: none;
+}
+.my-no-info{
+	line-height: 60px; width: 100%; text-align: center; font-size: 16px; color: #AAAAAA;
+}
+.my-line{
+	height:10px; width: 100%;
+}
+.my-btn-box{
+	margin: 10px;
+}
+/******user eda05c e67817* d6584c ******/
+.my-color{
+	color: #FF6100 !important;
+}
+.my-text-color{
+	color: #FFFFFF !important;
+}
+.my-bg-color{
+	background-color: #FF6100 !important;
+}
+.my-while-color{
+	background-color: #FFFFFF;
+}
+.aui-bar-info,.aui-btn-info{
+/**background-color: #FF6100;**/
+background: #FFFFFF;
+}
+.aui-nav .aui-bar-tab .aui-iconfont{
+	color: #bdbdbd;
+}
+.aui-nav .aui-bar-tab .active-info .aui-iconfont, .aui-nav .aui-bar-tab .active-info p {
+	color: #FF6100;
+}
+.aui-bar .aui-btn .aui-iconfont {
+	color: #000000;
+}
+.aui-bar-nav .aui-title{
+	color: #000000;
+}
+.aui-btn-info{
+	border-color: #FF6100;
+}
+
+.aui-bar-tab .aui-active {
+	color: #FF6100;
+}
+.aui-font-size-24 {
+	font-size: 1.2rem !important;
+}
+.my-aui-border-r{
+	border-right: 1px solid #ddd;
+}
+.aui-tab .aui-active {
+	color: #FF6100;
+	border-bottom: 2px solid #FF6100;
+}
+

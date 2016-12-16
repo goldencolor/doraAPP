@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>选衣达人-游戏规则</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+		body{
+	margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    font-family: Microsoft YaHei;
+    font-size: 12px;
+    color: #898989;
+}
+
+.purchase-introduces .head{
+    padding: 1px;
+    border: 1px solid #ff8124;
+    font-size: 14px;
+    margin-top: 5px;
+	margin-right: auto;
+    margin-left: auto;
+}
+.head p{
+	color:red
+}
+.purchase-introduces img{
+	width: 100%;border:0px;
+}     
+.context{
+background-color:#f2f2f2
+}
+.context img{
+	width: 100%;border:0px;
+}
+.purchase-introduce1 {
+    margin: 5px;
+    border: 3px solid #757576;
+    padding: 5px;
+    text-align: center;
+}
+.purchase-introduces p{
+    text-align: center;
+    margin: 10px 0 0 0;
+}
+.purchase-introduces p span{
+    color:red
+}
+.purchase-introduces .purchase-introduce1 img {
+    width: 50%;
+}
+.purchase-introduces img {
+    width: 100%;
+}
+.purchase-introduce2 {
+    padding: 1px;
+    border: 1px solid #ff8124;
+    font-size: 14px;
+    margin: 10px;
+}
+h3 {
+	font-weight: 500;
+	font-size: 24px;
+	margin-top: 20px;
+    margin-bottom: 10px;
+    color: red;
+    text-align: center;
+}
+h3 span {
+	font-size:12px;
+	margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.text-left {
+    text-align: left !important;
+    margin-left: 10px !important;
+}
+.purchase-introduces .footer button {
+    width: 20rem;
+    background-color: #f75296;
+    border: 0;
+    color: #f5f5f5;
+    border-radius: 5%;
+    height: 2.8rem;
+    font-size: 2rem;
+}
+	</style>  
+</head>
+<body>
+		<div class="purchase-introduces">
+    <div class="head">
+      <img id="rules-banner-img1" src="../image/choose.jpg"><br>
+
+      <p>多 啦 衣 梦</p>
+
+      <p>穿 衣 从 此 不 用 买</p>
+    </div>
+    <br>
+
+    <div class="context">
+    	<img id="rules-banner-img2" src="../image/choose.jpg"><br>
+      
+
+      <p>呐\</p>
+
+      <p>你会在时尚大牌面前驻足良久，看着价格却下不去手吗？</p>
+
+      <p> 呐\</p>
+
+      <p> 你会每次去到一家喜欢的店，恨不得把衣服全部买回家吗？</p>
+
+      <p> 呐\</p>
+
+      <p>你花上千元买下的那些衣服，现在还会经常穿吗？</p>
+
+      <p> 呐\</p>
+
+      <p>你会想买在杂志文章里看到好看的衣服，却找不到途径吗？</p>
+
+      <p>呐\</p>
+
+      <p>你每年买那么多衣服，真正常穿的有几件呢？</p>
+      <hr>
+      <div class="purchase-introduce1">
+        <p>多啦衣梦开放了<span>最新福利【选衣达人】</span>，你可以自己在<span>选衣达人</span>中选择你喜欢的衣服，由多啦衣梦为你购买，为你清洗。</p>
+
+        <p>甚至，你可能只需要花1次钱，这辈子都可能<span>不用再买衣服</span>了。而且还有机会<span>免费游泰国喔！</span></p>
+        <img id="rules-banner-img3" src="../image/choose.jpg"><br>
+        
+      </div>
+      <br>
+      
+		<img id="rules-banner-img4" src="../image/choose.jpg"><br>
+      <p>选衣达人由原来的<span>每周赠送1名月费服务</span>，变为<span>每天送1名！</span></p>
+
+      <p><span>是的，没错。每天多啦衣梦会选取得分最高的选衣达人，送出一个月的会员服务！</span></p>
+
+      <div class="purchase-introduce2">
+        <h3>什么是选衣达人？<br><span>规  则  解  释</span></h3>
+
+        <p class="text-left">为了让多啦衣梦成为您真正的衣橱，我们开放【选衣达人】功能，把选择服装的权利交给您，再由我们为您购买。</p>
+
+        <p class="text-left">让您真正的不用再为购置服装烦恼。</p>
+
+        <p class="text-left">1.我们每天将在选衣达人中挑选百款服装，再由您投票选择你想穿的衣服，<span>每人每天至少有10个选票。</span></p>
+
+        <p class="text-left">2.您每挑选一件服装，系统会<span>自动刷新</span>该服装的热度（热度不同服装积分不同）。</p>
+
+        <p class="text-left">3.<span>每天</span>积分最高的女神，可获得<span>1个月</span>的多啦衣梦服务时间。</p>
+
+        <p class="text-left">4.<span>每月</span>积分最高的女神，可获得3个月的多啦衣梦服务时间。</p>
+
+        <p class="text-left">5.<span>每年</span>累积积分最高的女神，可享受<span>免费泰国游</span>，并获得价值2688元的多啦衣梦<span>一年</span>服务时间。</p>
+        <br>
+
+        <p>详细规则请进入选衣达人<br>【我的得分】查看</p>
+      </div>
+
+      <p class="text-left">要是连续1周第一名，半年的服装就搞定了...</p>
+
+      <p class="text-left">要是一不小心连续得一个月第一名，更可以免费享受近3年的服务...</p>
+
+      <p class="text-left">要是....</p>
+
+      <p class="text-left"><span>有点不敢想下去啦...</span></p>
+    </div>
+    <hr>
+    <div class="footer">
+      <p>NOW</p>
+      
+      <p>我们一起</p>
+
+      <p>进入<span>【选衣达人】</span></p>
+      <p><button onclick="clos();">选衣达人</button></p>
+      <p><span>呐~</span></p>
+
+      <p><span>让我们花一次钱，享一生美衣~</span></p>
+
+      <p><span>-THE END-</span></p>
+    </div>
+  </div>
+    <footer>
+    </footer>
+  </div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">	
+	
+	function clos(){
+		api.closeWin();
+	}
+	apiready = function(){
+		var bannersImg = [
+			"http://img.duolayimeng.com/public/image/public-banner54-1.jpg@!768w",
+			"http://img.duolayimeng.com/public/image/public-banner54-2.jpg@!768w",
+			"http://img.duolayimeng.com/public/image/public-banner54-3.gif",
+			"http://img.duolayimeng.com/public/image/public-banner54-4.jpg@!768w"
+			];
+		bannersImg.map(function(value,index){
+			_imgCacheUrl(value,'rules-banner-img'+(index+1));
+		});
+	}
+	</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+

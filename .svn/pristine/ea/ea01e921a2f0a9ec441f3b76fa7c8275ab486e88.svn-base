@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	.my-content-margin{
+    		margin: 0px 10px 0px 10px;
+    	}
+    	.my-aui-btn-block{
+    		background-color:#E59C96;
+    		color: #fff;
+    		font-size: 14px;
+    		padding:10px 0px 10px 0px;
+    	}
+    	.my-p{
+    		padding: 10px 15px; font-size:12px;
+    	}
+    </style>
+</head>
+<body>
+	<div>
+		<img src="../image/b1.jpg" width="100%"/>
+		<img src="../image/b2.jpg" width="100%"/>
+	</div>
+	<div class="aui-content my-content-margin">
+    	<div class="aui-btn aui-btn-block my-aui-btn-block">上传身份证正反面</div>
+    </div>
+    <p class="aui-text-center my-p">您已成功上传了2张认证照片请耐心等待工作人员审核</p>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+</script>
+</html>

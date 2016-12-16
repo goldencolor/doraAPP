@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>社区推荐</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        #user{
+            border-bottom: 1px solid #E4E4E4;
+            text-align: center;
+            margin-top: 2.5rem;
+            z-index: -1;
+        }
+        #user .avatar{
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        #user .avatar img{
+            border-radius: 50%;
+            border-radius: 50%;
+        }
+        #user .name{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.8rem;
+            line-height: 0.8rem;
+            color: #212121;
+            margin-top: 0.6rem;
+            overflow: hidden;
+        }
+        #user .disc{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #9B9B9B;
+            margin: 0.6rem auto 1.1rem;
+        }
+        #user .disc i{
+            color: #FF6100;
+            margin: 0 0.15rem;
+            font-size: 0.6rem;
+        }
+        #user .disc span{
+            color: #212121;
+            margin-left: 0.2rem;
+        }
+        #user .chooseBtnBox{
+            height: 2.5rem;
+            line-height: 2.5rem;
+            overflow: hidden;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #4A4A4A;
+            margin-bottom: -1px;
+        }
+        #user .chooseBtnBox .btn{
+            width: 50%;
+            float: left;
+            z-index: 1000;
+        }
+        #user .chooseBtnBox .btn.active span{
+            width: auto;
+            color: #FF6100;
+            border-bottom: 1px solid #FF6100;
+            display: inline-block;
+            height: 2.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="user">
+
+        <!--<div class="avatar"><img src="../image/avatar.png" class="opacity0 transition-opacity" ></div>-->
+        <!--<div class="name">{{=it.nickname}}</div>-->
+        <!--<div class="disc">与我的<i class="duola-iconfont icon-wardrobe"></i>衣橱<span>相似度 {{=it.similar}}</span></div>-->
+        <!--<div class="chooseBtnBox" id="chooseBtnBoxq">-->
+            <!--<div class="leftBtn btn " tapmode onclick="switchPage(this,0)"><span id="closetNumq">衣橱</span></div>-->
+            <!--<div class="rightBtn btn active"><span>下单记录</span></div>-->
+        <!--</div>-->
+
+    </div>
+    <div class="mainContent">22222222222222</div>
+    <script id="user-container-template" type="text/x-dot-template">
+        <div class="avatar">
+            <img onload="cacheImgNew(this,'img','no')" src="../image/avatar.png" class="opacity0 transition-opacity" data-url="{{=getAvatar(it.avatar,it.isWxAvatar)}}" width="100%" />
+        </div>
+        <div class="name">{{=it.nickname}}</div>
+        <div class="disc">与我的<i class="duola-iconfont icon-wardrobe"></i>衣橱<span>相似度 {{=it.similar}}</span></div>
+        <div class="chooseBtnBox" id="chooseBtnBox">
+            <div class="leftBtn btn" tapmode onclick="switchPage()"><span id="closetNum">衣橱</span></div>
+            <div class="rightBtn btn active" ><span>下单记录</span></div>
+        </div>
+    </script>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script>
+    var postData = null;
+    apiready = function(){
+//        console.log(getLogStr([api.pageParam.data]));
+        postData = api.pageParam.data ? api.pageParam.data : {};
+        getUser();
+    };
+
+    //获取用户信息
+    function getUser(){
+        var userHtml = doTHtml('user-container-template', postData);
+        var userEl =$api.byId('user');
+        $api.html(userEl, userHtml);
+        userHeight = $api.offset(userEl).h;
+        listenScroll();
+        api.parseTapmode();
+    }
+
+    //监听滚动
+    function listenScroll() {
+        window.onscroll = function () {
+            var yheight = getScrollTop(); //滚动条距顶端的距离
+            var title = '';
+            if (yheight >= userHeight) {
+                title = postData.nickname;
+            }
+            api.execScript({
+                script: getExecScript('execChangeTitle',[title])
+            });
+        };
+    }
+
+    function init(){
+
+    }
+
+    function switchPage(){
+//        var chooseBtnBoxEl=$api.byId('chooseBtnBox');
+//        var chooseBtnActive=$api.dom(chooseBtnBoxEl,'.active');
+//        if(chooseBtnActive==el){
+//            return;
+//        }
+//        $api.removeCls(chooseBtnActive, 'active');
+//        $api.addCls(el, 'active');
+        api.setFrameGroupIndex({
+            name: 'community_tab',
+            index: 0
+        });
+    }
+    //拼接头像url
+    function getAvatar(avatar,isWxAvatar){
+        if(isTrue(isWxAvatar)){
+            return avatar;
+        }else if(avatar && avatar.indexOf('../') == -1){
+            return [CONSTANT.PICPRE.RES,avatar].join('');
+        }else{
+            return '';
+        }
+    }
+</script>
+</html>

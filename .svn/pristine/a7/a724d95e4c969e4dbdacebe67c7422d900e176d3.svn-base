@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>历史订阅</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+	.pageNumbet{
+		    text-align: center;
+			font-size: 1.5rem;
+		}
+	#good img { width: 100%; }
+	.good-title{
+		text-align: center;
+		line-height: 26px; font-size: 14px; color: #777777;
+	}
+	.aui-btn-block {
+    	font-size:14px;
+	}
+	.my-aui-btn{
+		color:#000;font-size: 14px;
+	}
+	.clear{
+		overflow: hidden;
+	}	
+	</style>  
+</head>
+<body>
+	<section class="aui-content bg-white" id="good" style="background-color: #fff;">
+		<div class="title aui-padded-10" style="color:#777;font-size: 14px;">
+			历史订阅：
+			<span class="aui-pull-right">总价值￥<em id="totalMoney"></em></span>
+		</div>
+		<div class="aui-flex-col clear" id="good-list" style="padding: 10px 10px; border-top: 1px solid #efefef;border-bottom: 1px solid #efefef">
+			<div class="aui-col-xs-4">
+				<div class="good-title ">名称</div>				
+			</div>
+			<div class="aui-col-xs-4">
+				<div class="good-title ">衣服图片</div>				
+			</div>
+			<div class="aui-col-xs-4" style="padding: 0px 15px;">
+				<div class="good-title ">操作</div>		
+			</div>
+		</div>
+	</section>
+	<div id="list"></div>
+	<div id="loading" class="aui-text-center"></div>
+	<!--<div class="aui-col-xs-12 ">
+		  <button type="button" class="btn aui-btn-default aui-col-xs-4 agoPage" id="agoPage" onclick="showAgoPage();">上一页</button>
+		  <div class="aui-col-xs-4 pageNumbet" id="pageNumbet">1/1</div>
+		  <button type="button" class="btn aui-btn-default aui-col-xs-4 nextPage" id="nextPage" onclick="showNextPage();">下一页</button>
+	</div>-->
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var token;
+	var page;
+	var newPage;
+	var pageSize=5;
+	var pageTotal;
+	var isAdd='NO';
+	var is_err =1;
+	apiready = function(){
+		token= $api.getStorage('token');
+		page=1;
+		init(page);
+		api.addEventListener({
+		    name:'scrolltobottom',
+		    extra:{threshold:0 }
+		}, function(ret, err){ 
+			if(isAdd == 'YES'){
+				page++; 
+				init(page);   
+			}  		 
+		});
+	};
+
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			var html='';
+			var url = extra.url;
+			if(page==1)$api.html($api.byId('list'), '');
+			for(var i =0;ret.count>i;i++){
+				html+='<section class="aui-content bg-white" id="good" style="background-color: #fff; padding-top: 10px;">';
+				html+='<div id="good-list " class="clear">';
+				html+='<div class="aui-col-xs-4" style="padding-top: 53px;" >';
+				html+='<div class="good-title aui-ellipsis-2 aui-text-left" style="padding-top:14px; padding:0px 10px; font-size: 12px">'+ret.list[i].name+'</div>';
+				html+='</div>';
+				html+='<div class="aui-col-xs-4" style="padding: 3px 3px; padding-top:2px;">';
+				html+='<img id="history-order-'+ret.list[i].id+'" src="../image/hold.jpg" onClick="showClothes(\''+ret.list[i].id+'\')" />';
+				html+='</div>';
+				html+='<div class="aui-col-xs-4">';
+				html+='<div class="good-title" style="padding: 0px 15px; margin-top: 25px;">';
+				if(ret.list[i].exp_no=='undefined'||ret.list[i].exp_no==undefined||ret.list[i].exp_no==''){
+				}else{
+					html+='<div class="aui-btn aui-btn-block my-aui-btn" onclick="showWuliu(\''+ret.list[i].name+'\',\''+ret.list[i].id+'\',\''+url+'\',\''+ret.list[i].exp_no+'\')">物流信息</div>';
+				}
+				html+='</div>';
+				html+='</div>';
+				html+='</div>';
+				html+='<div class="aui-content " id="list-'+ret.list[i].id+'">';
+				html+='<ul class="aui-list-view">';
+				html+='<li class="aui-list-view-cell" style="font-size: 14px; color:#777;">';
+				html+='	租赁方式：<em>'+ret.list[i].type+'</em>';
+				html+='</li>';
+				html+='<li class="aui-list-view-cell" style="font-size: 14px; color:#777;">';
+				html+='	衣服价格：<em>￥'+ret.list[i].price+'</em>';
+				html+='</li>';
+				if(ret.list[i].exp_no=='undefined'||ret.list[i].exp_no==undefined||ret.list[i].exp_no==''){
+				}else{
+					html+='<li class="aui-list-view-cell" style="font-size: 14px; color:#777;">';
+					html+='	订单状态：<em>'+ret.list[i].state+'</em>';
+					html+='</li>';
+					html+='<li class="aui-list-view-cell" style="font-size: 14px; color:#777;">';
+					html+='	订单号：<em>'+ret.list[i].exp_no+'</em>';
+					html+='</li>';
+				}
+				html+='<li class="aui-list-view-cell" style="font-size: 14px; color:#777;">';
+				html+='	下单时间：<em>'+ret.list[i].lease_time.substring(0,10)+'</em>';
+				html+='</li>';
+				html+='</ul>';
+				html+='</div>';
+				html+='</section>';
+			}
+			pageTotal=ret.pageTotal;
+
+//					setPage();
+			$api.append($api.byId('list'), html);
+			for(var i =0;ret.count>i;i++){
+				var url =colthPath+ret.list[i].img +colthPathStyle;
+				_imgCacheUrl(url,'history-order-'+ret.list[i].id);
+			}
+			$api.html($api.byId('totalMoney'), ret.totalMoney);
+			isAdd ='YES';
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+
+	function init(page){
+		isAdd='NO';
+		if(pageTotal<page){
+			noMore();
+			return
+		}
+		if(page==1){		
+			_loadingShow();						
+		};
+		var url = serviceUser + 'orders/history';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			page:page,
+			pageSize:pageSize
+		});
+
+		var extra = {url:url};
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+	function noMore(){
+		$api.html($api.byId('loading'), '<p>没有更多了</p>');
+	}
+	function setPage(){
+		if(pageTotal==0)pageTotal ='1';
+		$api.html($api.byId('pageNumbet'), newPage+'/'+pageTotal);
+	}
+	function showAgoPage(){
+		if(newPage<=1){
+			api.toast({
+			    msg: '亲，已经是第一页了',
+			    duration:2000,
+			    location: 'bottom'
+			});
+		}else{
+			init(parseInt(newPage)-parseInt(1));
+		}
+	}
+	function showNextPage(){
+		if(newPage>=pageTotal){
+			api.toast({
+			    msg: '亲，已经是最后一页了',
+			    duration:2000,
+			    location: 'bottom'
+			});
+		}else{
+			init(parseInt(newPage)+parseInt(1));
+		}
+	}
+	function showMore(id){
+		var has = $api.hasCls($api.byId('list-'+id), 'hide');
+		if(has){
+			$api.removeCls($api.byId('list-'+id), 'hide');
+		}else{
+			$api.addCls($api.byId('list-'+id), 'hide');
+		}
+		
+	}
+	function addComments(url,name,id){
+		api.openWin({
+            name: 'addComment',
+            url: 'win.html', 
+            pageParam:{
+            	page: 'addComment',
+		        title: '评论',
+				name: 'addComment',
+				imgUrl:url,
+				clothes:name,
+				id:id
+            }
+        });
+	}
+	function showComment(clothes,clothesId){	
+		api.openWin({
+	        name: 'commentList',
+	        url: 'win.html',
+	        pageParam:{
+	        	bounces:true,
+	        	title:"评论列表",
+	        	page:"commentList",
+	        	name:"commentList",
+	        	data:clothes,
+	        	id:clothesId
+	        }
+    	});
+	}
+	function showWuliu(name,id,url,exp_no){
+		api.openWin({
+	        name: 'wuLiuInfo',
+	        url: 'win.html',
+	        pageParam:{
+	        	bounces:true,
+	        	title:"物流信息",
+	        	page:"wuLiuInfo",
+	        	name:"wuLiuInfo",
+	        	data:name,
+	        	type:url,
+	        	id:id,
+	        	exp_no:exp_no
+	        }
+    	});
+	}
+	</script>
+</html>

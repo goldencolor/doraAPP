@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>验证码</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        .mainContent{
+            padding: 0 0.95rem;
+        }
+        .mainContent:before{
+            content: '';
+            display: table;
+        }
+        .one{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 1rem;
+            line-height: 1rem;
+            color: #454545;
+            margin-top: 4rem;
+        }
+        .two{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #989898;
+            margin-top: 0.75rem;
+        }
+        .three{
+            border-bottom: 1px solid #C0C0C0;
+            margin-top: 1.5rem;
+        }
+        .three input{
+            height: 2.5rem;
+            font-family: SourceHanSansCN-Normal,ArialMT;
+            font-size: 1rem;
+            line-height: 1rem;
+            margin: 0;
+            border-radius: 0;
+            border: none;
+            color: #454545;
+            padding: 0;
+        }
+        .submitBtn{
+            height: 2.25rem;
+            line-height: 2.25rem;
+            background-color: #FF6100;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 1rem;
+            color: #FFFFFF;
+            margin-top: 6.75rem;
+            border-radius: 0.2rem;
+            text-align: center;
+        }
+        .submitBtn.active{
+            background-color: #FF6100;
+        }
+        .remind{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #989898;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .remind span{
+            color: #FF6100;
+            margin: 0 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="mainContent">
+        <div class="one">输入6位验证码</div>
+        <div class="two">出于验证身份的安全考虑，我们会向你的手机发送短信验证码</div>
+        <div class="three">
+            <input id="code" tapmode oninput="" type="text" placeholder="请输入验证码"/>
+        </div>
+        <div class="submitBtn" id="submitBtn" onclick="newReg(this)">提交</div>
+        <div class="remind" id="remind" tapmode onclick="sendMsg(this)">接收验证码大约需要<span id="timeNum">60</span>秒</div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/sha_256.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/md5.js"></script>
+<script>
+    var frameData = null;
+    var tel,password;
+    var timer=null;
+    var timeVal=60;
+    apiready = function(){
+        frameData = api.pageParam.data;
+        tel = frameData.tel;
+        password = frameData.password;
+        timer=setInterval(interVal,1000);
+        api.parseTapmode();
+    };
+    function interVal(){
+        timeVal--;
+        if(timeVal<=0){
+            clearInterval(timer);
+            timer=null;
+            $api.byId('remind').innerHTML='<span style="color: #3478d7">重新获取验证码</span>';
+        }else{
+            $api.html($api.byId('timeNum'),timeVal);
+        }
+    }
+
+    function sendMsg(el){
+        if(el.innerText!='重新获取验证码'){return;}
+        if(el.innerText=='重新获取验证码'){
+            el.innerHTML='接收验证码大约需要<span id="timeNum">60</span>秒';
+            timeVal=60;
+            timer=setInterval(interVal,1000);
+            str = md5_vm_test('appkey=37e08411ef0e84597e073c53c2c7fe5d&mobile='+tel+'&url=/app/user/register/mobile');
+            var url = serviceUser+'mobile/verify/create';
+            var headers = _getAjaxHeaders(false,true);
+            var data = _getAjaxData({
+                mobile : String(tel),
+                sign:str,
+                url:'/app/user/register/mobile'
+            });
+            var extra = {phone:tel};
+            _ajaxData(url,'post',headers,data,sendMsgSuccessCallback,sendMsgErrorCallback,0,extra);
+        }
+    }
+    function sendMsgSuccessCallback(ret,extra){
+        _loadingHide();
+        if(ret.statusCode=='200'){
+            toastMsg('发送成功');
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function sendMsgErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+
+    function changeBtnStatus(el){
+        var codeVal=$api.val(el);
+        var submitBtnEl=$api.byId('submitBtn');
+        if(!!codeVal){
+            if(!$api.hasCls(submitBtnEl,'active')){
+                $api.addCls(submitBtnEl,'active');
+            }
+        }else{
+            if($api.hasCls(submitBtnEl,'active')){
+                $api.removeCls(submitBtnEl,'active');
+            }
+        }
+    }
+    function newReg(el){
+        var codeVal=$api.val($api.byId('code'));
+        if(!codeVal){
+            api.toast({
+                msg : '请输入验证码',
+                duration : 3000,
+                location : 'bottom'
+            });
+            return;
+        }
+        api.showProgress({
+            style: 'default',
+            animationType: 'fade',
+            title: '注册中',
+            text: '请稍候'
+        });
+        var url = serviceUser+'register/mobile';
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData({
+            mobile: tel, // 手机号
+            veriCode:codeVal, // 短信验证码
+            digest: password // 密码的sha-256加密字串
+        });
+        var extra = null;
+        _ajaxData(url,'post',headers,data,regSuccessCallback,regErrorCallback,0,extra);
+    }
+    function regSuccessCallback(ret,extra){
+        _loadingHide();
+        if(ret.statusCode=='200'){
+            api.execScript({
+                name:'root',
+                frameName:"footer_tab_4",
+                script: 'updata("'+ret.data.token+'")'
+            });
+            api.toast({
+                msg: '注册成功,请登录!',
+                duration:1000,
+                location: 'bottom'
+            });
+            setTimeout(closeReg,1000);
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function regErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+    function closeReg(){
+        api.closeToWin({
+            name: 'login_new'
+        });
+    }
+</script>
+</html>

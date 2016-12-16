@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>请输入推荐码</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+		.desc{
+			height: 5rem;
+			padding: 0 1.25rem;
+			font-size: 0.8rem;
+			font-family: SourceHanSansCN-Normal;
+			color: #000000;
+			letter-spacing: -0.81px;
+		}
+		.code-area{
+			height: 3.1rem;
+			padding: 0 1.25rem;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.9rem;
+			color: #000000;
+			background: #F9F9F9;
+		}
+		.scan-desc{
+			color: #000000;
+			margin-left: 0.45rem;
+			font-size: 0.8rem;
+			letter-spacing: -0.81px;
+		}
+		#recommend-code::-webkit-input-placeholder { /* WebKit browsers */
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.8rem;
+			color: #C4C4C4;
+			line-height: normal;
+		}
+		#recommend-code{
+			/*height: 1rem;*/
+			/*line-height: 1rem;*/
+			/*line-height: normal;*/
+			font-size: 0.8rem;
+			border:none;
+			outline:medium;
+			width: 100%
+		}
+		.next-btn-container{
+			padding: 0.85rem 1.5rem 0 1.5rem;
+		}
+		.next-btn{
+			background: #F9F9F9;
+			border-radius: 4px;
+			height: 2.2rem;
+			line-height: 2.2rem;
+			text-align: center;
+			font-family: SourceHanSansCN-Regular;
+			font-size: 0.9rem;
+			color: #C4C4C4;
+		}
+		.no-code-desc{
+			margin-top: 13.8rem;
+			width: 100%;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.7rem;
+			color: #555555;
+			text-align: center;
+		}
+		.no-code-desc .icon-right{
+			font-size: 0.65rem;
+		}
+		.pass-btn{
+			background: #ff6100;
+			color: #FFFFFF;
+		}
+    </style>
+</head>
+<body>
+	<div class="desc flex flex-center">
+		请输入你好友的推荐码，TA和你都将获得奖励！
+	</div>
+	<div class="code-area flex flex-center">
+		推荐码：
+		<div class="flex-1">
+			<input id="recommend-code" type="text" placeholder="请输入推荐码" oninput="changeNextBtnStyle(this)">
+		</div>
+		<span tapmode onclick="codeScan()"><span class="duola-iconfont icon-Scan hit-color"></span><span class="scan-desc">扫一扫</span></span>
+	</div>
+	<div class="next-btn-container">
+		<div class="next-btn" tapmode onclick="nextBtnClick(this)">下一步</div>
+	</div>
+	<div class="no-code-desc" tapmode onclick="passBtnClick(this)">没有推荐码？跳过 <i class="duola-iconfont icon-right"></i></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+	var type;
+	apiready = function(){
+		type = api.pageParam.data.type;
+	};
+
+	//更改下一步按钮样式
+	function changeNextBtnStyle(el){
+		var nextBtnEl = $api.dom('.next-btn');
+		if(el.value){
+			if(!$api.hasCls(nextBtnEl,'pass-btn')){
+				$api.addCls(nextBtnEl,'pass-btn');
+			}
+		}else{
+			if($api.hasCls(nextBtnEl,'pass-btn')){
+				$api.removeCls(nextBtnEl,'pass-btn');
+			}
+		}
+	}
+
+	//扫码二维码推荐码
+	function codeScan(){
+		openScan(function(content){
+			var index = content.lastIndexOf('/');
+			if(index != -1){
+				content = content.substr(index+1);
+				if(content){
+					$api.val($api.byId('recommend-code'),content);
+					var nextBtnEl = $api.dom('.next-btn');
+					if(!$api.hasCls(nextBtnEl,'pass-btn')){
+						$api.addCls(nextBtnEl,'pass-btn');
+					}
+				}
+			}else {
+				toastMsg('不是邀请码，请重新扫描');
+			}
+		});
+	}
+
+	//点击下一步
+	function nextBtnClick(el){
+		if(!$api.hasCls(el,'pass-btn')){
+			toastMsg('请输入推荐码');
+			return;
+		}
+		var recommendCode = $api.val($api.byId('recommend-code')).trim();
+		if(!isDefine(recommendCode)){
+			toastMsg('请输入推荐码');
+			return;
+		}
+		checkValidation(recommendCode);
+	}
+
+	//点击跳过
+	function passBtnClick(el){
+		checkValidation(CONSTANT.DEFAULTRECOMMENDCODE);
+	}
+
+	//向服务器验证推荐码
+	function checkValidation(validation){
+		if(!isDefine(type)){
+			toastMsg('会员类型错误');
+		}
+		var url = serviceUser + 'service/open/invite_code/'+type+'/check';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			'inviteCode':validation
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,checkValidationSuccessCallback,checkValidationErrorCallback,0,extra);
+	}
+
+	function checkValidationSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+			goChooseBrabag();
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function checkValidationErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+
+	//跳转到选择多啦袋页面
+	function goChooseBrabag(){
+		api.openWin({
+			name: 'chooseBrabag',
+			url: 'win.html',
+			pageParam:{
+				page: 'chooseBrabag',
+				title: '选择多啦袋',
+				name: 'chooseBrabag',
+				type:type
+			}
+		});
+	}
+</script>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>我的收获地址</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+	<style>
+		body{
+
+		}
+		.aui-input-row .my-aui-input-st {
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 1;
+			color: #666;
+			text-align: center;
+			display: table-cell;
+			width: 1%;
+			white-space: nowrap;
+			vertical-align: middle;
+			padding: 5px;padding-left: 15px;
+		}
+		.my-aui-input-color{
+			color:#777;padding:10px 0px;
+		}
+		.my-content-margin-t{
+			margin-top: 15px;
+		}
+		.my-content-margin{
+			margin: 0px 10px 0px 10px;
+		}
+		.my-aui-btn-block{
+			background-color:#E59C96;
+			color: #fff;
+			font-size: 14px;
+			padding:10px 0px 10px 0px;
+		}
+		.cleat{
+			width: 100%;
+			text-align: center;
+		}
+		.my-aui-btn{
+			background-color:#fff;color: #777;
+		}
+		.my-content-padding-btn{
+			padding:6px 10px;
+		}
+		.aui-btner{
+			color: #fff;
+			background-color: #E59C96;
+		}
+		.red{ background-color: red !important}
+		.my-btn-cut{
+			width: 10px;
+		}
+		.my-addr{
+			font-size: 12px; color: #666;
+		}
+		#addrList{
+			background-color: #FFFFFF;
+		}
+	</style>
+</head>
+<body>
+<div class="aui-content">
+	<ul class="aui-list-view"  id="addrList">
+
+	</ul>
+</div>
+<div  id="myCleat" class="cleat">
+	<p class="aui-flex-middle aui-flex-center"> 点击右上角加号新增收货地址</p>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+	var token;
+	var addrList;
+	var tag;
+	var is_err = 1 ;
+	var winHeight ;
+	var frameData = null;
+	apiready = function(){
+		winHeight = api.winHeight;  // 比如： 568
+		$api.css($api.byId('myCleat'),'height:'+winHeight/1.5+"px;padding-top:"+winHeight/3+"px;");
+		token = $api.getStorage("token");
+		frameData = api.pageParam.data;
+		tag = isDefine(frameData.id) ? frameData.id : 0;
+		api.addEventListener({
+			name: 'setAddrList'
+		}, function(ret, err){
+			init();
+		});
+		init();
+	};
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function initSuccessCallback(ret,extra) {
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			addrList = ret.list ;
+			$api.html($api.byId('addrList'),' ');
+			for(var i=0;i<ret.count;i++){
+				if(ret.list[i].defaultAddress==''||ret.list[i].defaultAddress==undefined){
+					var isChoose= '';
+				}else{
+					var isChoose= ''
+				}
+				var html='';
+				html+='<li class="aui-list-view-cell aui-img aui-counter-list" >';
+//				html+='<li class="aui-list-view-cell aui-img aui-counter-list"  onclick="getChoose(\''+i+'\')">';
+//html+='<input id="input_'+i+'" class="aui-pull-left aui-radio aui-radio-info" type="radio" name="demo" '+isChoose+'>';
+				html+='<div class="aui-img-body my-addr aui-ellipsis-1"><span class="aui-iconfont aui-icon-location"></span>';
+				html+=' '+ret.list[i].province+ret.list[i].city+ret.list[i].county+ret.list[i].detail;
+				html+='<div class="aui-counter-box">';
+				html+='<div class="aui-pull-left aui-text-default my-addr"><span class="aui-iconfont aui-icon-my"></span> '+ret.list[i].name+' '+ret.list[i].phone+'</div>';
+				html+='<div class="aui-counter aui-danger aui-pull-right">';
+				html+='<span class="aui-iconfont aui-icon-edit aui-text-default" onclick="Change(\''+i+'\')"></span>';
+				html+='<span class="my-btn-cut"></span>';
+				html+='<span class="aui-iconfont aui-icon-delete aui-text-default" onclick="del(\''+i+'\')"></span>';
+				html+='</div>';
+				html+='</div>';
+				html+='</div>';
+				html+='</li>';
+
+
+//						html+='<div class="aui-card my-content-margin-t">';
+//						html+='<div class="aui-form">';
+//						html+='<div class="aui-input-row">';
+//						html+='<span class="aui-input-addon my-aui-input-st">所在地：</span>';
+//						html+='<div  class="aui-input my-aui-input-color">'+ret.list[i].province+ret.list[i].city+ret.list[i].county+'</div>';
+//						html+='</div>';
+//						html+='<div class="aui-input-row">';
+//						html+='<span class="aui-input-addon my-aui-input-st">详细地址：</span>';
+//						html+='<div  class="aui-input my-aui-input-color">'+ret.list[i].detail+'</div>';
+//						html+='</div>';
+//						html+='<div class="aui-input-row">';
+//						html+='<span class="aui-input-addon my-aui-input-st">手机号：</span>';
+//						html+='<div  class="aui-input my-aui-input-color">'+ret.list[i].phone+'</div>';
+//						html+='</div>';
+//						html+='<div class="aui-input-row">';
+//						html+='<span class="aui-input-addon my-aui-input-st">收货人姓名：</span>';
+//						html+='<div  class="aui-input my-aui-input-color">'+ret.list[i].name+'</div>';
+//						html+='</div>';
+//						html+='<div class="my-content-padding-btn">';
+//						if(ret.list[i].defaultAddress==''||ret.list[i].defaultAddress==undefined){
+//							html+='<div class="aui-btn my-aui-btn" id="aui-btn" onclick="choose(\''+i+'\')">设为默认地址</div>';
+//						}else{
+//							html+='<div class="aui-btn my-aui-btn aui-btner" id="aui-btn" onclick="getChoose(\''+i+'\')">默认地址</div>';
+//						}
+//
+//						html+='<div class="aui-btn aui-pull-right my-aui-btn" onclick="del(\''+i+'\')">删除</div>';
+//						html+='<div class="aui-btn aui-pull-right my-aui-btn" onclick="Change(\''+i+'\')" style="margin-right: 15px;">修改</div>';
+//						html+='</div>';
+//						html+='</div>';
+//						html+='</div>';
+				$api.append($api.byId('addrList'), html);
+			}
+			if (ret.count == 0){
+				$api.removeCls($api.byId("myCleat"), "hide");
+			} else {
+				$api.addCls($api.byId("myCleat"), "hide");
+			}
+
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg)
+		}
+	}
+	function init(){
+		_loadingShow();
+		var url = serviceUser + 'address/list';
+		var headers = _getAjaxHeaders(token,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+	function chooseErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+	function chooseSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+			if(tag=='choose'){
+				api.sendEvent({
+					name: 'chooseAddrEvent',
+					extra: {
+						key: id
+					}
+				});
+				setTimeout(function(){api.closeWin()},2000);
+			}else{
+				init();
+			}
+		}else if(ret.statusCode=='500'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function choose(id){
+		var id = id;
+		var url = serviceNew + 'user/address/setDefault/'+id;
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,chooseSuccessCallback,chooseErrorCallback,0,extra);
+	}
+
+	function getChoose(id){
+
+		api.actionSheet({
+			cancelTitle: '取消',
+			buttons: ['配送到该地址'],
+			style:{
+				fontNormalColor:'#aaaaaa',
+				fontPressColor:'#333333'
+			}
+		}, function(ret, err){
+			var index = ret.buttonIndex;
+			if(index==1){
+//				api.sendEvent({
+//					name: 'chooseAddrEvent',
+//					extra: {
+//						key: id
+//					}
+//				});
+				sendBtn(id);
+			}
+			if(index==2){
+				$api.removeAttr($api.byId('input_'+id), 'checked');
+			}
+		});
+
+	}
+
+	function delErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+	function delSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+			init();
+			toastMsg('删除 成功！')
+		}else{
+			toastMsg(ret.msg)
+		}
+	}
+	function del(id){
+		var title = '提示';
+		var msg = '确认删除吗?'
+		comform(title,msg,function(){
+			var url = serviceNew + 'user/address/remove/'+id;
+			var headers = _getAjaxHeaders(true,true);
+			var data = _getAjaxData();
+			var extra = null;
+			_ajaxData(url,'post',headers,data,delSuccessCallback,delErrorCallback,0,extra);
+		});
+	}
+	function Change(id){
+		var name = 'Change';
+		var title = '修改地址';
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftCallback = 'execCloseSlefWin';
+		var leftNav = setNavData(leftIcon,null,leftCallback);
+		var border = false;
+		var bounces = false;
+		var params = {};
+		params.nav= setNav(leftNav,border);
+		params.frame=setFrame(bounces,{
+			id:id,
+			list:addrList[id]
+		});
+		var from = {
+			winName:api.winName,
+			frameName:api.frameName
+		};
+		var url = 'header_new.html';
+		var animation = '';
+		var page = 'Newly.html';
+		openNewWinFrame(name,title,params,from,url,animation,page);
+
+	}
+	//点击返回图标异步执行关闭窗口
+	function execCloseSlefWin(extra,winName,value){
+		api.closeWin({
+			name:winName
+		});
+	}
+	function sendBtn(addrId){
+		_loadingShow();
+		var bodyT = {"address":Number(addrId)};
+		var url = serviceNew + 'dorabag/delivery';
+		var headers = _getAjaxHeaders(true,false);
+		var data = _getAjaxData(bodyT);
+		var extra = null;
+		_ajaxData(url,'post',headers,data,myAjaxSuccessCallback,myAjaxErrorCallback,0,extra);
+//
+//		api.ajax({
+//			url : serviceNew + 'dorabag/delivery',
+//			cache: false,
+//			method : 'post',
+//			timeout : 15,
+//			dataType : 'json',
+//			returnAll : false,
+//			headers:{
+//				"token":token,
+//				"Content-Type":"application/json"
+//			},
+//			data : {
+//				body : bodyT
+//			}
+//		}, function(ret, err) {
+//			if(ret){
+//				if(ret.statusCode=='200'){
+//					api.sendEvent({
+//						name: 'removeBag',
+//						extra: {key: "YES" }
+//					});
+//					api.openWin({
+//						name: 'orderSuccess',
+//						url: 'winOrder.html',
+//						pageParam:{
+//							name: 'orderSuccess',
+//							page: 'orderOk',
+//							title: '配送成功',
+//							name:"orderOk"
+//						}
+//					});
+//				}else{
+//					toastMsg(ret.msg)
+//				}
+//			}else{
+//				_httpErr('sendBtn()',1);
+//			}
+//		});
+	}
+
+	function myAjaxSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			api.sendEvent({
+				name: 'removeBag',
+				extra: {key: "YES" }
+			});
+			api.openWin({
+				name: 'orderSuccess',
+				url: 'winOrder.html',
+				pageParam:{
+					name: 'orderSuccess',
+					page: 'orderOk',
+					title: '配送成功'
+				}
+			});
+		}else{
+			toastMsg(ret.msg)
+		}
+	}
+
+	function myAjaxErrorCallback(err,extra){
+		_httpErr('sendBtn()',1);
+		_loadingHide();
+	}
+
+	function changeBg(){
+		$api.attr(el, 'color', "#fff");
+		$api.attr(el, 'backgroundColor', "#E59C96");
+	}
+	//	document.getElementById("aui-btn").onclick=function(){
+	//      this.style.color="#fff"
+	//      this.style.backgroundColor = " #E59C96 ";
+	//  }
+
+	//公用头部导航栏坐侧点击异步执行的方法
+	function execNavLeftCallback(value){
+		var from = frameData.from;
+		var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+
+	//公用头部导航栏右侧点击异步执行的方法
+	function execNavRightCallback(value){
+		var from = frameData.from;
+		var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+
+
+</script>
+</html>

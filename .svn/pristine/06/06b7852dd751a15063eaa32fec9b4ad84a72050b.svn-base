@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+		html, body {
+		    height: 100%; width: 100%; margin: 0px; padding: 0px;background-color: #F6F6F6;
+		}
+		.my-pic{
+			margin: 0px; position: relative;
+		}
+		.my-c-name{
+			background: rgba(0,0,0,0.4); color: #FFFFFF;
+			font-size: 14px; line-height: 20px; position: absolute;
+			left: 0px; right: 0px; bottom: 7px;padding: 5px 10px;
+		}
+
+		.my-top-btn{
+			position: fixed; left: 0px; right: 0px; top: 0px;
+			z-index: 999; padding: 10px;
+		}
+		.my-top-btn-icon{
+			font-size: 24px; color: #FFFFFF;
+		}
+		.my-icon-bg{
+			background:rgba(0,0,0,0.2);
+			border-radius:8px; width: 34px; height: 34px; line-height: 34px; text-align: center;
+		}
+		.my-title{
+			line-height: 20px; padding: 0px 5px; font-size: 12px; color: #aaa; 
+		}
+
+		.aui-grid-sixteen li{
+			font-size: 12px; color: #aaa; 
+		}
+		/**格子重构**/
+		.aui-grid-sixteen:after {
+			border:none;
+		}
+		.aui-grid-sixteen li:after {
+			border:none;
+		}
+		.aui-grid-sixteen li {
+			padding: 5px 5px;
+		}
+		/**重构list**/
+
+		.aui-list-view-cell{
+			padding: 8px 15px; color: #333333; font-size: 12px;
+		}
+		.aui-list-view-cell span{
+			color: #999; font-size: 12px;
+		}
+	</style>  
+</head>
+<body>
+<div id="main" class="hide">
+	<div class="aui-content my-top-btn" id="header">
+	  <div class="my-icon-bg aui-pull-left" onclick="closeWin();">
+	  	<span class="my-top-btn-icon aui-iconfont aui-icon-left"></span>
+	  </div>
+	 <div class="my-icon-bg aui-pull-right" onclick="share()">
+	 	<span class="my-top-btn-icon aui-iconfont aui-icon-favor"></span>
+	 </div>
+	</div>
+	
+	<div class="my-pic" >
+		<img src="../image/d4.jpg" width="100%" onclick="showImg(0)"  id="topImg"/>
+		<div class="my-c-name" id="clothName"></div>
+	</div>	
+	
+	<div class="my-title"><i class="aui-iconfont aui-icon-sort"></i> 尺码对照表</div>
+	<div class="aui-content aui-border-b">
+	    <ul class="aui-grid-sixteen" id="sizeT"></ul>
+	    <div id="sizes"></div>
+	    
+	</div>
+	
+	<div class="aui-tab aui-tab-info">
+	    <ul class="aui-tab-nav">
+	        <li class="active">详情</li>
+	        <!--<li>评论<span class="aui-badge" id="comment">查看</span></li>-->
+	        <li id="comment">查看评论</li>
+	    </ul>
+	</div>
+	<div class="aui-content">
+	    <ul class="aui-list-view aui-in" id="details"></ul>
+	</div>
+	
+	<div class="aui-content">
+	    <ul class="aui-list-view aui-grid-view" id="clothImg"> </ul>
+	</div>
+</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var clothImg ;
+	var matches ;
+	var stock ; 
+	var sizes;
+	var details;
+	var clothImgUrl;
+	var clothName;
+	var topImg;
+	var id
+	var is_err =1 ;
+	apiready = function(){
+		id = api.pageParam.id;
+//		alert(id)
+        init(id);
+	};
+	
+	function closeWin(){
+		api.closeWin();
+	}
+
+	function initSuccessCallback(ret,extra){
+		_showPage();
+		if(ret.statusCode=='200'){
+			clothImg= ret.img;
+			matches = ret.matches; 	//搭配
+			stock   = ret.stock;	//库存
+			sizes   = ret.sizes;	//尺码
+			details = ret.details;	//详情
+			clothName=ret.name;
+			topImg = colthPath + clothImg.list[0].img+colthPathStyle;
+//					var comment= ret.comment;
+//					if(!comment){
+//						comment = '查看';
+//					}
+//					$api.html($api.byId('comment'),comment);
+			$api.html($api.byId('clothName'),clothName);
+			$api.attr($api.byId('topImg'), 'src', topImg);
+			setClothImg(clothImg); 	//衣服图片
+			setSizes(sizes); 		//尺码对照表
+			setDetails(details); 	//参数详情
+			setStock(stock);	    //库存
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		_showPage();
+		toastMsg(err.msg);
+	}
+	function init(id){
+		var url = serviceNew + 'cloth/detail/'+id;
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData({
+//					id:id
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+	
+	function setStock(stock){
+		api.sendEvent({
+		    name: 'myStockEvent',
+		    extra: {
+		        key: stock
+		    }
+		});
+	}
+		
+	function setClothImg(img){
+		$api.html($api.byId('clothImg'), '');
+		clothImgUrl = new Array();
+		for(var i=0;i<img.count;i++){
+			var url = colthPath + img.list[i].img+colthPathStyle; 
+			clothImgUrl[i]=url; 
+			_imgCache(img.list[i].img);
+			var html = '';
+			html+='<li class="aui-list-view-cell aui-img aui-col-xs-6">';
+	        html+='<img class="aui-img-object" src="'+url+'" onclick="showImg('+i+')">';
+	        html+='</li>';
+	        $api.append($api.byId('clothImg'), html);
+		}
+	}
+
+	function setDetails(details){
+		$api.html($api.byId('details'), '');
+		for(var i=0;i<details.count;i++){
+			var html = '';
+			html+='<li class="aui-list-view-cell">';
+	        html+=details.list[i].name+'<span class="aui-pull-right">'+details.list[i].value+'</span>';
+	        html+='</li>';
+	        $api.append($api.byId('details'), html);
+		}
+	}
+	
+	function setSizes(sizes){
+		var titleCount = sizes.name.length;
+		$api.html($api.byId('sizeT'), '');
+		$api.html($api.byId('sizes'), '');
+		for(var i=0;i<titleCount;i++){
+			var htmlT = '';
+			if(i==0){
+				htmlT +='<li class="aui-col-xs-2 aui-text-center">尺码</li>';
+				htmlT +='<li class="aui-col-xs-2 aui-text-center">'+sizes.name[i]+'</li>';
+			}else{
+				htmlT +='<li class="aui-col-xs-2 aui-text-center">'+sizes.name[i]+'</li>';
+			}
+			$api.append($api.byId('sizeT'), htmlT);
+		}
+		
+		for(var j=0;j<sizes.count;j++){
+			var html = '';
+			html += '<ul class="aui-grid-sixteen">'; 
+			html += '<li class="aui-col-xs-2 aui-text-center">'+sizes.list[j].size+'</li>';
+			var size = sizes.list[j];
+			for(var m=0;m<size.values.length;m++){
+				if(!size.values[m])size.values[m]='-'
+				html += '<li class="aui-col-xs-2 aui-text-center">'+size.values[m]+'</li>';
+			}
+			html += '</ul>'; 
+			$api.append($api.byId('sizes'), html);
+		}
+		
+	}
+	function showImg(index){
+		var photoBrowser = api.require('photoBrowser');
+		photoBrowser.open({
+			images:clothImgUrl,
+		    placeholderImg: 'widget://res/img/apicloud.png',
+		    bgColor: '#000'
+		}, function(ret, err){   
+			if(ret.eventType == 'show'){
+				photoBrowser.setIndex({
+				    index: index
+				});
+			} 
+		    if( ret.eventType == 'click' ){
+		       photoBrowser.close();
+		    }
+		});
+	}
+
+	</script>
+</html>

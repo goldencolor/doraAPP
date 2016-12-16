@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	.no-comment{ margin: 10px; height:50px;text-align: center;line-height: 50px; font-size:16px;}
+	</style>  
+</head>
+<body>
+	<div id="main">
+		<div class="aui-content">
+			<div class="aui-content aui-border-b">
+			    <ul class="aui-user-view aui-in" id="commentList"> </ul>
+			</div>
+			
+		</div>
+	</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var id;
+	var clothName;
+	var page = 1;
+	var pageSize=10;
+	var is_err = 1 ;
+	apiready = function(){
+		id=api.pageParam.id;
+		clothName=api.pageParam.data;
+        init();
+        api.addEventListener({
+		    name:'scrolltobottom',
+		    extra:{threshold:0 }
+		}, function(ret, err){        
+			init();
+		});
+	};
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			if(page==1) $api.html($api.byId("commentList"),' ');
+			if(ret.count==0){
+				$api.html($api.byId("commentList"),'<p class="no-comment">暂无评论</p> ');
+				return
+			}else{
+				if(page<ret.pageTotal){
+					page = add(page,1)
+				}
+				setComment(ret)
+			}
+		}else{
+			toastMsg(ret.msg)
+		}
+	}
+	function init(){
+//		alert(id);
+		_loadingShow();
+		var url = serviceNew + 'cloth/comments/'+id;
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData({
+			page:page,
+			pageSize:pageSize
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+	function setComment(ret){
+//		alert(JSON.stringify(ret))
+		for(var i=0;ret.count;i++){
+			var html='';
+			html+='<li class="aui-user-view-cell aui-img aui-noborder">';
+			if(ret.list[i].isWxAvatar=='YES'){
+				var url = ret.list[i].avatar
+			}else{
+			 	var url = $api.getStorage('userHead');
+			}
+//			alert(url)
+            html+='<img class="aui-img-object aui-pull-left" src="'+url+'">';
+            html+='<div class="aui-img-body">';
+            html+='<span>'+ret.list[i].nickname+'<em> <i class="aui-iconfont aui-icon-appreciate"></i>点赞</em></span>';
+            html+='<p class="aui-ellipsis-1">'+ret.list[i].time+'</p>';
+            html+='</div>';
+        	html+='</li>';
+        	html+='<p class="aui-padded-10"><i class="aui-iconfont aui-icon-clothes"></i>   '+clothName+'</p>';
+        	html+='<span class="aui-padded-10">'+ret.list[i].content+' </span>';
+        	if(ret.list[i].photos.count>0){
+        		html+='<ul class="aui-list-view aui-grid-view">';
+        		for(j=0;j<list.photos[i].count;j++){
+        			html+='<li class="aui-list-view-cell my-img-box aui-img aui-col-xs-2">';
+			        html+='<img class="aui-img-object" src="../image/f1.png">';
+			        html+='</li>';
+        		}
+		    	html+='</ul>';
+        	}
+        	$api.append($api.byId('commentList'), html);
+		}
+	}
+	</script>
+</html>

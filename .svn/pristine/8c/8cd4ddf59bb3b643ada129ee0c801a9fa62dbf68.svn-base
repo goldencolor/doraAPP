@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>活动页面</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+
+        html, body {
+            background-color: #FFFFFF;
+        }
+        .line{
+            display: inline-block;
+            width: 30%;
+            height: 0.05rem;
+            background-color: #979797;
+            vertical-align: middle;
+            font-size: 0;
+        }
+        .aui-row .activity-title {
+            text-align: center;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 3rem;
+            color: #FF6100;
+            letter-spacing: -4px;
+            line-height: 1;
+        }
+        .aui-row .activity-title-1 {
+            font-family: SourceHanSansCN-Normal;
+            font-size: 1.3rem;
+            text-align: center;
+            color: #454545;
+            letter-spacing: -1.3px;
+        }
+        .aui-row .activity-title-2 {
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #A3A3A3;
+            letter-spacing: -0.6px;
+            line-height: 1.2rem;
+            text-align: center;
+            padding: 0 1rem;
+        }
+        .aui-row .activity-title-2 .activity-no{
+            font-size: 0.8rem;
+            padding: 0.3rem 0;
+            color: #979797;
+        }
+        .aui-row .activity-title-1 .name {
+            color: #FF6100;
+        }
+
+        .aui-progress-bar {
+            background-color: #FF6100;
+        }
+        .aui-progress {
+            height: 1.5rem;
+            background-color: #f0f0f0;
+        }
+        .aui-row .aui-btn-block.aui-btn-sm {
+            padding: 0.2rem 0;
+            font-size: 0.7rem;
+            width: 80%;
+            position:relative;
+            bottom: 0;
+            margin: 0 0 0 1rem;
+        }
+        .aui-row .aui-btn-block.aui-btn-sm {
+            color: #979797;
+        }
+        .aui-row .aui-content-padded .activity-text-h {
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #454545;
+            letter-spacing: -0.7px;
+        }
+        .aui-row .aui-content-padded .activity-text-h-1 {
+            font-family: SourceHanSansCN-Normal;
+            font-size: 10px;
+            color: #ABABAB;
+            letter-spacing: -0.5px;
+        }
+        .aui-row .aui-content-padded .activity-text-p {
+            text-align: left;
+        }
+        .aui-row .activity-text-p-1 {
+            text-align: right;
+        }
+        .aui-row .activity-padded {
+            padding: 0 0 0.2rem 0;
+        }
+        .activity-btn .aui-btn-block{
+            width: 60%;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            letter-spacing: -0.81px;
+        }
+        .activity-btn .aui-btn-block.aui-btn-sm {
+            font-size: 0.8rem;
+            margin: 2rem 20%;
+            background-color: #FF6100;
+            color: #FFFFFF;
+        }
+
+        .activity-btn .aui-btn-block .duola-iconfont {
+            padding-right: 0.3rem;
+        }
+        .activity-title-span {
+            font-size: 0.8rem;
+            color: #5B5B5B;
+            letter-spacing: -0.81px;
+        }
+        .activity-foot .line {
+            width: 35%;
+        }
+        .aui-grid [class*=aui-col-xs-]:active {
+            background-color: #FFFFFF;
+        }
+        .aui-row .aui-btn-block.aui-btn-sm.btn-color {
+            border: 1px solid #FF6100;
+            color: #FF6100;
+        }
+        .img-desc  img{
+            width: 100%;
+            height: auto;
+        }
+        .img-desc {
+            padding-bottom: 2.5rem;
+        }
+    </style>
+</head>
+<body>
+<div id="img-desc-container" class="img-desc" >
+    <img id="img-desc" src="http://img.duolayimeng.com/ads/PJFtjbzpwb.jpg@60q" alt=""/>
+</div>
+<div class="aui-row ">
+    <div class="activity-title" id="time">
+
+    </div>
+    <div class="activity-title-1">
+        <!--<span class="line"></span>双<span class="name">11</span>买<span class="name">1</span>赠<span class="name">1</span><span class="line"></span>-->
+        <!---->
+        <span class="line"> </span> <em id="activity-title">加载中</em><span class="line"></span>
+    </div>
+</div>
+
+
+<section class="aui-grid ">
+    <div class="aui-row" id="activity" >
+        <!--<div class="aui-content-padded" tapmode onclick="pay(12)">-->
+        <!--<div class="aui-col-xs-8" >-->
+        <!--<p>-->
+        <!--<div class="aui-col-xs-6 activity-padded activity-text-p">-->
+        <!--<span class="activity-text-h">年费</span>-->
+        <!--<span class="activity-text-h-1">每天50个</span>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-6  activity-padded activity-text-p-1">-->
+        <!--<span class="activity-text-h-1 activity-right">今天还剩100个名额</span>-->
+        <!--</div>-->
+        <!--</p>-->
+        <!--<div class="aui-progress aui-progress">-->
+        <!--<div class="aui-progress-bar" style="width: 60%;"></div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-4">-->
+        <!--<div class="aui-btn  aui-btn-block aui-btn-outlined aui-btn-sm btn-color">立即抢购</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="aui-content-padded" tapmode onclick="pay(6)">-->
+        <!--<div class="aui-col-xs-8" >-->
+        <!--<p>-->
+        <!--<div class="aui-col-xs-6 activity-padded activity-text-p">-->
+        <!--<span class="activity-text-h">半年费</span>-->
+        <!--<span class="activity-text-h-1">每天200个</span>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-6  activity-padded activity-text-p-1">-->
+        <!--<span class="activity-text-h-1 activity-right">今天还剩100个名额</span>-->
+        <!--</div>-->
+
+        <!--</p>-->
+        <!--<div class="aui-progress aui-progress">-->
+        <!--<div class="aui-progress-bar" style="width: 60%;"></div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-4" >-->
+        <!--<div class="aui-btn  aui-btn-block aui-btn-outlined aui-btn-sm">马上充值</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="aui-content-padded" tapmode onclick="pay(3)">-->
+        <!--<div class="aui-col-xs-8" >-->
+        <!--<p>-->
+        <!--<div class="aui-col-xs-6 activity-padded activity-text-p">-->
+        <!--<span class="activity-text-h">季费</span>-->
+        <!--<span class="activity-text-h-1">每天200个</span>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-6  activity-padded activity-text-p-1">-->
+        <!--<span class="activity-text-h-1 activity-right">今天还剩100个名额</span>-->
+        <!--</div>-->
+
+        <!--</p>-->
+        <!--<div class="aui-progress aui-progress">-->
+        <!--<div class="aui-progress-bar" style="width: 60%;"></div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-4">-->
+        <!--<div class="aui-btn  aui-btn-block aui-btn-outlined aui-btn-sm">马上充值</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="aui-content-padded" tapmode onclick="pay(1)">-->
+        <!--<div class="aui-col-xs-8" >-->
+        <!--<p>-->
+        <!--<div class="aui-col-xs-6 activity-padded activity-text-p">-->
+        <!--<span class="activity-text-h">月费</span>-->
+        <!--<span class="activity-text-h-1">每天200个</span>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-6  activity-padded activity-text-p-1">-->
+        <!--<span class="activity-text-h-1 activity-right">今天还剩100个名额</span>-->
+        <!--</div>-->
+        <!--</p>-->
+        <!--<div class="aui-progress aui-progress">-->
+        <!--<div class="aui-progress-bar" style="width: 60%;"></div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-4" >-->
+        <!--<div class="aui-btn  aui-btn-block aui-btn-outlined aui-btn-sm">马上充值</div>-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+</section>
+
+
+<section class="aui-grid activity-btn" tapmode onclick="execNavRightCallback()">
+    <div class="aui-btn  aui-btn-block aui-btn-sm"> <span class="duola-iconfont icon-share"></span>分享这个活动</div>
+</section>
+
+<section class="aui-grid activity-foot">
+    <div class="aui-row" style="padding-bottom: 2rem">
+        <div class="activity-title-1">
+            <span class="line"></span>
+            <span class="activity-title-span">活动规则</span>
+            <span class="line"></span>
+        </div>
+        <div class="activity-title-2">
+            <p class="activity-no">NO.1</p>
+            <p>活动周期：2016年12月12日至2016年12月13日 ，每天19:00准时开抢，每类缴费各限额100名（年费、半年、季费、月费），活动持续三天，每天一次抢购。</p>
+
+            <p class="activity-no">NO.2</p>
+            <p>优惠说明：半年费，季费，月费的充值用户分别送半年、季度和一个月，年费会员送1.5年
+            </p>
+            <p class="activity-no">NO.3</p>
+            <p>此次活动只能通过APP首页活动链接进行抢购，通过原先缴/续费页面充值的用户不享受优惠
+            </p>
+
+            <p class="activity-no">NO.4</p>
+            <p>所有活动需原价缴费（不可使用任何优惠劵），不可叠加参与多个活动，（即一个用户最多只能享受一次优惠）
+            </p>
+            <p class="activity-no">NO.5</p>
+            <p>此活动购买后在使用期间不予退费，中奖用户在1个工作日内统一赠送时间。
+                感谢您对多啦衣梦的大力支持，该活动最终解释权归多啦衣梦所有。
+            </p>
+        </div>
+
+    </div>
+</section>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+
+
+<script id="activity-template" type="text/x-dot-template">
+    {{ for(var i = 0; i < it.length; i++) { }}
+    <div class="aui-content-padded" tapmode onclick="pay('{{=it[i].value}}','{{=it[i].status}}')">
+        <div class="aui-col-xs-8" >
+            <p>
+            <div class="aui-col-xs-6 activity-padded activity-text-p">
+                <span class="activity-text-h">{{=it[i].name}}</span>
+                <span class="activity-text-h-1">限量{{=it[i].total}}个</span>
+            </div>
+            <div class="aui-col-xs-6  activity-padded activity-text-p-1">
+                <span class="activity-text-h-1 activity-right">本次还剩{{=it[i].remain}}个名额</span>
+            </div>
+            </p>
+            <div class="aui-progress aui-progress">
+                <div class="aui-progress-bar" style="{{= 'width:' + it[i].progress +'%'}}"></div>
+            </div>
+        </div>
+        <div class="aui-col-xs-4" style="height: auto">
+            <p class=""><div class=" activity-padded activity-text-p">
+            <span class="activity-text-h aui-invisible">...</span>
+        </div></p>
+            {{? it[i].status == "ready"}}
+            <div class="aui-btn aui-btn-block aui-btn-outlined aui-btn-sm">即将开抢</div>
+            {{?? it[i].status == "pending"}}
+            <div class="aui-btn aui-btn-block aui-btn-outlined aui-btn-sm btn-color">立即抢购</div>
+            {{??}}
+            <div class="aui-btn aui-btn-block aui-btn-outlined aui-btn-sm">已抢光</div>
+            {{?}}
+        </div>
+    </div>
+    {{ } }}
+</script>
+<script type="text/javascript">
+    var count;var frameData = null,activityStatus = "NO";
+    apiready = function(){
+        frameData = api.pageParam.data;
+        count  = $api.getStorage('count');
+        pullRefresh(loadRefresh);
+        init("init");
+    };
+    function loadRefresh() {
+        init(CONSTANT.ACTIONREFRESH);
+    }
+    function statusSuccessCallback(ret, extra) {
+        _loadingHide();
+        if (ret.statusCode == '200') {
+            activityStatus = ret.result.status;
+            if (activityStatus === "YES") {
+                toastMsg("亲,您已经成功参加这次活动，无法再参加了");
+                return;
+            }
+            if(!isMember()){
+                api.openWin({
+                    name: 'Vip',
+                    url: 'win.html',
+                    pageParam:{
+                        page: 'Vip',
+                        title: '开通会员',
+                        data: {
+                            promotion: "shuangshiyi"
+                        }
+                    }
+                });
+            }else{
+                api.openWin({
+                    name: 'Pay',
+                    url: 'win.html',
+                    pageParam: {
+                        page: 'Pay',
+                        title: '缴费',
+                        bagNum: count || 1,
+                        type: "serviceFee",
+                        data: {
+                            month: extra.month,
+                            promotion: "shuangshiyi"
+                        }
+                    }
+                });
+            }
+        }
+    }
+    function init(action) {
+        if(action == CONSTANT.ACTIONINIT){
+            loadingShow();
+        }
+        var body = {
+            promotion: "shuangshiyi"
+        };
+        var url = serviceUser + 'service/promotion/limit';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData(body);
+        var extra = false;
+        _ajaxData(url, 'post', headers, data, initSuccessCallback, initErrorCallback, 0, extra);
+    }
+    function initSuccessCallback(ret, extra) {
+        _loadingHide();
+        pullRefreshDone();
+        if (ret.statusCode == '200') {
+            var time = ret.result.date;
+            var status = ret.result.status;
+            _setHtmlVal('time',time);
+            doHtml("activity","activity-template",ret.result.list);
+            var text;
+            if (time === "12月12日" && status === "ready") {
+                text = "即将开始";
+            } else if (status === "ready") {
+                text = "上轮已抢光";
+            } else {
+                text = "火热进行中";
+            }
+            _setHtmlVal('activity-title',text);
+        } else if (ret.statusCode == '10104') {
+            toLogin();
+        } else {
+            toastMsg("亲爱的用户，由于抢购的人太多，请你稍后重试，谢谢支持！");
+
+            _setHtmlVal('activity-title',"请重试");
+        }
+    }
+    function initErrorCallback(err, extra) {
+        _loadingHide();
+        pullRefreshDone();
+        toastMsg(err.msg);
+    }
+    function pay(month, status) {
+        if (status === "ready") {
+            toastMsg("亲，今晚19：00准时开抢，敬请期待");
+            return;
+        }
+        if (status === "finished") {
+            toastMsg("亲，今天抢光了");
+            return;
+        }
+        if (!month || !status) {
+            toastMsg("亲，数据错误，请重新进如试试。");
+            return;
+        }
+        loadingShow();
+        var body = {
+            promotion: "shuangshiyi"
+        };
+        var url = serviceUser + 'service/promotion/status';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData(body);
+        var extra = {month: month ,status: status};
+        _ajaxData(url, 'post', headers, data, statusSuccessCallback, initErrorCallback, 0, extra);
+    }
+
+    //公用头部导航栏坐侧点击异步执行的方法
+    function execNavLeftCallback(value){
+        var from = frameData.from;
+        var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+        if(!isDefine(callback)){
+            return;
+        }
+        var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+        var params = {
+            script: getExecScript(callback,new Array(extra,api.winName,value))
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+    //公用头部导航栏右侧点击异步执行的方法
+    function execNavRightCallback(){
+        var name = 'shared_mask';
+        var page = 'shared_mask.html';
+        var rect ={
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto'
+        };
+        var data = {frameName: "activityFrame"};
+        var bounces = false;
+        openNewFrame(name,page,bounces,rect,data);
+    }
+    function execShareWx(index){
+        var scene = '';
+        var contentUrl = "http://mp.weixin.qq.com/s?__biz=MzIyMjA0ODAwMg==&mid=2651039683&idx=1&sn=4a398f98543f01fae7a874e8a97c071c&chksm=f3c47daec4b3f4b8aa5828e1e9a2b88aece27f8b9e3734f9c5b010f3dc4664b88c8c6986ad95&scene=0#wechat_redirect";
+        if(index == 1){
+            scene = 'session';
+        }else if(index == 2){
+            scene = 'timeline';
+        }
+        shareWx(scene,contentUrl);
+    }
+    function shareWx(scene,contentUrl){
+        var wx = api.require('wx');
+        if(!isDefine(scene)){
+            return;
+        }
+        wx.shareWebpage({
+            apiKey: CONSTANT.WEIXINAPPKEY,
+            scene: scene,
+            title: "多啦衣梦双12买1送1",
+            description: "多啦衣梦老板疯了,双12买1送1",
+            thumb: 'widget://image/sharedLogo.png',
+            contentUrl: contentUrl,
+        }, function(ret, err){
+            var msg = '未知错误';
+            if(ret.status==true){
+                msg = '分享成功';
+            }else{
+                if(err.code==-1){
+                    msg = '未知错误';
+                }else if(err.code==0){
+                    msg = '成功';
+                }else if(err.code==1){
+                    msg = 'apiKey非法';
+                }else if(err.code==2){
+                    msg = '你取消了分享';
+                }else if(err.code==3){
+                    msg = '发送失败';
+                }else if(err.code==4){
+                    msg = '授权拒绝';
+                }else if(err.code==5){
+                    msg = '微信服务器返回的不支持错误';
+                }else if(err.code==6){
+                    msg = '当前设备未安装微信客户端';
+                }else if(err.code==7){
+                    msg = '注册SDK失败';
+                }
+            }
+            toastMsg(msg);
+        });
+    }
+    function execCloseSharedMask(frameName,index){
+        index = parseInt(index);
+        if(!isNaN(index)){
+            //调用微信模块
+            execShareWx(index);
+        }
+        api.closeFrame({
+            name:frameName
+        });
+    }
+</script>
+</html>

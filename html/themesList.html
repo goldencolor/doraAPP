@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui_flex.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+
+		
+		/*重新定义*/
+		.aui-grid-sixteen:after { border: none;}
+		.aui-grid-sixteen li:after {border:none;}
+		.aui-grid-sixteen li .aui-iconfont {
+		    color: #ffffff;
+		    width: 38px;
+		    height: 38px;
+		    line-height: 38px;
+		    border-radius: 50%;
+		    font-size: 20px;
+		}
+		/*自定义*/
+		.icons { margin: 0; background-color: #FFFFFF;}
+		.image img { width: 100%}
+		p { font-size: 12px; margin-bottom: 5px;}
+		.content { font-size: 12px;}
+		.aui-iconfont { color: #ffffff;}
+		
+		.my-icon-bg-1{background-color: #ff9933}
+		.my-icon-bg-2{background-color: #33b9ff}
+		.my-icon-bg-3{background-color: #ffc333}
+		.my-icon-bg-4{background-color: #ffa2f1}
+		
+		#my-ad-box{
+			margin: 0px;
+		}
+		.my-kind-box{
+			background-color: #FFFFFF;
+		}
+
+		.my-kind-r-1{
+			padding-left: 10px; padding-top: 10px;
+		}
+		.aui-list-view,.aui-list-view span{
+			margin-bottom: 0px;  font-size: 15px; color: #777777;
+		}
+		.my-like{
+			border-radius: 8px;
+		}
+		.my-like p{
+			font-size: 10px; color: #e59c96;
+		}
+		.my-like span{
+			font-size: 12px; color: #e59c96;
+		}
+		.my-clothes-name{
+			font-size: 12px; color: #777777; padding: 0 2px;
+		}
+		.my-clothes-img{
+			border-radius: 8px;
+		}
+		.my-themes-bg{
+			background-color: #FFFFFF;
+		}
+		.my-themes-bg img{
+			border-style:none !important;
+		}
+	</style>  
+</head>
+<body>
+<div id="main" class="hide">
+    <div class="aui-border-b my-kind-box" id="themes">
+    	<img src="../image/choose.jpg" width="100%"/>
+    </div>
+</div>	
+	 
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var is_err =1;
+	apiready = function(){
+		init();
+	};
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		_showPage();
+		if(ret.statusCode=='200'){
+			var themes = ret.list;
+			$api.html($api.byId('themes'), '');
+			var html = '';
+			for(var i=0;i<ret.count;i++){
+				html+='<img id="themes_'+i+'" width="100%" src="../image/hold.jpg" onclick="showContent(\''+themes[i]._id+'\')">';
+			}
+			for(var i=0;i<ret.count;i++){
+				var img = imgPath + themes[i].img +'@1e_1c_0o_0l_800h_800w_90q';
+				_imgCacheUrl(img,'themes_'+i);
+			}
+			$api.html($api.byId('themes'), html);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		_showPage();
+		toastMsg(err.msg);
+	}
+	function init(){
+		_loadingShow();
+		var url = serviceNew+'themes/list';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			page:1,
+			pageSize:20
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+
+	}
+	
+
+	function showContent(id){
+		api.openWin({
+	        name: 'contented',
+	        url: 'win.html',
+	        pageParam:{
+	        	 bounces:true,
+	        	title:"主题",
+	        	page:"content",
+	        	name:"contented",
+	        	data:id
+	        }
+        });
+	}
+	</script>
+</html>

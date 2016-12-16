@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>支付成功</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        .text{
+            height: 12rem;
+            padding-top: 4rem;
+            text-align: center;
+        }
+        .backBtn{
+            width: 4rem;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            border: 1px solid #FF6404;
+            border-radius: 2px;
+            font-size: 0.6rem;
+            color: #FF6404;
+            text-align: center;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="text">
+        <p>支付成功</p>
+        <p>恭喜，多啦衣梦的美衣归属你了！</p>
+    </div>
+    <div class="backBtn" tapmode onclick="goBackRoot()">返回</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script>
+    apiready=function(){
+        api.parseTapmode();
+    };
+    //返回我的
+    function goBackRoot(){
+        api.closeToWin({
+            name: 'root'
+        });
+        //异步刷新我的衣橱
+        api.execScript({
+            frameName:"closet_frame",
+            script: "newInit();"
+        });
+    }
+</script>
+</html>

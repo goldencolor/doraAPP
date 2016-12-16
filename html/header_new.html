@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>导航栏</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+</head>
+<body>
+	<header id="header" class="duola-header flex">
+	    <a id="nav-left" class="duola-icon-area" tapmode onclick="navLeftHandler()">
+	        <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
+	    </a>
+	    <div id="nav-title" class="nav-title flex-1"></div>
+	    <a id="nav-right" class="duola-icon-area" tapmode onclick="navRightHandler()">
+			<span id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon"></span>
+		</a>
+	</header>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+//	getNavLeft({"icon":"duola-iconfont icon-left","text":"我","callback":function(){alert(1)},"extra":"","navClass":"hit-color"});
+//	getNavRight({"icon":"duola-iconfont icon-right","text":"我","callback":"","extra":"","navClass":"hit-color"});
+//	getNavBorder(true);
+//	getTitle('标题标');
+	var umengPage = null;
+	apiready = function() {
+		var header = $api.byId('header');
+		$api.fixStatusBar(header);
+		var page = api.pageParam.page;//页面url
+		var name = api.pageParam.name;//页面名称
+		var title = api.pageParam.title;//页面标题
+		umengPage = api.pageParam.umengPage;//友盟页面ID
+		var from = api.pageParam.from;//来源于那个页面
+		var data = api.pageParam.data;//页面数据object
+		//获取frame
+		var frame = data.frame ? data.frame : {};
+		var bounces = frame.bounces ? frame.bounces : false; //页面弹动
+		var progress = frame.progress ? frame.progress : false; //页面加载进度条
+		var allowEdit = frame.allowEdit ? frame.allowEdit : false; //长按页面是否可以编辑
+		var scaleEnabled = frame.scaleEnabled ? frame.scaleEnabled : false; //页面缩放
+		var vScrollBarEnabled = frame.vScrollBarEnabled ? frame.vScrollBarEnabled : true; //页面垂直滚动条
+		var frameData = frame.data ? frame.data : {}; //frame 页面参数
+
+		//获取nav
+		var nav = data.nav ? data.nav : {};
+		var leftNav = nav.leftNav ? nav.leftNav : {};//导航栏左侧
+		var rightNav = nav.rightNav ? nav.rightNav : {};//导航栏右侧
+		var border = nav.border ? nav.border : false;//导航栏底部边框
+
+		frameData.from = from;
+		frameData.leftNavCallback = leftNav.callback ? leftNav.callback : '';
+		frameData.leftNavExtra = leftNav.extra ? leftNav.extra : '';
+		frameData.rightNavCallback = rightNav.callback ? rightNav.callback : '';
+		frameData.rightNavExtra = rightNav.extra ? rightNav.extra : '';
+
+		onPageUmeng(umengPage);
+		getTitle(title);
+		getNavLeft(leftNav);
+		getNavRight(rightNav);
+		getNavBorder(border);
+		api.parseTapmode();
+		var headerHeight = $api.offset(header).h;
+		frameData.headerHeight = headerHeight;
+		var rect = {
+			x:0,
+			y:headerHeight,
+			w:'auto',
+			h:'auto'
+		};
+		openNewFrame(name,page,bounces,rect,frameData,vScrollBarEnabled,null,allowEdit,progress,scaleEnabled);
+
+	}
+
+	function navLeftHandler(){
+		if(isDefine(api.pageParam.name)){
+			var callback = 'execNavLeftCallback()';
+			var params = {
+				frameName : api.pageParam.name,
+				script: callback
+			};
+			api.execScript(params);
+			onPageEndUmeng(umengPage);
+		}else{
+			toastMsg('未找到对应的frame 的 execNavLeftCallback()');
+		}
+	}
+
+	function navRightHandler(){
+		if(isDefine(api.pageParam.name)){
+			var callback = 'execNavRightCallback()';
+			var params = {
+				frameName : api.pageParam.name,
+				script: callback
+			};
+			api.execScript(params);
+		}else{
+			toastMsg('未找到对应的frame 的 execNavRightCallback()');
+		}
+	}
+</script>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+		html, body {
+            height: 100%; width: 100%; margin: 0px; padding: 0px; background-color: #F6F6F6;
+        }
+   		.my-li{ text-align: left; margin:30px auto;}
+   		.tt{
+   			color: #444444;
+   		}
+   		.cc{
+   			color: #777777;
+   		}
+	</style>  
+</head>
+<body>
+<div class="my-line"></div>
+<div class="aui-content tt">
+	<ul class="aui-list-view aui-in">
+        <li class="aui-list-view-cell">
+   			<span class="aui-col-xs-4 aui-text-right">版本号：</span>
+   			<span class="aui-col-xs-1 "> &nbsp;</span>
+			<span class="aui-col-xs-7 cc aui-text-left" id="dd">V2.0.12</span>
+        </li>
+        <li class="aui-list-view-cell">
+   			<span class="aui-col-xs-4 aui-text-right">微信公众号：</span>
+			<span class="aui-col-xs-1 "> &nbsp;</span>
+			<span class="aui-col-xs-7 cc aui-text-left" id="wx">duolayimengkefu2</span>
+        </li>
+        <li class="aui-list-view-cell">
+   			<span class="aui-col-xs-4 aui-text-right">客服电话：</span>
+			<span class="aui-col-xs-1 "> &nbsp;</span>
+			<span class="aui-col-xs-7 cc aui-text-left" id="tel">4001593880</span>
+        </li>
+        <li class="aui-list-view-cell">
+   			<span class="aui-col-xs-4 aui-text-right">公司：</span>
+			<span class="aui-col-xs-1 "> &nbsp;</span>
+			<span class="aui-col-xs-7 cc aui-text-left" id="comp">成都必酷科技有限公司</span>
+        </li>
+        <li class="aui-list-view-cell">
+   			<span class="aui-col-xs-4 aui-text-right">地址：</span>
+			<span class="aui-col-xs-1 "> &nbsp;</span>
+			<span class="aui-col-xs-7 cc aui-text-left" id="addr">成都市高新西区西区大道1599号</span>
+        </li>
+    </ul>
+	
+	
+</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var token;
+	var is_err =1;
+	apiready = function(){
+		token = $api.getStorage('token');
+		init();
+	};
+	
+	function initSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+			 $api.html($api.byId('dd'),api.appVersion);
+			 $api.html($api.byId('wx'),ret.CustomerServiceInfo.wechat);
+			 $api.html($api.byId('tel'),ret.CustomerServiceInfo.phone);
+			 $api.html($api.byId('comp'),ret.company);
+			 $api.html($api.byId('addr'),ret.sendBackInfo.address);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);		
+		}
+	}
+	function initErrorCallback(ret,extra){
+		toastMsg(err.msg);
+	}
+	function init(){
+		var url = serviceUser + 'help/contact';
+		var method = 'post';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+	
+	
+	</script>
+</html>

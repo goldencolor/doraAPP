@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>人气更多</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+</head>
+<body>
+
+
+<div id="pagination">
+	<div class="pagination-bg-1" onclick="changeTop()">
+		<div id="pagination-pag">
+			<div class="pagination-num" id="pagination-page">1页</div>
+			<div class="pagination-name" id="pagination-pageTotal"></div>
+			<!--<em id="pagination_page">111</em>/<em id="pagination_pageTotal">312</em>-->
+
+		</div>
+		<div id="pagination-top" class="pagination-tops hide">
+			<i class=" duola-iconfont icon-dingbu"></i>
+		</div>
+	</div>
+</div>
+
+<div class="aui-grid">
+	<div id="cloudset-container" class="waterfall aui-row">
+
+		<!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+		<!--<div class="header">-->
+		<!--<img src="" alt=""/>-->
+		<!--<div class="label flex flex-space-between">-->
+		<!--<div class="new">new</div>-->
+		<!--<div class="unavailable">抢光了</div>-->
+		<!--</div>-->
+		<!--</div>-->
+		<!--<div class="footer flex flex-space-between flex-vertical-center">-->
+		<!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩</div>-->
+		<!--<div class="number"><span class="iconfont icon-love"></span>136</div>-->
+		<!--</div>-->
+		<!--</div>-->
+		<!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+		<!--<div class="header">-->
+		<!--<img src="" alt=""/>-->
+		<!--<div class="label flex flex-space-between">-->
+		<!--<div class="new">new</div>-->
+		<!--<div class="unavailable">抢光了</div>-->
+		<!--</div>-->
+		<!--</div>-->
+		<!--<div class="footer flex flex-space-between flex-vertical-center">-->
+		<!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫</div>-->
+		<!--<div class="number"><span class="iconfont icon-love"></span>136</div>-->
+		<!--</div>-->
+		<!--</div>-->
+
+	</div>
+</div>
+<div id="loading" class="aui-text-center" style="font-size: 12px; color: #999999;">
+	<img src="../icon/loading.gif" width="16" />
+	<div>更多数据加载中</div>
+</div>
+
+<script id="cloudset-container-template" type="text/x-dot-template">
+	{{ for(var i = 0; i < it.count; i++) { }}
+	<div class="item aui-col-xs-6" tapmode onclick="{{='showClothes(\''+ (it.list[i] && it.list[i]._id ? it.list[i]._id : 0) +'\')'}}">
+		<div class="header">
+			<img id="{{='cloudset-img-'+it.list[i]._id}}"  class="{{='cloudset-img-'+it.list[i]._id}}" src="../image/hold.jpg" alt="多啦衣梦" />
+			<div class="label flex flex-space-between">
+				{{? isNew(it.list[i] && it.list[i].preSelBefore)}}
+				<div class="new">new</div>
+				{{?}}
+				{{? isAvailable(it.list[i] && it.list[i].available)}}
+				<div class="unavailable">抢光了</div>
+				{{?}}
+			</div>
+		</div>
+		<div class="footer flex flex-space-between flex-vertical-center">
+			<div class="name flex-1 aui-ellipsis-1">{{=(it.list[i] && it.list[i].name) ? it.list[i].name : '多啦衣梦'}}</div>
+			<div class="number">
+				<span class="duola-iconfont icon-love"></span>{{=(it.list[i] && it.list[i].like) ? it.list[i].like : 0}}
+			</div>
+		</div>
+	</div>
+
+	{{ } }}
+
+</script>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/components/pagination.js"></script>
+<script type="text/javascript">
+	var frameData = null;
+	var valueData = null;
+	var currPage = 1;
+	var totalPage = 1;
+	var isLoadMoreResponsed = true;
+
+	apiready = function(){
+		frameData = api.pageParam.data;
+		valueData = isDefine(frameData.value) ? frameData.value : '';
+		init(CONSTANT.ACTIONINIT);
+		api.parseTapmode();
+		loadMore();
+		_myScroll("cloudset-container", 'div');
+	};
+
+	function loadMore(){
+		api.addEventListener({
+			name:'scrolltobottom',
+			extra:{threshold:0}
+		}, function(ret, err){
+			if(isLoadMoreResponsed && currPage < totalPage){
+				currPage++;
+				isLoadMoreResponsed = false;
+				init(CONSTANT.ACTIONLOAD);
+			}
+		});
+	}
+	function initSuccessCallback(ret,extra){
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else if(action == CONSTANT.ACTIONLOAD){
+			isLoadMoreResponsed = true;
+			loadingHide();
+		}else{
+			loadingHide();
+		}
+		if(ret.statusCode==200 && ret.cloudCloset){
+			currPage = ret.cloudCloset.page;
+			totalPage = ret.cloudCloset.pageTotal;
+			getClothHtml(ret.cloudCloset);
+			_page(currPage,totalPage,ret.cloudCloset.count);
+		}else{
+			toastMsg(ret.msg);
+		}
+		if(currPage >= totalPage){
+			$api.html($api.byId('loading'),'没有更多了');
+		}
+
+	}
+	function initErrorCallback(err,extra){
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else if(action == CONSTANT.ACTIONLOAD){
+			isLoadMoreResponsed = true;
+			currPage--;
+			loadingHide();
+		}else{
+			loadingHide();
+		}
+		toastMsg(err.msg);
+	}
+
+	function init(action){
+		if(action == CONSTANT.ACTIONINIT){
+			loadingShow();
+		}
+		var url = serviceNew + 'cloudCloset';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			page: currPage,
+			pageSize: CONSTANT.PAGESIZE
+		});
+		if(valueData=='人气排行'){
+			data.body.sort ={
+				"popularity": -1
+			};
+		}else if(valueData=='早春新款'){
+			data.body.keywords = '春季';
+		}else{
+			data.body.keywords = String(valueData);
+		}
+		var extra = {action:action};
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+	function getClothHtml(cloudset){
+		var html = doTHtml('cloudset-container-template',cloudset);
+		var cloudsetContainer = $api.byId('cloudset-container');
+		if(currPage == 1){
+			//首次加载或者刷新
+			//图片也刷新了，闪屏，有待于提升性能
+			cloudsetContainer.innerHTML = '';
+		}
+		$api.append(cloudsetContainer, html);
+		api.parseTapmode();
+		for(var i=0; i<cloudset.count; i++){
+			var url = getImgUrl(colthPath, cloudset.list[i].img,colthPathStyle);
+			_imgCacheUrl2(url, '.cloudset-img-'+cloudset.list[i]._id);
+		}
+	}
+
+	function closeThis(){
+		api.closeWin();
+	}
+
+	function testCloudsetHtml(){
+		var cloudset ={"cloudCloset":{"count":20,"pageTotal":346,"page":2,"list":[{"img":"1514298-1.jpg","available":"YES","stockedSize":["S","M","L","XL"],"like":1011,"_id":"1514298","size":["S","M","L","XL"],"name":"娃娃领荷叶边短袖连衣裙"},{"img":"1516655-1.jpg","available":"YES","stockedSize":["S","M"],"like":1006,"_id":"1516655","size":["S","M","L","XL"],"name":"小香风衬衫+半裙"},{"img":"1514563-1.jpg","available":"YES","stockedSize":["S"],"like":975,"_id":"1514563","size":["S","M","L","XL","均码"],"name":"镂空流苏吊坠荷叶袖连衣裙"},{"img":"1520465-2.jpg","available":"YES","stockedSize":["S"],"like":932,"_id":"1520465","size":["S","M","L"],"name":"学院风套装"},{"img":"1525890-1.jpg","available":"YES","stockedSize":["M"],"like":913,"_id":"1525890","size":["S","M","L"],"name":"条纹短裙"},{"img":"1512998-1.jpg","available":"YES","stockedSize":["均码"],"like":910,"_id":"1512998","size":["均码"],"name":"文艺复古碎花半身长裙"},{"img":"1522133-1.jpg","available":"YES","stockedSize":["S"],"like":907,"_id":"1522133","size":["S","M","L","XL"],"name":"中袖衬衫裙"},{"img":"1513598-1.jpg","available":"YES","stockedSize":["XL"],"like":903,"_id":"1513598","size":["S","M","L","XL"],"name":"2016韩版性感名媛一字荷叶边露背连体裤 长裤"},{"img":"1513295-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":900,"_id":"1513295","size":["S","M","L"],"name":"透气收腰无袖连衣裙 "},{"img":"1515533-1.jpg","available":"YES","stockedSize":["S"],"like":898,"_id":"1515533","size":["S","M","L","均码"],"name":"荷叶边领口中袖裙"},{"img":"1516381-1.jpg","available":"YES","stockedSize":["S","M"],"like":877,"_id":"1516381","size":["S","M","L"],"name":"衬衣领镂空钩花收腰撞色A字下摆连衣裙"},{"img":"1515140-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":873,"_id":"1515140","size":["S","M","L"],"name":"A字牛仔裙(无腰带)"},{"img":"1512331-1.jpg","available":"YES","stockedSize":["S","M","L","XL"],"like":866,"_id":"1512331","size":["S","M","L","XL"],"name":"黑白水墨花朵印花大摆半裙"},{"img":"1517306-1.jpg","available":"YES","stockedSize":["S"],"like":866,"_id":"1517306","size":["S","M","L"],"name":"格子背带裙"},{"img":"1516935-1.jpg","available":"YES","stockedSize":["S"],"like":855,"_id":"1516935","size":["S","M","L","XL"],"name":"鱼尾长裙"},{"img":"1514072-1.jpg","available":"YES","stockedSize":["L"],"like":849,"_id":"1514072","size":["S","M","L","XL"],"name":"直筒侧开叉喇叭裤"},{"img":"1513706-1.jpg","available":"YES","stockedSize":["XL"],"like":848,"_id":"1513706","size":["S","M","L","XL"],"name":"欧根纱翻领印花连衣裙"},{"img":"1515976-1.jpg","available":"YES","stockedSize":["S","M","L","XL"],"like":832,"_id":"1515976","size":["S","M","L","XL"],"name":"条纹短袖连衣裙"},{"img":"1513153-1.jpg","available":"YES","stockedSize":["L","XL"],"like":821,"_id":"1513153","size":["S","M","L","XL"],"name":"拼接宽松撞色雪纺衫上衣"},{"img":"1512713-1.jpg","available":"YES","stockedSize":["S","M","L","XL"],"like":820,"_id":"1512713","size":["S","M","L","XL"],"name":"时尚运动条纹印花半身裙"}]},"statusCode":200,"msg":""};
+		var html = doTHtml('cloudset-container-template',cloudset.cloudCloset);
+		var cloudsetContainer = $api.byId('cloudset-container');
+		if(currPage == 1){
+			//首次加载或者刷新
+			//图片也刷新了，闪屏，有待于提升性能
+			cloudsetContainer.innerHTML = '';
+		}
+		$api.append(cloudsetContainer, html);
+	}
+
+	//公用头部导航栏坐侧点击异步执行的方法
+	function execNavLeftCallback(value){
+		var from = frameData.from;
+		var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+
+	//公用头部导航栏右侧点击异步执行的方法
+	function execNavRightCallback(value){
+		var from = frameData.from;
+		var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+</script>
+</html>

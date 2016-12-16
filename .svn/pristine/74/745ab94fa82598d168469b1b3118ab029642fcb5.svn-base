@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>社区推荐</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+</head>
+<body>
+    <header id="header" class="duola-header flex">
+        <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWin()">
+            <span id="nav-left-icon" class="nav-left-icon duola-iconfont icon-left"></span><span id="nav-left-text" class="nav-text"></span>
+        </a>
+        <div id="nav-title" class="nav-title flex-1"></div>
+        <a id="nav-right" class="duola-icon-area" tapmode onclick="navRightHandler()">
+            <span id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon"></span>
+        </a>
+    </header>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script>
+
+    apiready=function(){
+        var header=$api.byId('header');
+        $api.fixStatusBar(header);
+
+        console.log(getLogStr([api.pageParam.data]));
+        var headerHeight = $api.offset(header).h;
+        api.openFrameGroup({
+            name: 'community_tab',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                y: headerHeight,
+                w: 'auto',
+                h: 'auto'
+            },
+            index: 0,
+            preload: 0,
+            frames: [
+                {
+                    name: 'community_left',
+                    url: 'community_left.html',
+                    bounces: true,
+                    vScrollBarEnabled: false,
+                    pageParam:{
+                        data:api.pageParam.data.postData
+                    }
+                },
+                {
+                    name: 'community_right',
+                    url: 'community_right.html',
+                    bounces: true,
+                    vScrollBarEnabled: false,
+                    pageParam:{
+                        data:api.pageParam.data.postData
+                    }
+                }
+            ]
+        }, function (ret, err) {
+            var index = ret.index;
+        });
+    };
+
+
+
+    //拼接头像url
+    function getAvatar(avatar,isWxAvatar){
+        if(isTrue(isWxAvatar)){
+            return avatar;
+        }else if(avatar && avatar.indexOf('../') == -1){
+            return [CONSTANT.PICPRE.RES,avatar].join('');
+        }else{
+            return '';
+        }
+    }
+</script>
+</html>

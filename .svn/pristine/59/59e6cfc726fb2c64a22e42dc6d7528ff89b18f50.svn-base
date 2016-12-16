@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>优惠券详情</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	body{
+    	}
+    	.my-content{
+    		margin-top:10px;	
+    		
+    	}
+    	.my-margin-0{
+    		margin-bottom:0px;
+    	}
+    	.my-aui-text-size-12{
+    		font-size:12px;
+    	}
+    	.my-li-color{
+    		color:#777;
+    	}
+    	.my-aui-list-view:after {
+		  	border-top: 0px solid #c8c7cc;
+		}
+		.my-aui-list-view-cell:last-child:after {
+		  	border-bottom: 0px solid #ddd;
+		}
+		.my-aui-content-padding{
+			padding:15px;
+			background-color:#fff;
+		}
+		.my-text-blo{
+    		font-weight: bold;
+    	}
+    	.my-p-title{
+    		color:#777;
+    	}
+    	.my-margin-b-10{
+    		margin-bottom: 10px;
+    	}
+    	.my-content> .my-aui-list-view:last-child {
+		  	margin-bottom: 10px;
+		}
+		
+		.my-aui-grid-nine-style li:after {
+			 border-left: 0px solid #c8c7cc; 
+			border-bottom: 0px solid #c8c7cc;
+		}
+		.my-aui-grid-nine-style li {
+			
+			padding: 20px 3px;
+		}
+		.my-aui-grid-nine-style:after {
+			border-top: 0.5px solid #ddd;
+			border-right: 0px solid #c8c7cc;
+		}
+		.my-content-bottom{
+    		margin-bottom:10px;	
+    		
+    	}
+    </style>
+</head>
+<body>
+	<div class="aui-content my-content my-margin-0">
+		<ul class="aui-list-view my-aui-list-view hide" id='no-total'>
+	        <li class="aui-list-view-cell my-aui-list-view-cell my-aui-text-size-12 my-li-color my-text-blo">
+	            	你当前暂无可用优惠券。
+	        </li>
+	    </ul>
+	    
+	    <ul class="aui-list-view my-aui-list-view hide" id="have-total" style="margin-bottom: 0px;">
+	        <li class="aui-list-view-cell my-aui-list-view-cell my-aui-text-size-12 my-li-color my-text-blo">
+	            可用 <em id="total-count"></em>张优惠券
+	        </li>
+	    </ul>
+	    <div id="my-list"></div>
+<!--	    <div class="aui-content my-content-bottom">
+		    <ul class="aui-grid-nine my-aui-grid-nine-style">
+		        <li class="aui-col-xs-2 aui-text-center">
+		            <p class="my-aui-text-size-12" style="line-height:35px;">30元</p>
+		        </li>
+		        <li class="aui-col-xs-8">
+		           <p class="my-aui-text-size-12">有效期：2016-02-20至2017-12-31<p class="my-aui-text-size-12">使用限制：2016-05-05后使用</p></p>
+		        </li>
+		        <li class="aui-col-xs-2 aui-text-center">
+		            <p class="my-aui-text-size-12 aui-text-warning">推荐有礼</p>
+		        </li>
+		    </ul>
+		</div>
+		<div class="aui-content my-content-bottom">
+		    <ul class="aui-grid-nine my-aui-grid-nine-style">
+		        <li class="aui-col-xs-2 aui-text-center">
+		            <p class="my-aui-text-size-12" style="line-height:35px;">30元</p>
+		        </li>
+		        <li class="aui-col-xs-8">
+		           <p class="my-aui-text-size-12">有效期：2016-02-20至2017-12-31<p class="my-aui-text-size-12">使用限制：2016-05-05后使用</p></p>
+		        </li>
+		        <li class="aui-col-xs-2 aui-text-center">
+		            <p class="my-aui-text-size-12 aui-text-warning">推荐有礼</p>
+		        </li>
+		    </ul>
+		    
+		</div>-->
+	</div>
+	<div class="aui-content my-aui-content-padding">
+		<p class="my-aui-text-size-12 my-text-blo my-p-title my-margin-b-10">优惠券使用规则</p>
+		<p class="my-aui-text-size-12 my-margin-b-10">1.优惠券可叠加使用。</p>
+		<p class="my-aui-text-size-12 my-margin-b-10">2.优惠券最高使用金额不可超过租金金额。</p>
+		<p class="my-aui-text-size-12 my-margin-b-10">3.如果通过推荐其他会员获得的优惠券被提现，即当前状态为提现中，将不可再被用于抵扣充值费用。</p>
+		<p class="my-aui-text-size-12 my-margin-b-10">4.推荐有奖获得的优惠券的使用与交费时长成正比关系，例如单次缴费1个月，仅能使用1张推荐有奖优惠券，单次缴费12个月可使用12张推荐有奖优惠券。</p>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+	var token;
+	var is_err = 1 ;
+	var totalCounts;
+	apiready = function(){
+		token = $api.getStorage('token');
+		init();
+	};
+	function initErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+	function initSuccessCallback(ret,extra){
+		if(ret.statusCode =='200'){
+			totalCounts =ret.totalCounts;
+			if(totalCounts<=0){
+				$api.removeCls($api.byId('no-total'), 'hide');
+			}else{
+				$api.removeCls($api.byId('have-total'), 'hide');
+				$api.html($api.byId('total-count'), totalCounts);
+				var html = '';
+				for(var i =0;totalCounts>i;i++){
+					if(ret.couopns[i].promote=='YES'){
+						var promote ='推荐有奖';
+					}else{
+						var promote ='';
+					}
+					var x;
+					var limit='';
+					for(x in ret.couopns[i].apptionType){
+						if(ret.couopns[i].apptionType[x]=='monthly'){
+							limit+='月费';
+						}
+						if(ret.couopns[i].apptionType[x]=='annual'){
+							limit+='年费';
+						}
+					}
+					html+='<div class="aui-content my-content-bottom">';
+					html+='<ul class="aui-grid-nine my-aui-grid-nine-style">';
+					html+='<li class="aui-col-xs-2 aui-text-center">';
+					html+='<p class="my-aui-text-size-12" style="line-height:35px;">'+ret.couopns[i].amount+'元</p>';
+					html+='</li>';
+					html+='<li class="aui-col-xs-8">';
+					html+='<p class="my-aui-text-size-12">有效期：'+ret.couopns[i].validateOn.substring(0,10)+'至'+ret.couopns[i].validateEnd.substring(0,10)+'<p id="use-limit" class="my-aui-text-size-12">使用限制：'+limit+'使用</p></p>';
+					html+='</li>';
+					html+='<li class="aui-col-xs-2 aui-text-center">';
+					html+='<p class="my-aui-text-size-12 aui-text-warning">'+promote+'</p>';
+					html+='</li>';
+					html+='</ul>';
+					html+='</div>';
+				}
+				$api.before($api.byId('my-list'), html);
+			}
+		}else if(ret.statusCode=='10104'){
+			toLogin()
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function init(){
+		var url = serviceUser + 'service/coupons';
+		var headers = _getAjaxHeaders(token,true);
+		var data = _getAjaxData({
+			page:1,
+			pageSize:100
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+</script>
+</html>

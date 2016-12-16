@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+		html, body{
+			background: rgba(0,0,0,0.0);
+		}
+		.my-main{
+			height: 100%;background: rgba(0,0,0,0.3);
+		}
+		.my-main p{
+			font-size: 12px;
+		}
+		/**格子重构**/
+		.aui-grid-sixteen:after {
+			border:none;
+		}
+		.aui-grid-sixteen li:after {
+			border:none;
+		}
+		.aui-grid-sixteen li {
+			padding: 5px 5px;
+		}
+		/**列表重构**/
+		.aui-list-view-cell{
+			font-size: 12px; color: #aaa;
+		}
+	</style>  
+</head>
+<body>
+	<div id="header"></div>
+	<div class="aui-content my-main">
+		<ul class="aui-grid-sixteen">
+	        <li class="aui-col-xs-3 aui-text-center">
+	            <img src="../image/f2.jpg" width="40" alt="" />
+	            <p>外套</p>
+	        </li>
+	        <li class="aui-col-xs-3 aui-text-center">
+	            <img src="../image/f2.jpg" width="40" alt="" />
+	            <p>上衣</p>
+	        </li>
+	        <li class="aui-col-xs-3 aui-text-center">
+	            <img src="../image/f2.jpg" width="40" alt="" />
+	            <p>马甲</p>
+	        </li>
+	        <li class="aui-col-xs-3 aui-text-center">
+	            <img src="../image/f2.jpg" width="40" alt="" />
+	            <p>连衣裙</p>
+	        </li>
+	        <li class="aui-col-xs-3 aui-text-center">
+	            <img src="../image/f2.jpg" width="40" alt="" />
+	            <p>裤装</p>
+	        </li>
+	        <li class="aui-col-xs-3 aui-text-center">
+	            <img src="../image/f2.jpg" width="40" alt="" />
+	            <p>半裙</p>
+	        </li>
+	        <li class="aui-col-xs-3 aui-text-center">
+	            <img src="../image/f2.jpg" width="40" alt="" />
+	            <p>套装</p>
+	        </li>
+	        <li class="aui-col-xs-3 aui-text-center">
+	            <img src="../image/f2.jpg" width="40" alt="" />
+	            <p>全部</p>
+	        </li>
+	    </ul>
+	    <ul class="aui-list-view" onclick="closeMask();">
+	        <li class="aui-list-view-cell aui-text-center">
+	           		 取消
+	        </li>
+	    </ul>
+	</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	
+	apiready = function(){
+		var header = $api.byId('header');
+        $api.fixStatusBar(header); 
+	};
+	
+	function closeMask(){
+		api.closeFrame({
+	        name: 'type'
+        });
+        api.execScript({
+        	name: 'root',
+        	frameName: 'footer_tab_2',
+	        script: 'cancelMask();'
+        });
+	}
+	</script>
+</html>

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>购买</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        .discrible {
+            text-align: center;
+            height: 1.3rem;
+            line-height: 1.3rem;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.6rem;
+            color: #848484;
+        }
+
+        .order_content {
+            box-sizing: border-box;
+            padding-top: 0.95rem;
+            background-color: #FFFFFF;
+            padding-bottom: 0.95rem;
+        }
+
+        .order_content {
+            /*box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.15);*/
+            border-bottom: 1px solid #E8E8E8;
+        }
+
+        .order_content .good_list {
+            overflow: hidden;
+            position: relative;
+            height: 3.75rem;
+        }
+
+        .good_list > div:not(:last-child) {
+            float: left;
+        }
+
+        .leftBox {
+            height: 100%;
+            padding: 0 1.25rem;
+            float: right;
+        }
+
+        .leftBox > div {
+            width: 1rem;
+            height: 1rem;
+            line-height: 0.9rem;
+            text-align: center;
+            border: 1px solid #ddd;
+            box-sizing:border-box;
+            border-radius: 50%;
+            font-size: 1rem;
+
+        }
+
+        .leftBox span {
+            color: #ff6100;
+            font-size: 1rem;
+        }
+
+        .centerBox {
+            padding-right: 1rem;
+            padding-left: 1rem;
+        }
+
+        .centerBox img {
+            width: 2.5rem;
+            height: 3.75rem;
+        }
+
+        .rightBox {
+            max-width: 11rem;
+            overflow: auto;
+        }
+
+        .rightBox .top {
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            line-height: 0.7rem;
+            color: #424242;
+            margin-top: 0.75rem;
+            height: 1.5rem;
+        }
+
+        .rightBox .middle {
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.6rem;
+            color: #424242;
+        }
+        .rightBox .middle .buyMoneyColor{
+            color: #ff6100;
+        }
+
+        .totalMoneyBox {
+            height: 2.5rem;
+            padding: 0 1.25rem;
+            overflow: hidden;
+            /*box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.15);*/
+            font-size: 0.7rem;
+        }
+
+        .totalMoneyBox .checkAllBox {
+            float: left;
+            height: 100%;
+        }
+
+        .rulesBox {
+            height: 7.5rem;
+            line-height: 4rem;
+            text-align: center;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.6rem;
+            color: #959595;
+        }
+
+
+        .bottomBox{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2.8rem;
+            line-height: 2.8rem;
+        }
+        .bottomBox .payBtn {
+            width: 60%;
+            float: right;
+            height: 2.8rem;
+            line-height: 2.8rem;
+            background-color: #FF6100;
+            text-align: center;
+            color: #FFFFFF;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.9rem;
+        }
+        .bottomBox .right{
+            width: 40%;
+            float: left;
+            text-align: center;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            color: #424242;
+            background-color: #F0F0F0;
+        }
+        .bottomBox .right .moneyColor{
+            color: #FF6100;
+        }
+        #clothesList{
+            min-height: 16.5rem;
+        }
+        /*灰色分割条样式*/
+        /*.separated {*/
+        /*width: 100%;*/
+        /*height: 0.5rem;*/
+        /*background: #EBEBEB;*/
+        /*}*/
+
+        .turnPayBtnBg{
+            background-color: #DEDEDE !important;
+        }
+    </style>
+</head>
+<body>
+<div id="discrible" class="discrible aui-hide">
+    暂无可购买的服装
+</div>
+<div id="clothesList">
+
+    <!--<section class="order_content bg-white">-->
+    <!--<div class="good_list">-->
+    <!--<div class="leftBox flex-1 flex flex-center" tapmode onclick="clickCheckbox(this)">-->
+    <!--<div><span class="checkItem duola-iconfont" data-id="1" data-value="1"></span></div>-->
+    <!--</div>-->
+    <!--<div class="centerBox">-->
+    <!--<img width="100%" id="" src="../image/hold.jpg" onClick="showClothes('1511696')"/>-->
+    <!--</div>-->
+    <!--<div class="rightBox">-->
+    <!--<div class="top">柠檬印花连衣裙柠檬印花连衣裙柠檬印花连衣裙 XL</div>-->
+    <!--<div class="middle">购买价格: ￥1.00</div>-->
+    <!--</div>-->
+
+    <!--</div>-->
+    <!--</section>-->
+    <!--<section class="order_content bg-white">-->
+    <!--<div class="good_list">-->
+    <!--<div class="leftBox flex-1 flex flex-center" tapmode onclick="clickCheckbox(this)" data-id="1" data-value="2">-->
+    <!--<div><span class="checkItem duola-iconfont" data-id="2" data-value="2"></span></div>-->
+    <!--</div>-->
+    <!--<div class="centerBox">-->
+    <!--<img width="100%" id="" src="../image/hold.jpg" onClick="showClothes('1511696')"/>-->
+    <!--</div>-->
+    <!--<div class="rightBox">-->
+    <!--<div class="top">柠檬印花连衣裙 XL</div>-->
+    <!--<div class="middle">购买价格: ￥2.00</div>-->
+    <!--</div>-->
+
+    <!--</div>-->
+    <!--</section>-->
+    <!--<section class="order_content bg-white">-->
+    <!--<div class="good_list">-->
+    <!--<div class="leftBox flex-1 flex flex-center" tapmode onclick="clickCheckbox(this)" data-id="1" data-value="3">-->
+    <!--<div><span class="checkItem duola-iconfont" data-id="3" data-value="3"></span></div>-->
+    <!--</div>-->
+    <!--<div class="centerBox">-->
+    <!--<img width="100%" id="" src="../image/hold.jpg" onClick="showClothes('1511696')"/>-->
+    <!--</div>-->
+    <!--<div class="rightBox">-->
+    <!--<div class="top">柠檬印花连衣裙 XL</div>-->
+    <!--<div class="middle">购买价格: ￥3.00</div>-->
+    <!--</div>-->
+
+    <!--</div>-->
+    <!--</section>-->
+
+</div>
+<div class="totalMoneyBox">
+    <div style="display: none" class="checkAllBox flex-1 flex flex-center" tapmode onclick="checkAll()">
+        <span class="duola-iconfont" id="checkAll"></span><label for="checkAll">全选</label>
+    </div>
+
+</div>
+<!--<div class="rulesBox">-->
+    <!--<p>购买价格的计算规则 ></p>-->
+<!--</div>-->
+<div class="bottomBox">
+    <div class="right">总计<span class="moneyColor">￥<span id="showTotal">0.00</span></span></div>
+    <div class="payBtn" id="payBtn" tapmode onclick="openCameraMask()">立即支付</div>
+</div>
+
+<script id="buy-clothes-template" type="text/x-dot-template">
+    {{ for(var i = 0; i < it.count; i++) { }}
+    <section class="order_content bg-white">
+        <div class="good_list">
+            <div class="centerBox">
+                <img src="../image/hold.jpg" class="{{=CONSTANT.CACHECLASSNAME}}"
+                     title="{{=getImgUrl(colthPath, it.list[i].img, CONSTANT.PICTUREOSS.ORDER)}}"
+                     tapmode onclick="{{=getExecScript('showClothes',[it.list[i].clothes])}}"/>
+            </div>
+            <div class="rightBox">
+                <div class="top">{{=it.list[i].name}} {{=it.list[i].size=='J'?'均码':it.list[i].size}}</div>
+                <div class="middle">购买价格: <span class="buyMoneyColor">￥{{=it.list[i].user_pay?it.list[i].user_pay:0.00}}</span></div>
+            </div>
+            <div class="leftBox flex-1 flex flex-center" tapmode onclick="clickCheckbox(this)">
+                <div><span class="checkItem duola-iconfont" data-orderid="{{=it.list[i]._id}}"
+                           data-value="{{=it.list[i].user_pay?it.list[i].user_pay:0.00}}"></span></div>
+            </div>
+        </div>
+    </section>
+    {{ } }}
+</script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/pingpp.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script>
+    var ISCHECKALL = false;
+    var totalValue = 0;
+    var CLASSNAME = 'icon-Selected';
+    var frameData = null;
+    apiready = function () {
+        var cloudsetContainer = $api.byId('clothesList');
+        frameData = api.pageParam.data;
+        init(CONSTANT.ACTIONINIT);
+//        pullRefresh(loadRefresh);
+        turnPayBtnBg();
+        api.parseTapmode();
+    };
+
+//    test();
+    function test() {
+        var testData={"count":3,"statusCode":200,"msg":"OK","list":[{"lease_time":"2016-11-15 11:02:04.229","_id":"fP7Tituv7dDs7KQcBXmu-0","clothes":"1532769","name":"撞色明线装饰喇叭袖衬衫","img":"1532769-1.jpg","exp_no":"12556567","barcode":["448627"],"memberType":"monthly","itemId":"JBhQ5gPieR2TmeHsT","current_status":"posted","size":"M","goodsSource":null,"user_pay":"81.90"},{"lease_time":"2016-11-15 11:02:04.229","_id":"fP7Tituv7dDs7KQcBXmu-1","clothes":"1533008","name":"黑色撞色包边线衬衫裙","img":"1533008-1.jpg","exp_no":"1255656","barcode":["449378"],"memberType":"monthly","itemId":"bXNQgC8NC7dZLFxcA","current_status":"posted","size":"J","goodsSource":"own","user_pay":"120.75"},{"lease_time":"2016-11-15 11:02:04.229","_id":"fP7Tituv7dDs7KQcBXmu-2","clothes":"1532388","name":"圆环腰带束腰半裙","img":"1532388-1.jpg","exp_no":"100000","barcode":["377853"],"memberType":"monthly","itemId":"CkLMtYJBNQn6MbX49","current_status":"posted","size":"J","goodsSource":null,"user_pay":"84.00"}]};
+        getBuyClothHtml(testData);
+    }
+
+    function loadRefresh() {
+        init(CONSTANT.ACTIONREFRESH);
+    }
+    //下拉刷新
+    function pullRefresh(callback) {
+        api.setRefreshHeaderInfo({
+            visible: true,
+            loadingImg: 'widget://image/refresh.png',
+            bgColor: '#eee',
+            textColor: '#aaa',
+            textDown: '下拉刷新',
+            textUp: '松开刷新',
+            showTime: true
+        }, function (ret, err) {
+            if (ret) {
+                if (isDefine(callback)) {
+                    callback();
+                }
+            }
+        });
+    }
+
+    //初始化数据
+    function init(action) {
+        if (action == CONSTANT.ACTIONINIT) {
+            loadingShow();
+        }
+        var body = {
+            "page": 1,
+            "pageSize": 20
+        };
+        var url = serviceUser + 'orders/ordersPrice';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData(body);
+        var extra = {action: action};
+        _ajaxData(url, 'post', headers, data, initSuccessCallback, initErrorCallback, 0, extra);
+    }
+
+    //数据请求成功
+    function initSuccessCallback(ret, extra) {
+        var action = extra.action;
+        if (action == CONSTANT.ACTIONREFRESH) {
+            pullRefreshDone();
+        } else if (action == CONSTANT.ACTIONLOAD) {
+            isLoadMoreResponsed = true;
+            loadingHide();
+        } else {
+            loadingHide();
+        }
+        if (ret.statusCode == 200) {
+            getBuyClothHtml(ret);
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+
+    //渲染html
+    function getBuyClothHtml(ret) {
+        if(ret.count<=0 && $api.hasCls($api.byId('discrible'),'aui-hide')){
+            $api.removeCls($api.byId('discrible'),'aui-hide');
+        }
+        var html = doTHtml('buy-clothes-template', ret);
+        var cloudsetContainer = $api.byId('clothesList');
+        cloudsetContainer.innerHTML = '';
+        $api.append(cloudsetContainer, html);
+        _imgCacheUrl3(cloudsetContainer);
+        api.parseTapmode();
+    }
+
+    //数据请求失败
+    function initErrorCallback(err, extra) {
+        var action = extra.action;
+        if (action == CONSTANT.ACTIONREFRESH) {
+            pullRefreshDone();
+        } else if (action == CONSTANT.ACTIONLOAD) {
+//            isLoadMoreResponsed = true;
+//            currPage--;
+            loadingHide();
+        } else {
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+
+    //全选
+    function checkAll() {
+        if (!ISCHECKALL) {
+            var checkedEls = $api.domAll($api.byId("clothesList"), ".checkItem");
+            for (var i = 0; i < checkedEls.length; i++) {
+                checkedEls[i].checked = true;
+                if (!$api.hasCls(checkedEls[i], CLASSNAME)) {
+                    $api.addCls(checkedEls[i], CLASSNAME);
+                }
+            }
+            unCheckbox(true);
+        } else {
+            var checkedEls = $api.domAll($api.byId("clothesList"), ".checkItem");
+            for (var i = 0; i < checkedEls.length; i++) {
+                checkedEls[i].checked = false;
+                if ($api.hasCls(checkedEls[i], CLASSNAME)) {
+                    $api.removeCls(checkedEls[i], CLASSNAME);
+                }
+            }
+            unCheckbox();
+        }
+    }
+
+    //判断全选按钮是否已选
+    function unCheckbox(state) {
+        var checkAllEl = $api.byId("checkAll");
+        if (state) {
+            $api.addCls(checkAllEl, CLASSNAME);
+            ISCHECKALL = true;
+        } else {
+            $api.removeCls(checkAllEl, CLASSNAME);
+            ISCHECKALL = false;
+        }
+        countTotal();
+
+    }
+
+    //点击选择
+    function clickCheckbox(el) {
+        var elItem = $api.dom(el, 'span');
+        var borderDivEl = $api.closest(elItem,'div');
+        if ($api.hasCls(elItem, CLASSNAME)) {
+            $api.removeCls(elItem, CLASSNAME);
+            $api.css(borderDivEl,'border:1px solid #ddd');
+        } else {
+            $api.addCls(elItem, CLASSNAME);
+            $api.css(borderDivEl,'border:none');
+        }
+        if (ISCHECKALL && !el.checked) {
+            unCheckbox();
+        } else {
+            countTotal();
+        }
+    }
+
+    //每次点击计算总价
+    function countTotal() {
+        var checkedEl = $api.domAll($api.byId("clothesList"), "." + CLASSNAME);
+        totalValue = 0;
+        for (var i = 0; i < checkedEl.length; i++) {
+            totalValue += parseFloat(checkedEl[i].dataset.value);
+        }
+        totalValue = totalValue.toFixed(2);
+        turnPayBtnBg();
+        $api.html($api.byId('showTotal'), totalValue);
+    }
+
+    //打开支付弹出层
+    function openCameraMask() {
+        if(totalValue>0){
+            var name = 'buyClothes_mask';
+            var page = 'buyClothes_mask.html';
+            var rect = {
+                x: 0,
+                y: 0,
+                w: 'auto',
+                h: 'auto'
+            };
+            var bounces = false;
+            openNewFrame(name, page, bounces, rect);
+        }else{
+            toastMsg('请选择需要购买的衣服');
+        }
+    }
+
+    //异步关闭遮罩层调用
+    function execCloseCameraMask(frameName, index) {
+        index = parseInt(index);
+        if (!isNaN(index)) {
+            if (index == 1) {
+//                支付宝支付方法
+                pay('alipay');
+            } else if (index == 2) {
+//                微信支付方法
+                pay('wx');
+            }
+        }
+        api.closeFrame({
+            name: frameName
+        });
+    }
+
+    //提交支付
+    function pay(type) {
+        api.showProgress({
+            style: 'default',
+            animationType: 'fade',
+            title: '正在支付···',
+            text: '请稍候'
+        });
+        var count = $api.getStorage('count');
+        var orderIdArr=[];
+        var checkedEl = $api.domAll($api.byId("clothesList"), "." + CLASSNAME);
+        for (var i = 0; i < checkedEl.length; i++) {
+            orderIdArr.push(checkedEl[i].dataset.orderid);
+        }
+        var body = {
+            "bags": Number(count),
+            "coupons": [],
+            "duration": 0,
+            "channel": type,
+            "amountFront": Number(totalValue),
+            "extraFee": 0,
+            "orderIds": orderIdArr
+        };
+        sendMathEventUmeng(CONSTANT.UMENGEVENT.BUY,{
+            "bags":count,
+            "channel":type,
+            "clothes":orderIdArr.length
+        },parseInt(totalValue));
+        var url = serviceUser + 'service/pay/start/buyClothes';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData(body);
+        var extra = null;
+        _ajaxData(url, 'post', headers, data, paySuccessCallback, payErrorCallback, 0, extra);
+    }
+
+    function paySuccessCallback(ret,extra){
+        _loadingHide();
+        if(ret.statusCode=='200'){
+            var buyCloth='buyCloth';
+            ping(ret.charge,buyCloth);
+        }else if(ret.statusCode=='10104'){
+            toLogin();
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+
+    function payErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+
+//    支付完成后调用check_pay接口验证
+    function check(){
+        var url = serviceUser+'service/check/payment';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,checkSuccessCallback,checkErrorCallback,0,extra);
+    }
+    function checkSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function checkErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+
+    //改变支付按钮颜色
+    function turnPayBtnBg(){
+        var payBtnEl=$api.byId('payBtn');
+        if(totalValue>0){
+            if($api.hasCls(payBtnEl,'turnPayBtnBg')){
+                $api.removeCls(payBtnEl,'turnPayBtnBg');
+            }
+        }else{
+            if(!$api.hasCls(payBtnEl,'turnPayBtnBg')){
+                $api.addCls(payBtnEl,'turnPayBtnBg');
+            }
+        }
+    }
+
+    //支付成功跳转到支付结果页面
+    function oppenSuccessPage(){
+        var name = 'buyClothesSuccess';
+        var title = '支付结果';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftText = '';
+        var leftExtra = '';
+        var leftCallback = 'execCloseSlefWin';
+        var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+//        var leftNav = setNavData(leftIcon);
+        var border = true;
+        var bounces = false;
+        var params = {};
+        params.nav= setNav(leftNav,border);
+        params.frame=setFrame(bounces,null,null,null,null,'false');
+        var from = {
+            winName:api.winName,
+            frameName:api.frameName
+        };
+        var url = 'header_new.html';
+        var animation = {
+            type:"fade",                //动画类型（详见动画类型常量）
+            duration:300                //动画过渡时间，默认300毫秒
+        };
+        var page = 'buyClothes_success.html';
+        openNewWinFrame(name,title,params,from,url,animation,page);
+    }
+
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra,winName,value){
+        console.log(getLogStr([extra,winName,value]));
+        api.closeToWin({
+            name: 'root'
+        });
+        //异步刷新我的衣橱
+        api.execScript({
+            name:"footer_tab_3",
+            frameName:"closet_frame",
+            script: "newInit();"
+        });
+    }
+
+
+    //公用头部导航栏右侧点击异步执行的方法
+    function execNavRightCallback(value) {
+        var from = frameData.from;
+        var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+        if (!isDefine(callback)) {
+            return;
+        }
+        var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+        var params = {
+            script: getExecScript(callback, new Array(extra, api.winName, value))
+        };
+        if (isDefine(from.winName)) {
+            params.name = from.winName;
+        }
+        if (isDefine(from.frameName)) {
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+
+    //公用头部导航栏坐侧点击异步执行的方法
+    function execNavLeftCallback(value) {
+        var from = frameData.from;
+        var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+        if (!isDefine(callback)) {
+            return;
+        }
+        var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+        var params = {
+            script: getExecScript(callback, new Array(extra, api.winName, value))
+        };
+        if (isDefine(from.winName)) {
+            params.name = from.winName;
+        }
+        if (isDefine(from.frameName)) {
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+
+</script>
+</body>
+</html>

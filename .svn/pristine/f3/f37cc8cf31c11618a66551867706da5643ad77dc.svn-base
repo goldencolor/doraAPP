@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	.aui-input-row .my-aui-input-st {
+		    font-size: 14px;
+		    font-weight: 400;
+		    line-height: 1;
+		    color: #666;
+		    text-align: center;
+		    display: table-cell;
+		    width: 1%;
+		    white-space: nowrap;
+		    vertical-align: middle;
+		    padding: 5px;padding-left: 15px;
+		}
+		.my-content-margin{
+    		margin: 0px 10px 0px 10px;
+    	}
+    	.my-aui-btn-block{
+    		background-color:#FF6100;
+    		color: #fff;
+    		font-size: 14px;
+    		padding:10px 0px 10px 0px;
+    	}
+		.aui-input-row .my-aui-border {
+		    font-size: 14px;
+		    margin: 0;
+		    display: table-cell;
+		    position: relative;
+		    float: left;
+		    width: 100%;
+		    border:0.5px solid #c8c7cc; 
+		    border-radius:3px;
+		    color:#777;
+		}
+
+		.aui-grid-nine li:after {
+			display: block;
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			-webkit-transform-origin: 0 0;
+			-webkit-transform: scale(1);
+			border-left: 0px solid #c8c7cc;
+			border-bottom:0.5px solid #c8c7cc;
+		}
+		
+		.aui-grid-nine .my-border-bott:after {
+			display: block;
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			-webkit-transform-origin: 0 0;
+			-webkit-transform: scale(1);
+			border-left: 0px solid #c8c7cc;
+			border-bottom:0px solid #c8c7cc;
+		}
+		
+		.aui-input-row:last-child:after {
+			border-bottom: 0px solid #c8c7cc;
+		}
+		.aui-grid-nine:after {
+			display: block;
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			-webkit-transform-origin: 0 0;
+			-webkit-transform: scale(1);
+			pointer-events: none;
+			border-top: 0px solid #c8c7cc;
+			border-right: 0px solid #c8c7cc;
+		}
+		.aui-grid-nine li {
+			float: left;
+			position: relative;
+			padding: 10px 5px;
+		}
+		.my-content{
+			margin-top: 15px;
+		}
+		input{
+			padding: 10px 10px !important;
+		}
+    </style>
+</head>
+<body>
+	<div class="aui-content aui-card my-content">
+	    <ul class="aui-grid-nine">
+	        <li class="aui-col-xs-6 aui-input-row aui-text-center">
+	            <span class="aui-input-addon">身高：</span>
+	            <input type="number" id="height" name="dome"class="aui-input my-aui-border">
+	            <span class="aui-input-addon my-aui-input-st">CM</span>
+	        </li>
+	        <li class="aui-col-xs-6 aui-input-row aui-text-center">
+	            <span class="aui-input-addon">体重：</span>
+	            <input type="number" id="weight" name="dome" class="aui-input my-aui-border">
+	            <span class="aui-input-addon my-aui-input-st">Kg</span>
+	        </li>
+	        <li class="aui-col-xs-6 aui-input-row aui-text-center">
+	            <span class="aui-input-addon">胸围：</span>
+	            <input type="number" id="bust" name="dome" class="aui-input my-aui-border">
+	            <span class="aui-input-addon my-aui-input-st">CM</span>
+	        </li>
+	        <li class="aui-col-xs-6 aui-input-row aui-text-center">
+	            <span class="aui-input-addon">腰围：</span>
+	            <input type="number" id="waistline" name="dome" class="aui-input my-aui-border">
+	            <span class="aui-input-addon my-aui-input-st">CM</span>
+	        </li>
+	        <li class="aui-col-xs-6 aui-input-row aui-text-center">
+	            <span class="aui-input-addon">臀围：</span>
+	            <input type="number" id="hip" name="dome" class="aui-input my-aui-border">
+	            <span class="aui-input-addon my-aui-input-st">CM</span>
+	        </li>
+	        <li class="aui-col-xs-6 aui-input-row aui-text-center">
+	            <span class="aui-input-addon">尺码：</span>
+	            <select class="aui-input my-aui-border" id="size" name="dome1">
+	              <option value ="S">S</option>
+				  <option value ="XS">XS</option>
+				  <option value="M">M</option>
+				  <option value="L">L</option>
+				  <option value="XL">XL</option>
+				  <option value="均码">均码</option>
+	            </select>
+	            <span class="aui-input-addon my-aui-input-st">码</span>
+	        </li>
+	        <li class="aui-col-xs-6 aui-input-row aui-text-center my-border-bott">
+	            <span class="aui-input-addon">上装：</span>
+	            <select class="aui-input my-aui-border" id="topSize" name="dome2">
+	          	<option value ="S">S</option>
+				  <option value ="XS">XS</option>
+				  <option value="M">M</option>
+				  <option value="L">L</option>
+				  <option value="XL">XL</option>
+				  <option value="均码">均码</option>
+	            </select>
+	            <span class="aui-input-addon my-aui-input-st">码</span>
+	        </li>
+	        <li class="aui-col-xs-6 aui-input-row aui-text-center my-border-bott">
+	            <span class="aui-input-addon">下装：</span>
+	            <select class="aui-input my-aui-border" id="downSize" name="dome3">
+	              <option value ="S">S</option>
+				  <option value ="XS">XS</option>
+				  <option value="M">M</option>
+				  <option value="L">L</option>
+				  <option value="XL">XL</option>
+				  <option value="均码">均码</option>
+	            </select>
+	            <span class="aui-input-addon my-aui-input-st">码</span>
+	        </li>
+	    </ul>
+	</div>
+    <div class="aui-content my-content-margin" onclick="submit();">
+    	<div class="aui-btn aui-btn-block my-aui-btn-block">确认</div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+ 	var token;
+ 	var sizeArray =[]; 
+ 	var ClothArray =[]; 
+ 	var is_err =1;
+	apiready = function(){
+		token = $api.getStorage('token');
+		sizeArray=['S','XS','M','L','XL','均码'];
+		ClothArray =['size','topSize','downSize'];
+		init();
+		
+	};
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function initSuccessCallback(ret,extra) {
+		_loadingHide();
+		if(ret.StatusCode='200'){
+			if(ret.stature.height!=undefined||ret.stature.height!='undefined'){
+				_setInputVal('height',ret.stature.height);
+			}
+			if(ret.stature.weight!=undefined||ret.stature.weight!='undefined'){
+				_setInputVal('weight',ret.stature.weight);
+			}
+			if(ret.stature.bust!=undefined||ret.stature.bust!='undefined'){
+				_setInputVal('bust',ret.stature.bust);
+			}
+			if(ret.stature.waistline!=undefined||ret.stature.waistline!='undefined'){
+				_setInputVal('waistline',ret.stature.waistline);
+			}
+			if(ret.stature.hip!=undefined||ret.stature.hip!='undefined'){
+				_setInputVal('hip',ret.stature.hip);
+			}
+			for(var j = 0;ClothArray.length>j;j++){
+				var html ='';
+				$api.html($api.byId(ClothArray[j]), html);
+				for(var i=0;sizeArray.length>i;i++){
+					if(ret.stature[ClothArray[j]]==sizeArray[i]){
+						html+='<option selected value ="'+sizeArray[i]+'">'+sizeArray[i]+'</option>';
+					}else{
+						html+='<option value ="'+sizeArray[i]+'">'+sizeArray[i]+'</option>';
+					}
+				}
+				$api.prepend($api.byId(ClothArray[j]), html);
+			}
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function init(){
+			
+		_loadingShow();
+		var url = serviceUser + 'info/stature';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+	function submitErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+	function submitSuccessCallback(ret,extra) {
+		var text = ret.msg;
+		if(text == 'ok'){
+			text = '保存成功';
+		}
+		toastMsg(text);
+		if(ret.StatusCode='200'){
+			init();
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}
+	}
+	function submit(){
+		var height 	  =$api.val($api.byId('height'));
+		var weight    =$api.val($api.byId('weight'));
+		var bust      =$api.val($api.byId('bust'));
+		var waistline =$api.val($api.byId('waistline'));
+		var hip       =$api.val($api.byId('hip'));
+		var size      =$api.val($api.byId('size'));
+		var topSize   =$api.val($api.byId('topSize'));
+		var downSize  =$api.val($api.byId('downSize'));
+
+		var url = serviceUser + 'info/stature/update';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			height:Number(height),
+			weight:Number(weight),
+			bust:Number(bust),
+			waistline:Number(waistline),
+			hip:Number(hip),
+			size:String(size),
+			topSize:String(topSize),
+			downSize:String(downSize)
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,submitSuccessCallback,submitErrorCallback,0,extra);
+	}
+</script>
+</html>

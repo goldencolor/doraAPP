@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>主题</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+		#theme-text{
+			padding: 1rem 0.45rem;
+			text-indent:2em;
+			font-family: SourceHanSansCN-Light;
+			font-size: 0.6rem;
+			color: #878686;
+			letter-spacing: 0px;
+			line-height: 1rem;
+		}
+	</style>
+</head>
+<body>
+<div class="theme-desc">
+	<img src="../image/hold.jpg" width="100%" id="theme-img"/>
+	<!--<p><b id="theme-title">系列图标题</b></p>-->
+	<p id="theme-text">
+		<!--我们都是坏孩子我们都是坏孩子我们都是坏孩子我们都是坏孩子我们都是坏孩子我们都是坏孩子我们都是坏孩子我们都是坏孩子我们都是坏孩子我们都是坏孩子我们都是坏孩子我们都是坏孩子-->
+	</p>
+</div>
+<div class="aui-grid">
+	<div id="cloudset-container" class="waterfall aui-row">
+
+		<!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+			<!--<div class="header">-->
+				<!--<img src="" alt=""/>-->
+				<!--<div class="label flex flex-space-between">-->
+					<!--<div class="new">new</div>-->
+					<!--<div class="unavailable">抢光了</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="footer flex flex-space-between flex-vertical-center">-->
+				<!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩</div>-->
+				<!--<div class="number"><span class="iconfont icon-love"></span>136</div>-->
+			<!--</div>-->
+		<!--</div>-->
+		<!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+			<!--<div class="header">-->
+				<!--<img src="" alt=""/>-->
+				<!--<div class="label flex flex-space-between">-->
+					<!--<div class="new">new</div>-->
+					<!--<div class="unavailable">抢光了</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="footer flex flex-space-between flex-vertical-center">-->
+				<!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫</div>-->
+				<!--<div class="number"><span class="iconfont icon-love"></span>136</div>-->
+			<!--</div>-->
+		<!--</div>-->
+
+	</div>
+</div>
+<div id="loading" class="aui-text-center" style="font-size: 12px; color: #999999;">
+	<img src="../icon/loading.gif" width="16" />
+	<div>更多数据加载中</div>
+</div>
+<script id="cloudset-container-template" type="text/x-dot-template">
+	{{ for(var i = 0; i < it.count; i++) { }}
+		<div class="item aui-col-xs-6" tapmode onclick="{{='showClothes(\''+ (it.list[i] && it.list[i]._id ? it.list[i]._id : 0) +'\')'}}">
+			<div class="header">
+				<img class="{{='cloudset-img-'+it.list[i]._id}}" src="../image/hold.jpg" alt="多啦衣梦" />
+			</div>
+			<div class="footer flex flex-space-between flex-vertical-center">
+				<div class="name flex-1 aui-ellipsis-1">{{=(it.list[i] && it.list[i].title) ? it.list[i].title : '多啦衣梦'}}</div>
+				<div class="number">
+					<span class="duola-iconfont icon-love"></span>{{=(it.list[i] && it.list[i].like) ? it.list[i].like : 0}}
+				</div>
+			</div>
+		</div>
+	{{ } }}
+
+</script>
+</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/url.js"></script>
+	<script type="text/javascript" src="../script/doT_min.js"></script>
+	<script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var frameData = null;
+	var id;
+	var currPage = 1;
+	var totalPage = 1;
+	//加载更多时候，服务器是否返回，以免用户多次触发
+	var isLoadMoreResponsed = true;
+	apiready = function(){
+		frameData = api.pageParam.data;
+		id = isDefine(frameData.id) ? frameData.id : 0;
+		init(CONSTANT.ACTIONINIT);
+		api.parseTapmode();
+		loadMore();
+	};
+//	testThemeHtml()
+	function testThemeHtml(){
+		var ret = {"img":"theme-party.jpg","statusCode":200,"text":"<p>一天忙于工作与学习的我们，是时候与闺蜜来一场美美的聚会啦，吃吃吃喝喝喝买买买，狠狠犒劳自己。常排队的那家火锅，诱人的现烤甜点，新上映的电影，再去听流浪歌手喝杯鸡尾酒。和姐妹们互诉心事，谈谈烦恼，说说理想。好的适度的休息能够带来之后更好的状态，本期小编就为大家准备了party专辑，祝享受一个美好的聚会时光~</p>","title":"<p>一天忙于工作与学习的我们，是时候与闺蜜来一场美美的聚会啦，吃吃吃喝喝喝买买买，狠狠犒劳自己。常排队的那家火锅，诱人的现烤甜点，新上映的电影，再去听流浪歌手喝杯鸡尾酒。和姐妹们互诉心事，谈谈烦恼，说说理想。好的适度的休息能够带来之后更好的状态，本期小编就为大家准备了party专辑，祝享受一个美好的聚会时光~</p>","clothes":{"count":20,"pageTotal":3,"page":1,"list":[{"like":1040,"_id":"1512756","img":"1512756-1.jpg","title":" 粉白条纹收腰显瘦无袖连衣裙"},{"like":848,"_id":"1513706","img":"1513706-1.jpg","title":"欧根纱翻领印花连衣裙"},{"like":650,"_id":"1515114","img":"1515114-1.jpg","title":"蝴蝶结短袖收腰连衣裙"},{"like":818,"_id":"1516196","img":"1516196-1.jpg","title":"高腰雪纺半身裙"},{"like":683,"_id":"1517587","img":"1517587-1.jpg","title":"一字领露肩蕾丝欧根纱绣花A字连衣裙"},{"like":36,"_id":"1517955","img":"1517955-1.jpg","title":"黑底不规则条纹蛋糕半裙"},{"like":550,"_id":"1518003","img":"1518003-1.jpg","title":"v领印花收腰连衣裙"},{"like":40,"_id":"1524325","img":"1524325-1.jpg","title":"蓝花鱼尾半裙"},{"like":251,"_id":"1524734","img":"1524734-1.jpg","title":"针织弹力连衣裙"},{"like":97,"_id":"1526773","img":"1526773-1.jpg","title":"复古迷彩娃娃领公主裙"},{"like":82,"_id":"1526778","img":"1526778-1.jpg","title":"小清新大摆印花连衣裙"},{"like":278,"_id":"1528030","img":"1528030-1.jpg","title":"腰部抽绳连衣裙"},{"like":192,"_id":"1528111","img":"1528111-1.jpg","title":"学院风印花短袖 连衣裙"},{"like":153,"_id":"1528123","img":"1528123-1.jpg","title":"双层修身无袖真丝 连衣裙"},{"like":189,"_id":"1528159","img":"1528159-1.jpg","title":"印花A字连衣裙"},{"like":432,"_id":"1528269","img":"1528269-1.jpg","title":"复古花边大摆吊后 绑带连衣裙"},{"like":41,"_id":"1528868","img":"1528868-1.jpg","title":"休闲印花领口绑绳上衣"},{"like":69,"_id":"1528870","img":"1528870-1.jpg","title":"领口绑绳休闲运动上衣"},{"like":43,"_id":"1530432","img":"1530432-1.jpg","title":"领口斜条收腰蝙蝠衫"},{"like":80,"_id":"1532153","img":"1532153-1.jpg","title":"刺绣背心裙"}]},"msg":"OK"};
+		var imgThemes = imgPath + ret.img + ContentThemesStyle;
+		$api.attr($api.byId('theme-img'), 'src', imgThemes);
+		getClothHtml(ret.clothes);
+	}
+	function loadMore(){
+		api.addEventListener({
+			name:'scrolltobottom',
+			extra:{threshold:0}
+		}, function(ret, err){
+			if(isLoadMoreResponsed && currPage < totalPage){
+				currPage++;
+				isLoadMoreResponsed = false;
+				init(CONSTANT.ACTIONLOAD);
+			}
+		});
+	}
+
+	function initSuccessCallback(ret,extra) {
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else if(action == CONSTANT.ACTIONLOAD){
+			isLoadMoreResponsed = true;
+			loadingHide();
+		}else{
+			loadingHide();
+		}
+		if(ret.statusCode==200 && ret.clothes){
+			currPage = ret.clothes.page;
+			totalPage = ret.clothes.pageTotal;
+			if(currPage == 1){
+				//第一次加载
+				var img = ret.img;
+				var text = isDefine(ret.text) ? ret.text : '';
+				_setHtmlVal('theme-text',text);
+				if(isDefine(img)){
+					var imgThemes = imgPath + img + ContentThemesStyle;
+					_imgCacheUrl(imgThemes,'theme-img','../image/hold.jpg');
+				}
+			}
+			getClothHtml(ret.clothes);
+		}else{
+			toastMsg(ret.msg);
+		}
+		if(currPage >= totalPage){
+			$api.html($api.byId('loading'),'没有更多了');
+		}
+	}
+	function initErrorCallback(err,extra){
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else if(action == CONSTANT.ACTIONLOAD){
+			isLoadMoreResponsed = true;
+			currPage--;
+			loadingHide();
+		}else{
+			loadingHide();
+		}
+		toastMsg(err.msg);
+	}
+	function init(action){
+		if(action == CONSTANT.ACTIONINIT){
+			loadingShow();
+		}
+		var url = serviceNew + 'themes/newdetail/'+id;
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData({
+			page: currPage,
+			pageSize: CONSTANT.PAGESIZE
+		});
+		var extra = {action:action};
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+	function getClothHtml(cloudset){
+		var html = doTHtml('cloudset-container-template',cloudset);
+		var cloudsetContainer = $api.byId('cloudset-container');
+		if(currPage == 1){
+			//首次加载或者刷新
+			//图片也刷新了，闪屏，有待于提升性能
+			cloudsetContainer.innerHTML = '';
+		}
+		$api.append(cloudsetContainer, html);
+		api.parseTapmode();
+		for(var i=0; i<cloudset.count; i++){
+			var url = getImgUrl(colthPath, cloudset.list[i].img,colthPathStyle);
+			_imgCacheUrl2(url, '.cloudset-img-'+cloudset.list[i]._id);
+		}
+	}
+
+	function showThemesList(){
+		if(api.winName=='contented'){
+			api.closeToWin({
+	            name: 'themesListed'
+            });
+		}else{
+			api.openWin({
+		        name: 'themesListed',
+		        url: 'win.html',
+		        pageParam:{
+		        	 bounces:true,
+		        	title:"主题列表",
+		        	page:"themesList",
+		        	name:"themesListed"
+		        }
+	        });
+		}
+	}
+
+	//公用头部导航栏坐侧点击异步执行的方法
+	function execNavLeftCallback(value){
+		var from = frameData.from;
+		var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+
+	//公用头部导航栏右侧点击异步执行的方法
+	function execNavRightCallback(value){
+		var from = frameData.from;
+		var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+	</script>
+</html>

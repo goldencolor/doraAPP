@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>二级标签搜索页面</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+
+    <style>
+        #level1-container{
+            height: 2.5rem;
+            font-family: SourceHanSansCN-Light;
+            font-size: 0.85rem;
+            color: #454545;
+        }
+        /*图标*/
+        #level1-container span{
+            font-size: 0.6rem;
+            display: inline-block;
+            margin-left: 0.4rem;
+        }
+        #level_category,#level_size,#level_choose{
+            height: 100%;
+        }
+        #level2_value,#size_value{
+            font-weight: normal;
+        }
+
+        /*向上向下图标过大*/
+        #level1-container span.icon-lower,#level1-container span.icon-upper{
+            font-size: 0.4rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-container">
+        <header id="header" class="duola-header flex">
+            <a id="nav-left" class="duola-icon-area" tapmode onclick="navLeftHandler()">
+                <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
+            </a>
+            <div id="nav-title" class="nav-title flex-1"></div>
+            <a id="nav-right" class="duola-icon-area" tapmode onclick="navRightHandler()">
+                <span id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon"></span>
+            </a>
+        </header>
+
+        <!--一级标签二级标签-->
+        <div class="flex" id="level1-container" style="border-bottom: 1px solid #F1F1F1">
+            <div id="level_category" class="level1 flex-1 flex flex-center" tapmode onclick="levelHandler(this,0)">
+                <b id="level2_value"></b><span class="duola-iconfont icon-lower"></span>
+            </div>
+            <div id="level_size" class="level1 flex-1 flex flex-center" tapmode onclick="levelHandler(this,1)">
+                <b id="size_value">尺码</b><span class="duola-iconfont icon-lower"></span>
+            </div>
+            <div id="level_choose" class="level1 flex-1 flex flex-center" tapmode onclick="levelHandler(this,2)">
+                筛选<span class="duola-iconfont icon-shaixuan"></span>
+            </div>
+        </div>
+    </div>
+
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/umeng_sdk.js"></script>
+	<script type="text/javascript">
+
+    var headerHeight = null;
+    var level1 = null;
+    var level2 = null;
+    var level2Value = null;
+    var level1Value = null;
+    var levels = null;
+    var size = null;
+    var filters = null;
+    var keywords = null;
+    var isSearch = false;//从搜索页面进入
+    var umengPage = null;
+
+//    	getNavLeft({"icon":"duola-iconfont icon-left","text":"我","callback":function(){alert(1)},"extra":""});
+//    	getNavRight({"icon":"duola-iconfont icon-right","text":"我","callback":"","extra":""});
+//    	getNavBorder(true);
+//    	getTitle('标题标');
+
+    apiready = function(){
+        //更换header
+        var header = $api.byId('header-container');
+        $api.fixStatusBar(header);
+        //读缓存
+        levels = $api.getStorage('levels');
+
+        var page = api.pageParam.page;//页面url
+        var name = api.pageParam.name;//页面名称
+        var title = api.pageParam.title;//页面标题
+        var from = api.pageParam.from;//来源于那个页面
+        var data = api.pageParam.data;//页面数据object
+        umengPage = api.pageParam.umengPage;//友盟页面ID
+
+        //获取frame
+        var frame = data.frame ? data.frame : {};
+        var bounces = frame.bounces ? frame.bounces : false; //页面弹动
+        var frameData = frame.data ? frame.data : {}; //frame 页面参数
+
+        //给全局变量赋值
+        level1 = frameData.level1;
+        level2 = frameData.level2;
+        level2Value = frameData.level2Value;
+        level1Value = frameData.level1Value;
+        keywords = frameData.keywords;
+
+        //获取nav
+        var nav = data.nav ? data.nav : {};
+        var leftNav = nav.leftNav ? nav.leftNav : {};//导航栏左侧
+        var rightNav = nav.rightNav ? nav.rightNav : {};//导航栏右侧
+        var border = nav.border ? nav.border : false;//导航栏底部边框
+
+        frameData.from = from;
+        frameData.leftNavCallback = leftNav.callback ? leftNav.callback : '';
+        frameData.leftNavExtra = leftNav.extra ? leftNav.extra : '';
+        frameData.rightNavCallback = rightNav.callback ? rightNav.callback : '';
+        frameData.rightNavExtra = rightNav.extra ? rightNav.extra : '';
+        onPageUmeng(umengPage);
+        getTitle(title);
+        getNavLeft(leftNav);
+        getNavRight(rightNav);
+        getNavBorder(border);
+
+        //dom设置分类名字
+
+        if(from.winName == 'winSearch_newWin'){
+            //从搜索页面进入二级分类结果页面
+            isSearch = true;
+            _setHtmlVal('level2_value','分类');
+        }else{
+            _setHtmlVal('level2_value',level2Value);
+        }
+
+        api.parseTapmode();
+        headerHeight = $api.offset(header).h;
+        var rect = {
+            x:0,
+            y:headerHeight,
+            w:'auto',
+            h:'auto'
+        };
+        openNewFrame(name,page,bounces,rect,frameData);
+	};
+
+    function navLeftHandler(){
+        if(isDefine(api.pageParam.name)){
+            var callback = getExecScript('execNavLeftCallback',[{level1:level1,level2:level2}]);
+            var params = {
+                frameName : api.pageParam.name,
+                script: callback
+            };
+            api.execScript(params);
+            onPageEndUmeng(umengPage);
+        }else{
+            toastMsg('未找到对应的frame 的 execNavLeftCallback()');
+        }
+    }
+
+    function navRightHandler(){
+        if(isDefine(api.pageParam.name)){
+            var callback = 'execNavRightCallback()';
+            var params = {
+                frameName : api.pageParam.name,
+                script: callback
+            };
+            api.execScript(params);
+        }else{
+            toastMsg('未找到对应的frame 的 execNavRightCallback()');
+        }
+    }
+
+    //    点击标签
+    function levelHandler(el,index){
+        //找到hit-color的一级标签，移除hit-color
+        //给当前的一级标签，添加hit-color
+        var hitLevel1 = $api.dom($api.byId('level1-container'),'.level1.hit-color');
+
+        if(hitLevel1){
+            $api.removeCls(hitLevel1, 'hit-color');
+            if(hitLevel1.id != 'level_choose'){
+                var spanIcon = $api.dom(hitLevel1,'span');
+                if(spanIcon){
+                    $api.addCls(spanIcon,'icon-lower');
+                    $api.removeCls(spanIcon,'icon-upper');
+                }
+            }
+        }
+        if(el != hitLevel1){
+            $api.addCls(el, 'hit-color');
+            //点击非筛选图标变为up
+            if(el.id != 'level_choose'){
+                var spanIcon = $api.dom(el,'span');
+                if(spanIcon){
+                    $api.removeCls(spanIcon,'icon-lower');
+                    $api.addCls(spanIcon,'icon-upper');
+                }
+            }
+
+            if(index == 0){
+                if(isSearch){
+                    openLevel2Mask();
+                    closeMask('size_mask');
+                }else if(!isNaN(parseInt(level1)) && levels[level1].count > 0){
+                    openLevel2Mask();
+                    closeMask('size_mask');
+                }
+            }else if(index == 1){
+                openSizeMask();
+                closeMask('searchLevel_mask');
+            }else if(index == 2){
+                goChooseWin();
+                closeMask('size_mask');
+                closeMask('searchLevel_mask');
+            }
+        }else{
+            if(index == 0){
+                closeMask('searchLevel_mask');
+            }else if(index == 1){
+                closeMask('size_mask');
+            }
+        }
+    }
+
+    //在二级标签遮罩层调用
+    function execCloseLevelMask(frameName,level2Index,isSearchValue){
+        var hitLevel1 = $api.dom($api.byId('level1-container'),'.level1.hit-color');
+        if(hitLevel1){
+            $api.removeCls(hitLevel1, 'hit-color');
+            if(hitLevel1.id != 'level_choose'){
+                var spanIcon = $api.dom(hitLevel1,'span');
+                if(spanIcon){
+                    $api.addCls(spanIcon,'icon-lower');
+                    $api.removeCls(spanIcon,'icon-upper');
+                }
+            }
+        }
+        level2Index = parseInt(level2Index);
+        if(isTrue(isSearchValue)){
+            if(!isNaN(level2Index)){
+                var level1IndexValue = levels[level2Index] ? levels[level2Index].value : '';
+                level1 = level2Index;
+                level1Value = level1IndexValue;
+                _setHtmlVal('level2_value',level1IndexValue);
+                sendEventUmeng(CONSTANT.UMENGEVENT.LEVEL1,{
+                    index:level1,
+                    value:level1Value
+                });
+                execSerchLevelData();
+            }
+        }else{
+            if(!isNaN(level2Index)){
+                var level2IndexValue = levels[level1] ? levels[level1].list[level2Index] ? levels[level1].list[level2Index].value : '' : '';
+                level2 = level2Index;
+                level2Value = level2IndexValue;
+                _setHtmlVal('level2_value',level2IndexValue);
+                sendEventUmeng(CONSTANT.UMENGEVENT.LEVEL2,{
+                    level1:level1,
+                    level1Value:level1Value,
+                    index2:level2,
+                    level2Value:level2Value
+                });
+                execSerchLevelData();
+            }
+        }
+        closeMask(frameName);
+    }
+
+    //在尺寸遮罩层调用
+    function execCloseSizeMask(frameName,sizeIndex){
+        var hitLevel1 = $api.dom($api.byId('level1-container'),'.level1.hit-color');
+        if(hitLevel1){
+            $api.removeCls(hitLevel1, 'hit-color');
+            if(hitLevel1.id != 'level_choose'){
+                var spanIcon = $api.dom(hitLevel1,'span');
+                if(spanIcon){
+                    $api.addCls(spanIcon,'icon-lower');
+                    $api.removeCls(spanIcon,'icon-upper');
+                }
+            }
+        }
+        sizeIndex = parseInt(sizeIndex);
+        if(!isNaN(sizeIndex) && sizeIndex < CONSTANT.SIZES.length){
+            size = sizeIndex;
+            execSerchLevelData();
+        }
+        closeMask(frameName);
+    }
+
+        function closeMask(frameName){
+            api.closeFrame({
+                name:frameName
+            });
+        }
+        function openLevel2Mask(){
+            if(headerHeight){
+                var name = 'searchLevel_mask';
+                var page = 'searchLevel_mask.html';
+                var data = {
+                    level1 : level1,
+                    level1Value : level1Value,
+                    level2 : level2,
+                    level2Value : level2Value,
+                    isSearch: isSearch
+                };
+                var rect ={
+                    x: 0,
+                    y: headerHeight,
+                    w: 'auto',
+                    h: 'auto'
+                };
+                var bounces = false;
+                openNewFrame(name,page,bounces,rect,data);
+            }
+        }
+        function openSizeMask(){
+            if(headerHeight){
+                var name = 'size_mask';
+//                var page = 'maskSize.html';
+                var page = 'size_mask.html';
+                var rect ={
+                    x: 0,
+                    y: headerHeight,
+                    w: 'auto',
+                    h: 'auto'
+                };
+                var data = {size : size};
+                var bounces = false;
+                openNewFrame(name,page,bounces,rect,data);
+            }
+        }
+        //打开筛选页面
+        function goChooseWin(){
+            var name = 'winFilter_new';
+            var title = '筛选';
+            var leftIcon = 'duola-iconfont icon-left';
+            var leftText = '';
+            var leftExtra = '';
+            var leftCallback = 'execCloseChoose';
+            var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+            var border = true;
+            var bounces = false;
+            var params = {};
+            params.nav= setNav(leftNav,border);
+            params.frame=setFrame(bounces,{
+                level1:level1,
+                level1Value:level1Value,
+                level2:level2,
+                level2Value:level2Value,
+                size:size,
+                isSearch:isSearch,
+                filters:filters
+            });
+            var from = {
+                winName:api.winName,
+                frameName:api.frameName
+            };
+            var url = 'header_new.html';
+            var animation = '';
+            var page = 'winFilter_new.html';
+            var umengPage = CONSTANT.PAGE.FILTER;
+            openNewWinFrame(name,title,params,from,url,animation,page,umengPage);
+        }
+
+        //在筛选页面调用
+        function execCloseChoose(extra,winName,filtersValue){
+            var hitLevel1 = $api.dom($api.byId('level1-container'),'.level1.hit-color');
+            if(hitLevel1){
+                $api.removeCls(hitLevel1, 'hit-color');
+            }
+            api.closeWin({
+                name:winName
+            });
+            if(isDefine(filtersValue) && typeof filtersValue == 'string'){
+                filters = JSON.parse(filtersValue);
+                if(filters.size && CONSTANT.SIZES.indexOf(filters.size) != -1){
+                    size = CONSTANT.SIZES.indexOf(filters.size);
+                }else{
+                    size = null;
+                }
+                if(isTrue(isSearch)){
+                    var level1Array = levels.map(function(item){return item.value;});
+                    if(filters.value && level1Array.indexOf(filters.value) != -1){
+                        level1 = level1Array.indexOf(filters.value);
+                        level1Value = filters.value;
+                        _setHtmlVal('level2_value',level1Value);
+                    }else{
+                        level1 = null;
+                        level1Value = null;
+                        _setHtmlVal('level2_value','分类');
+                    }
+                }else{
+                    var level2Array = levels[level1].list.map(function(item){return item.value;});
+                    if(filters.label && levels[level1] && level2Array.indexOf(filters.label) != -1){
+                        level2 = level2Array.indexOf(filters.label);
+                        level2Value = filters.label;
+                        _setHtmlVal('level2_value',level2Value);
+                    }else{
+                        level2 = null;
+                        level2Value = null;
+                        _setHtmlVal('level2_value','所有');
+                    }
+                }
+                execSerchLevelData();
+            }
+        }
+
+        function execSerchLevelData(){
+            //同步查询条件
+            var filtersStr = typeof filters == 'object' ? JSON.stringify(filters) : filters;
+            var frameName = api.pageParam.name;
+            var sizeValueEl = $api.byId('size_value');
+            if(size == null){
+                if(sizeValueEl){
+                    $api.html(sizeValueEl,'尺码');
+                }
+            }else if(!isNaN(parseInt(size)) && CONSTANT.SIZES[parseInt(size)]){
+                if(sizeValueEl){
+                    $api.html(sizeValueEl,CONSTANT.SIZES[parseInt(size)]);
+                }
+            }
+            api.execScript({
+                frameName: frameName,
+                script: "execAsynData('"+level1+"','"+level2+"','"+size+"','"+filtersStr+"')"
+            });
+        }
+
+
+	</script>
+</html>

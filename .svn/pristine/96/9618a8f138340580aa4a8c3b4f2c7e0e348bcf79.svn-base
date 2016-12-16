@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            background-color: #F6F6F6;
+        }
+        #header{
+            border-bottom: 1px solid #dddddd;
+        }
+	</style> 
+</head>
+<body>
+<header id="header" class="duola-header flex">
+    <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWindow()">
+        <span id="nav-left-icon" class="nav-left-icon duola-iconfont icon-left"></span><span id="nav-left-text" class="nav-text"></span>
+    </a>
+    <div id="nav-title" class="nav-title flex-1"></div>
+    <a id="nav-right" class="duola-icon-area aui-invisible" tapmode onclick="openSharedMask()">
+        <span id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon duola-iconfont icon-share"></span>
+    </a>
+</header>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+    var title = null;
+    var url,name;
+    apiready = function () {
+        init();
+        isInstalledWx(function(isIntalled,extra){
+            if(isIntalled){
+                showWexin();
+            }
+        });
+    };
+
+    function init(){
+        var $header = $api.byId('header');
+        $api.fixStatusBar($header);
+        var $body = $api.dom('body');
+        var header_h = $api.offset($header).h;
+        var body_h = $api.offset($body).h;
+        var rect_h = body_h - header_h;
+		
+		title = api.pageParam.title;
+		 url = api.pageParam.url;
+        name = api.pageParam.name;
+		$api.html($api.byId('nav-title'), title);
+		onPageUmeng(title);
+		api.openFrame({
+            name: 'web',
+            bounces: true,
+            allowEdit:true,
+            progress:{
+				type:"page",        
+				title:"加载中",              
+				text:"请稍后",               
+				color:"#45C01A"
+            },
+            url: url,
+            rect: {x: 0, y: header_h, w: 'auto', h: rect_h}
+        });
+    }
+    
+    function closeWindow(){
+        onPageEndUmeng(title);
+    	api.closeWin();
+    }
+    //显示微信登录
+    function showWexin(){
+        var showWexinEl = $api.byId('nav-right');
+        $api.removeCls(showWexinEl, 'aui-invisible');
+    }
+    function openSharedMask(){
+        var name = 'shared_mask';
+        var page = 'shared_mask.html';
+        var rect ={
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto'
+        };
+        var data = {frameName: api.frameName};
+        var bounces = false;
+        openNewFrame(name,page,bounces,rect,data);
+    }
+
+    function execShareWx(index){
+        var scene = '';
+        var contentUrl = url;
+        if(index == 1){
+            scene = 'session';
+        }else if(index == 2){
+            scene = 'timeline';
+        }
+        shareWx(scene,contentUrl);
+    }
+    function execCloseSharedMask(frameName,index){
+        index = parseInt(index);
+        if(!isNaN(index)){
+            //调用微信模块
+            execShareWx(index);
+        }
+        api.closeFrame({
+            name:frameName
+        });
+    }
+    function shareWx(scene,contentUrl){
+        var wx = api.require('wx');
+        if(!isDefine(scene)){
+            return;
+        }
+        wx.shareWebpage({
+            apiKey: CONSTANT.WEIXINAPPKEY,
+            scene: scene,
+            title: name || "多啦衣梦",
+            description: name || "多啦衣梦",
+            thumb: 'widget://image/sharedLogo.png',
+            contentUrl: contentUrl,
+        }, function(ret, err){
+            var msg = '未知错误';
+            if(ret.status==true){
+                msg = '分享成功';
+            }else{
+                if(err.code==-1){
+                    msg = '未知错误';
+                }else if(err.code==0){
+                    msg = '成功';
+                }else if(err.code==1){
+                    msg = 'apiKey非法';
+                }else if(err.code==2){
+                    msg = '你取消了分享';
+                }else if(err.code==3){
+                    msg = '分享失败';
+                }else if(err.code==4){
+                    msg = '授权拒绝';
+                }else if(err.code==5){
+                    msg = '微信服务器返回的不支持错误';
+                }else if(err.code==6){
+                    msg = '当前设备未安装微信客户端';
+                }else if(err.code==7){
+                    msg = '注册SDK失败';
+                }
+            }
+            toastMsg(msg);
+        });
+    }
+
+
+
+</script>
+</html>

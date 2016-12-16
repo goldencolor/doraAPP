@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>缴费</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+	<style>
+		body{
+
+		}
+		.aui-radio {
+			width: 20px;
+			height: 20px;
+			position: relative;
+			margin: 8px 10px;
+			margin-right:8px;
+			background: #ffffff;
+			border: solid 1px #e59c96;
+			border-radius: 0px;
+			display: table;
+			float: left;
+			-webkit-appearance: none;
+			transition: background-color ease 0.1s;
+		}
+		.aui-radio:checked,
+		.aui-radio.aui-checked {
+			background-color: #FF6100;
+			border: solid 1px #FF6100;
+			text-align: center;
+		}
+		.aui-radio:checked:before,
+		.aui-radio.aui-checked:before {
+			position: absolute;
+			left: 3px;
+			top: 0.5px;
+			font-size: 12px;
+			display: table;
+			font-family: "auiicon";
+			content: "\e645";
+			color: #ffffff;
+		}
+		.aui-radio:checked:after,
+		.aui-radio.aui-checked:after {
+			position: absolute;
+			left: 3px;
+			top: 0.5px;
+			font-size: 12px;
+			display: table;
+			font-family: "auiicon";
+			content: "\e645";
+			color: #ffffff;
+			pointer-events: none;
+
+		}
+
+		.my-aui-input-row:first-child:after {
+			border-top: 0px solid #c8c7cc;
+			display: block;
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			-webkit-transform-origin: 0 0;
+			-webkit-transform: scale(1);
+			pointer-events: none;
+		}
+
+		.my-aui-input-row:last-child:after {
+			border-bottom: 0px solid #c8c7cc;
+		}
+
+		.my-aui-list-view:after {
+			border-top: 0px solid #c8c7cc;
+			display: block;
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			-webkit-transform-origin: 0 0;
+			-webkit-transform: scale(1);
+			pointer-events: none;
+		}
+		.my-aui-li-style:last-child:after {
+			border-bottom: 0px solid #c8c7cc;
+		}
+		.aui-radio-name {
+			height: 20px;
+			line-height: 20px;
+			margin: 8px 10px 8px -5px;
+			float: none;
+			color: #777777;
+			font-size: 12px;
+			text-align: left;
+		}
+		.my-aui-background-f{
+			background-color:#fff;
+		}
+		.my-aui-colo{
+			color:#E59C96;
+		}
+		#my-aui-input-row {
+			width: 100%;
+			position: relative;
+			display: table;
+			padding: 0px 0;
+		}
+		.my-aui-li-style{
+			font-size: 12px;
+			color:#777777;
+		}
+		.my-aui-content{
+			margin-top:15px;
+		}
+		.my-content-margin{
+			margin: 0px 10px 0px 10px;
+		}
+		.my-aui-btn-block{
+			background-color:#FF6100;
+			color: #fff;
+			font-size: 14px;
+			padding:10px 0px 10px 0px;
+		}
+		.my-aui-name{
+			position:inherit;
+		}
+		.my-position{
+			position: absolute;top: 0px ;right:0px; padding: 3px;
+			background-color: #ff830f;color:#fff;font-size: 8px; line-height:2px;
+		}
+		.aui-checkbox.aui-checkbox-danger:checked,
+		.aui-checkbox.aui-checkbox-danger.aui-checked {
+			background-color: #FF6100;
+			border: solid 1px #FF6100;
+		}
+		.my-aui-border-b:after {
+			border-bottom: 0px solid #c8c7cc;
+		}
+		.my-aui-input{
+			margin-right: 10px; margin-left:8px;
+		}
+		.my-aui-style{
+			padding: 10px 5px; font-size: 14px; color: #777;
+		}
+		#my-aui-label{
+			font-size: 12px; color:#777;padding-right: 0px;
+		}
+		.my-aui-label em{
+			font-size: 8px;
+		}
+		.my-aui-p-style{
+			padding: 10px 5px; font-size: 14px; color: #777;
+		}
+		.my-aui-p{
+			padding: 10px 5px; font-size: 16px; color: #FF6100;
+		}
+		.my-content-margin{
+			margin: 0px 10px 0px 10px;
+		}
+		.my-aui-btn-block{
+			background-color:#FF6100;
+			color: #fff;
+			font-size: 14px;
+			padding:10px 0px 10px 0px;
+			margin-bottom: 10px;
+		}
+		.my-padding-tb{
+			padding: 5px 0px;
+		}
+		.my-aui-input-addon{
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 1;
+			color: #333;
+			text-align: left;
+			display: table-cell;
+			width: 100%;
+			vertical-align: middle;
+			padding: 5px;
+		}
+
+		.aui-list-view-cell{
+			padding:0px;
+		}
+		.aui-text-pink{
+			color: #FF6100 !important;
+		}
+		.my-c{
+			line-height: 40px;
+		}
+		.activit-text{
+			padding: 10px 5px; font-size: 16px; color: #FF6100;
+		}
+		.aui-tips-content {
+		  height: auto;
+			line-height: 20px;
+			font-size: 12px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+<div id="open-Member" >
+	<div class="aui-tips aui-tips-danger hide" id="tips">
+		<div class="aui-tips-content " id="tips-text">
+		</div>
+	</div>
+	<div class="aui-content my-aui-content">
+		<div class="aui-form">
+			<div class="aui-input-row my-aui-input-row" id="my-aui-input-row" onclick="chooseMonth();">
+				<div>
+					<div class="aui-col-xs-3 aui-text-center aui-border-l  my-aui-background-f">
+						<input class="aui-radio" type="radio" name="demo1" value="1" >
+						<div class="aui-radio-name">1个月</div>
+					</div>
+					<div class="aui-col-xs-3 aui-text-center aui-border-l  my-aui-background-f">
+						<input class="aui-radio" type="radio" name="demo1" value="3">
+						<div class="aui-radio-name">3个月</div>
+					</div>
+					<div class="aui-col-xs-3 aui-text-center aui-border-l  my-aui-background-f">
+						<input class="aui-radio" type="radio" name="demo1" value="6">
+						<div class="aui-radio-name">6个月</div>
+						<div class="my-position">93折</div>
+					</div>
+					<div class="aui-col-xs-3 aui-text-center aui-border-l  my-aui-background-f">
+						<input class="aui-radio" type="radio" name="demo1" value="12">
+						<div class="aui-radio-name" style="margin-right: 0px;">12个月</div>
+						<div class="my-position">90折</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="aui-content">
+		<ul class="aui-list-view">
+			<div id="coupon-list"></div>
+			<!--<li class="aui-list-view-cell aui-col-xs-12"  data-win="list_arrow">
+                <i class="aui-iconfont aui-icon-squarecheckfill aui-text-pink" style="float: left"></i>
+                   <div onclick="chooseCoupon(1);" value="3000" name="coupon"  id="my-counpon-1"></div>
+                   <div class="aui-col-xs-12 my-c" id="my-aui-label">100  有效期：2016-02-20至2017-12-30<em>(荐)</em>(可提现)</div>
+           </li>
+            <li class="aui-list-view-cell aui-col-xs-12"  data-win="list_arrow">
+                <i class="aui-iconfont aui-icon-squarecheckfill aui-text-pink" style="float: left"></i>
+                   <div onclick="chooseCoupon(1);" value="3000" name="coupon"  id="my-counpon-1"></div>
+                   <div class="aui-col-xs-12 my-c" id="my-aui-label">100  有效期：2016-02-20至2017-12-30<em>(荐)</em>(可提现)</div>
+           </li>
+            <li class="aui-list-view-cell aui-col-xs-12 " data-win="list_arrow">
+                <i class="aui-iconfont aui-icon-squarecheckfill aui-text-pink" style="float: left"></i>
+                   <div onclick="chooseCoupon(1);" value="3000" name="coupon"  id="my-counpon-1"></div>
+                   <div class="aui-col-xs-12 my-c" id="my-aui-label">100   有效期：2016-02-20至2017-12-30<em>(荐)</em>(可提现)</div>
+           </li>  -->
+		</ul>
+	</div>
+	<!--    <div class="aui-input-row">
+            <div class="aui-content my-aui-content my-aui-background-f">
+                <p class="aui-border-b my-aui-style">优惠券</p>
+                <div id="coupon-list">
+                    <div class="aui-input-row">
+                        <i class="aui-iconfont aui-icon-squarecheckfill check-btn" ></i>
+                        <div onclick="chooseCoupon(1);" value="3000" name="coupon"  id="my-counpon-1"></div>
+                        <div class="my-aui-input-addon"  id="my-aui-label" class="my-padding-tb">100,有效期：2016-02-20至2017-12-30<em>(荐)</em>(可提现)</div>
+                    </div>
+                   <div class="aui-input-row">
+                           <i class="aui-iconfont aui-icon-square"></i>
+                        <input class="aui-checkbox aui-checkbox-danger my-aui-input" onclick="chooseCoupon(1);" value="3000" name="coupon"  id="my-counpon-1">
+                        <div class="my-aui-input-addon"  id="my-aui-label" class="my-padding-tb">30,有效期：2016-02-20至2017-12-30<em>(荐)</em>(可提现)</div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+	<div class="aui-content my-aui-content my-aui-background-f">
+		<p class="aui-border-b my-aui-border-b my-aui-p-style">服务费：<em id="service-money">249</em>元</p>
+		<p class="aui-border-b my-aui-border-b my-aui-p-style">押金：    <em id="deposit-money">0</em>元 <span id="deposit-money-desc">(可退)</span></p>
+		<p class="aui-border-b my-aui-border-b my-aui-p-style">优惠：	<em id="preferential-moeny">0</em>元<em id="first" class="hide"></em></p>
+		<!--<p class="aui-border-b my-aui-border-b my-aui-p-style hide" id="discount">折扣：<em id="discount-money">0</em>元</p>
+		-->
+		<p class="aui-border-b my-aui-border-b my-aui-p-style hide" id="extraFee">变包费用：<em id="extraFee-money">0</em>元</p>
+		<p class="aui-border-b my-aui-border-b my-aui-p">应付：                  	<em id="should-pay-money">249</em>元</p>
+	</div>
+</div >
+<div  id="open-activity" class="hide">
+	<div class="aui-content aui-text-center" >
+		<ul class="aui-list-view">
+			<li class="aui-list-view-cell" id='activit-text' data-win="list_arrow">
+
+			</li>
+		</ul>
+	</div>
+	<div class="aui-content my-aui-content my-aui-background-f">
+		<p class="aui-border-b my-aui-border-b my-aui-p-style">服务费：<em id="activity-service-money"></em>元</p>
+		<p class="aui-border-b my-aui-border-b my-aui-p">应付：  <em id="activity-should-pay-money"></em>元</p>
+	</div>
+</div>
+
+<div class="aui-content my-content-margin">
+	<div class="aui-btn aui-btn-block my-aui-btn-block" onclick="pay('wx')">微信支付</div>
+	<div class="aui-btn aui-btn-block my-aui-btn-block" onclick="pay('alipay')">支付宝支付</div>
+</div>
+<div class="my-line"></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/pingpp.js"></script>
+<script type="text/javascript">
+	var money;
+	var monthNum=1;
+	var discount;
+	var shouldPay;//最后所要给的钱！!!!!!!!!!
+	var discountMoney_auto=0;//用户自带折扣
+	var discountNew=0;//用户自带折扣
+	var discountMoney=0;//折扣
+	var token;
+	var serviceType;
+	var bagNum;
+	var semiAnnualFee;//选择6个月时的钱   serviceType ==serviceFlee使用
+	var annualFee;//选择12个月的钱  serviceType ==serviceFlee使用
+	var deposit = 0;//押金
+	var retDeposit = 0;//返回押金
+	var couponMoney=0;//优惠卷钱
+	var	couopns=[];//优惠卷列表
+	var couopnsId=[];//选择优惠卷的列表
+	var shouldPayAdd;//
+	var isMember;//
+	var extraFee;
+	var promoteNum=0; //推荐型优惠卷使用数量
+	var promotion;
+	var is_err =1;
+	apiready = function(){
+		serviceType  = api.pageParam.type;
+		bagNum = api.pageParam.bagNum;
+		token = $api.getStorage('token');
+		isMember = $api.getStorage('isMember');
+		monthNum = api.pageParam.data ? api.pageParam.data.month ? api.pageParam.data.month: 1 : 1;
+		promotion =  api.pageParam.data ? api.pageParam.data.promotion : false;
+		var doms =$api.domAll($api.byId("my-aui-input-row"),"input[name='demo1']");
+		for (var i =0;i<doms.length;i++) {
+			if (doms[i].value == monthNum){
+				doms[i].checked = true;
+			}
+		}
+		init();
+		notification();
+	};
+	function closeTips(){
+		$api.remove($api.byId('tips'))
+	}
+	function notification() {
+		var body = {
+			type: "promotion"
+		};
+		var url = serviceNew + 'notification';
+		var headers = _getAjaxHeaders(true, true);
+		var data = _getAjaxData(body);
+		var extra = false;
+		_ajaxData(url,'post', headers, data, notificationSuccessCallback, initErrorCallback, 0, extra);
+	}
+	function notificationSuccessCallback(ret, extra){
+		if (ret.statusCode == '200') {
+			if (ret.result){
+				$api.removeCls($api.byId("tips"),"hide");
+				$api.html($api.byId("tips-text"), ret.result);
+			}
+		}
+	}
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode==200){
+			couopns =ret.coupons;
+			if(couopns.length>0 && !extra.promotion){
+				var html ='';
+				for(var i =0;couopns.length>i;i++){
+					if(couopns[i].cashable=='NO'){
+						var cashable='';
+					}else{
+						var cashable='(可提现)';
+					}
+					html+='<li onclick="chooseCoupon(\''+i+'\');" class="aui-list-view-cell aui-col-xs-12 " data-win="list_arrow">';
+					html+='<i class="aui-iconfont aui-icon-square aui-text-pink" style="float: left" id="my-coupon-'+i+'"></i>';
+					html+='<div value="'+couopns[i].amount+'"  name="couopns-'+i+'"></div>';
+					html+='<div class="aui-col-xs-12 my-c" id="my-aui-label">'+couopns[i].discount+',有效期：'+couopns[i].validateOn.substring(0,10)+'至'+couopns[i].validateEnd.substring(0,10)+'<em></em>'+cashable+'</div>';
+					html+='</li>';
+				}
+				$api.after($api.byId('coupon-list'), html);
+			}
+			discountMoney_auto =  extra.promotion ? 0 : ret.discount;//自带折扣自动加上
+			discountNew = extra.promotion ? 0 : ret.discount;//
+			if(discountMoney_auto>0 && !extra.promotion){
+//						$api.removeCls($api.byId('discount'), 'hide');
+				$api.removeCls($api.byId('first'), 'hide');
+				$api.html($api.byId('preferential-moeny'), discountMoney_auto.toFixed(0));
+				$api.html($api.byId('first'),'(已通过推荐码优惠了'+discountMoney_auto.toFixed(0)+')');
+			}
+
+			annualFee = ret.annualFee;
+			semiAnnualFee=ret.semiAnnualFee;
+			money =ret.monthlyFee;
+			shouldPay = money;
+			deposit = ret.deposit;
+			retDeposit = deposit;
+			extraFee = ret.extraFee || 0;
+			if (extraFee > 0) {
+				$api.removeCls($api.byId('extraFee'), 'hide');
+				$api.html($api.byId('extraFee-money'), extraFee);
+			}
+			if(serviceType=='activity'){
+				$api.html($api.byId('activity-should-pay-money'), money);
+				$api.html($api.byId('activit-text'), ret.describe);
+				$api.html($api.byId('activity-service-money'), shouldPay);
+				return;
+			}
+			$api.html($api.byId('service-money'), shouldPay);
+			$api.html($api.byId('deposit-money'), deposit);
+			$api.html($api.byId('should-pay-money'), money+deposit+extraFee-discountMoney_auto);
+			chooseMonth(monthNum);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function init(){
+		_loadingShow();
+		var url = serviceUser + 'service/pay/query/'+serviceType;
+		var headers = _getAjaxHeaders(true,true);
+		var body = {"bags":Number(bagNum)};
+		if (promotion) {
+			body.promotion = promotion;
+		}
+		var data = _getAjaxData(body);
+		var extra = {promotion: promotion};
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+
+	function chooseMonth(value){
+		couopnsId=[];//选择优惠卷的列表
+		couponMoney=0;
+		discountMoney=0;
+		promoteNum=0;
+		for(var x in couopns){
+			$api.removeCls($api.byId('my-coupon-'+x),'aui-icon-squarecheckfill');
+			$api.removeCls($api.byId('my-coupon-'+x),'aui-icon-square')
+			$api.addCls($api.byId('my-coupon-'+x),'aui-icon-square');
+		}
+		if (value){
+			monthNum = value;
+		} else {
+			monthNum = $api.dom("input[name='demo1']:checked").value;
+		}
+		//选择3个月以上,押金为0
+		if(monthNum >= 3){
+			deposit = 0;
+			$api.addCls($api.byId('deposit-money-desc'), 'hide');
+			discountMoney_auto = discountNew > 0 ? discountNew * 3 :discountNew;
+			$api.html($api.byId('first'),'(已通过推荐码优惠了'+discountMoney_auto.toFixed(0)+')');
+		}else{
+			deposit = retDeposit;
+			discountMoney_auto = discountNew;
+			$api.html($api.byId('first'),'(已通过推荐码优惠了'+discountMoney_auto.toFixed(0)+')');
+			if(deposit > 0 ){
+				$api.removeCls($api.byId('deposit-money-desc'), 'hide');
+			}
+		}
+		if(monthNum==6){
+			$api.removeCls($api.byId('discount'), 'hide');
+			shouldPay = semiAnnualFee;
+			discount =0.93;
+			var jian =sub(1,discount);
+			discountMoney=parseInt(discountMoney)+parseInt(jian*monthNum*money);
+		}else if(monthNum==12){
+			$api.removeCls($api.byId('discount'), 'hide');
+			shouldPay = annualFee;
+			discount =0.90;
+			var jian =sub(1,discount);
+			discountMoney= parseInt(discountMoney)+parseInt(jian*monthNum*money);
+		}else{
+			if(discountMoney>0){
+				$api.removeCls($api.byId('deposit-money-desc'), 'hide');
+//				discountMoney= parseInt(discountMoney_auto)+parseInt(discountMoney);
+			}else{
+				$api.addCls($api.byId('discount'), 'hide');
+			}
+			shouldPay = money*monthNum;
+		}
+		$api.html($api.byId('preferential-moeny'), (parseInt(couponMoney)+parseInt(discountMoney_auto)).toFixed(0));
+		$api.html($api.byId('service-money'), shouldPay.toFixed(0));
+		$api.html($api.byId('discount-money'),parseInt(discountMoney).toFixed(0));
+		$api.html($api.byId('deposit-money'), deposit);
+		$api.html($api.byId('should-pay-money'), (shouldPay+extraFee+deposit-discountMoney_auto).toFixed(0));
+	}
+
+	function chooseCoupon(Id){
+		var hasChecked =$api.hasCls($api.byId('my-coupon-'+Id), 'aui-icon-squarecheckfill');
+		if(hasChecked){
+			$api.removeCls($api.byId('my-coupon-'+Id), 'aui-icon-squarecheckfill');
+			$api.addCls($api.byId('my-coupon-'+Id),  'aui-icon-square');
+			for( var x in couopnsId){
+				if(couopnsId[x]==couopns[Id].code){
+					couopnsId.splice(x,1);
+				}
+			}
+			promoteNum = parseInt(promoteNum)-parseInt(1);
+			couponMoney= parseInt(couponMoney)-parseInt(couopns[Id].discount);
+			shouldPay = parseInt(shouldPay)	+ parseInt(couopns[Id].discount);
+		}else{
+			if(checkCouops(Id)){
+				if(checkPromote(Id)){
+					couopnsId.push(couopns[Id].code);
+					couponMoney=parseInt(couponMoney)+parseInt(couopns[Id].discount);
+					shouldPay = parseInt(shouldPay) - parseInt(couopns[Id].discount);
+					shouldPayAdd=shouldPay-discountMoney_auto;
+					if(shouldPayAdd<=0){
+						$api.removeCls($api.byId('my-coupon-'+Id), 'aui-icon-squarecheckfill');
+						$api.addCls($api.byId('my-coupon-'+Id), 'aui-icon-square');
+						for( var x in couopnsId){
+							if(couopnsId[x]==couopns[Id].code){
+								couopnsId.splice(x,1);
+							}
+						}
+						shouldPay = parseInt(shouldPay) + parseInt(couopns[Id].discount);
+						couponMoney= parseInt(couponMoney)-parseInt(couopns[Id].discount);
+						api.toast({
+							msg: '优惠价格不能大于应付价格',
+							duration:2000,
+							location: 'bottom'
+						});
+						return;
+					}
+					$api.removeCls($api.byId('my-coupon-'+Id), 'aui-icon-square');
+					$api.addCls($api.byId('my-coupon-'+Id),'aui-icon-squarecheckfill');
+				}else{
+					api.toast({
+						msg: '所选推荐型优惠卷数超过所选开通月份数',
+						duration:2000,
+						location:'bottom'
+					});
+				}
+			}else{
+				if(couopns[Id].apptionType[0]=='monthly'){
+					var vipType ='月费会员';
+				}
+				if(couopns[Id].apptionType[0]=='annual'){
+					var vipType ='年费会员';
+				}
+				api.toast({
+					msg: '此优惠卷只能是'+vipType+'使用',
+					duration:2000,
+					location: 'bottom'
+				});
+			}
+		}
+		$api.html($api.byId('preferential-moeny'), (parseInt(couponMoney)+parseInt(discountMoney_auto)).toFixed(0));
+		$api.html($api.byId('should-pay-money'), (shouldPay+extraFee+deposit-discountMoney_auto).toFixed(0));
+	}
+
+
+	function paySuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			ping(ret.charge);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function payErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function pay(type){
+		api.showProgress({
+			style: 'default',
+			animationType: 'fade',
+			title: '正在支付···',
+			text: '请稍候'
+		});
+		var payMoney = $api.html($api.byId('should-pay-money'));
+		var body = {
+			"bags":Number(bagNum),
+			"coupons":couopnsId,
+			"duration":Number(monthNum),
+			"channel":type,
+			"amountFront":Number(payMoney)
+		};
+		sendMathEventUmeng(CONSTANT.UMENGEVENT.MONEY,{
+			"bags":Number(bagNum),
+			"duration":Number(monthNum),
+			"channel":type
+		},Number(payMoney));
+		if (serviceType == "bagChange") {
+			body.extraFee = Number(extraFee);
+		}
+		if (promotion) {
+			body.promotion = promotion;
+		}
+		var url = serviceUser + 'service/pay/start/'+serviceType;
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData(body);
+		var extra = null;
+		_ajaxData(url,'post',headers,data,paySuccessCallback,payErrorCallback,0,extra);
+	}
+	//检测优惠卷数量
+	function checkPromote(Id){
+		if(couopns[Id].promote=='YES'){
+			if(promoteNum<monthNum){
+				promoteNum = parseInt(promoteNum) +parseInt(1);
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return true;
+		}
+	}
+	//检测当前优惠卷是否与当前用户类型一致
+	function checkCouops(Id){
+		for(var x in couopns[Id].apptionType){
+			if(couopns[Id].apptionType[x]==isMember){
+				return true;
+			}
+		}
+	}
+
+
+	function checkSuccessCallback(ret,extra){
+		if(ret.statusCode=='200'){
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function checkErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+	function check(){
+		var url = serviceUser+'service/check/payment';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,checkSuccessCallback,checkErrorCallback,0,extra);
+	}
+
+</script>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	 .aui-radio {
+			width: 20px;
+			height: 20px;
+			position: relative;
+			margin: 8px 10px;
+			margin-right:8px;
+			background: #ffffff;
+			border: solid 1px #FF6100;
+			border-radius: 0px;
+			display: table;
+			float: left;
+			-webkit-appearance: none;
+			transition: background-color ease 0.1s;
+		}
+    	.aui-radio:checked,
+		.aui-radio.aui-checked {
+			background-color: #FF6100;
+			border: solid 1px #FF6100;
+			text-align: center;
+		}
+		.aui-radio:checked:before,
+		.aui-radio.aui-checked:before {
+			position: absolute;
+			left: 3px;
+			top: 0.5px;
+			font-size: 12px;
+			display: table;
+			font-family: "auiicon";
+			content: "\e645";
+			color: #ffffff;
+		}
+		.aui-radio:checked:after,
+		.aui-radio.aui-checked:after {
+			position: absolute;
+			left: 3px;
+			top: 0.5px;
+			font-size: 12px;
+			display: table;
+			font-family: "auiicon";
+			content: "\e645";
+			color: #ffffff;
+			pointer-events: none;
+			
+		}
+		
+		.my-aui-input-row:first-child:after {
+		  	border-top: 0px solid #c8c7cc;
+			display: block;
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			-webkit-transform-origin: 0 0;
+			-webkit-transform: scale(1);
+			pointer-events: none;
+		}
+		
+		.my-aui-input-row:last-child:after {
+			border-bottom: 0px solid #c8c7cc;
+		}
+		
+		.my-aui-list-view:after {
+		  	border-top: 0px solid #c8c7cc;
+			display: block;
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			-webkit-transform-origin: 0 0;
+			-webkit-transform: scale(1);
+			pointer-events: none;
+		}
+		.my-aui-li-style:last-child:after {
+		  	border-bottom: 0px solid #c8c7cc;
+		}
+		.aui-radio-name {
+			height: 20px;
+			line-height: 20px;
+			margin: 8px 10px 8px -5px;
+			float: none; 
+			color: #777777;
+			font-size: 12px;
+			text-align: left;
+		}
+		.my-aui-background-f{
+			background-color:#fff;
+		}
+		.my-aui-colo{
+			color:#E59C96;
+		}
+		#my-aui-input-row {
+			width: 100%;
+			position: relative;
+		    display: table;
+		    padding: 0px 0;
+		}
+		.my-aui-li-style{
+			font-size: 12px;
+			color:#777777;
+		}
+		.my-aui-content{
+			margin-top:15px;
+		}
+		.my-content-margin{
+    		margin: 0px 10px 0px 10px;
+    	}
+    	.my-aui-btn-block{
+    		background-color:#FF6100;
+    		color: #fff;
+    		font-size: 14px;
+    		padding:10px 0px 10px 0px;
+    	}
+    	.my-aui-name{
+    		position:inherit;
+    	}
+    	.my-position{
+    		position: absolute;top: 0px ;right:0px; padding: 3px;
+    		background-color: #ff830f;color:#fff;font-size: 8px; line-height:2px;
+    	}
+    	.aui-checkbox.aui-checkbox-danger:checked,
+		.aui-checkbox.aui-checkbox-danger.aui-checked {
+			background-color: #FF6100;
+			border: solid 1px #FF6100;
+		}
+		.my-aui-border-b:after {
+		    border-bottom: 0px solid #c8c7cc;
+		}
+		.my-aui-input{
+			margin-right: 10px; margin-left:8px;
+		}
+		.my-aui-style{
+			padding: 10px 5px; font-size: 14px; color: #777;
+		}
+		#my-aui-label{
+			font-size: 12px; color:#777;padding-right: 0px;
+		}
+		.my-aui-label em{
+			font-size: 8px;
+		}
+		.my-aui-p-style{
+			padding: 10px 5px; font-size: 14px; color: #777;
+		}
+		.my-aui-p{
+			padding: 10px 5px; font-size: 16px; color: #FF6100;
+		}
+		.my-content-margin{
+    		margin: 0px 10px 0px 10px;
+    	}
+    	.my-aui-btn-block{
+    		background-color:#FF6100;
+    		color: #fff;
+    		font-size: 14px;
+    		padding:10px 0px 10px 0px;
+    		margin-bottom: 10px;
+    	}
+    	.my-padding-tb{
+    		padding: 5px 0px;
+    	}
+    	.my-aui-input-addon{
+		    font-size: 14px;
+		    font-weight: 400;
+		    line-height: 1;
+		    color: #333;
+		    text-align: left;
+		    display: table-cell;
+		    width: 100%;
+		    vertical-align: middle;
+		    padding: 5px;
+		}
+
+		.aui-list-view-cell{
+			padding:0px;
+		}
+		.aui-text-pink{
+			color: #FF6100 !important;
+		}
+		.my-c{
+			line-height: 40px;
+		}
+    </style>
+</head>
+<body>
+	<div class="aui-content my-aui-content">
+        <div class="aui-form">
+        	<div class="aui-input-row my-aui-input-row" id="my-aui-input-row" onclick="chooseMonth();">
+                <div>
+                    <div class="aui-col-xs-3 aui-text-center aui-border-l  my-aui-background-f">
+	                	<input class="aui-radio" type="radio" name="demo1" value="1" checked="">
+	                    <div class="aui-radio-name">1个月</div>
+	                </div>
+                    <div class="aui-col-xs-3 aui-text-center aui-border-l  my-aui-background-f">
+	                	<input class="aui-radio" type="radio" name="demo1" value="3">
+	                    <div class="aui-radio-name">3个月</div>
+	                </div>
+	                <div class="aui-col-xs-3 aui-text-center aui-border-l  my-aui-background-f">
+	                	<input class="aui-radio" type="radio" name="demo1" value="6">
+	                    <div class="aui-radio-name">6个月</div>
+	                    <div class="my-position">93折</div>
+	                </div>
+	                <div class="aui-col-xs-3 aui-text-center aui-border-l  my-aui-background-f">
+	                	<input class="aui-radio" type="radio" name="demo1" value="12">
+	                    <div class="aui-radio-name" style="margin-right: 0px;">12个月</div>
+	                    <div class="my-position">90折</div>
+	                </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <div class="aui-content my-aui-content my-aui-background-f">
+    	<p class="aui-border-b my-aui-border-b my-aui-p-style">服务费：<em id="service-money">249</em>元</p>
+    	<p class="aui-border-b my-aui-border-b my-aui-p-style">押金：    <em id="deposit-money">0</em>元</p>
+    	<p class="aui-border-b my-aui-border-b my-aui-p-style">优惠：	<em id="preferential-moeny">0</em>元</p>
+    	<p class="aui-border-b my-aui-border-b my-aui-p-style hide" id="discount">折扣：<em id="discount-money">0</em>元</p>
+    	<p class="aui-border-b my-aui-border-b my-aui-p">应付：                  	<em id="should-pay-money">249</em>元</p>
+    </div>   
+    <div class="aui-content my-content-margin">
+    	<div class="aui-btn aui-btn-block my-aui-btn-block" onclick="pay('wx')">微信支付</div>
+    	<div class="aui-btn aui-btn-block my-aui-btn-block" onclick="pay('alipay')">支付宝支付</div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		monthNum=$api.dom("input[name='demo1']:checked").value;
+		serviceType  = api.pageParam.type;
+		bagNum = api.pageParam.bagNum;
+		token = $api.getStorage('token');
+		isMember = $api.getStorage('isMember');
+		init();
+	};
+
+</script>
+</html>

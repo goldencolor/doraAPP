@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+		/**格子重构**/
+		.aui-grid-sixteen:after {
+			border:none;
+		}
+		.aui-grid-sixteen li:after {
+			border:none;
+		}
+		.aui-grid-sixteen li {
+			padding: 5px 5px;
+		}
+		/**重构BTN**/
+		.my-btn{
+			padding: 3px 5px; font-size: 12px; color: #666; 
+		}
+		.my-btn-submit{
+			padding: 5px 10px; font-size: 15px;
+		}
+		/****/
+		.my-tip{
+			line-height: 20px; padding: 0px 5px; font-size: 12px; color: #aaa; 
+		}
+		.my-bg-color{
+			color: #FFFFFF;
+		}
+		.my-cancel-text{
+			color: #999999;
+		}
+
+	</style>  
+</head>
+<body>
+<div class="aui-searchbar-wrap demo" id="search">
+    <div class="aui-searchbar aui-border-radius" tapmode onclick="doSearch()">
+        <i class="aui-iconfont aui-icon-search"></i>
+        <div class="aui-searchbar-text">请输入搜索内容</div>
+        <div class="aui-searchbar-input">
+        	<form action="javascript:search();">
+        	<input type="search" placeholder="请输入搜索内容" id="search-input">
+        	</form>
+        </div>
+        <i class="aui-iconfont aui-icon-roundclosefill" tapmode onclick="clearInput()"></i>
+    </div>
+    <div class="aui-searchbar-cancel  my-cancel-text" tapmode onclick="cancelSearch()">取消</div>
+</div>
+
+<div id="searchList"></div>
+
+<!--<div class="my-btn-box">
+	<button class="aui-btn my-btn-submit aui-btn-block aui-btn-info" onclick="searchBtn()">确认</button>
+</div>-->
+<div class="my-line"></div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var filters  = new Array();
+	var is_err =1;
+	var list 	 = [];
+	var Post     = [];
+	var btnImg   = [
+		{img:"aui-icon-hot"},      
+		{img:"aui-icon-evaluate"},
+		{img:"aui-icon-sort"},
+		{img:"aui-icon-crown"},
+		{img:"aui-icon-selection"},
+		{img:"aui-icon-rank"},
+		{img:"aui-icon-shop"},
+		{img:"aui-icon-hot"},      
+		{img:"aui-icon-evaluate"},
+		{img:"aui-icon-sort"},
+		{img:"aui-icon-crown"},
+		{img:"aui-icon-selection"},
+		{img:"aui-icon-rank"},
+		{img:"aui-icon-shop"},
+		{img:"aui-icon-hot"},      
+		{img:"aui-icon-evaluate"},
+		{img:"aui-icon-sort"},
+		{img:"aui-icon-crown"},
+		{img:"aui-icon-selection"},
+		{img:"aui-icon-rank"},
+		{img:"aui-icon-shop"}
+	];
+	apiready = function(){
+		api.parseTapmode();
+		list = api.pageParam.data;
+		init(list);
+	}
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			var searshList = ret.category;
+			$api.html($api.byId('searchList'), ' ');
+			for(var i=0;i<searshList.count;i++){
+				if(searshList.list[i].count>0){
+					var html = '';
+					html+='<div class="my-tip"><span class="aui-iconfont '+btnImg[i].img+'"></span> '+searshList.list[i].name+'</div>';
+					html+='<div class="aui-content"><ul class="aui-grid-sixteen">';
+					var objList = searshList.list[i];
+
+					for(var j=0;j<objList.count;j++){
+						html+='<li class="aui-col-xs-3 aui-text-center" onclick="setBtn(\''+i+'-'+j+'\',\''+objList.list[j].value+'\',\''+searshList.list[i].key+'\',\''+j+'\')">';
+						if(searshList.list[i].key == 'size'){
+							var value = _sizeStatus(objList.list[j].value);
+						}else{
+							var value = objList.list[j].value;
+						}
+						html+='<button  btn="NO" id="'+i+'-'+j+'" class="aui-btn my-btn aui-btn-block">'+value+'</button>';
+						html+='</li>';
+					}
+					html+='</ul></div>';
+					$api.append($api.byId('searchList'), html);
+				}
+			}
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+
+	function init(){
+		var url = serviceNew + 'cloudCloset/category';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+				position: 'sidebar'
+			});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+	function doSearch(){
+		$api.addCls($api.dom(".aui-searchbar-wrap"),"focus");
+		$api.dom('.aui-searchbar-input input').focus();
+	}
+	function cancelSearch(){
+		$api.removeCls($api.dom(".aui-searchbar-wrap.focus"),"focus");
+		$api.val($api.byId("search-input"),'');
+		$api.dom('.aui-searchbar-input input').blur();
+	}
+	function clearInput(){
+		$api.val($api.byId("search-input"),'');
+	}
+	
+	function setBtn(obj,value,key,n){
+		var btn = $api.attr($api.byId(obj), 'btn');
+		var values = key+'|'+value;
+		if(btn=='NO'){
+			$api.addCls($api.byId(obj), 'my-bg-color');
+			$api.attr($api.byId(obj), 'btn', 'YES');
+			filters.push(values);
+		}else{
+			$api.removeCls($api.byId(obj), 'my-bg-color');
+			$api.attr($api.byId(obj), 'btn', 'NO');
+			removeArrValue(filters,values);
+		}
+	}
+	
+//	function search(){
+//		var content = $api.val($api.byId("search-input"));
+//		if(content){
+//			api.sendEvent({
+//			    name: 'setKeywords',
+//			    extra: {
+//			        name: '手动输入',
+//			        key: content
+//			    }
+//			});
+//	   			api.closeWin();
+//		}else{
+//			api.alert({
+//			    title: '搜索提示',
+//			    msg: '您没有输入任何内容'
+//			});
+//		}
+//	}
+	
+	function search(){
+		var keyword = $api.val($api.byId('search-input'));
+		if(keyword!=''){
+			api.sendEvent({
+			    name: 'setKeywords',
+			    extra: {
+			        name: '手动输入',
+			        key: keyword
+			    }
+			});	
+			api.closeWin();
+		}else if(filters.length>0){
+			api.sendEvent({
+			    name: 'setKeyVal',
+			    extra: {
+			        name: '多条件查询',
+			        key: keyword,
+			        filters: filters
+			    }
+			});	
+			api.closeWin();
+		}else{
+			api.alert({
+			    title: '搜索提示',
+			    msg: '您没有输入或选择任何内容'
+			});
+		}
+	}
+	</script>
+</html>

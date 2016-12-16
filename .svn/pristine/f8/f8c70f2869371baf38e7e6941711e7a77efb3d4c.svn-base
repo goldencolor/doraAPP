@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>搜索页面</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_iconfont_2_0.ttf" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <style>
+    	.search-container{
+    		height: 2.5rem;
+    		padding: 0.35rem 0.5rem;
+    		background-color: #FFFFFF;
+    	}
+    	.search-container .search,.search-container form{
+    		width: 100%;
+    		height: 1.8rem;
+    	}
+    	.search-container .search input{
+    		padding-left: 1rem;
+			font-size: 0.7rem;
+			color: #B2B2B2;
+			min-height: 100%;
+			height: 100%;
+			box-sizing:border-box;
+			border: 1px solid #F1F1F1;
+			border-radius: 0.3rem 0 0 0.3rem;
+    	}
+    	.search-container .search .icon-container{
+    		height: 100%;
+    		width: 3.85rem;
+    		background: #FF6100;
+    		box-sizing:border-box;
+			border: 1px solid #FF6100;
+			border-radius: 0 0.2rem 0.2rem 0;
+    	}
+    	.search-container .search .aui-icon-search{
+    		color: #FFFFFF;
+    	} 
+    	.hot-search{
+    		margin: 0.9rem 0 0 1.45rem; 
+			font-size: 0.6rem;
+			color: #B6B6B6;
+    	}
+
+
+    	#level1-container{
+    		margin: 0.5rem;
+    	}
+    	
+    	.level1 .item{
+			font-size: 0.8rem;
+			text-align: center;
+			padding: 0.75rem 0;
+    	}
+    	
+    	.level1 .normal-color{
+    		color: #454545;
+    	}
+	</style>  
+</head>
+<body>
+	<!--搜索框-->
+	<div class="search-container">
+		<div class="search flex flex-vertical-center">
+			<form class="flex-1" onsubmit="search()"><input id="keyword" type="text"  placeholder="你想要的都在这里"/></form>
+			<div class="icon-container flex flex-center" tapmode onclick="search()">
+				<span class="aui-iconfont aui-icon-search"></span>
+			</div>
+		</div>
+	</div>
+	<div class="hot-search">热门搜索</div>
+	<div class="aui-grid">
+		<div id="level1-container" class="level1 aui-row">
+			
+			<!--<div class="item aui-col-xs-3 normal-color" tapmode onclick="level1Handler(this,0,0)">外套</div>-->
+			<!--<div class="item aui-col-xs-3 normal-color" tapmode onclick="level1Handler(this,0,0)">外套</div>-->
+			<!--<div class="item aui-col-xs-3 normal-color" tapmode onclick="level1Handler(this,0,0)">外套</div>-->
+			<!--<div class="item aui-col-xs-3 normal-color" tapmode onclick="level1Handler(this,0,1)">上衣</div>-->
+			<!--<div class="item aui-col-xs-3 normal-color" tapmode onclick="level1Handler(this,0,2)">马夹</div>-->
+			<!--<div class="item aui-col-xs-3 normal-color" tapmode onclick="level1Handler(this,0,3)">连衣裙</div>-->
+			
+		</div>
+	</div>
+
+	<script id="level1-container-template" type="text/x-dot-template">
+	    {{ for(var i = 0; i < it.count; i++) { }}
+			<div class="item aui-col-xs-3 normal-color" tapmode onclick="{{='level1Handler(this,'+i+')'}}">{{=isDefine(it.list[i]) ? it.list[i] : ''}}</div>
+    	{{ } }}
+    </script>
+</body>
+
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/doT_min.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/umeng_sdk.js"></script>
+	<script type="text/javascript">
+	
+	var frameData = null;
+	apiready = function(){
+		frameData = api.pageParam.data;
+        getHotSearch();
+        api.parseTapmode();
+    }
+	//测试
+	function testHotSearch(){
+//		var hotSearch = ['连衣裙','半裙','上衣','衬衫','阔腿裤','西装','礼服'];
+//		var hots = {
+//			count: hotSearch.length,
+//			list:hotSearch
+//		};
+//		var html = doTHtml('level1-container-template',hots);
+//		var level1Container = $api.byId('level1-container');
+//		if(level1Container){
+//			level1Container.innerHTML = html;
+//		}
+//		console.log(html);
+	}
+	//请求热门标签数据
+	function getHotSearch(action){
+		if(action != CONSTANT.ACTIONREFRESH){
+			loadingShow();
+		}
+		var url = serviceNew + 'cloudCloset/hotSearch';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData();
+		var extra = {action:action};
+		_ajaxData(url,'post',headers,data,getHotSearchSuccessCallback,getHotSearchErrorCallback,0,extra);
+	}
+
+	function getHotSearchSuccessCallback(ret,extra){
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else{
+			loadingHide();
+		}
+		if(ret.statusCode==200 && ret.hot){
+			getHotSearchHtml(ret.hot);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+
+	function getHotSearchErrorCallback(err,extra){
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else{
+			loadingHide();
+		}
+		toastMsg(err.msg);
+	}
+	//渲染热门标签HTML
+	function getHotSearchHtml(hot){
+        var html = doTHtml('level1-container-template',hot);
+        var level1Container = $api.byId('level1-container');
+		if(level1Container){
+			level1Container.innerHTML = html;
+		}
+        api.parseTapmode();	
+	}
+
+	//点击热门标签,跳转搜索结果页面
+    function level1Handler(el,i){
+    	var keyword = $api.text(el);
+    	if(isDefine(keyword)){
+    		goSearchLevel(keyword);
+    	}
+    }
+    //点击搜索按钮,跳转搜索结果页面
+    function search(){
+    	var el = $api.byId('keyword');
+    	var keywords = el ? $api.trim($api.val(el)) : '';
+		goSearchLevel(keywords);
+    }
+	//跳转搜索结果页面
+    function goSearchLevel(keywords){
+		if(!isDefine(keywords)){
+			toastMsg('请输入关键字搜索');
+			return;
+		}
+		//同步数据keyword到二级标签结果页面
+		var name = 'searchLevel';
+		var title = keywords;
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftText = '';
+		var leftExtra = '';
+		var leftCallback = 'execCloseSearchLevel';
+		var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+		var rightIcon = 'duola-iconfont icon-shaixuan';
+		var rightText = '';
+		var rightCallback = 'execOpenChoose';
+		var rightExtra = '';
+		var rightNav = setNavData(rightIcon,rightText,rightCallback,rightExtra);
+		var border = true;
+		var bounces = true;
+		var params = {};
+		params.nav= setNav(leftNav,border,rightNav);
+		params.frame=setFrame(bounces,{
+			keywords:keywords,
+			gStyle:frameData.gStyle
+		});
+		var from = {
+			winName:api.winName,
+			frameName:api.frameName
+		};
+		var url = 'searchLevel_win.html';
+		var animation = '';
+		var page = 'searchLevel.html';
+		var umengPage = CONSTANT.PAGE.LEVEL2;
+		openNewWinFrame(name,title,params,from,url,animation,page,umengPage);
+    }
+
+	//异步打开筛选
+	function execOpenChoose(extra,winName,value){
+		api.execScript({
+			name: 'searchLevelWin',
+			script: 'execOpenChoose()'
+		});
+	}
+
+	//在二级分类页面点击返回关闭二级结果页面win
+	function execCloseSearchLevel(extra,winName,value){
+		api.closeWin({
+			name:winName
+		});
+	}
+
+	//公用头部导航栏坐侧点击异步执行的方法
+	function execNavLeftCallback(value){
+		var from = frameData.from;
+		var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+
+	//公用头部导航栏右侧点击异步执行的方法
+	function execNavRightCallback(value){
+		var from = frameData.from;
+		var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+		if(!isDefine(callback)){
+			return;
+		}
+		var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+		var params = {
+			script: getExecScript(callback,new Array(extra,api.winName,value))
+		};
+		if(isDefine(from.winName)){
+			params.name = from.winName;
+		}
+		if(isDefine(from.frameName)){
+			params.frameName = from.frameName;
+		}
+		api.execScript(params);
+	}
+	</script>
+</html>

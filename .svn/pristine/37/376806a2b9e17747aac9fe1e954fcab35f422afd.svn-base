@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	.my-background{
+			background-color: #fff; margin-bottom:5px;
+		}
+		.my-aui-btnn{
+			color:#666; background-color: #fff; border-radius: 0px; font-size: 14px; padding-left:10px;
+		}
+		#my-aui-span{
+			color:#E59C96
+		}
+		.my-aui-paddng{
+			padding:10px 10px;
+		}
+		.my-aui-content{
+			margin-bottom:0px;
+		}
+		.my-li-color{
+			font-size: 14px; color:#777777;
+		}
+		.my-choose-color{
+			font-size: 14px; color:#777777; background-color:#E59C96;
+		}
+		.my-content-margin{
+    		margin: 0px 10px 0px 10px;
+    		
+    	}
+    	.my-aui-btn-block{
+    		background-color:#cccccc;
+    		color: #888;
+    		font-size: 14px;
+    		padding:10px 0px 10px 0px;
+    	}
+    	.my-textarea{
+    		border:0.5px solid #ddd; font-size: 12px; color: #666;
+    		margin-bottom:0px;
+    	}
+    	.my-aui-paddnger{
+			padding:5px 10px;
+		}
+		.my-margin-top-bottom{
+			margin:10px 0px 0px 0px;			
+		}
+		.my-box{
+			margin: 10px; line-height:24px;
+		}
+		.aui-input-row{
+			position:static;			
+			padding:0px;
+		}
+		.my-reason-choose{
+			padding: 10px 0px 0px 0px;
+			font-size: 14px; color:#444;
+		}
+		.aui-radio:checked{
+			background-color: #E69C96;
+			border-color: #E69C96;
+		}
+		.aui-iconfont{
+			color:#FF6100 !important;
+		}
+    </style>
+</head>
+<body>
+	<div id="main" class="hide" >
+		<div class="aui-content my-aui-content">
+			<p class="aui-text-left my-aui-paddng">您当前为<em id="vipType"></em>(应缴纳的押金为<em class="shouldPay" id="Top-shouldPay"></em>元）</p>
+			<div class="my-background">
+			   <div class="aui-btn aui-btn-block aui-text-left my-aui-btnn">
+			   	<span class="aui-iconfont aui-icon-check" id="my-aui-span"></span>
+			   	已缴纳押金<em id="deposit"></em>元
+				</div>
+			</div>
+			<div class="my-background" >
+				<div class="aui-btn aui-btn-block aui-text-left my-aui-btnn" id="clothes-ok">
+					<span class="aui-iconfont aui-icon-check" id="my-aui-span"></span>
+			   		持有衣服数量符合要求
+				</div>
+				<div class="aui-btn aui-btn-block aui-text-left my-aui-btnn" id="clothes-no">
+					<span class="aui-iconfont aui-icon-close" id="my-aui-span"></span>
+			   		持有衣服数量不符合要求
+			   	</div>
+			   		<div class="aui-content-padded" id="why-clothes-no" >
+			   			 <ul class="aui-list-view">
+				   			 <li class="aui-list-view-cell my-li-color" data-win="list_thumb">
+					   			 <div class="aui-col-xs-12 aui-padded-5 content">                  				
+				                	您至少还应归还<em id="clothes-num"></em>件衣服，才可以请求退款，
+				                	当我们收到您的归还的所有服装后，
+				   		 			将立刻为您办理，请耐心等待，谢谢。
+				   		 			如有疑问请联系客服(联系方式:微信添加duolayimengkefu2)。
+	                			</div>
+			            	</li>
+			   			 </ul>
+			   		</div>
+	 
+				</div>
+			<p class="aui-text-left my-margin-top-bottom">退款金额：<em class="aui-text-danger" id="amount"></em>元</p>
+				
+			<div class="aui-border-no" id="my-reason-choose"></div>	
+
+			<p class="aui-text-left ">退款理由：</p>		
+		</div>
+		<div class="aui-content " id="reaon-successful" style="padding:10px 10px; margin-bottom: 0px;">
+			<textarea rows="4" readonly class="my-textarea" id="textarea-text"> </textarea>
+			<p style="font-size: 12px; color:#444;">已受理退款申请，请耐心等待。。。</p>
+			<p style="font-size: 12px; color:#444;">状态：<em>退款中</em></p>
+		</div>
+		<div id="reaon-ing">
+			<div class="aui-card">
+		        <ul class="aui-list-view" id="ul-content">
+		        	<div id="reasons"></div>
+		            <!--<li class="aui-list-view-cell my-choose-color" data-win="list_arrow" >
+		                1.卡片式单行列表标题效果
+		            </li>
+		            <li class="aui-list-view-cell my-li-color" data-win="list_thumb">
+		                2.卡片式单行列表标题效果
+		            </li>
+		            <li class="aui-list-view-cell my-li-color" data-win="list-image">
+		                3.卡片式单行列表标题效果
+		            </li>-->
+		        </ul>
+		    </div>
+		    <div class="aui-content my-content-margin hide" id="my-reaons-text">
+		    	<textarea rows="4" maxlength="500"  placeholder="请输入申请退款理由,字数5~500字之间。" class="my-textarea" id="reaons-content"></textarea>
+		    </div>
+		    <div class="aui-content my-content-margin">
+		    	<div class="aui-btn aui-btn-block my-aui-btn-block" id="reaon-btn">申请退款</div>
+		    </div>
+	    </div>
+	    <div class="my-line"></div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+	var token;
+	var vipType;
+	var reaonsNum;
+	var shouldPay;//应交押金	
+	var deposit=0; //当前押金
+	var refunding;//是否有退款
+	
+	var canRefund;//是否能退款	
+	var is_err =1 ;
+	var reasons;//退款理由
+	var amount=0;//退款金额
+	var refundOptions=[];
+	apiready = function(){
+		_hidePage();
+		init();
+		
+	};
+	function chooseReason(id){	
+		for(var i=1;reaonsNum>=i;i++){
+			$api.removeAttr($api.byId('reason-'+i),'style');
+			$api.addCls($api.byId('my-reaons-text'), 'hide');
+		}	
+		$api.attr($api.byId('reason-'+id),'style','background-color:#FF6100;color:#fff;');
+		$api.attr($api.byId('reaon-btn'),'style','background-color:#FF6100;color:#fff;');
+		$api.attr($api.byId('reaon-btn'),'onclick','refund("'+id+'");');
+		if(id==7){	
+			$api.removeCls($api.byId('my-reaons-text'), 'hide');
+		}			
+	}
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		_showPage();
+		if(ret.statusCode=='200'){
+			shouldPay = ret.info.shouldPay;//应交押金
+			deposit   =	ret.info.deposit; //当前押金
+			refunding = ret.refunding;//是否有退款
+			canRefund = ret.canRefund;//是否能退款
+			reasons = ret.reasons;//退款理由
+			amount  = ret.info.amount;//退款金额
+			extra   = ret.info.refundOptions
+			if(amount=='undefined'||amount==undefined){
+				amount=0;
+			}
+			if(deposit=='undefined'||deposit==undefined){
+				deposit=0;
+			}
+			refundOptions = ret.info.refundOptions;//退款选项
+			var clothes = ret.info.clothes;//当前衣服数
+			reaonsNum = reasons.length;//退款理由数量
+			if(refunding=='YES'){
+				$api.attr($api.byId('clothes-no'), 'class', 'hide');
+				$api.attr($api.byId('why-clothes-no'), 'class', 'hide');
+				$api.attr($api.byId('reaon-ing'),'class','hide');
+				$api.removeCls($api.byId('reaon-successful'),'hide');
+				$api.html($api.byId('textarea-text'), ret.info.reason);
+			}else{
+				if(canRefund=='YES'){ //是否能退款
+					for(var i = 0;reasons.length>i;i++){
+						var html = '';
+						html+='<li id =reason-'+reasons[i].no+' class="aui-list-view-cell my-li-color" onclick="chooseReason(\''+reasons[i].no+'\');" data-win="list_arrow"><div id="reason-text-'+reasons[i].no+'">'+reasons[i].no+'.'+reasons[i].text;
+						html+='</div></li>';
+						$api.append($api.byId('reasons'), html);
+					}
+
+					$api.attr($api.byId('clothes-no'), 'class', 'hide');
+					$api.attr($api.byId('reaon-successful'), 'class', 'hide');
+					$api.attr($api.byId('why-clothes-no'), 'class', 'hide');
+					var reasonList;
+					if(refundOptions!='undefined'&refundOptions!=undefined&refundOptions!=''){
+						if(refundOptions.extra!='undefined'&refundOptions.extra!=undefined&refundOptions.extra!=''){
+							reasonList+='<div onclick="chooseRefund()"><div class="aui-input-row aui-border-no ">';
+							reasonList+='<input value="'+refundOptions.extra+'" class="aui-radio" type="radio" name="demo1"/>';
+							reasonList+='<span class="aui-text-right my-reason-choose" style="font-size: 12px; color:#FF6100;">多余押金退还</span>';
+							reasonList+='</div></div>';
+						}
+						if(refundOptions.all!='undefined'&refundOptions.all!=undefined&refundOptions.all!=''){
+							reasonList+='<div onclick="chooseRefund()"><div class="aui-input-row aui-border-no ">';
+							reasonList+='<input value="'+refundOptions.all+'" class="aui-radio" type="radio" name="demo1"/>';
+							reasonList+='<span class="aui-text-right my-reason-choose" style="font-size: 12px; color:#FF6100;">退全款</span>';
+							reasonList+='</div></div>';
+						}
+						$api.prepend($api.byId('my-reason-choose'), reasonList);
+					}
+				}else{
+					$api.attr($api.byId('reaon-successful'), 'class', 'hide');
+					$api.attr($api.byId('clothes-ok'), 'class', 'hide');
+					$api.removeCls($api.byId('clothes-no'), 'hide');
+					_setHtmlVal('clothes-num',ret.info.clothes);
+				}
+			}
+			_setHtmlVal('amount',amount);
+			_setHtmlVal('Top-shouldPay',shouldPay);
+			_setHtmlVal('deposit',deposit);
+			_setHtmlVal('shouldPay',shouldPay);
+			_setHtmlVal('vipType',vipType);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		_showPage();
+		toastMsg(err.msg);
+	}
+	function init(){
+	_loadingShow();		
+		token = $api.getStorage('token');
+		vipType = $api.getStorage('vipType');
+		var url = serviceUser + 'service/deposit';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+	function chooseRefund(){
+		var num=$api.dom("input[name='demo1']:checked").value;
+		$api.html($api.byId('amount'), num);
+	}
+	function refundSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode=="20000"){
+			api.toast({
+				msg:ret.msg,
+				duration: 2000,
+				location: 'bottom'
+			});
+			setTimeout(init(),1000);
+//						$api.attr($api.byId('reaon-ing'),'class','hide');
+//						$api.removeCls($api.byId('reaon-successful'),'hide');
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function refundErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+
+	function refund(id){
+		if(id==7){
+			var text =_getInputVal('reaons-content');
+		}else{
+			var text =_getHtmlVal('reason-text-'+id);
+		}
+		var moneyNum=$api.html($api.byId('amount'));
+
+		var url = serviceUser + 'service/deposit/refund';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({reason:text,amount:Number(moneyNum)});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,refundSuccessCallback,refundErrorCallback,0,extra);
+   }
+</script>
+</html>

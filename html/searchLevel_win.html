@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>二级标签搜索页面</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../components/slideswipe/slideswipe.css"/>
+    <style>
+        #short-header{
+            padding: 0 0.5rem;
+            height: 0rem;
+            overflow: hidden;
+        }
+        #short-header .my-hit-color{
+            background: #F6F6F6;
+            border-radius: 2px;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #454545;
+            padding: 0.25rem 0.45rem;
+            margin: 0 0.5rem;
+        }
+        #short-header-size{
+
+        }
+        #short-header .icon-lower{
+            font-size: 0.5rem;
+            color: #4A4A4A;
+            margin-right: 0.5rem;
+        }
+        #all-header{
+            height: 5rem;
+            overflow: hidden;
+        }
+        #size-container .slide-swipe{
+            border: none;
+        }
+        #size-container .swiper-slide span{
+            font-family: ArialMT;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-container">
+        <header id="header" class="duola-header flex">
+            <a id="nav-left" class="duola-icon-area" tapmode onclick="navLeftHandler()">
+                <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
+            </a>
+            <div id="nav-title" class="nav-title flex-1"></div>
+            <a id="nav-right" class="duola-icon-area" tapmode onclick="navRightHandler()">
+                <span id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon"></span>
+            </a>
+        </header>
+        <div id="level2-container"></div>
+        <div id="short-header" tap onclick="showAllHeader(this)" class="flex flex-vertical-center flex-space-between">
+            <div>
+                <span class="my-hit-color">季节 <samll id="short-header-season"></samll></span>
+                <span class="my-hit-color">尺码 <samll id="short-header-size"></samll></span>
+            </div>
+            <span class="duola-iconfont icon-lower"></span>
+        </div>
+        <div id="all-header">
+            <div id="season-container"></div>
+            <div id="size-container"></div>
+        </div>
+    </div>
+    <script id="slideswipe-template" type="text/x-dot-template">
+        <div class="slide-swipe swiper-container">
+            <div class="swiper-wrapper">
+                {{~it.data:value:index}}
+                    <div class="swiper-slide flex flex-center" tapmode onclick="{{="slideSwipeClick(this,'"+index+"','"+value+"','"+it.callback+"')"}}"><span class="{{=index == it.activeIndex ? 'my-hit-color' : ''}}" title="{{=index}}">{{=value}}</span></div>
+                {{~}}
+            </div>
+        </div>
+    </script>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/umeng_sdk.js"></script>
+    <script type="text/javascript" src="../script/doT_min.js"></script>
+    <script type="text/javascript" src="../script/swiper.min.js"></script>
+    <script type="text/javascript" src="../components/slideswipe/slideswipe.js"></script>
+	<script type="text/javascript">
+    var remValue = 0;
+    var filters = {};//筛选条件
+    var keywords = null;//搜索关键字
+    var umengPage = null;
+    var gSeasons = null;//季节数组
+    var gSizes = null;//尺码数组
+    var shortHeaderSeasonEl = null;
+    var shortHeaderSizeEl = null;
+    var headerHeight = null;
+    var gLevel2 = null;
+    apiready = function(){
+        //更换header
+        var header = $api.byId('header-container');
+        $api.fixStatusBar(header);
+
+
+        remValue = parseInt($api.cssVal($api.dom('html'),'font-size')) || 20;
+        var page = api.pageParam.page;//页面url
+        var name = api.pageParam.name;//页面名称
+        var title = api.pageParam.title;//页面标题
+        var from = api.pageParam.from;//来源于那个页面
+        var data = api.pageParam.data;//页面数据object
+        umengPage = api.pageParam.umengPage;//友盟页面ID
+
+        //获取frame
+        var frame = data.frame ? data.frame : {};
+        var bounces = frame.bounces ? frame.bounces : false; //页面弹动
+        var frameData = frame.data ? frame.data : {}; //frame 页面参数
+
+        //从缓存读取季节和尺码
+        gSeasons = $api.getStorage('seasons') || CONSTANT.SEASONALL;
+        gSizes = $api.getStorage('sizes') || CONSTANT.SIZESALL;
+
+        //从frame1传递过来的数据
+        var flag = frameData.flag || '';
+        var index = frameData.index || '';
+        var value = frameData.value || '';
+        var gSeasonIndex = frameData.gActiveSeason || 0;
+        var gSizeIndex = frameData.gActiveSize || 0;
+        var inventory=frameData.inventory;
+        filters.size = gSizes[gSizeIndex];
+        filters.season = gSeasons[gSeasonIndex];
+        if(inventory){
+            filters.stockOut=inventory
+        }
+        if(isDefine(flag) && isDefine(value)){
+            filters[flag] = value;
+        }
+        //一级分类，请求二级分类
+        if(flag == 'type' && isDefine(frameData.name) && value != '套装'){
+            $api.css($api.byId('level2-container'),'height:2.5rem');
+            getLevel2(frameData.name);
+//            gLevel2 = CONSTANT.DRESS;
+//            filters.keywords = gLevel2[0];
+//            initSlideSwipe('level2-container',gLevel2,0,'level2SlideSwipeClick');
+        }
+
+        //从搜索页面传递参数
+        keywords = frameData.keywords || '';
+
+        //初始化展开尺码和季节头部的点击色
+        initSlideSwipe('season-container',gSeasons,gSeasonIndex,'seasonSlideSwipeClick');
+        initSlideSwipe('size-container',gSizes,gSizeIndex,'sizeSlideSwipeClick');
+        //初始化折叠头部
+        shortHeaderSeasonEl = $api.byId('short-header-season');
+        shortHeaderSizeEl = $api.byId('short-header-size');
+        if(shortHeaderSeasonEl){
+            $api.text(shortHeaderSeasonEl,gSeasons[gSeasonIndex]);
+        }
+        if(shortHeaderSizeEl){
+            $api.text(shortHeaderSizeEl,gSizes[gSizeIndex]);
+        }
+        //获取nav
+        var nav = data.nav ? data.nav : {};
+        var leftNav = nav.leftNav ? nav.leftNav : {};//导航栏左侧
+        var rightNav = nav.rightNav ? nav.rightNav : {};//导航栏右侧
+        var border = nav.border ? nav.border : false;//导航栏底部边框
+
+        frameData.from = from;
+        frameData.leftNavCallback = leftNav.callback ? leftNav.callback : '';
+        frameData.leftNavExtra = leftNav.extra ? leftNav.extra : '';
+        frameData.rightNavCallback = rightNav.callback ? rightNav.callback : '';
+        frameData.rightNavExtra = rightNav.extra ? rightNav.extra : '';
+        //传递参数到searchLevelFrame
+        frameData.filters = filters;
+        frameData.keywords = keywords;
+
+        onPageUmeng(umengPage);
+        getTitle(title);
+        getNavLeft(leftNav);
+        getNavRight(rightNav);
+        getNavBorder(border);
+
+        //dom设置分类名字
+
+        if(from.winName == 'winSearch_newWin'){
+            //从搜索页面进入二级分类结果页面
+        }
+
+        api.parseTapmode();
+        headerHeight = $api.offset(header).h;
+        var rect = {
+            x:0,
+            y:headerHeight,
+            w:'auto',
+            h:'auto'
+        };
+        openNewFrame(name,page,bounces,rect,frameData);
+
+        var guideValue =  api.getPrefs({
+                sync: true,
+                key: 'guideKey'
+            }) || {};
+        guideValue=typeof (guideValue)=='string'?JSON.parse(guideValue):guideValue;
+        if(!isDefine(guideValue.result)){
+            api.openFrame({
+                name: 'new_user_guide',
+                url: 'new_user_guide.html',
+                rect: {
+                    x: 0,
+                    y: 0,
+                    w: 'auto',
+                    h: 'auto'
+                },
+                pageParam: {
+                    name: 'test'
+                },
+                bounces: false,
+                bgColor: 'rgba(0,0,0,0.3)',
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false
+            });
+            guideValue.result='yes';
+            api.setPrefs({
+                key: 'guideKey',
+                value: guideValue
+            });
+        }
+    }
+
+    //侧滑组件季节点击
+    function seasonSlideSwipeClick(index,value){
+        if(value && filters.season != value){
+            sendEventUmeng(CONSTANT.UMENGEVENT.SEASON,{index:index,value:value});
+            if(shortHeaderSeasonEl){
+                $api.text(shortHeaderSeasonEl,value);
+            }
+            filters.season = value;
+            execSerchLevelData();
+        }
+    }
+
+    //侧滑组件尺码点击
+    function sizeSlideSwipeClick(index,value){
+        if(value && filters.size != value){
+            sendEventUmeng(CONSTANT.UMENGEVENT.SIZE,{index:index,value:value});
+            if(shortHeaderSizeEl){
+                $api.text(shortHeaderSizeEl,value);
+            }
+            filters.size = value;
+            execSerchLevelData();
+        }
+    }
+
+    //在筛选页面执行异步设置查询条件
+    function execSerchLevelData(filterStr){
+        if(typeof filterStr == 'string' && filterStr){
+            var filtersTemp = JSON.parse(filterStr);
+            if(filters.style != filtersTemp.style){
+                if(filtersTemp.style){
+                    getTitle(filtersTemp.style);
+                }else{
+                    getTitle('全部风格');
+                }
+            }else if(filters.style_occasion != filtersTemp.style_occasion){
+                if(filtersTemp.style_occasion){
+                    getTitle(filtersTemp.style_occasion);
+                }else{
+                    getTitle('全部场合');
+                }
+            }
+            if(filters.season != filtersTemp.season){
+                //在筛选页面删除季节
+                if(!filtersTemp.season){
+                    resetSlideSwipeHitColor('season-container');
+                    if(shortHeaderSizeEl){
+                        $api.text(shortHeaderSeasonEl,'全部');
+                    }
+                }
+            }
+            if(filters.size != filtersTemp.size){
+                //在筛选页面删除尺码
+                if(!filtersTemp.size){
+                    resetSlideSwipeHitColor('size-container');
+                    if(shortHeaderSizeEl){
+                        $api.text(shortHeaderSizeEl,'全部');
+                    }
+                }
+            }
+            if(filters.keywords != filtersTemp.keywords){
+                //在筛选页面删除二级标签
+                if(!filtersTemp.keywords){
+                    resetSlideSwipeHitColor('level2-container');
+                }
+            }
+            filters = filtersTemp;
+            if(filters.size && gSizes.indexOf(filters.size) != -1){
+                setSlideSwipeHitColor('size-container',gSizes.indexOf(filters.size));
+                if(shortHeaderSizeEl){
+                    $api.text(shortHeaderSizeEl,filters.size);
+                }
+            }
+            if(filters.season && gSeasons.indexOf(filters.season) != -1){
+                setSlideSwipeHitColor('season-container',gSeasons.indexOf(filters.season));
+                if(shortHeaderSeasonEl){
+                    $api.text(shortHeaderSeasonEl,filters.season);
+                }
+            }
+            if(filters.keywords && gLevel2.indexOf(filters.keywords) != -1){
+                setSlideSwipeHitColor('level2-container',gLevel2.indexOf(filters.keywords));
+            }
+
+           // console.log(getLogStr([filters]));
+        }
+        var execScriptFun = getExecScript('execAsynData',[JSON.stringify(filters)]);
+        api.execScript({
+            frameName: api.pageParam.name,
+            script: execScriptFun
+        });
+    }
+
+    //异步执行打开筛选页面
+    function execOpenChoose(){
+        goChooseWin();
+    }
+
+    //打开筛选页面
+    function goChooseWin(){
+        var name = 'winFilter_new';
+        var title = '筛选';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftText = '';
+        var leftExtra = '';
+        var leftCallback = 'execCloseChoose';
+        var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+        var border = true;
+        var bounces = false;
+        var params = {};
+        params.nav= setNav(leftNav,border);
+        params.frame=setFrame(bounces,{
+            filters:filters,
+            level2:gLevel2
+        });
+        var from = {
+            winName:api.winName,
+            frameName:api.frameName
+        };
+        var url = 'header_new.html';
+        var animation = '';
+        var page = 'winFilter_new.html';
+        var umengPage = CONSTANT.PAGE.FILTER;
+        openNewWinFrame(name,title,params,from,url,animation,page,umengPage);
+    }
+
+    //在筛选页面调用
+    function execCloseChoose(extra,winName,value){
+        api.closeWin({
+            name:winName
+        });
+    }
+    //在searchLevelFrame异步执行显示折叠头部
+    function showShortHeader(){
+        var el = $api.byId('all-header');
+        $api.css(el,'height:0px;transition: height 0.1s linear;');
+        var shortHeader = $api.byId('short-header');
+        api.setFrameAttr({
+            name: 'searchLevelFrame',
+            rect: {
+                x: 0,
+                y: headerHeight - 2.5*remValue,
+                w: 'auto',
+                h: 'auto'
+            }
+        });
+        setTimeout(function(){
+            $api.css(shortHeader,'height:2.5rem;transition:none;');
+        },100);
+    }
+    //点击箭头展开折叠头部
+    function showAllHeader(el){
+        $api.css(el,'height:0px;transition:none;');
+        var allHeader = $api.byId('all-header');
+        $api.css(allHeader,'height:5rem;transition: height 0.2s linear;');
+        setTimeout(function(){
+            api.setFrameAttr({
+                name: 'searchLevelFrame',
+                rect: {
+                    x: 0,
+                    y: headerHeight,
+                    w: 'auto',
+                    h: 'auto'
+                }
+            });
+        },100);
+    }
+    //导航栏左侧
+    function navLeftHandler(){
+        if(isDefine(api.pageParam.name)){
+            var callback = getExecScript('execNavLeftCallback');
+            var params = {
+                frameName : api.pageParam.name,
+                script: callback
+            };
+            api.execScript(params);
+            onPageEndUmeng(umengPage);
+        }else{
+            toastMsg('未找到对应的frame 的 execNavLeftCallback()');
+        }
+    }
+    //导航栏右侧
+    function navRightHandler(){
+        if(isDefine(api.pageParam.name)){
+            sendEventUmeng(CONSTANT.UMENGEVENT.CHOOSE);
+            var callback = 'execNavRightCallback()';
+            var params = {
+                frameName : api.pageParam.name,
+                script: callback
+            };
+            api.execScript(params);
+        }else{
+            toastMsg('未找到对应的frame 的 execNavRightCallback()');
+        }
+    }
+
+    //请求二级分类数据
+    function getLevel2(name){
+        var url = serviceNew + 'cloudCloset/searchCategory';
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData({
+            parent:name
+        });
+        var extra = null;
+        _ajaxData(url,'post',headers,data,getLevel2SuccessCallback,getLevel2ErrorCallback,0,extra);
+    }
+//    渲染二级分类侧滑
+    function getLevel2SuccessCallback(ret,extra){
+        if(ret.statusCode==200 && ret.category && ret.category.list){
+            gLevel2 = ['全部'].concat(ret.category.list.map(function(item){return item.value}));
+            filters.keywords = gLevel2[0];
+            initSlideSwipe('level2-container',gLevel2,0,'level2SlideSwipeClick');
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+
+    function getLevel2ErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+
+    //侧滑组件二级标签点击
+    function level2SlideSwipeClick(index,value){
+        sendEventUmeng(CONSTANT.UMENGEVENT.LEVEL2,{index:index,value:value});
+        if(value && filters.keywords != value){
+            filters.keywords = value;
+            execSerchLevelData();
+        }
+    }
+	</script>
+</html>

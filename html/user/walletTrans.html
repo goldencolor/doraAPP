@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>查看图片</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        *{
+            background: rgba(0,0,0,0) !important;;
+            color: #FFFFFF !important;
+        }
+        .nav-text{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem !important;
+        }
+    </style>
+</head>
+<body>
+<header id="header" class="duola-header flex">
+    <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWebWin()">
+        <div id="leftBg">
+            <span id="nav-left-icon" class="nav-left-icon duola-iconfont icon-left"></span><span id="nav-left-text" class="nav-text"></span>
+        </div>
+    </a>
+    <div id="nav-title" class="nav-title flex-1">我的钱包</div>
+    <a id="nav-right" class="duola-icon-area" tapmode onclick="">
+        <span id="nav-right-text" class="nav-text">使用说明</span><span id="nav-right-icon" class="nav-right-icon"></span>
+    </a>
+</header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script>
+    var header = null;
+    apiready = function () {
+        header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var frameData = api.pageParam.data;
+    };
+    //关闭当前win
+    function closeWebWin(){
+        api.closeWin();
+    }
+</script>
+</html>

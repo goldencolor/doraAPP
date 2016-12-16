@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>滑动评星</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        #start-container{
+            width: 60%;
+            height: 1.5rem;
+            margin: 0 auto;
+        }
+        #start-container span{
+            font-size: 1.5rem;
+            line-height: 1.5rem;
+        }
+    </style>
+</head>
+<div id="start-container" class="flex flex-space-between">
+    <span class="duola-iconfont icon-Scan" tapmode onclick="getStart(this,1)"></span>
+    <span class="duola-iconfont icon-Scan "tapmode onclick="getStart(this,2)"></span>
+    <span class="duola-iconfont icon-Scan "tapmode onclick="getStart(this,3)"></span>
+    <span class="duola-iconfont icon-Scan "tapmode onclick="getStart(this,4)"></span>
+    <span class="duola-iconfont icon-Scan "tapmode onclick="getStart(this,5)"></span>
+</div>
+<body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script src="../script/hammer.min.js"></script>
+<script>
+    var preActiveStart = 0;
+    var containerEl = document.getElementById('start-container');
+    startHammer();
+    function startHammer(){
+        var containerWidth = parseInt($api.cssVal(containerEl,'width'));
+        var startWidth = parseInt($api.cssVal($api.dom(containerEl,'span'),'width'));;
+        var swipeItemWidth = startWidth + (containerWidth / 5 - startWidth)/2;
+        var hammertime = new Hammer(containerEl);
+
+        hammertime.on('swipe pan panstart panmove panend pancancel multipan press pressup pinch rotate', function (ev) {
+            var activeStartEls = $api.domAll(containerEl,'span.hit-color');
+            if(ev.type == 'panstart'){
+                preActiveStart = activeStartEls.length || 0;
+            }
+//            console.log(ev.deltaX,parseInt(ev.deltaX / swipeItemWidth),preActiveStart,activeStartEls.length);
+            if(ev.type == 'panmove'){
+                if(parseInt(ev.deltaX / swipeItemWidth) + preActiveStart != (activeStartEls.length || 0)){
+                    var level = parseInt(ev.deltaX / swipeItemWidth) + preActiveStart;
+//                    console.log(level);
+                    getStart('',level);
+                }
+            }
+        });
+    }
+
+    function getStart(el,level){
+        var startEls = $api.domAll(containerEl,'span');
+        if(el){
+            preActiveStart = level;
+        }
+        if(level <= 0 || level > startEls.length){
+            return;
+        }
+        for(var i = 0; i< startEls.length; i++){
+            var tempEl = startEls[i];
+            if(i < level && !$api.hasCls(tempEl,'hit-color')){
+                $api.addCls(tempEl,'hit-color');
+            }else if(i >= level && $api.hasCls(tempEl,'hit-color')){
+                $api.removeCls(tempEl,'hit-color');
+            }
+        }
+    }
+</script>
+</body>
+</html>

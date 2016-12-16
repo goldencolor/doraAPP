@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	.my-aui-list-view:after {
+		  	border-top: 0px solid #c8c7cc;
+			display: block;
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			-webkit-transform-origin: 0 0;
+			-webkit-transform: scale(1);
+			pointer-events: none;
+		}
+		
+		.my-aui-li-style{
+			font-size: 12px;
+			color:#777777;
+		}
+		.my-aui-list-view{
+			background-color: #F6F6F6; margin-top:10px;margin-bottom:0px;
+		}
+		
+		.my-aui-li-style:last-child:after {
+		  	border-bottom: 0px solid #c8c7cc;
+		}
+		
+    	.my-aui-background-f{
+			background-color:#fff;
+		}
+		.my-aui-border-b:after {
+		    border-bottom: 0px solid #c8c7cc;
+		}
+    	.my-aui-content{
+			margin-top:15px;
+		}
+		#my-aui-input{
+			margin-right: 0px; margin-left:8px;
+		}
+		.my-aui-style{
+			padding: 10px 5px; font-size: 14px; color: #777;
+		}
+		#my-aui-label{
+			font-size: 12px; color:#777;padding-right: 0px;
+		}
+		.my-aui-label em{
+			font-size: 8px;
+		}
+		.my-aui-p-style{
+			padding: 10px 5px; font-size: 14px; color: #777;
+		}
+		.my-aui-p{
+			padding: 10px 5px; font-size: 16px; color: #FF6100;
+		}
+		.my-content-margin{
+    		margin: 0px 10px 0px 10px;
+    	}
+    	.my-aui-btn-block{
+    		background-color:#FF6100;
+    		color: #fff;
+    		font-size: 14px;
+    		padding:10px 0px 10px 0px;
+    		margin-bottom: 10px;
+    	}
+    </style>
+</head>
+<body>
+	<div class="aui-content">
+		<ul class="aui-list-view my-aui-list-view">
+	        <li class="aui-list-view-cell my-aui-li-style">
+	          	您当前订阅有1个多啦袋，本次缴费选择<em>2</em>个多啦袋，您前一次缴费剩余的会员时间将折算为之前的<span>0.50</span>倍。
+	        </li>
+	    </ul>
+	</div>
+    <div class="aui-content my-aui-content my-aui-background-f">
+    	<p class="aui-border-b my-aui-border-b my-aui-p-style">押金：<em>0</em>元</p>
+    	<p class="aui-border-b my-aui-border-b my-aui-p">应付：<em>249</em>元</p>
+    </div>
+    
+    <div class="aui-content my-content-margin">
+    	<div class="aui-btn aui-btn-block my-aui-btn-block">微信支付</div>
+    	<div class="aui-btn aui-btn-block my-aui-btn-block">支付宝支付</div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	
+</script>
+</html>

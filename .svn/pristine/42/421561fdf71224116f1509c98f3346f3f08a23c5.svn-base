@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的-多啦袋</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+		.my-bag{
+			margin: 0px; height: 100px;
+			background-color: #FFFFFF;
+		}
+		.my-c-select{
+			padding: 10px; text-align: center;
+		}
+		.my-c-btn-box{
+			background-color: #FFFFFF; padding: 10px; height: 60px;
+		}
+		.my-bg-color{
+			color: #FFFFFF;
+		}
+		.my-f{
+			margin: 0px; height: 160px;
+		}
+		#mainBox{
+			position: fixed; left: 0px; top: 0px; right: 0px; z-index: 999;
+		}
+
+		.my-clothes-name{
+			font-size: 12px; color: #777777; padding: 0 2px;
+		}
+		.my-clothes-img{
+			border-radius: 8px; position: relative;
+		}
+		.my-size{
+			padding: 0px 3px; border-radius: 8px;
+		}
+		.my-choose{
+			position: absolute; bottom: 50px; right: 0px; left: 10px; height:30px;
+			 color: #FFFFFF; line-height: 30px;text-align: center;
+			
+		}
+		.my-choose span{
+			font-size: 26px; 
+		}
+		.my-choose-color{
+			color: #E59C96;
+		}
+	</style>  
+</head>
+<body>
+<div id="main">
+	<div class="aui-content  my-clothes-box aui-border-b">
+	    <ul class="aui-list-view aui-grid-view" id="my-drabag">	 </ul>
+	</div>
+</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var token;
+	var is_err =1 ;
+	apiready = function(){ 
+		token 	  = $api.getStorage('token');
+		init(); //加载已有衣服
+	};
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			my_own   = ret.dorabag.list;
+			bagCount = ret.dorabag.bagCount; 	 //多啦袋数量
+			bag      = ret.dorabag.perBag; 	 	 //多啦袋的容量
+			drabagT  = ret.dorabag.count;    	 //用户持有多啦袋总量
+			bagOwn   = my_own.length; 	 		 //用户持有的多啦袋数量
+			$api.setStorage('count',bagCount);
+			$api.setStorage('perBag',bag);//每个多啦袋放衣服数量
+			$api.setStorage('ownNum',bagOwn);
+			$api.setStorage('chooseCan',drabagT-bagOwn);
+			setInitbag(my_own);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function init(){
+		_loadingShow();
+		var url = serviceNew + 'dorabag';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+	function setInitbag(my_own){
+		$api.html($api.byId('my-drabag'), '');
+		for(var j=0;j<my_own.length;j++){
+			var html='';
+			html+='<li class="aui-list-view-cell aui-img aui-col-xs-4">';
+            html+='<img id="my-drabag-list-'+my_own[j].code+'" class="aui-img-object my-clothes-img"  src="../image/hold.jpg"/>';
+            html+='<div class="aui-img-body">';
+			html+='<div class="aui-col-xs-12 aui-text-left aui-ellipsis-1 my-clothes-name">';
+			html+='<span class="my-size aui-border my-text-color">'+my_own[j].size+'</span>'+my_own[j].name;
+			html+='</div></div>';
+	        html+='</li>';
+			$api.append($api.byId('my-drabag'), html);
+		}
+		for(var j=0;j<my_own.length;j++){
+			var url = colthPath + my_own[j].img+colthPathStyle; 
+		    _imgCacheUrl(url,'my-drabag-list-'+my_own[j].code);
+		}
+	}
+	</script>
+</html>

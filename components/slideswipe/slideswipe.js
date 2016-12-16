@@ -1,0 +1,88 @@
+//初始化侧滑组件
+function initSlideSwipe(containerId,data,activeIndex,callback,extra){
+    //console.log(getLogStr([containerId,data,activeIndex,callback,extra]));
+    try{
+        var html = doTHtml('slideswipe-template',{data:data,activeIndex:activeIndex?activeIndex:0,callback:callback?callback:''});
+        //console.log(html);
+        var containerEl = $api.byId(containerId);
+        if(containerEl){
+            $api.html(containerEl,html);
+            var swiper = new Swiper($api.dom(containerEl,'div.swiper-container'), {
+                slidesPerView: 'auto',
+                freeMode: true,
+                speed: 100,
+                resistanceRatio: 0.5
+            });
+        }
+    }catch(e){
+        console.error('initSlideSwipe error!');
+    }
+}
+
+function slideSwipeClick(el,index,value,callback){
+    //console.log(el,index,value,callback);
+    //点击变hit-color
+    var swiperWrapperEl = $api.closest(el, 'div.swiper-wrapper');
+    if (swiperWrapperEl) {
+        var activeEl = $api.dom(swiperWrapperEl, 'span.my-hit-color');
+        if (activeEl && activeEl == $api.closest(el, 'div.swiper-slide')) {
+            return;
+        }
+        if(activeEl){
+            $api.removeCls(activeEl, 'my-hit-color');
+        }
+        $api.addCls($api.dom(el, 'span'), 'my-hit-color');
+        //其他
+        var execCallback = getExecScript(callback,[index,value]);
+        eval(execCallback);
+    }
+}
+
+//设置hit-color
+function setSlideSwipeHitColor(containerId,index){
+    var containerEl = $api.byId(containerId);
+    if(containerEl){
+        var activeEl = $api.dom(containerEl,'div.swiper-slide span.my-hit-color');
+        if(activeEl && $api.attr(activeEl, 'title') == index){
+            return;
+        }
+        var spanEl = $api.dom(containerEl,'div.swiper-slide span[title="'+index+'"]');
+        if(spanEl){
+            if(activeEl){
+                $api.removeCls(activeEl,'my-hit-color');
+            }
+            $api.addCls(spanEl,'my-hit-color');
+        }
+    }
+}
+
+//获取hit-color
+function getSlideSwipeHitColor(containerId){
+    var containerEl = $api.byId(containerId);
+    if(containerEl){
+        var activeEl = $api.dom(containerEl,'div.swiper-slide span.my-hit-color');
+        if(activeEl){
+            return {
+                value: $api.text(activeEl),
+                index: $api.attr(activeEl, 'title')
+            }
+        }
+    }
+}
+
+//清除hit-color
+function clearSlideSwipeHitColor(containerId){
+    var containerEl = $api.byId(containerId);
+    if(containerEl){
+        var activeEl = $api.dom(containerEl,'.swiper-slide span.my-hit-color');
+        if(activeEl){
+            $api.removeCls(activeEl,'my-hit-color');
+        }
+    }
+}
+
+//reset hit-color
+function resetSlideSwipeHitColor(containerId){
+    setSlideSwipeHitColor(containerId,0);
+}
+

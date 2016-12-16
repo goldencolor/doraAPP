@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>透明win</title>
+	<style>
+		html,body{
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			background: #FFFFFF;
+		}
+	</style>
+</head>
+<body>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+
+<script type="text/javascript">
+	apiready = function() {
+		var data = api.pageParam.data;//页面数据object
+		var frame = data.frame ? data.frame : {};
+		var frameData = frame.data ? frame.data : {}; //frame 页面参数
+		var page = api.pageParam.page;//页面url
+		var name = api.pageParam.name;//页面名称
+		var bounces = frame.bounces ? frame.bounces : false; //页面弹动
+		var allowEdit = frame.allowEdit ? frame.allowEdit : false; //长按页面是否可以编辑
+		var rect = {
+			x:0,
+			y:0,
+			w:'auto',
+			h:'auto'
+		};
+		openNewFrame(name,page,bounces,rect,frameData,null,null,allowEdit,{
+			type:"page",
+			title:"加载中",
+			text:"请稍后",
+			color:"#45C01A"
+		});
+
+		var title = api.pageParam.title;//页面标题
+		var nav = data.nav ? data.nav : {};
+		var from = api.pageParam.from;//来源于那个页面
+		frameData.from = from;
+		frameData.nav = nav;
+		frameData.title = title;
+		//打开透明头部
+		openTransHeaderFrame(frameData);
+	}
+
+
+
+	//打开透明头部
+	function openTransHeaderFrame(frameData){
+		var headerHeight =  api.getPrefs({
+			sync: true,
+			key: 'headerHeight'
+		}) || 50;
+		api.openFrame({
+			name: 'header_trans',
+			url: 'header_trans.html',
+			rect: {
+				x:0,
+				y:0,
+				w:'auto',
+				h:headerHeight
+			},
+			bounces: false,
+			pageParam:frameData
+		});
+	}
+</script>
+</html>

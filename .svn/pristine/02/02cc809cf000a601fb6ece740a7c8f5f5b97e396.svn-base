@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>分享弹出遮罩</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <style>
+        html{
+            background: rgba(0,0,0,0.0);
+        }
+        body{
+            background: rgba(0,0,0,0.3);
+        }
+        #mask-container{
+            background: #FFFFFF;
+        }
+        #mask-container .header{
+            height: 2.8rem;
+            line-height: 2.8rem;
+            border-bottom: 1px solid #F1F1F1;
+            padding: 0 1rem;
+            text-align: center;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.9rem;
+            color: #828282;
+        }
+        #mask-container .body{
+            padding: 0 2.15rem;
+            height: 6.9rem;
+            width: 100%;
+        }
+        #mask-container .body p{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #828282;
+        }
+        #mask-container .weixin .icon,#mask-container .weixinquan .icon{
+            width: 2.9rem;
+            margin-bottom: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex flex-vertical" style="height: 100%">
+        <div class="flex-1" tapmode onclick="closeMask()">
+
+        </div>
+        <div id="mask-container">
+            <div class="header">
+                <span style="float: left">分享给小伙伴</span>
+                <span style="float: right" tapmode onclick="closeMask()">取消</span>
+            </div>
+            <div class="body flex">
+                <div class="weixin flex-1 flex flex-vertical flex-center" tapmode onclick="closeMask(1)">
+                    <div class="icon">
+                        <img src="../image/weixin_bg.png" alt="" width="100%" />
+                    </div>
+                    <p>微信</p>
+                </div>
+                <div class="weixinquan flex-1 flex flex-vertical flex-center" tapmode onclick="closeMask(2)">
+                    <div class="icon">
+                        <img src="../image/weixinquan_bg.png" alt="" width="100%" />
+                    </div>
+                    <p>朋友圈</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+
+    apiready = function(){
+        api.parseTapmode();
+    }
+
+    function closeMask(index){
+        api.execScript({
+            frameName: 'showInfo_new',
+            script: 'execCloseSharedMask("'+api.frameName+'","'+index+'")'
+        });
+    }
+
+</script>
+</html>

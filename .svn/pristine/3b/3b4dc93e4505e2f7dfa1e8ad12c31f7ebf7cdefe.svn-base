@@ -1,0 +1,549 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>底部导航</title>
+	<link rel="stylesheet" type="text/css" href="./css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/aui.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/aui_win.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/uzui.css"/>
+	<link rel="stylesheet" type="text/css" href="css/fonts/duola_iconfont2.css"/>
+	<style>
+	
+		html, body {
+			height: 100%;
+			width: 100%;
+			background-color: #F6F6F6;
+		}
+		#wrap {
+			height: 100%;
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-box-orient: vertical;
+			-webkit-flex-flow: column;
+			flex-flow: column;
+		}
+
+		#main {
+			-webkit-box-flex: 1;
+			-webkit-flex: 1;
+			flex: 1;
+		}
+		.aui-title{
+		 width:100%;
+			background-color: #FFFFFF;
+		}
+		.aui-nav .aui-bar-tab li{
+			font-family: SourceHanSansCN-Normal;
+			font-size: 12px;
+			color: #A6A6A6;
+		}
+	</style>
+</head> 
+<body>
+<div id="wrap" class="flex-wrap flex-vertical">
+
+	<header id="header" class="aui-bar aui-bar-nav aui-bar-info theme-color" style="border-bottom: 1px solid #F1F1F1;">
+		<a id="my-nav-btn-empty" class="aui-btn aui-btn-info aui-pull-left theme-color" onclick="openMeChats();">
+			<span class="aui-iconfont icon-service" style="font-size:16px"></span>
+		</a>
+		<a id="my-nav-btn1" class="aui-btn aui-btn-info aui-pull-left  theme-color hide" tapmode="active-info" onclick="showFNS();">
+			<span class="aui-iconfont aui-icon-scan"></span>
+		</a>
+		<div id="header-title" class="aui-title ">多啦衣梦</div>
+		<a id="my-nav-btn2" class="aui-btn aui-btn-info aui-pull-right theme-color" onclick="showMsg();">
+			<span class="aui-iconfont icon-news" style="margin-top: 3px"></span>
+		</a>
+		<a id="my-nav-btn3" class="aui-btn hide aui-btn-info aui-pull-right theme-color">
+		</a>
+		<a id="my-nav-btn4" class="aui-btn aui-btn-info aui-pull-right" onclick="openScan();">
+           <span class="duola-iconfont"></span>
+         </a>
+         	
+	</header>
+	<div id="main" class="flex-con">
+
+	</div>
+
+	<footer class="aui-nav aui-border-t" id="footer">
+		<ul class="aui-bar-tab">
+			<li id="tabbar1" class="active-info" onclick="randomSwitchBtn(this,'多啦衣梦',0)" tapmode >
+				<!--<span class="aui-iconfont icon-home-active"></span>-->
+				<!--<p>首页</p>-->
+				<img src="image/theme5.png" alt="" style="width: 30%;height: auto;margin-top:0.2rem">
+				<p style="line-height: 0.8rem">首页</p>
+			</li>
+			<li id="tabbar2" onclick="randomSwitchBtn(this,'云衣橱',1)" tapmode >
+				<!--<span class="aui-iconfont icon-wardrobe" style="font-size:18.5px"></span>
+				<p>云衣橱</p>-->
+				<img src="image/theme6.png" alt="" style="width: 30%;height: auto;margin-top:0.2rem">
+				<p style="line-height: 0.8rem">云衣橱</p>
+			</li>
+			<li id="tabbar3" onclick="randomSwitchBtn(this,'我的衣橱',2)" tapmode >
+				<!--<span class="aui-iconfont icon-myWardrobe" style="font-size:19px"></span>
+				<p>我的衣橱</p>-->
+				<img src="image/theme7.png" alt="" style="width: 30%;height: auto;margin-top:0.2rem">
+				<p style="line-height: 0.8rem">我的衣橱</p>
+			</li>
+			<li id="tabbar4" onclick="randomSwitchBtn(this,'我的',3)" tapmode >
+				<!--<span class="aui-iconfont icon-my" style="font-size:19px"></span>
+				<p>我的</p>-->
+				<img src="image/theme8.png" alt="" style="width: 30%;height: auto;margin-top:0.2rem">
+				<p style="line-height: 0.8rem">我的</p>
+			</li>
+		</ul>
+	</footer>
+
+	<!--<footer class="aui-bar aui-bar-tab" id="footer">-->
+		<!--<div class="aui-bar-tab-item aui-active" id="tabbar1" onclick="randomSwitchBtn(this,'多啦衣梦',0)" tapmode>-->
+			<!--<i class="aui-iconfont aui-icon-home"></i>-->
+			<!--<div class="aui-bar-tab-label">首页</div>-->
+		<!--</div>-->
+		<!--<div class="aui-bar-tab-item" id="tabbar2" onclick="randomSwitchBtn(this,'云衣橱',1)"  tapmode>-->
+			<!--<i class="aui-iconfont aui-icon-star"></i>-->
+			<!--<div class="aui-bar-tab-label">云衣橱</div>-->
+		<!--</div>-->
+		<!--<div class="aui-bar-tab-item"  id="tabbar3" onclick="randomSwitchBtn(this,'我的衣橱',2)" tapmode>-->
+			<!--<i class="aui-iconfont aui-icon-cart"></i>-->
+			<!--<div class="aui-bar-tab-label">我的衣橱</div>-->
+		<!--</div>-->
+		<!--<div class="aui-bar-tab-item" id="tabbar4" onclick="randomSwitchBtn(this,'我的',3)" tapmode>-->
+			<!--<i class="aui-iconfont aui-icon-my"></i>-->
+			<!--<div class="aui-bar-tab-label">我的</div>-->
+		<!--</div>-->
+	<!--</footer>-->
+</div>
+</body>
+</html>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/uz.js"></script>
+<script type="text/javascript" src="script/url.js"></script>
+<script type="text/javascript" src="script/push.js"></script>
+<script type="text/javascript" src="script/version.js"></script>
+<script type="text/javascript" src="script/umeng_sdk.js"></script>
+<script type="text/javascript">
+	//-----配置参数---------
+	//用户登录页面强制弹出
+	var _setLoginUserGuidName 	= 'token';				//设置获取用的GUID缓存名称
+	var _setLoginPageIndex 		= ["NO","NO","YES","YES"];	//设置每个菜单访问时，是否需要强制登录 YES/NO
+	var _setLoginPageFile 		= "login";					//登录页面文件名
+	var _setLoginPageTitle 		= "用户登录";					//登录也标题
+	var _setLoginAnimation 		= "";				//设置登录页面弹出方向 	from_right/from_bottom
+	var _setLoginDuration 		= 600;
+	//上次切换的preIndex
+	var preIndex = null;
+	//设置登录页开启时间
+	function _login(){
+
+		goLogin(CONSTANT.INDEX);
+	}
+	//用户退出参数配置
+	var _setLogoutPageIndex = 0; //设置用户退出后返回的默认页面 用户退出时广播事件 USER_LOGOUT 
+	//-------------------
+
+
+
+	apiready = function(){
+		var header = $api.byId('header');
+		$api.fixStatusBar(header);
+		api.setStatusBarStyle({
+			style: 'dark'
+		});
+		listenVersion();
+		setAppRepair();
+		isUpdateVersion(checkUpdateFinish);
+
+		console.log(api.appVersion);
+//		checkUpdateFinish();
+	};
+	
+	function checkUpdateFinish(extra){
+		initUmeng();
+		setPush();
+		$api.setStorage('jumpTag','9');
+		$api.setStorage('frameTag','NO');
+		$api.rmStorage('wait');
+		var header = $api.byId('header');
+		var headerPos = $api.offset(header);
+		var body_h = $api.offset($api.dom('body')).h;
+		var footer_h = $api.offset($api.byId('footer')).h;
+		$api.setStorage('footerH',footer_h);
+		api.openFrameGroup ({
+			name: 'footer_tab_demo',
+			scrollEnabled:false,
+			rect:{x:0, y:headerPos.h, w:'auto', h:body_h - headerPos.h - footer_h,marginBottom:0},
+			index:0,
+			preload:0,
+			frames:
+					[{
+						name: 'footer_tab_1',
+						url: 'html/frame0_new.html',
+//						url: 'html/frame0.html',
+						bounces:true,
+						vScrollBarEnabled:false
+					},{
+						name: 'footer_tab_2',
+						url: 'html/frame1_new.html',
+						bounces:true,
+						vScrollBarEnabled:true,
+						pageParam:{
+							headerHeight: headerPos.h,
+						}
+					},{
+						name: 'footer_tab_3',
+						url: 'html/frame2.html',
+						bounces:false,
+						vScrollBarEnabled:false,
+						hScrollBarEnabled:false
+					},{
+						name: 'footer_tab_4',
+						url: 'html/frame3.html',
+						bounces:true,
+						vScrollBarEnabled:false
+					}]
+		}, function(ret, err){
+			indexUmeng(ret.index);
+
+			sendEventUmeng(CONSTANT.UMENGEVENT.FOOTER_TAB,{
+				index:ret.index,
+				name:CONSTANT.PAGE.INDEX[ret.index]
+			});
+			var index = ret.index;
+			if(_setLoginPageIndex[index]=="YES" && typeof($api.getStorage(_setLoginUserGuidName))=="undefined"){
+				_login();
+			}else{
+				var name = ret.name;
+				if(index==0){
+					$api.text($api.byId('header-title'),'多啦衣梦');
+				}else if(index==1){
+					$api.setStorage('frameTag','YES');
+					$api.text($api.byId('header-title'),'云衣橱');
+				}else if(index==2){
+					$api.text($api.byId('header-title'),'我的衣橱');
+				}else if(index==3){
+					$api.text($api.byId('header-title'),'我的');
+				}
+			}
+
+		});
+
+		//统计frameGroup友盟页面数据
+		function indexUmeng(index){
+			onPageStartUmeng(CONSTANT.PAGE.INDEX[index]);
+			if(!isNaN(preIndex)){
+				onPageEndUmeng(CONSTANT.PAGE.INDEX[preIndex]);
+			}
+			preIndex = index;
+			listenPageEndUmeng(CONSTANT.PAGE.INDEX[preIndex]);
+		}
+
+		//监听用户退出广播事件
+		api.addEventListener({
+			name:'USER_LOGOUT'
+		},function(ret,err){
+			var tabbar = $api.byId('tabbar'+_setLogoutPageIndex);
+			randomSwitchBtn(tabbar,'菜单1',_setLogoutPageIndex)
+		});
+//		api.setKeepScreenOn({
+//			keepOn: true
+//		});
+		api.setStatusBarStyle({
+			color: '#d6584c'
+		});
+	}
+	function randomSwitchBtn(obj, name, index) {
+		if(_setLoginPageIndex[index]=="YES" && typeof($api.getStorage(_setLoginUserGuidName))=="undefined"){
+			_login();
+		}else{
+			$api.text($api.byId('header-title'),name);
+			var footer = $api.byId('footer');
+
+//			if(!isNaN(preIndex)){
+//				var preEl = $api.byId('tabbar'+(parseInt(preIndex)+1));
+//				var preIcon = $api.dom(preEl,'span');
+//				var oldClass = $api.attr(preIcon,'class');
+//				var newClass = oldClass.substr(0,oldClass.length - 7);
+//				$api.attr(preIcon,'class',newClass);
+//			}
+//			var elIcon = $api.dom(obj,'span');
+//			var elOldClass = $api.attr(elIcon,'class');
+//			var elNewClass = elOldClass + '-active';
+//			$api.attr(elIcon,'class',elNewClass);
+
+			var footerAct = $api.dom(footer, '.aui-bar-tab li.active-info');
+			$api.removeCls(footerAct, 'active-info');
+			$api.addCls(obj, 'active-info');
+			api.setFrameGroupIndex({
+				scroll: false,
+				name: 'footer_tab_demo',
+				index: index
+			});
+
+			if(index==0){
+				//$api.removeCls($api.byId("my-nav-btn1"), "hide");
+				$api.removeCls($api.byId("my-nav-btn-empty"), "hide");
+				$api.removeCls($api.byId("my-nav-btn2"), "hide");
+				$api.addCls($api.byId("my-nav-btn3"), "hide");
+				$api.addCls($api.byId("my-nav-btn4"), "hide");
+			}else if(index==1){
+				$api.removeCls($api.byId("my-nav-btn3"), "hide");
+				//$api.addCls($api.byId("my-nav-btn1"), "hide");
+				$api.addCls($api.byId("my-nav-btn2"), "hide");
+				$api.addCls($api.byId("my-nav-btn4"), "hide");
+				$api.addCls($api.byId("my-nav-btn-empty"), "hide");
+			}else if(index==2){
+				//$api.addCls($api.byId("my-nav-btn1"), "hide");
+				$api.removeCls($api.byId("my-nav-btn4"), "hide");
+				$api.addCls($api.byId("my-nav-btn2"), "hide");
+				$api.addCls($api.byId("my-nav-btn3"), "hide");
+				$api.addCls($api.byId("my-nav-btn-empty"), "hide");
+			}else if(index==3){
+			$api.removeCls($api.byId("my-nav-btn4"), "hide");
+				$api.addCls($api.byId("my-nav-btn2"), "hide");
+				$api.addCls($api.byId("my-nav-btn3"), "hide");
+				$api.addCls($api.byId("my-nav-btn-empty"), "hide");
+			}
+
+		}
+	}
+
+
+	function jumpPage(m){
+		$api.setStorage('jumpTag',m);
+		if($api.getStorage('frameTag')=="YES"){
+			api.execScript({
+				name:'root',
+				frameName:"footer_tab_2",
+				script: 'init(1);'
+			});
+		}
+		randomSwitchBtn($api.byId('tabbar2'), '云衣橱', 1)
+	}
+	//在其他页面异步执行切换到我的衣橱
+	function execGoCloudset(){
+		randomSwitchBtn($api.byId('tabbar3'), '我的衣橱', 2)
+	}
+
+	function showMsg(){
+		var token = $api.getStorage('token');
+
+		if(token=='undefined'||token==undefined){
+			api.openWin({
+				bounces:true,
+				name: 'login',
+				url: 'html/winLogin.html',
+				animation:{
+					type:'movein',
+					subType:'from_bottom'
+				},
+				pageParam: {
+					title: CONSTANT.PAGE.LOGIN,
+					page: _setLoginPageFile,
+					bounces: false,
+					data: ''
+				}
+			});
+			return;
+		}
+		sendEventUmeng(CONSTANT.UMENGEVENT.MSG,{
+			from:'首页'
+		});
+		api.openWin({
+			name: 'msg',
+			url: 'html/win.html',
+			pageParam:{
+				bounces:true,
+				title:"我的消息",
+				page:"msg",
+				name:"msg"
+			}
+		});
+	}
+
+
+	function openMeChats() {
+		var token = $api.getStorage('token');
+		if (token == 'undefined' || token == undefined) {
+			api.openWin({
+				name: 'login',
+				url: 'html/winLogin.html',
+				animation: {
+					type: 'movein',
+					subType: 'from_bottom'
+				},
+				pageParam: {
+					title: CONSTANT.PAGE.LOGIN,
+					page: _setLoginPageFile,
+					bounces: false,
+					data: ''
+				}
+			});
+		} else {
+
+			sendEventUmeng(CONSTANT.UMENGEVENT.ONLINE_SERVICE,{
+				from:'首页'
+			});
+			api.openWin({
+				name: '在线客户',
+				url: 'html/winWeb.html',
+				pageParam: {
+					page: 'winWeb',
+					title: '在线客服',
+					url: 'http://m.duolayimeng.com/chatService?token=' + token
+				}
+			});
+		}
+	}
+	function showFNS(){
+		var token = $api.getStorage('token');
+		if(typeof(token)!='undefined'){
+			toastMsg("请跳转我的多啦袋进行扫描！");
+		}else{
+			api.openWin({
+				name: 'login',
+				url: 'html/winLogin.html',
+				animation:{
+					type:'movein',
+					subType:'from_bottom'
+				},
+				pageParam: {
+					title: CONSTANT.PAGE.LOGIN,
+					page: _setLoginPageFile,
+					bounces: false,
+					data: ''
+				}
+			});
+		}
+	}
+
+	function openSearch(){
+		api.execScript({
+			name: 'root',
+			frameName: 'footer_tab_2',
+			script: 'openSearch();'
+		});
+	}
+
+	function openScan(){
+		var token = $api.getStorage('token');
+		if(typeof(token)!='undefined'){
+			var FNScanner = api.require('FNScanner');
+			FNScanner.openScanner({
+				autorotation: true
+			}, function(ret, err){
+				if("success" == ret.eventType){
+					var content = ret.content;
+					checkCode(content,token);
+				}
+			});
+		}else{
+			api.openWin({
+				bounces:true,
+				name: 'login',
+				url: 'html/winLogin.html',
+				animation:{
+					type:'movein',
+					subType:'from_bottom'
+				},
+				pageParam: {
+					title: CONSTANT.PAGE.LOGIN,
+					page: _setLoginPageFile,
+					bounces: false,
+					data: ''
+				}
+			});
+		}
+	}
+	function checkCode(code,token){
+		if(typeof(code)=='undefined' || code=='' ){
+			api.alert({
+				msg:'图片无法识别'
+			});
+		}else{
+			if(typeof(exists)=='undefined' || exists==''){
+				var body = {"added" : [code]}
+			}else{
+				var body = {"exists" : exists ,"added" : [code]}
+			}
+			api.ajax({
+				url : serviceNew + 'dorabag/scan',
+				cache: true,
+				method : 'post',
+				timeout : 15,
+				dataType : 'json',
+				headers:{
+					"token":token,
+					"Content-Type":"application/json"
+				},
+				returnAll : false,
+				data : {
+					body : body
+				}
+			}, function(ret, err) {
+//					alert(JSON.stringify(ret))
+				return;
+				if(ret.statusCode=='200'){
+					exists=[];
+					toastMsg(ret.msg);
+					api.execScript({
+						frameName:"myDrabag",
+						script: 'init();'
+					});
+				}else if(ret.statusCode=='20102'){
+					exists = ret.detail.exists;
+					toastMsg(ret.msg);
+					api.execScript({
+						frameName:"myDrabag",
+						script: 'init();'
+					});
+				}else{
+					exists=[];
+					toastMsg(ret.msg)
+				}
+
+			});
+		}
+	}
+	function openDraBag(content,token){
+		api.ajax({
+			url : serviceNew + 'cloth/collect/'+id,
+			cache: false,
+			method : 'post',
+			timeout : 15,
+			dataType : 'json',
+			returnAll : false,
+			headers:{
+				token:token
+			},
+			data : {
+				values : {
+					"size" : size
+				}
+			}
+		}, function(ret, err) {
+//			alert(JSON.stringify(ret))
+			if(ret){
+				if(ret.statusCode=='200'){
+					api.execScript({
+						name:'root',
+						frameName:"footer_tab_3",
+						script: 'init(18200538783);'
+					});
+					api.execScript({
+						name:'root',
+						frameName:"footer_tab_2",
+						script: 'init(1);'
+					});
+					toastMsg("添加成功！");
+				}else{
+					toastMsg(ret.msg);
+				}
+			}else{
+				_httpErr();
+			}
+		});
+	}
+</script>

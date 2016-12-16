@@ -1,0 +1,125 @@
+/**
+ * Created by oHHO on 2016-12-11.
+ */
+/**
+ * Created by oHHO on 2016-12-11.
+ */
+
+
+//判断qq是否安装
+function qq_install(callback,extra){
+    var qq = api.require('QQPlus');
+    qq.installed(function(ret) {
+        if(callback){
+            callback(ret.status,extra);
+        }
+    });
+}
+
+function qq_login(callback,extra){
+    var qq = api.require('QQPlus');
+    qq.login(function(ret, err) {
+        console.log(JSON.stringify(ret)+JSON.stringify(err));
+        if (ret.status && ret.accessToken && ret.openId) {
+            qq.getUserInfo( function(ret, err) {
+                if (ret.status && ret.info && callback){
+                    callback(ret.info,extra);
+                }else{
+                    var msg = '授权失败,请重试';
+                    toastMsg(msg);
+                }
+            });
+        }else {
+            var msg = '授权失败,请重试';
+            if(err.code == 1){
+                msg = '授权失败,你取消了授权';
+            }
+            toastMsg(msg);
+        }
+    });
+}
+
+function qq_share_txt(text,callback,extra){
+    var qq = api.require('QQPlus');
+    qq.shareText({
+        text: text,
+    }, function(ret, err) {
+        if (ret.status && callback) {
+            callback(extra);
+        }else{
+            var msg = '分享失败,请重试';
+            if(err.code == -4){
+                msg = '分享失败,你取消了分享';
+            }
+            toastMsg(msg);
+        }
+    });
+}
+
+function qq_share_img(param,callback,extra){
+    var qq = api.require('QQPlus');
+    if(!param.imgPath){
+        console.error('没有本地图片参数');
+        return;
+    }
+    var shareParam = {
+        imgPath:param.imgPath
+    };
+    if(param.type == 'QZone' || param.type == 'QFriend'){
+        shareParam.type = param.type;
+    }
+    if(param.title){
+        shareParam.title = param.title;
+    }
+    if(param.description){
+        shareParam.description = param.description;
+    }
+    qq.shareImage(shareParam, function(ret, err) {
+        if (ret.status && callback) {
+            callback(extra);
+        }else{
+            var msg = '分享失败,请重试';
+            if(err.code == -4){
+                msg = '分享失败,你取消了分享';
+            }
+            toastMsg(msg);
+        }
+    });
+}
+
+function qq_share_page(param,callback,extra){
+    var qq = api.require('QQPlus');
+    if(!param.url){
+        console.error('没有页面url参数');
+        return;
+    }
+    if(!param.imgUrl){
+        console.error('没有页面缩略图参数');
+        return;
+    }
+    var shareParam = {
+        imgUrl:param.imgUrl,
+        url:param.url
+    };
+    if(param.type == 'QZone' || param.type == 'QFriend'){
+        shareParam.type = param.type;
+    }
+    if(param.title){
+        shareParam.title = param.title;
+    }
+    if(param.description){
+        shareParam.description = param.description;
+    }
+    qq.shareNews(shareParam, function(ret, err) {
+        if (ret.status && callback) {
+            callback(extra);
+        }else{
+            var msg = '分享失败,请重试';
+            if(err.code == -4){
+                msg = '分享失败,你取消了分享';
+            }
+            toastMsg(msg);
+        }
+    });
+}
+

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>news</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+        html, body {
+            height: 100%; width: 100%; margin: 0px; padding: 0px; background-color: #F6F6F6;
+        }
+        .my-news-date{
+        	font-size: 13px; color: #999;
+        }
+        .my-news{
+        	color: #6D6D72;
+        }
+        .noNews{
+        	height:60px; line-height: 60px; margin: 0px; text-align: center;
+        	font-size: 14px; color: #AAAAAA;
+        }
+        .pageNumbet{
+		    text-align: center;
+			font-size: 1.5rem;
+		}
+	</style>  
+</head>
+<body>
+	<div class="my-line"></div>
+	<div>
+		<div class="aui-content-padded">
+	        <ul id="main">
+	         <!--  <li class="aui-list-view">
+	                <div class="aui-col-xs-12 aui-ellipsis-10 aui-padded-5 content">
+	                    今年6月30日，在备受瞩目，在备受瞩目的2015荣耀新品发布会上，除了发布大家期待已久的，在备受瞩目的2015荣耀新品发布会上，除了发布大家期待已久的，在备受瞩目的2015荣耀新品发布会上，除了发布大家期待已久的，在备受瞩目的2015荣耀新品发布会上，除了发布大家期待已久的的2015荣耀新品发布会上，除了发布大家期待已久的荣耀新旗舰－－荣耀7之外，还发布了最美蓝牙耳机－－荣耀小口哨
+	                </div>
+	                <p class="aui-padded-5">
+	                    <span class="aui-pull-left">流浪男  2015/7/16 20:00</span>
+	                    <span class="aui-pull-right">118</span>
+	                </p>
+	           </li>-->
+	       </ul>
+       </div>
+	</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var token;
+	var page=1;
+ 	var pageSize=10;
+
+	apiready = function(){
+		token = $api.getStorage('token');	
+		updata();	
+		init(page,pageSize);
+	};
+
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			for(var i =0;ret.count>i;i++){
+				var html='';
+				html+='<li class="aui-list-view">';
+				html+='<div class="aui-col-xs-12 aui-ellipsis-10 aui-padded-5 content">'+ret.list[i].message;
+				html+='</div>';
+				html+='<p class="aui-padded-5">';
+				html+='<span class="aui-pull-left"></span>';
+				html+='<span class="aui-pull-right">'+ret.list[i].createdAt.substring(0,10)+' '+ret.list[i].createdAt.substring(11,19)+'</span>';
+				html+='</p>';
+				html+='</li>';
+				$api.append($api.byId('main'), html);
+			}
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+
+	function init(page,pageSize){
+		_loadingShow();
+		var url = serviceUser + 'messages';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({
+			page: page,
+			pageSize: pageSize,
+			type: String("all")
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+	
+	function updata(){
+		api.addEventListener({
+			name:'scrolltobottom',
+		    extra:{
+		    	threshold:10
+		    }
+		}, function(ret, err){
+			page++;
+		 	init(page,pageSize);
+		   });
+	}
+
+	</script>
+</html>

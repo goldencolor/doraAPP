@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>page1</title>
+
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/aui_flex.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+	<style>
+
+
+		/*重新定义*/
+		.aui-grid-sixteen:after { border: none;}
+		.aui-grid-sixteen li:after {border:none;}
+		.aui-col-xs-3 .aui-iconfont {
+			color: #ffffff;
+			width: 38px;
+			height: 38px;
+			line-height: 38px;
+			border-radius: 50%;
+			font-size: 20px;
+		}
+		/*自定义*/
+		.icons { margin: 0; background-color: #FFFFFF;}
+		.image img { width: 100%}
+		p { font-size: 12px; margin-bottom: 5px;}
+		.content { font-size: 12px;}
+		.aui-iconfont { color: #ffffff;}
+
+		.my-icon-bg-1{background-color: #ff9933}
+		.my-icon-bg-2{background-color: #33b9ff}
+		.my-icon-bg-3{background-color: #ffc333}
+		.my-icon-bg-4{background-color: #ffa2f1}
+
+		#my-ad-box{
+			margin: 0px;
+		}
+		.my-kind-box{
+			background-color: #FFFFFF;
+		}
+
+		.my-kind-r-1{
+			padding-left: 10px; padding-top: 10px;
+		}
+		.aui-list-view,.aui-list-view span{
+			margin-bottom: 0px;  font-size: 15px; color: #777777;
+		}
+		.my-like{
+			font-size: 12px; position: absolute; bottom: 35px; left: 20px;
+			background-color: rgba(0,0,0,0.5); border-radius: 10px; line-height: 20px;
+			padding: 0 6px; color: #FFFFFF;
+		}
+		.my-like span{
+			font-size: 11px; color: #fff;
+		}
+		.my-clothes-name{
+			font-size: 13px; color: #777777;
+		}
+		.my-clothes-img{
+			border-radius: 0px;
+		}
+		.my-themes-bg{
+			background-color: #FFFFFF;
+		}
+		.my-themes-bg img{
+			border-style:none !important;
+		}
+		.my-group-bg{ background-color: #f3ebea;color: #dc8306;}
+		.my-group-bg span{  color: #dc8306;}
+		.aui-list-view:after{
+			border: 0px !important;
+		}
+		.aui-list-view-cell:after{
+			border: 0px !important;
+		}
+		.aui-list-view-cell:last-child{
+			border: 0px !important;
+		}
+
+		.my-cloth-box-new{
+			padding-left: 10px; padding-top: 10px; padding-bottom: 5px; position: relative;
+		}
+		.my-cloth-li{
+			padding-right: 10px;
+		}
+		img{
+			width: 100%;
+
+		}
+		.aui-text-center span {
+			font-size: 24px;
+		}
+
+	</style>
+</head>
+<body>
+<div id="main" class="hide">
+	<div id="my-ad-box"></div>
+
+	<div class="aui-content icons" id="icons">
+		<ul class="aui-grid-sixteen">
+			<li class="aui-col-xs-3 aui-text-center" onclick="getMore('rqph')">
+				<span class="duola-iconfont icon-love"></span>
+				<p>人气</p>
+			</li>
+			<li class="aui-col-xs-3 aui-text-center" onclick="showAutumn()">
+				<span class="duola-iconfont icon-autumn-cloth" style="color: #FF6100"></span>
+				<p>秋季预选</p>
+			</li>
+
+			<li class="aui-col-xs-3 aui-text-center" onclick="aloneDesign()">
+				<span class="duola-iconfont icon-alone-design"></span>
+				<p>独立设计</p>
+			</li>
+			<li class="aui-col-xs-3 aui-text-center" onclick="choosePage()">
+				<span class="duola-iconfont icon-star"></span>
+				<p>选衣达人</p>
+			</li>
+		</ul>
+	</div>
+
+	<div class="my-line"></div>
+	<div class="my-kind-box" onclick="goRecommend()">
+		<img src="../image/share-award.jpg" width="100%"/>
+	</div>
+	<div class="my-kind-box" id="themes">
+		<img src="../image/choose.jpg" width="100%"/>
+		<img src="../image/choose.jpg" width="100%"/>
+		<img src="../image/choose.jpg" width="100%"/>
+		<img src="../image/choose.jpg" width="100%"/>
+		<img src="../image/choose.jpg" width="100%"/>
+	</div>
+	<div id="season"></div>
+	<div id="groups"></div>
+	<div class="my-line"></div>
+</div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/sendInfo.js"></script>
+<script type="text/javascript">
+	var ad;
+	var is_err=0;
+
+	apiready = function(){
+		$api.css($api.byId('my-ad-box'),'height:'+api.winWidth+'px;');
+		reInfo();
+		init();
+		getlocation();//获取地理位置
+		getPreSole();
+	};
+	function reInfo(){
+		api.setRefreshHeaderInfo({
+			visible: true,
+			loadingImg: 'widget://image/refresh.png',
+			bgColor: '#eee',
+			textColor: '#aaa',
+			textDown: '下拉刷新',
+			textUp: '松开就刷新',
+			showTime: false
+		}, function(ret, err){
+			is_err=0;
+			init(1);
+		});
+	}
+	function initSuccessCallback(ret,extra){
+		_showPage();
+		_loadingHide();
+		if(extra.reInfo){
+			api.refreshHeaderLoadDone()
+		}
+		if(ret.statusCode=='200'){
+			ad = ret.ad;
+			var adImgUrl=new Array();
+			for(var i=0;i<ad.count;i++){
+				var url = imgPath + ad.list[i].img+"@0o_0l_640w_80q";
+				adImgUrl[i]=url;
+			}
+			TopImg(adImgUrl);
+			var themes = ret.themes;
+			var groups = ret.groups;
+			setGroups(groups);
+			setThemes(themes);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		_showPage();
+		if(extra.reInfo){
+			api.refreshHeaderLoadDone()
+		}
+		toastMsg(err.msg);
+	}
+	
+	function init(reInfo){
+		if(!reInfo){
+			_loadingShow();
+		}
+
+		var url = serviceNew+'home';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData();
+		var extra = {
+			reInfo:reInfo
+		};
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+
+	function getPreSole(){
+		var url = serviceNew + 'cloudCloset/search';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData();
+		data.body ={
+			page:1,
+			pageSize:4,
+			preSelBefore: 'YES',
+			filters : {
+		        stockOut: "all"
+		    }
+		};
+		var extra = null;
+		_ajaxData(url,'post',headers,data,getPreSoleSuccessCallback,getPreSoleErrorCallback,0,extra);
+	}
+	function getPreSoleErrorCallback(){};
+	function getPreSoleSuccessCallback(ret,extra){
+		if(ret.statusCode == 200 && ret.cloudCloset.count > 0){
+				var html = '';
+				html += '<div class="" style="clear: both;"></div>';
+				html += '<div class="aui-content">';
+				html += '<ul class="aui-list-view">';
+				html += '<li class="aui-list-view-cell my-group-bg" onclick="goSeason()"><span class="aui-iconfont my-color aui-icon-clothes"></span>秋季预选<span class="aui-iconfont aui-icon-more aui-pull-right"></span></li>';
+				html += '<li class="my-cloth-li">';
+				for(var i=0;i<ret.cloudCloset.count;i++){
+					html += '<div class="aui-col-xs-6 my-cloth-box-new" onclick="showClothesPreSoldBefore(\''+ret.cloudCloset.list[i]._id+'\')" tapmode="">';
+					html += '<img id="season-img-'+ret.cloudCloset.list[i]._id+'" class=" my-clothes-img" src="../image/hold.jpg" width="100%" />';
+					html += '<div class="my-clothes-name aui-ellipsis-1">';
+					html += ret.cloudCloset.list[i].name;
+					html += '</div>';
+					html += '<div class=" my-like ">';
+					html += '<span class="aui-iconfont aui-icon-like fill my-text-color"></span>';
+					html += ret.cloudCloset.list[i].like;
+					html += '</div>';
+					html+= '</div>';
+				}
+				html += '</li>';
+				html += '</ul>';
+				html += '</div>';
+
+				var season = $api.byId('season');
+				if(season){
+					$api.html(season, html);
+					for(var n=0;n<ret.cloudCloset.count;n++){
+						var urlPath = colthPath + ret.cloudCloset.list[n].img+colthPathStyle;
+						_imgCacheUrl(urlPath,'season-img-'+ret.cloudCloset.list[n]._id);
+					}
+					api.parseTapmode();
+				}
+			}
+	}
+
+	function goSeason(){
+		showAutumn();
+	}
+
+	function setGroups(groups){
+
+//	alert(JSON.stringify(groups))
+		$api.html($api.byId('groups'),'');
+		for(var i=0;i<groups.count;i++){
+
+			var html = '';
+			var group = groups.list[i];
+			if(group.name == '秋季预选'){
+				continue;
+			}
+			html+='<div class="" style="clear: both;"></div>';
+			html+='<div class="aui-content">';
+			html+='<ul class="aui-list-view" >';
+			html+='<li class="aui-list-view-cell my-group-bg" onclick="getMore(\''+group.name+'\')"><span class="aui-iconfont my-color aui-icon-clothes"></span> ';
+			html+= group.name+'<span class="aui-iconfont aui-icon-more aui-pull-right" ></span>';
+			html+='</li>';
+			html+='<li class="my-cloth-li">';
+			for(var j=0;j<group.count;j++){
+				html+='<div class="aui-col-xs-6 my-cloth-box-new" onclick="showClothes(\''+group.list[j]._id+'\')" tapmode>';
+				html+='<img id="img_'+i+'_'+j+'" class=" my-clothes-img" src="../image/hold.jpg" width="100%">';
+//					html+='<div class="">';
+				html+='<div class="my-clothes-name aui-ellipsis-1">';
+				html+= group.list[j].title+'</div>';
+				html+='<div class=" my-like ">';
+				html+='<span class="aui-iconfont aui-icon-likefill my-text-color"></span>';
+				html+=' '+group.list[j].like+'</div>';
+				html+='</div>';
+			}
+			html+='</li></ul></div>';
+			$api.append($api.byId('groups'), html);
+		}
+
+		for(var i=0;i<groups.count;i++){
+			var group = groups.list[i];
+			for(var n=0;n<group.count;n++){
+				var urlPath = colthPath + group.list[n].img+colthPathStyle;
+				_imgCacheUrl(urlPath,'img_'+i+'_'+n);
+			}
+		}
+//		
+		setTimeout(function(){
+			api.parseTapmode();
+		},1000)
+
+	}
+
+
+	//主题模块
+	function setThemes(themes){
+		$api.html($api.byId('themes'), '');
+		var html = '';
+		for(var i=0;i<themes.count;i++){
+			html+='<img id="img_t_'+i+'" style="width:100%"  src="../image/hold.jpg" onclick="showContent(\''+themes.list[i]._id+'\')">';
+		}
+		$api.html($api.byId('themes'), html);
+		for(var i=0;i<themes.count;i++){
+			var img = imgPath + themes.list[i].img + IndexThemesStyle;
+			_imgCacheUrl(img,'img_t_'+i);
+		}
+
+	}
+	//查看更多
+	function getMore(type){
+		if(type=='rqph'){
+			var key ='人气排行';
+		}else{
+			var key = type;
+		}
+
+		api.openWin({
+			name: 'clothMore',
+			url: 'win.html',
+			pageParam:{
+				bounces:true,
+				title:key,
+				page:"clothMore",
+				name:"clothMore",
+				data:key
+			}
+		});
+	}
+
+	//顶部图片轮放
+	function TopImg(url){
+		if(typeof(UIScrollPicture)=='undefined'){
+			UIScrollPicture = api.require('UIScrollPicture');
+			var W = api.winWidth;
+			var H = W;
+			UIScrollPicture.open({
+						rect: {
+							x: 0,
+							y: 0,
+							w: W,
+							h: H
+						},
+						data: {
+							paths: url,
+						},
+						styles: {
+							indicator: {
+								align: 'center',
+								color: '#FFFFFF',
+								activeColor: '#ff4181'
+							}
+						},
+						placeholderImg: '../image/holder_banner.jpg',
+						contentMode: 'scaleToFill',
+						interval: 3,
+						loop: true,
+						fixedOn: api.frameName,
+						fixed: false
+					},function( ret, err ){
+						if( ret.eventType=='click' ){
+							jumpAd('BANNER',ret.index);
+						}
+					}
+			);
+		}else{
+			UIScrollPicture.reloadData({
+				data: {
+					paths:url
+				}
+			});
+		}
+	}
+
+
+
+	function jumpAd(type,index){
+		if(type=='BANNER'){
+			var http = ad.list[index].url;
+			if(http =='fashion-expert'){
+				choosePage();
+			}else{
+				api.openWin({
+					name: 'adweb',
+					url: 'winWeb.html',
+					pageParam:{
+						url : http,
+						title: '多啦衣梦'
+					}
+				});
+			}
+		}else{
+
+		}
+	}
+
+	function showClothes(id){
+		api.openWin({
+			name: 'showInfo',
+			url: 'winShow.html',
+			pageParam:{
+				bounces:true,
+				title:"...",
+				page:"showInfo",
+				name:"showInfo",
+				id:id
+			}
+		});
+	}
+	function showClothesPreSoldBefore(id){
+		api.openWin({
+			name: 'showInfo',
+			url: 'winShow.html',
+			pageParam:{
+				bounces:true,
+				title:"...",
+				page:"showInfo",
+				name:"showInfo",
+				id:id,
+				preSoldBefore:'YES'
+			}
+		});
+	}
+
+	function showContent(id){
+		api.openWin({
+			name: 'content',
+			url: 'win.html',
+			pageParam:{
+				bounces:true,
+				title:"主题",
+				page:"content",
+				name:"content",
+				data:id
+			}
+		});
+	}
+	function showAutumn(){
+		api.openWin({
+			name: 'season',
+			url: 'win.html',
+			pageParam:{
+				bounces:false,
+				title:"秋季预选",
+				page:"season",
+				name:"season"
+			}
+		});
+	}
+	function aloneDesign(){
+		api.openWin({
+			name: 'design',
+			url: 'win.html',
+			pageParam:{
+				bounces:true,
+				title:"独立设计",
+				page:"design",
+				name:"design"
+
+			}
+		});
+	}
+
+	function choosePage(){
+		token = $api.getStorage('token');
+		if(token=='undefined'||token==undefined){
+			api.openWin({
+				name: '登录',
+				url: 'win.html',
+				pageParam:{
+					name:'login',
+					title:'登录',
+					page:'login'
+				}
+			});
+		}else{
+			api.openWin({
+				name: 'choose',
+				url: 'win.html',
+				pageParam:{
+					bounces:false,
+					title:"选衣达人",
+					page:"choose",
+					name:"choose"
+				}
+			});
+		}
+	}
+	function goRecommend() {
+		token = $api.getStorage('token');
+		if(token=='undefined'||token==undefined){
+			api.openWin({
+				name: '登录',
+				url: 'win.html',
+				pageParam:{
+					name:'login',
+					title:'登录',
+					page:'login'
+				}
+			});
+		}else{
+			api.openWin({
+				name: 'Recommend',
+				url: 'win.html',
+				pageParam:{
+					bounces:false,
+					title:"推荐有奖",
+					page:"Recommend",
+					name:"Recommend"
+				}
+			});
+		}
+	}
+	function jumpPage(){
+		api.execScript({
+			name: 'root',
+			script: 'jumpPage(2);'
+		});
+	}
+	function jumpNew(){
+		api.execScript({
+			name: 'root',
+			script: 'jumpPage(1);'
+		});
+	}
+</script>
+</html>

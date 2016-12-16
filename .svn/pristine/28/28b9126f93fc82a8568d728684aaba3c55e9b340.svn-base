@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>payerr</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uz.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+        html, body {
+            height: 100%; width: 100%; margin: 0px; padding: 0px; background-color: #F6F6F6;
+        }
+        #imgBox{
+        	height:100px; text-align:center; padding: 20px;
+        }
+        #msg{
+        	height:40px; line-height: 40px; text-align:center;
+        	font-size: 18px; color: #666699;
+        }
+
+        .workBox{
+        	height:46px;  margin: 0px;
+        	
+        }
+        .worker{
+        	width: 100%; height:40px; text-align:center; color: #aaa; font-size: 13px;
+        }
+        #orderNum{
+        	height:40px; line-height: 40px; text-align:center; color: #AAAAAA;
+        	font-size: 12px;
+        }
+        .btn-box{
+			margin: 10px;
+		}
+        .btn-blue{
+			height:46px; margin: auto; background-color: #e59c96; text-align:center;
+			line-height: 46px; font-size: 16px; color: #fff;
+			-webkit-border-radius: 6px;
+		}
+		.btn-blue-tap{
+			background-color: #e59c96;
+		}
+	</style>  
+</head>
+<body>
+		<div id="imgBox">
+			<img src="../icon/payErr.png" width="100"/>
+		</div>
+		<div id="msg">配送失败</div>
+		<div id="orderNum"></div>
+		<div class="hLine"></div>
+		
+		<div class="btn-box">
+			<div class="btn-blue btn-black" tapmode="btn-blue-tap" onclick="ok()">确定</div>
+		</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	
+	apiready = function(){
+		
+	};
+	
+	function ok(){
+		api.closeToWin({
+	        name: 'myDrabag'
+        });
+	}
+
+	
+	</script>
+</html>

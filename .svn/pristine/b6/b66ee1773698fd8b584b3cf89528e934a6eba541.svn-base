@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>选择地址遮罩层</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<!--<link rel="stylesheet" type="text/css" href="../css/aui.css"/>-->
+	<link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+	<style>
+		html, body{
+			background: rgba(0,0,0,0.3);
+		}
+		.my-main{
+			background-color: #efefef;
+		}
+		.my-main p{
+			font-size: 12px;
+		}
+		.my-main-text {
+			font-size: 14px;
+		}
+		/**格子重构**/
+		.aui-grid-sixteen:after {
+			border:none;
+		}
+		.aui-grid-sixteen li:after {
+			border:none;
+		}
+		.aui-grid-sixteen li {
+			padding: 5px 5px;
+		}
+		/**列表重构**/
+		.aui-list-view-cell{
+			font-size: 12px; color: #aaa;
+		}
+		/****/
+		#main{
+			position: fixed; bottom: -1rem; left: 0px; right: 0px;
+		}
+		.aui-content{
+			margin-bottom: 0px; padding-bottom: 0px;
+		}
+		.aui-list-item .aui-list-item-inner {
+			color: #505050;
+			font-size: 0.7rem;
+		}
+		.aui-list .aui-list-item-title {
+			color: #505050;
+			font-size: 0.7rem;
+		}
+		.aui-list .aui-list-item-right {
+			font-size: 0.7rem;
+			color: #505050;
+		}
+		.aui-radio:checked{
+			background-color: #FF6100;
+			border: solid 1px #FF6100;
+		}
+	</style>
+</head>
+<body>
+
+<div id="main" class="flex flex-vertical"  style="height: 100%" >
+	<div class="flex-1" onclick="closeMask()">
+
+	</div>
+	<div class="aui-content aui-margin-b-15">
+		<div style="background: #FFFFFF;height:3rem;line-height: 2.9rem; padding: 0 0.75rem">
+			<span style="font-size: 1rem">选择地址</span>
+			<span tapmode onclick="goAddressList()" style="float: right;
+			color: #505050;
+			font-size: 0.6rem;">
+				 <span id="nav-right-icon" class="nav-right-icon aui-iconfont aui-icon-plus" style="font-size: 0.5rem;"></span>  新增地址</span>
+		</div>
+		<ul class="aui-list aui-select-list" id="interpolation">
+		</ul>
+	</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script id="interpolationtmpl" type="text/x-dot-template">
+	{{ for(var i in it) { }}
+	<li class="aui-list-item" onclick="getChoose('{{=i}}')">
+
+		<div class="aui-list-item-inner">
+			<!--c成都比酷科技有限公司-->
+			{{=it[i].province}}{{=it[i].city}}{{=it[i].county}}{{=it[i].detail}}
+
+			<div class="aui-list-item-text">
+				<!--杨怡  18702845559-->
+				{{=it[i].name}}  {{=it[i].phone}}
+				<!--ret.list[i].name+' '+ret.list[i].phone-->
+			</div>
+		</div>
+		<div class="aui-list-item-label">
+			<input class="aui-radio" type="radio" name="radio" id="{{='radio'+i}}" >
+		</div>
+	</li>
+	{{ } }}
+</script>
+<script type="text/javascript">
+
+	apiready = function(){
+		var lists = api.pageParam.addList;
+		$api.html($api.byId('stock'),' ');
+		init(lists);
+	};
+	function init(lists) {
+		doHtml("interpolation","interpolationtmpl",lists);
+	}
+	function getChoose(num){
+		var radio = $api.dom($api.byId("interpolation"),"input[checked='checked']");
+		if (radio) {
+			$api.removeAttr(radio, 'checked');
+		}
+		$api.attr($api.byId("radio" + num), 'checked','checked');
+		api.execScript({
+			name: "bagWin",
+			frameName: "bagFrame",
+			script: "getChoose('"+num+"');"
+		});
+		api.execScript({
+			frameName: "bespeak",
+			script: "getChoose('"+num+"');"
+		});
+	}
+	function goAddressList () {
+		var name = 'addr';
+		var title = '我的收货地址';
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftCallback = 'execCloseSlefWin';
+		var leftNav = setNavData(leftIcon,null,leftCallback);
+		var rightIcon = 'aui-iconfont aui-icon-plus';
+		var rightCallback = 'execAddAddr';
+		var rightNav = setNavData(rightIcon,null,rightCallback);
+		var border = false;
+		var params = {};
+		params.nav= setNav(leftNav,border,rightNav);
+		var from = {
+			winName:api.winName,
+			frameName:api.frameName
+		};
+		var url = 'header_new.html';
+		var animation = {
+			type:"push",                //动画类型（详见动画类型常量）
+			subType:"from_right",       //动画子类型（详见动画子类型常量）
+			duration:300                //动画过渡时间，默认300毫秒
+		};
+		var page = 'addr.html';
+		openNewWinFrame(name,title,params,from,url,animation,page);
+	}
+	//点击返回图标异步执行关闭窗口
+	function execCloseSlefWin(extra,winName,value){
+
+		api.closeWin({
+			name: winName
+		});
+		api.sendEvent({
+			name: 'sendAddress',
+			extra: {
+				key: true
+			}
+		});
+		closeMask();
+	}
+	function closeMask(){
+		api.closeFrame({
+			name: 'address'
+		});
+	}
+
+	function execAddAddr(extra,winName,value){
+		api.openWin({
+			name: 'Newly',
+			url: 'win.html',
+			pageParam:{
+				bounces:true,
+				title: CONSTANT.PAGE.NEWADDR,
+				page:"Newly",
+				name:"Newly",
+				data: {}
+			}
+		});
+	}
+</script>
+</html>

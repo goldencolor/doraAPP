@@ -1,0 +1,224 @@
+/**
+ * Created by oHHO on 2016-11-03.
+ */
+//开屏广告
+//定义常量
+var APPADCONSTANT = {
+    GAMEURL : 'http://wag.i-h5.cn/lb_game/11yue/Nov_dlam/weixin.php',
+    ACTION:{
+        GOWEB:'GOWEB',
+        GOPAGE:'GOPAGE'
+    },
+    //跳转某个页面
+    PAGENAME:[]
+};
+
+//启动广告初始化
+function appAdInit(){
+    // 1.读取本地广告配置
+    var appAd = $api.getStorage('appAd');
+    //console.log(getLogStr(['appAdInit',appAd]));
+    if(appAd){
+        var adId = appAd.id;
+        var adAction = appAd.action;
+        var adForce = appAd.force;
+        var adImg = appAd.adImg;
+        var adLocalImg = appAd.adLocalImg;
+        var adData = appAd.data;
+        var adParam = appAd.param;
+        var adUsed = appAd.used;
+        if(adForce == 'YES' && adLocalImg && adAction){
+            openAppAd(adForce,adLocalImg,adAction,adData,adParam);
+        }else if(adForce == 'NO' && !adUsed && adLocalImg && adAction){
+            openAppAd(adForce,adLocalImg,adAction,adData,adParam);
+        }
+    }
+
+    // 2.向服务器请求最新App启动广告信息
+    postAppAd(adId);
+    //testPostAppAd(adId);
+}
+
+//打开本地广告
+function openAppAd(adForce,adImg,action,data,param){
+    if(!adImg){
+        return;
+    }
+    var remValue = parseInt($api.cssVal($api.dom('html'),'font-size'));
+    var dialogBox = api.require('dialogBox');
+    dialogBox.discount({
+        rect: {
+            w: (remValue * 16.1),
+            h: (remValue * 23.35)
+        },
+        styles: {
+            bg: 'rgba(0,0,0,0)',
+            corner: 0,
+            image:{
+                path:adImg,
+                marginB:(remValue * 6.25)
+            },
+            cancel:{
+                icon:'widget://image/dialog_cancel.png',
+                marginB: (3.45 * remValue),
+                w:(1.4 * remValue),
+                h:(1.4 * remValue)
+            }
+        }
+    }, function(ret) {
+        if (ret.eventType == 'cancel') {
+            dialogBox.close({
+                dialogName: 'discount'
+            });
+            if(adForce == 'NO'){
+                setAppAdUsed();
+            }
+        }else if(ret.eventType == 'image'){
+            if(action == APPADCONSTANT.ACTION.GOWEB && data ){
+                if($api.getStorage('userPhone')){
+                    if(adForce == 'NO'){
+                        setAppAdUsed();
+                    }
+                    data = data + '?tel=' + $api.getStorage('userPhone');
+                    goWebPage('appAdWebUrl',data,param);
+                }else{
+                    //未登录
+                    goLogin('index',null,{isAd:'isAd'});
+                }
+                dialogBox.close({
+                    dialogName: 'discount'
+                });
+            }
+        }
+    });
+}
+
+//跳转到活动web页面
+function goWebPage(name,page,title){
+    var title = title || '多啦衣梦';
+    var leftIcon = 'duola-iconfont icon-left';
+    var leftNav = setNavData(leftIcon);
+    var rightIcon = 'duola-iconfont icon-share';
+    var extra = {appAd:'appAd'};
+    var rightNav = setNavData(rightIcon,null,null,extra);
+    var border = true;
+    var bounces = false;
+    var params = {};
+    params.nav= setNav(leftNav,border,rightNav);
+    params.frame=setFrame(bounces,{
+        sharedPage:APPADCONSTANT.GAMEURL
+    });
+    var from = {
+        winName: api.winName,
+        frameName: api.frameName
+    };
+    var url = 'header_web_trans.html';
+    openNewWinFrame(name,title,params,from,url,null,page);
+}
+
+
+//清除AppAd缓存数据
+function clearAppAd(){
+    $api.rmStorage('appAd');
+}
+
+//设置AppAd缓存数据已经被使用过
+function setAppAdUsed(){
+    var appAd = $api.getStorage('appAd');
+    appAd.used = 'used';
+    $api.setStorage('appAd',appAd);
+}
+
+//向服务器请求最新App启动广告信息
+function postAppAd(adId){
+    var url = serviceNew + 'home/launchBanner';
+    var headers = _getAjaxHeaders(false,true);
+    var data = _getAjaxData();
+    var extra = {adId:adId};
+    _ajaxData(url,'post',headers,data,postAppAdSuccessCallback,postAppAdErrorCallback,0,extra);
+}
+
+//测试
+function testPostAppAd(adId){
+    //var ret = {"statusCode":200,"msg":"OK","id":1478241019159,"action":"GOWEB","force":"YES","adImg":"http://img.duolayimeng.com/launchBanner/dialog_img.png@!480w","data":"http://www.baidu.com","param":"百度","name":"测试1"};
+    //var extra = {adId:adId};
+    //postAppAdSuccessCallback(ret,extra);
+}
+
+function postAppAdErrorCallback(err,extra){
+    console.log(getLogStr([err,extra]));
+}
+
+function postAppAdSuccessCallback(ret,extra){
+    if(ret && ret.statusCode == 200 && ret.id != extra.adId && ret.force && ret.adImg){
+        clearAppAd();
+        var appAd = {
+            id:ret.id,
+            action:ret.action,
+            force:ret.force,
+            adImg:ret.adImg,
+            data:ret.data,
+            param:ret.param
+        };
+        downloadAppAdImg(appAd);
+    }
+}
+
+//下载广告图片
+function downloadAppAdImg(appAd){
+    if(appAd.adImg){
+        var savePath = "fs://ad/"+appAd.id+'.png';
+        var fs = api.require('fs');
+        fs.exist({
+            path: savePath
+        }, function(ret, err) {
+            if(ret.exist){
+                appAd.adLocalImg = getAdLocalImg(appAd.id);
+                //console.log(getLogStr(['downloadAppAdImg',appAd]));
+                $api.setStorage('appAd',appAd);
+            }else{
+                api.download({
+                    url: appAd.adImg,
+                    cache: true,
+                    savePath: savePath,
+                    allowResume: true
+                }, function(ret, err) {
+                    //console.log(getLogStr(['downloadAppAdImg',ret,appAd]));
+                    if (ret && ret.state == 1 && ret.savePath) {
+                        //下载成功
+                        appAd.adLocalImg = ret.savePath;
+                        $api.setStorage('appAd',appAd);
+                    }
+                });
+            }
+        });
+    }
+}
+
+//获取广告图片本地路径
+function getAdLocalImg(id){
+    var adLocalImg = api.fsDir + '/ad/' + id + '.png';
+    //console.log(getLogStr(['getAdLocalImg',adLocalImg]));
+    return adLocalImg;
+}
+
+//登录后重新打开
+function execAppAdInit(){
+    // 1.读取本地广告配置
+    var appAd = $api.getStorage('appAd');
+    //console.log(getLogStr(['appAdInit',appAd]));
+    if(appAd){
+        var adAction = appAd.action;
+        var adForce = appAd.force;
+        var adLocalImg = appAd.adLocalImg;
+        var adData = appAd.data;
+        var adParam = appAd.param;
+        var adUsed = appAd.used;
+        if(adForce == 'YES' && adLocalImg && adAction){
+            openAppAd(adForce,adLocalImg,adAction,adData,adParam);
+        }else if(adForce == 'NO' && !adUsed && adLocalImg && adAction){
+            openAppAd(adForce,adLocalImg,adAction,adData,adParam);
+        }
+    }
+}
+

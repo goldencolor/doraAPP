@@ -1,0 +1,35 @@
+/*------------------swiper样式-----------------*/
+.slide-swipe {
+    width: 100%;
+    height: 2.5rem;
+}
+
+/*设置每行之间的分割线*/
+.slide-swipe{
+    box-sizing:border-box;
+    border-bottom: 1px solid #F1F1F1;
+    /*padding: 0 0.875rem;*/
+}
+
+/*背景色*/
+.slide-swipe .swiper-slide {
+    text-align: center;
+    background: #FFFFFF;
+    /*使每个选项间距相等样式*/
+    width: auto !important;
+    padding: 0 0.875rem;
+}
+
+/*文字样式*/
+.slide-swipe .swiper-slide span{
+    padding: 0.1rem 0.55rem;
+    font-family: SourceHanSansCN-Normal;
+    font-size: 0.8rem;
+    color: #454545;
+}
+/*点击色*/
+.slide-swipe .swiper-slide span.my-hit-color{
+    background: #F6F6F6;
+    border-radius: 4px;
+}
+

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>社区推荐</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        #user{
+            border-bottom: 1px solid #E4E4E4;
+            text-align: center;
+            margin-top: 2.5rem;
+            z-index: -1;
+        }
+        #user .avatar{
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        #user .avatar img{
+            width: 100%;
+            border-radius: 50%;
+        }
+        #user .name{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.8rem;
+            line-height: 0.8rem;
+            color: #212121;
+            margin-top: 0.6rem;
+            overflow: hidden;
+        }
+        #user .disc{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #9B9B9B;
+            margin: 0.6rem auto 1.1rem;
+        }
+        #user .disc i{
+            color: #FF6100;
+            margin: 0 0.15rem;
+            font-size: 0.6rem;
+        }
+        #user .disc span{
+            color: #212121;
+            margin-left: 0.2rem;
+        }
+        #user .chooseBtnBox{
+            height: 2.5rem;
+            line-height: 2.5rem;
+            overflow: hidden;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #4A4A4A;
+            margin-bottom: -1px;
+        }
+        #user .chooseBtnBox .btn{
+            width: 50%;
+            float: left;
+            z-index: 1000;
+        }
+        #user .chooseBtnBox .btn.active span{
+            width: auto;
+            color: #FF6100;
+            border-bottom: 1px solid #FF6100;
+            display: inline-block;
+            height: 2.5rem;
+        }
+        /*主要内容样式*/
+        .mainContent{
+            padding: 0 0.275rem;
+        }
+        /*第一层样式*/
+        .one{
+            padding-bottom: 1.1rem;
+        }
+        .one .title{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            line-height: 0.7rem;
+            color: #4A4A4A;
+            padding-left: 0.275rem;
+            padding-top: 2rem;
+            padding-bottom: 0.55rem;
+        }
+        .one .showAllBox{
+            max-height: 10.5rem;
+            overflow: hidden;
+        }
+        .one #showAllContent{
+
+        }
+        .one #showAllContent .item{
+            width: 5.5rem;
+            height: 10.5rem;
+            margin: 0 0.275rem;
+            padding: 0;
+        }
+        .one #showAllContent .item .imgBox{
+            width: 100%;
+            position: relative;
+        }
+        .one #showAllContent .item .imgBox img{
+            width: 100%;
+            height: 100%;
+        }
+        .one #showAllContent .item .imgBox .sizeMark{
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 0.9rem;
+            line-height: 0.9rem;
+            padding: 0 0.3rem;
+            font-family: Arial-BoldMT;
+            font-size: 0.5rem;
+            color: #FFFFFF;
+            background-color: #212121;
+            border-top-right-radius:0.25rem;
+        }
+        .one #showAllContent .item .name{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #757575;
+            margin-top: 0.4rem;
+        }
+        .one .btnBox{
+            width: 100%;
+        }
+        .one .btnBox .showAllBtn{
+            width: 5.3rem;
+            height:1.15rem;
+            line-height: 1.15rem;
+            text-align: center;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            color: #4A4A4A;
+            margin: 0 auto;
+            border: 1px solid #9B9B9B;
+            border-radius: 0.1rem;
+        }
+        /*第二层样式*/
+        .two .title{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            line-height: 0.7rem;
+            color: #4A4A4A;
+            padding: 1.1rem 0 0.55rem 0.275rem;
+        }
+        .two .item{
+            width: 5.5rem;
+            height: 10.5rem;
+            margin: 0 0.275rem;
+            padding: 0;
+        }
+        .two .item .imgBox{
+            width: 100%;
+            position: relative;
+        }
+        .two .item .imgBox img{
+            width: 100%;
+            height: 100%;
+        }
+        .two .item .imgBox .sizeMark{
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 0.9rem;
+            line-height: 0.9rem;
+            padding: 0 0.3rem;
+            font-family: Arial-BoldMT;
+            font-size: 0.5rem;
+            color: #FFFFFF;
+            background-color: #212121;
+            border-top-right-radius:0.25rem;
+        }
+        .two .item .name{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #757575;
+            margin-top: 0.4rem;
+        }
+        /*分割线样式*/
+        .separated{
+            width: 100%;
+            height: 0.55rem;
+            background-color: #F6F6F6;
+        }
+    </style>
+</head>
+<body>
+    <div id="user">
+        <!--<div class="avatar"><img src="../image/avatar.png" class="opacity0 transition-opacity" ></div>-->
+        <div class="name">{{=it.nickname}}</div>
+        <div class="disc">与我的<i class="duola-iconfont icon-wardrobe"></i>衣橱<span>相似度 {{=it.similar}}</span></div>
+        <div class="chooseBtnBox" id="chooseBtnBoxq">
+            <div class="leftBtn btn active"><span id="closetNumq">衣橱</span></div>
+            <div class="rightBtn btn" tapmode onclick="switchPage(this,1)"><span>下单记录</span></div>
+        </div>
+    </div>
+    <div class="mainContent">
+        <div class="one">
+            <div class="title">我们相同的选择 (12)</div>
+            <div id="showAllBox" class="showAllBox">
+                <div class="aui-grid">
+                <div class="aui-row" id="showAllContent">
+
+                    <div class="aui-col-xs-3 item">
+                        <div class="imgBox">
+                            <img src="../image/hold.jpg" alt="多啦衣梦">
+                            <div class="sizeMark">XL</div>
+                        </div>
+                        <div class="name">宽松蕾罩衫</div>
+                    </div>
+                    <div class="aui-col-xs-3 item">
+                        <div class="imgBox">
+                            <img src="../image/hold.jpg" alt="多啦衣梦">
+                            <div class="sizeMark">XL</div>
+                        </div>
+                        <div class="name">宽松蕾罩衫</div>
+                    </div>
+                    <div class="aui-col-xs-3 item">
+                        <div class="imgBox">
+                            <img src="../image/hold.jpg" alt="多啦衣梦">
+                            <div class="sizeMark">XL</div>
+                        </div>
+                        <div class="name">宽松蕾罩衫</div>
+                    </div>
+                    <div class="aui-col-xs-3 item">
+                        <div class="imgBox">
+                            <img src="../image/hold.jpg" alt="多啦衣梦">
+                            <div class="sizeMark">XL</div>
+                        </div>
+                        <div class="name">宽松蕾罩衫</div>
+                    </div>
+
+                </div>
+                </div>
+            </div>
+            <div class="btnBox" id="btnBox">
+                <div class="showAllBtn" tapmode onclick="showAll()">查看全部</div>
+            </div>
+        </div>
+        <div class="separated"></div>
+        <div class="two">
+            <div class="title">我们不同的选择 (33)</div>
+            <div class="aui-grid">
+                <div class="aui-row">
+
+                    <div class="aui-col-xs-3 item">
+                        <div class="imgBox">
+                            <img src="../image/hold.jpg" alt="多啦衣梦">
+                            <div class="sizeMark">XL</div>
+                        </div>
+                        <div class="name">宽松蕾罩衫</div>
+                    </div>
+                    <div class="aui-col-xs-3 item">
+                        <div class="imgBox">
+                            <img src="../image/hold.jpg" alt="多啦衣梦">
+                            <div class="sizeMark">XL</div>
+                        </div>
+                        <div class="name">宽松蕾罩衫</div>
+                    </div>
+                    <div class="aui-col-xs-3 item">
+                        <div class="imgBox">
+                            <img src="../image/hold.jpg" alt="多啦衣梦">
+                            <div class="sizeMark">XL</div>
+                        </div>
+                        <div class="name">宽松蕾罩衫</div>
+                    </div>
+                    <div class="aui-col-xs-3 item">
+                        <div class="imgBox">
+                            <img src="../image/hold.jpg" alt="多啦衣梦">
+                            <div class="sizeMark">XL</div>
+                        </div>
+                        <div class="name">宽松蕾罩衫</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script id="user-container-template" type="text/x-dot-template">
+        <div class="avatar"><img onload="cacheImgNew(this,'img')" src="../image/avatar.png" class="opacity0 transition-opacity" data-url="{{=getAvatar(it.avatar)}}"></div>
+        <div class="name">{{=it.nickname}}</div>
+        <div class="disc">与我的<i class="duola-iconfont icon-wardrobe"></i>衣橱<span>相似度 {{=it.similar}}</span></div>
+        <div class="chooseBtnBox" id="chooseBtnBox">
+            <div class="leftBtn btn active"><span id="closetNum">衣橱</span></div>
+            <div class="rightBtn btn" tapmode onclick="switchPage()"><span>下单记录</span></div>
+        </div>
+    </script>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script>
+
+    apiready = function(){
+        var postData = api.pageParam.data ? JSON.parse(api.pageParam.data) : {};
+        var userHtml = doTHtml('user-container-template', postData);
+        var userEl =$api.byId('user');
+        $api.html(userEl, userHtml);
+    };
+
+    function init(){
+    }
+
+    function switchPage(){
+//        var chooseBtnBoxEl=$api.byId('chooseBtnBox');
+//        var chooseBtnActive=$api.dom(chooseBtnBoxEl,'.active');
+//        if(chooseBtnActive==el){
+//            return;
+//        }
+//        $api.removeCls(chooseBtnActive, 'active');
+//        $api.addCls(el, 'active');
+        api.setFrameGroupIndex({
+            name: 'community_tab',
+            index: 1
+        });
+    }
+
+    //我们相同的选择显示全部
+    function showAll(){
+        $api.css($api.byId('showAllBox'),'max-height:none');
+        $api.addCls($api.byId('btnBox'),'aui-hide');
+    }
+
+    //拼接头像url
+    function getAvatar(avatar,isWxAvatar){
+        if(isTrue(isWxAvatar)){
+            return avatar;
+        }else if(avatar && avatar.indexOf('../') == -1){
+            return [CONSTANT.PICPRE.RES,avatar].join('');
+        }else{
+            return '';
+        }
+    }
+</script>
+</html>

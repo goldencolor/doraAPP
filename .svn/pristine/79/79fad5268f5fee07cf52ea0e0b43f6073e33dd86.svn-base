@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>一级推荐详情</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    </style>
+</head>
+<body>
+<!--<div class="aui-content aui-margin-b-15">-->
+<!--<ul class="aui-list aui-list-in">-->
+<!--<div id="interpolation"></div>-->
+
+<!--</ul>-->
+<!--</div>-->
+
+
+<div class="aui-content aui-margin-b-15">
+    <ul class="aui-list aui-media-list">
+        <div id="interpolation">
+
+
+        </div>
+    </ul>
+</div>
+
+
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+
+<script id="interpolationtmpl" type="text/x-dot-template">
+    {{if(it && it.length>0){ }}
+    {{for(var i =0;i < it.length;  i++){}}
+    <li class="aui-list-item">
+        <div class="aui-media-list-item-inner">
+            <div class="aui-list-item-media">
+                <p class="aui-font-size-14 my-color">{{= getMobile(it[i].mobile)}}</p>
+            </div>
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-text">
+                    <div class="aui-list-item-title aui-font-size-12 aui-text-gray">{{= promoName}}</div>
+                    <div class="aui-list-item-right">
+                        <p class="aui-font-size-12 my-color">{{= type(it[i].time)}}</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </li>
+    {{ } }}
+    {{ } }}
+</script>
+<script type="text/javascript">
+    var name,promoName;
+    apiready = function(){
+        name = api.pageParam.name;
+        promoName = PROMODETAILS[name];
+        init();
+        pullRefresh(loadRefresh);
+    };
+
+    function loadMore(){
+        api.addEventListener({
+            name:'scrolltobottom',
+            extra:{threshold:0}
+        }, function(ret, err){
+
+            setTimeout(function(){
+                getCloudset();
+            },200);
+        });
+    }
+    function loadRefresh(){
+        currPage = 1;
+        init(CONSTANT.ACTIONREFRESH);
+    }
+    function getMobile(mobile) {
+        return mobile ? mobile :"无手机号";
+    }
+    function type(time){
+        var time = /(\d{4}-\d{2}-\d{2})/.exec(time);
+        return time? time[0]:"无时间";
+    }
+    function init(extra){
+        if(!extra){
+            _loadingShow();
+        }
+        var url = serviceNew + 'recommend/pending';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData({type: name});
+        _ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+    }
+    function Deposit(){
+        api.openWin({
+            name: 'Deposit',
+            url: 'win.html',
+            pageParam:{
+                page: 'Deposit',
+                title: '提现记录'
+            }
+        });
+    }
+    function initSuccessCallback(ret,action) {
+        if (action == CONSTANT.ACTIONREFRESH) {
+            pullRefreshDone();
+        } else {
+            loadingHide();
+        }
+        if (ret.statusCode == 200 && ret.info) {
+            var data = ret.info.list;
+            doHtml("interpolation", "interpolationtmpl", data);
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+    function Rule(){
+        api.openWin({
+            name: 'Rule',
+            url: 'win.html',
+            pageParam:{
+                page: 'Rule',
+                title: '提现规则'
+            }
+        });
+    }
+    function goDetails(name, text){
+//        alert(name);
+//        alert(text.replace(/[\s：:]+/, ''));
+    }
+
+    function initErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+</script>
+</html>

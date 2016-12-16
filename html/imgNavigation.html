@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>查看图片</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html,body{
+            background: rgba(0,0,0,0);
+        }
+        .indexContent{
+            height: 2.5rem;
+            line-height: 2.5rem;
+            text-align: center;
+            width: 100%;
+            color: #FFF;
+            background: rgba(0,0,0,0);
+            font-family: SourceHanSansCN-Regular;
+        }
+    </style>
+</head>
+<body>
+    <div class="indexContent"></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script>
+    var header = null;
+    apiready = function () {
+        header = $api.dom('.indexContent');
+        var frameData = api.pageParam.data;
+        var indexValue = frameData.indexValue ? frameData.indexValue : '';
+        header.innerHTML=indexValue;
+    };
+    function changeNav(indexValue){
+        header.innerHTML=indexValue;
+    }
+</script>
+</html>

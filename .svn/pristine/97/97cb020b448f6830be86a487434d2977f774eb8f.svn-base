@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>当前订阅</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style type="text/css">
+        
+        body{
+            background-color: #FFFFFF;
+        }
+        .total{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #828282;
+            letter-spacing: 0px;
+            height: 1.25rem;
+            line-height: 1.25rem;
+            padding-left: 0.45rem;
+            background-color: #EBEBEB;
+        }
+        .order_content{
+            box-sizing: border-box;
+            padding-top: 1.6rem;
+            background-color: #FFFFFF;
+            padding-bottom: 1.6rem;
+
+        }
+        .order_content:not(:last-child){
+            box-shadow: inset 0px -1px 1px 0px rgba(0,0,0,0.15);
+        }
+        .order_content .good_list{
+            overflow: hidden;
+            position: relative;
+        }
+        .order_content .good_list>div:not(:last-child){
+            float: left;
+        }
+        .leftBox{
+            padding-left:0.9rem;
+            padding-right: 0.4rem;
+        }
+        .leftBox img{
+            width: 4rem;
+            height: 6rem;
+        }
+        .centerBox{}
+        .centerBox .top{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            /*line-height: 0.75rem;*/
+            color: #000000;
+            letter-spacing: 0;
+            max-width: 10rem;
+        }
+        .centerBox .middle{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #A6A6A6;
+            letter-spacing: 0;
+            margin: 0.3rem 0 0.4rem;
+        }
+        .centerBox .bottom{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #A6A6A6;
+            letter-spacing: 0;
+        }
+        .rightBox{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #000000;
+            letter-spacing: 0;
+            text-align: right;
+            float: right !important;
+            padding-right: 0.9rem;
+            font-weight: 800;
+        }
+        .btnBox{
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+        .orderBtn{
+            width: 4rem;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            border: 1px solid #FF6404;
+            border-radius: 2px;
+            font-size: 0.6rem;
+            color: #FF6404;
+            text-align: center;
+            margin-right: 0.9rem;
+        }
+        .orderBtnWuliu{
+            border: 1px solid #7F7F7F;
+            color: #7F7F7F;
+        }
+        /*灰色分割条样式*/
+        .separated{
+            width: 100%;
+            height: 0.5rem;
+            background: #EBEBEB;
+
+        }
+    </style>
+</head>
+<body>
+<!--<section class="aui-content bg-white" id="good" style="background-color: #fff;">-->
+    <!--<div class="title aui-padded-10" style="color:#777;font-size: 14px;">-->
+        <!--目前订阅：-->
+        <!--<span class="aui-pull-right">总价值￥<em id="totalMoney"></em></span>-->
+    <!--</div>-->
+    <!--<div class="aui-flex-col clear" id="good-list"-->
+         <!--style="padding: 10px 10px; border-top: 1px solid #efefef;border-bottom: 1px solid #efefef">-->
+        <!--<div class="aui-col-xs-4">-->
+            <!--<div class="good-title ">名称</div>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-4">-->
+            <!--<div class="good-title ">衣服图片</div>-->
+        <!--</div>-->
+        <!--<div class="aui-col-xs-4" style="padding: 0px 15px;">-->
+            <!--<div class="good-title ">操作</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</section>-->
+<section class="total">
+    总价值:￥<span id="totalMoney"></span>
+</section>
+<div id="order_frm_list">
+    <!--<section class="order_content bg-white" id="good1">-->
+
+        <!--<div id="good-list1" class="good_list">-->
+            <!--<div class="leftBox">-->
+                <!--<img width="100%" id="now-order-1511696" src="../image/hold.jpg" onClick="showClothes('1511696')"/>-->
+            <!--</div>-->
+            <!--<div class="centerBox">-->
+                <!--<div class="top">柠檬印花连衣裙 XL</div>-->
+                <!--<div class="middle">条码310388 价格:￥366.50</div>-->
+                <!--<div class="bottom">2016-10-07 17:44</div>-->
+            <!--</div>-->
+            <!--<div class="rightBox">-->
+                <!--<span>已邮寄</span>-->
+            <!--</div>-->
+            <!--<div class="btnBox" id="list-1511695">-->
+                <!--<div class="flex flex-right">-->
+                    <!--<div class="orderBtn orderBtnWuliu">查看物流</div>-->
+                    <!--<div class="orderBtn" onclick="addComments('http://restful.duolayimeng.com/app/user/orders/current','柠檬印花连衣裙','1511696')">评价晒单</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    <!--</section>-->
+    <!--<div class="separated"></div>-->
+    <!--<section class="order_content bg-white" id="good2">-->
+
+        <!--<div id="good-list2" class="good_list">-->
+            <!--<div class="leftBox">-->
+                <!--<img width="100%" id="now-order-1511697" src="../image/hold.jpg" onClick="showClothes('1511696')"/>-->
+            <!--</div>-->
+            <!--<div class="centerBox">-->
+                <!--<div class="top">柠檬印花连衣裙 XL</div>-->
+                <!--<div class="middle">条码310388 价格:￥366.50</div>-->
+                <!--<div class="bottom">2016-10-07 17:44</div>-->
+            <!--</div>-->
+            <!--<div class="rightBox">-->
+                <!--<span>已邮寄</span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="" id="list-1511696">-->
+            <!--<ul class="">-->
+                <!--<li class="">-->
+                    <!--<div class="flex flex-right">-->
+                        <!--<div class="orderBtn" onclick="addComments('http://restful.duolayimeng.com/app/user/orders/current','柠檬印花连衣裙','1511696')">评价晒单</div>-->
+                        <!--<div class="orderBtn">查看物流</div>-->
+                    <!--</div>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</section>-->
+    <!--<div class="separated"></div>-->
+    <!--<section class="order_content bg-white" id="good3">-->
+        <!--<div id="good-list3" class="good_list">-->
+            <!--<div class="leftBox">-->
+                <!--<img width="100%" id="now-order-1511693" src="../image/hold.jpg" onClick="showClothes('1511696')"/>-->
+            <!--</div>-->
+            <!--<div class="centerBox">-->
+                <!--<div class="top">柠檬印花连衣裙 XL</div>-->
+                <!--<div class="middle">条码310388 价格:￥366.50</div>-->
+                <!--<div class="bottom">2016-10-07 17:44</div>-->
+            <!--</div>-->
+            <!--<div class="rightBox">-->
+                <!--<span>已邮寄</span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="" id="list-1511693">-->
+            <!--<ul class="">-->
+                <!--<li class="">-->
+                    <!--<div class="flex flex-right">-->
+                        <!--<div class="orderBtn" onclick="addComments('http://restful.duolayimeng.com/app/user/orders/current','柠檬印花连衣裙','1511696')">评价晒单</div>-->
+                        <!--<div class="orderBtn">查看物流</div>-->
+                    <!--</div>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</section>-->
+</div>
+<div class="my-line"></div>
+<script id="order-frm-template" type="text/x-dot-template">
+        {{ for(var i = 0; i < it.count; i++) { }}
+            {{? i > 0}}
+                <div class="separated"></div>
+            {{?}}
+
+            <section class="order_content bg-white">
+                <div class="good_list">
+                    <div class="leftBox">
+                        <img src="../image/hold.jpg" class="{{=CONSTANT.CACHECLASSNAME}}" title="{{=getImgUrl(colthPath, it.list[i].img, CONSTANT.PICTUREOSS.ORDER)}}"
+                             tapmode onclick="{{=getExecScript('showClothes',[it.list[i].id])}}"/>
+                    </div>
+                    <div class="centerBox" tapmode onclick="{{=getExecScript('showClothes',[it.list[i].id])}}">
+                        <div class="top">{{=it.list[i].name}} {{=it.list[i].size}}</div>
+                        <div class="middle">条码{{~it.list[i].barcode:value:index}} {{=value}}{{~}} 价格:￥{{=it.list[i].price.toFixed(2)}}</div>
+                        <div class="bottom">{{=it.list[i].lease_time.substr(0,16)}}</div>
+                    </div>
+                    <div class="rightBox">
+                        <span>{{=it.list[i].state=='无' ? '' : it.list[i].state}}</span>
+                    </div>
+                    <div class="btnBox">
+                        <div class="flex flex-right">
+                            {{? it.list[i].exp_no}}
+                            <div class="orderBtn orderBtnWuliu" tapmode onclick="{{=getExecScript('showWuliu',[it.list[i].name, it.list[i].id, serviceUser + 'orders/current', it.list[i].exp_no, it.list[i].lease_time.substring(0, 19)])}}">查看物流</div>
+                            {{?}}
+                            <div class="orderBtn" tapmode onclick="{{=getExecScript('addComments',['',it.list[i].name,it.list[i].id])}}">评价晒单</div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        {{ } }}
+</script>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+    var frameData = null;
+    apiready = function () {
+        frameData = api.pageParam.data;
+        init(CONSTANT.ACTIONINIT);
+        pullRefresh(loadRefresh);
+        api.parseTapmode();
+        api.addEventListener({
+            name:'swipeleft'
+        }, function(ret, err){
+            var scriptFun = getExecScript('switchBtn',['','历史订阅',1]);
+            var params = {
+                script: scriptFun
+            };
+            api.execScript(params);
+        });
+    };
+
+    function test(){
+//        var testData='{"statusCode":200,"count":3,"pageTotal":1,"page":1,"pageSize":20,"list":[{"id":"1513610","lease_time":"2016-10-07 17:36:12.375","com":null,"price":283.5,"name":"交叉系带超显瘦完美复古小黑裙连衣裙","exp_no":null,"state":"无","img":"1513610-1.jpg","barcode":["220078"],"type":"包月","size":"M"},{"id":"1527710","lease_time":"2016-10-07 17:36:12.375","com":null,"price":382.5,"name":"套头背心套装","exp_no":null,"state":"无","img":"1527710-1.jpg","barcode":["491127","450950"],"type":"包月","size":"M"},{"id":"1522175","lease_time":"2016-10-07 17:36:12.375","com":null,"price":225,"name":"条纹背带裙","exp_no":null,"state":"无","img":"1522175-1.jpg","barcode":["304964"],"type":"包月","size":"J"}],"msg":"OK","totalMoney":891}';
+//        var html = doTHtml('order-frm-template',testData);
+//        var cloudsetContainer = $api.byId('order_frm_list');
+//        cloudsetContainer.innerHTML = html;
+    }
+
+    function loadRefresh() {
+        init(CONSTANT.ACTIONREFRESH);
+    }
+
+    function initSuccessCallback(ret,extra) {
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        if(ret.statusCode==200){
+            $api.html($api.byId('totalMoney'), ret.totalMoney.toFixed(2));
+            getOrderHtml(ret);
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+
+    function getOrderHtml(ret){
+        var html = doTHtml('order-frm-template',ret);
+        var cloudsetContainer = $api.byId('order_frm_list');
+        cloudsetContainer.innerHTML = '';
+        $api.append(cloudsetContainer, html);
+        _imgCacheUrl3(cloudsetContainer);
+        api.parseTapmode();
+    }
+
+    function initErrorCallback(err,extra){
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+//            isLoadMoreResponsed = true;
+//            currPage--;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+    function init(action) {
+        if(action == CONSTANT.ACTIONINIT){
+            loadingShow();
+        }
+        var bodyt = {
+            "page": 1,
+            "pageSize": 20
+        };
+        var url = serviceUser + 'orders/current';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData(bodyt);
+        var extra = {action:action};
+        _ajaxData(url, 'post', headers, data, initSuccessCallback, initErrorCallback, 0, extra);
+    }
+
+    function addComments(url, name, id) {
+        var name = 'addComment';
+        var title = '';
+        var leftIcon = 'duola-iconfont icon-Close';
+        var leftText = '';
+        var leftCallback = 'execCloseSlefWin';
+        var leftExtra = '';
+        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+
+        var rightIcon = '';
+        var rightText = '提交';
+        var rightExtra = '';
+        var rightCallback = 'execAddComment';
+        var rightClass = 'font-bold';
+        var rightNav = setNavData(rightIcon, rightText, rightCallback, rightExtra, rightClass);
+
+        var border = false;
+        var bounces = false;
+        var params = {};
+        params.nav = setNav(leftNav, border, rightNav);
+        params.frame = setFrame(bounces, {
+            imgUrl: url,
+            clothes: name,
+            id: id
+        },true);
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'header_new.html';
+        openNewWinFrame(name, title, params, from, url);
+    }
+
+    //异步评论
+    function execAddComment(extra, winName, value){
+        var execScriptFun = getExecScript('submitComment',[]);
+        api.execScript({
+            name:'addCommentWin',
+            frameName:'addCommentFrame',
+            script: execScriptFun
+        });
+    }
+
+    function showWuliu(name, id, url, exp_no, orderTime) {
+        api.openWin({
+            name: 'wuLiuInfo',
+            url: 'win.html',
+            pageParam: {
+                bounces: true,
+                title: "物流信息",
+                page: "wuLiuInfo",
+                name: "wuLiuInfo",
+                data: name,
+                type: url,
+                id: id,
+                exp_no: exp_no,
+                orderTime: orderTime
+            }
+        });
+    }
+
+    function execCloseSlefWin(extra, winName, value) {
+        api.closeWin({
+            name: winName
+        });
+    }
+</script>
+</html>

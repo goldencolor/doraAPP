@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>独立设计</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            background-color: #fff;
+        }
+        .members-top {
+            background-color: #fff;
+        }
+        .members-top .banner img {
+            width: 100%;
+        }
+        .members-top .desc {
+        	margin: 1.2rem 4rem 1.5rem;
+			font-size: 0.7rem;
+			color: #000;
+			line-height: 1.25rem;
+        }
+
+
+        #main {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            padding: 0 1.75rem;
+        }
+        .clothes-item {
+        	position: relative;
+            margin-bottom: 1rem;
+        }
+        .clothes-item .img {
+            width: 100%;
+        }
+        .clothes-item .clothesName {
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            color: #454545;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-align: center;
+        }
+        .heartHot {
+            margin: 0.3rem 0 0;
+            font-size: 0.6rem;
+            color: #b6b6b6;
+            text-align: center;
+            font-family: Arial;
+        }
+        .heartHot .aui-icon-like {
+            font-size: 0.6rem;
+            margin-right: 0.35rem;
+        }
+        .student-corner {
+            position: absolute;
+            top: 0;
+            display: inline-block;
+            height: 0.95rem;
+            line-height: 0.95rem;
+            font-size: 0.6rem;
+            color: #FFFFFF;
+            text-align: center;
+            z-index: 1;
+        }
+        .student-corner.left {
+            left: 0;
+            border-radius: 0 0 0.4rem 0;
+        }
+        .student-corner.right {
+            border-radius: 0 0 0 0.4rem;
+            right: 0;
+        }
+        .student-corner.stockOut {
+            width: 2.8rem;
+            text-align: center;
+            background: rgba(69, 69, 69, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="members-top">
+        <div class="banner">
+        <img id="design-img-desc" src="http://img.duolayimeng.com/%E5%8E%9F%E5%88%9B%E8%AE%BE%E8%AE%A1.jpg" alt=""/>
+        </div>
+        <div class="desc flex-vertical flex flex-center">
+        	<div>独特甄选，只为你</div>
+        	<div>多啦衣梦全球甄选独立设计师品牌</div>
+        	<div>及独立设计师作品，都在这里啦</div>
+        </div>
+    </div>
+    <div id="main">
+
+        <!--<div class="clothes-item" onclick="showClothes(1532439)"><span class="student-corner right stockOut">抢光了</span><img class="img cloth_leases_01532439" id="cloth_leases_01532439" src="../image/hold.jpg" width="100%" /><div class="clothesName">中长款大翻领褶皱风衣</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">12</span></div></div><div class="clothes-item" onclick="showClothes(1532452)"><span class="student-corner right stockOut">抢光了</span><img class="img cloth_leases_11532452" id="cloth_leases_11532452" src="../image/hold.jpg" width="100%" /><div class="clothesName">休闲连帽韩版长款风衣外套</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">12</span></div></div><div class="clothes-item" onclick="showClothes(1532519)"><img class="img cloth_leases_21532519" id="cloth_leases_21532519" src="../image/hold.jpg" width="100%" /><div class="clothesName">通勤OL韩版中长款风衣外套</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">7</span></div></div><div class="clothes-item" onclick="showClothes(1532451)"><img class="img cloth_leases_31532451" id="cloth_leases_31532451" src="../image/hold.jpg" width="100%" /><div class="clothesName">牛仔韩版休闲风衣外套</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">12</span></div></div><div class="clothes-item" onclick="showClothes(1532454)"><img class="img cloth_leases_41532454" id="cloth_leases_41532454" src="../image/hold.jpg" width="100%" /><div class="clothesName">韩版大翻领系带休闲风衣外套</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">19</span></div></div><div class="clothes-item" onclick="showClothes(1532450)"><img class="img cloth_leases_51532450" id="cloth_leases_51532450" src="../image/hold.jpg" width="100%" /><div class="clothesName">韩版系带休闲长款风衣外套</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">13</span></div></div><div class="clothes-item" onclick="showClothes(1532511)"><img class="img cloth_leases_61532511" id="cloth_leases_61532511" src="../image/hold.jpg" width="100%" /><div class="clothesName">韩版大翻领休闲长款风衣外套</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">6</span></div></div><div class="clothes-item" onclick="showClothes(1532447)"><img class="img cloth_leases_71532447" id="cloth_leases_71532447" src="../image/hold.jpg" width="100%" /><div class="clothesName">欧美风长款翻领风衣</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">5</span></div></div><div class="clothes-item" onclick="showClothes(1533347)"><span class="student-corner right stockOut">抢光了</span><img class="img cloth_leases_81533347" id="cloth_leases_81533347" src="../image/hold.jpg" width="100%" /><div class="clothesName">黑色针织上衣</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">40</span></div></div><div class="clothes-item" onclick="showClothes(1533348)"><img class="img cloth_leases_91533348" id="cloth_leases_91533348" src="../image/hold.jpg" width="100%" /><div class="clothesName">蓝条针织上衣</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">31</span></div></div><div class="clothes-item" onclick="showClothes(1533352)"><img class="img cloth_leases_101533352" id="cloth_leases_101533352" src="../image/hold.jpg" width="100%" /><div class="clothesName">蓝色蝴蝶结条纹上衣</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">30</span></div></div><div class="clothes-item" onclick="showClothes(1533350)"><span class="student-corner right stockOut">抢光了</span><img class="img cloth_leases_111533350" id="cloth_leases_111533350" src="../image/hold.jpg" width="100%" /><div class="clothesName">粉色针织上衣</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">69</span></div></div><div class="clothes-item" onclick="showClothes(1533039)"><img class="img cloth_leases_121533039" id="cloth_leases_121533039" src="../image/hold.jpg" width="100%" /><div class="clothesName">双面羊绒大衣80%含毛量</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">61</span></div></div><div class="clothes-item" onclick="showClothes(1533034)"><img class="img cloth_leases_131533034" id="cloth_leases_131533034" src="../image/hold.jpg" width="100%" /><div class="clothesName">双面羊绒大衣80%含毛量</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">13</span></div></div><div class="clothes-item" onclick="showClothes(1533014)"><img class="img cloth_leases_141533014" id="cloth_leases_141533014" src="../image/hold.jpg" width="100%" /><div class="clothesName">风衣</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">29</span></div></div><div class="clothes-item" onclick="showClothes(1533019)"><span class="student-corner right stockOut">抢光了</span><img class="img cloth_leases_151533019" id="cloth_leases_151533019" src="../image/hold.jpg" width="100%" /><div class="clothesName">套装</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">128</span></div></div><div class="clothes-item" onclick="showClothes(1533020)"><img class="img cloth_leases_161533020" id="cloth_leases_161533020" src="../image/hold.jpg" width="100%" /><div class="clothesName">套装</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">101</span></div></div><div class="clothes-item" onclick="showClothes(1532112)"><img class="img cloth_leases_171532112" id="cloth_leases_171532112" src="../image/hold.jpg" width="100%" /><div class="clothesName">蕾丝套装</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">30</span></div></div><div class="clothes-item" onclick="showClothes(1532059)"><img class="img cloth_leases_181532059" id="cloth_leases_181532059" src="../image/hold.jpg" width="100%" /><div class="clothesName">绣红花蕾丝裙</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">52</span></div></div><div class="clothes-item" onclick="showClothes(1532189)"><img class="img cloth_leases_191532189" id="cloth_leases_191532189" src="../image/hold.jpg" width="100%" /><div class="clothesName">修身针织裙</div><div class="heartHot"><span class="aui-iconfont aui-icon-like"></span><span class="popularity">23</span></div></div>-->
+
+    </div>
+    <div class="load-more flex flex-center"></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript">
+    var frameData = null;
+    var currPage = 1;
+    var pageSize = 20;
+    var totalPage = 1;
+    var loading = true;
+
+    apiready = function(){
+        frameData = api.pageParam.data;
+        getLeases();
+        loadMore();
+    };
+
+    function getLeases(page){
+        //请求寄租的衣服
+        loadingShow();
+
+        var url = serviceNew + 'cloudCloset';
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData({
+            "goodsSource": "consign",
+            "filters": {
+                "stockOut": "有库存"
+            },
+            "page": page,
+            "pageSize": pageSize
+        });
+        var extra = null;
+        _ajaxData(url,'post',headers,data,getLeasesSuccessCallback,getLeasesErrorCallback,0,extra);
+
+    }
+
+    function getLeasesSuccessCallback(ret){
+        loadingHide();
+        if(ret.statusCode==200 && ret.cloudCloset){
+            $api.setStorage('leases',ret.cloudCloset.list);
+            totalPage= ret.cloudCloset.pageTotal;
+            getLeasesHtml(ret.cloudCloset);
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+
+    function getLeasesErrorCallback(err){
+        loadingHide();
+        toastMsg(err.msg);
+    }
+
+    function getLeasesHtml(clothes) {
+        var html = ''
+        clothes.list.map(function(item, i) {
+            html += '<div class="clothes-item" onclick="showClothes(' + (item._id ? item._id : 0) + ')">';
+            if (item.available === 'NO') {
+                html += '<span class="student-corner right stockOut">抢光了</span>';
+            }
+            html += '<img class="img cloth_leases_' + i + item._id + '" id="cloth_leases_' + i + item._id + '" src="../image/hold.jpg" width="100%" />';
+            html += '<div class="clothesName">' + item.name + '</div>';
+            html += '<div class="heartHot">';
+            html += '<span class="aui-iconfont aui-icon-like"></span>';
+            html += '<span class="popularity">' + item.like + '</span>';
+            html += '</div>';
+            html += '</div>';
+        });
+        $api.append($api.byId('main'), html);
+        
+        for(var i = 0; i < clothes.list.length; i++){
+            var url = colthPath + clothes.list[i].img + showInfoStyle;
+            _imgCacheUrl2(url,'.cloth_leases_' + i + clothes.list[i]._id);
+        }
+
+        api.parseTapmode();
+        loading = true;
+    }
+
+	//加载更多
+    function loadMore(){
+        api.addEventListener({
+            name:'scrolltobottom',
+            extra:{threshold:0}
+        }, function(ret, err){
+            currPage++;
+            if(currPage > totalPage){
+                showLoadMore('没有更多了');
+            } else if (currPage > 1 && loading) {
+                showLoadMore('正在加载...');
+                setTimeout(function(){
+                    getLeases(currPage);
+                },200);
+                loading = false;
+            }
+        });
+    }
+
+    //公用头部导航栏坐侧点击异步执行的方法
+    function execNavLeftCallback(value){
+        var from = frameData.from;
+        var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+        if(!isDefine(callback)){
+            return;
+        }
+        var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+        var params = {
+            script: getExecScript(callback,new Array(extra,api.winName,value))
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+
+    //公用头部导航栏右侧点击异步执行的方法
+    function execNavRightCallback(value){
+        var from = frameData.from;
+        var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+        if(!isDefine(callback)){
+            return;
+        }
+        var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+        var params = {
+            script: getExecScript(callback,new Array(extra,api.winName,value))
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+</script>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>变包</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+    <style>
+        html, body {
+            background: #F8F8F8;
+            font-family: ArialMT;
+        }
+        #app {
+            padding-top: 0.75rem;
+        }
+        .aui-content-padded {
+            margin: 0 0 0.75rem 0;
+            position: relative;
+            -webkit-overflow-scrolling: touch;
+        }
+        .aui-content-padded .aui-card-list .aui-card-list-content-padded {
+            font-size: 0.6rem;
+            color: #303030;
+            line-height: 0.8rem;
+        }
+        .renew-footer p{
+            font-size: 0.6rem;
+            color: #9D9D9D;
+            line-height: 1rem;
+            text-align: left;
+            padding-left: 1rem;
+        }
+        .renew-footer .renew-footer-span{
+            color: #FF6100;
+        }
+        .aui-row .icon-bag {
+            font-size: 1.4rem;
+            margin: 0 0.1rem;
+        }
+        .aui-row .icon-right-arrow {
+            font-size: 1.2rem;
+        }
+        .aui-content-padded .aui-card-list .aui-label-outlined.aui-label-danger {
+            color: #FF6100;
+            border-color: #FF6100;
+            float: right;
+            margin-top: 0.8rem;
+        }
+        .aui-card-list-footer .aui-btn-warning{
+            background-color: #FF6100 !important;
+        }
+    </style>
+</head>
+<body>
+<div id="app" >
+    <section  v-cloak class="aui-content-padded" v-for="bag in bagList">
+        <div class="aui-card-list">
+            <div class="aui-card-list-header">
+                <div class="aui-row aui-row-padded" style="width: 100%">
+                    <div class="aui-col-xs-8">
+                        <i class="duola-iconfont icon-bag" v-for="n in bagCount"></i>
+                        <i class="duola-iconfont icon-right-arrow"></i>
+                        <i class="duola-iconfont icon-bag" v-for="n in bag.newCount"></i>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <div class="aui-label  aui-label-danger aui-label-outlined" v-if="bag.deposit > 0" v-cloak>{{bag.bagChangeType === "plus" ?"交":"退"}}{{bag.deposit}}押金</div>
+                    </div>
+                </div>
+            </div>
+            <div class="aui-card-list-content-padded" v-cloak>
+                {{bag.describe | deposit }}
+            </div>
+            <div class="aui-card-list-footer"  @click="change(bag)">
+                <p><div class="aui-btn aui-btn-block"  v-bind:class="{'aui-btn-warning': bag.changable =='YES' || bag.dueTimeLess =='YES' }" v-cloak >{{bag.deposit == "0" ? "立即变更":"立即缴费"}}</div></p>
+            </div>
+        </div>
+    </section>
+    <section class="aui-content-padded" tapmode onclick="vm.goYearVip()">
+        <div class="aui-row  renew-footer">
+            <p>提示：欲增加多啦袋，会员时间需要大于30天（不包括30天）</p>
+            <p>欲减少多啦袋，需所减多啦袋内衣服都已归还,成功后押金可</p>
+            <p>找多啦衣梦客服人员退回，请勿频繁变包。</p>
+            <p>年费用户增加多啦袋不用交押金了解更多点击  <span class="renew-footer-span">年费专享福利 >></span></p>
+        </div>
+    </section>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/pingpp.js"></script>
+<script type="text/javascript">
+    var count,vm,dueTime0,dueTime;
+    apiready = function(){
+        count =  $api.getStorage('count');
+        userVersion = $api.getStorage('userVersion');
+        dueTime0 = $api.getStorage('dueTime');
+        dueTime = new Date(dueTime0);
+        dueTime = dueTime.getFullYear() > 0 ? dueTime : new Date(Date.standardDateStr(dueTime0));
+        vm = new Vue({
+            el : '#app',
+            data: {
+                loadMore : {
+                    show : false, //控制是否显示 加载更多 默认不显示
+                    text : '加载更多...'
+                },
+                bagList: [
+//                    {changable: "YES",newCount: 1,bagChangeType: "reduce",deposit: 300,describe:"变更为2个多啦袋，可以持有6件衣服，会员时间减半"},
+//                    {changable: "NO",newCount: 3,bagChangeType: "plus",deposit: 600,describe:"变更为3个多啦袋，可以持有9件衣服，会员时间为之前的1/3"},
+//                    {changable: "NO",newCount: 3,bagChangeType: "plus",deposit: 600,describe:"变更为3个多啦袋，可以持有9件衣服，会员时间为之前的1/3"},
+//                    {changable: "YES",newCount: 3,bagChangeType: "plus",deposit: 0,describe:"变更为3个多啦袋，可以持有9件衣服，会员时间为之前的1/3"}
+
+                ],
+                userVersion: $api.getStorage('userVersion'),
+                bagCount: Number(count),
+                dueTime: dueTime,
+                nowTime: new Date(),
+                day30 : 30 * 24 * 60 * 60 * 1000,
+                bagData :{
+                    newCount: 1,
+                    deposit: 0
+                },
+                completed : false //是否加载了所有数据
+            },
+            filters: {
+                deposit: function(deposit) {
+                    if (!deposit) return '';
+                    var multiple;
+                    if(deposit.newCount > deposit.userBags){
+                        multiple = deposit.userBags + "/" + deposit.newCount;
+                    }else {
+                        multiple = deposit.userBags/deposit.newCount +"倍";
+                    }
+                    return  "变更为"+deposit.newCount+"个多啦袋，可持有"+deposit.leaseLimit+"件衣服，会员时间为之前的"+multiple;
+                }
+            },
+            methods: {
+                fnInit: function(){
+                    _loadingShow();
+                    var self = this;
+                    var body = {"bags":Number()};
+                    var url = serviceUser + 'service/pay/query/bagChangeList';
+                    var headers = _getAjaxHeaders(true,true);
+                    var data = _getAjaxData(body);
+                    var extra = null;
+                    _ajaxData(url,'post',headers,data,function(ret,extra){
+                        _loadingHide();
+                        if(ret.statusCode == '200' ){
+                            self.bagList = ret.result;
+                        }else if(ret.statusCode=='10104'){
+                            goLogin('no',"../winLogin.html");
+                        }else{
+                            toastMsg(ret.msg);
+                        }
+                    },function(err,extra){
+                        toastMsg(err.msg);
+                        _loadingHide();
+                    },0,extra);
+                },
+                change: function(bag){
+                    if ((!bag || bag.changable === "NO") && bag.dueTimeLess === "NO") return;
+                    var self = this;
+                    if (self.dueTime.getTime() < self.nowTime.getTime()) {
+                        toastMsg("您的会员已经过期，无法变包");return;
+                    }
+                    if(((self.dueTime.getTime() - self.nowTime.getTime()) < self.day30 ) && bag.deposit !== 0){
+                        self.errTimeAlert();return;
+                    }
+                    if (bag.newCount < self.bagCount || bag.deposit === 0) {
+                        self.changeBag(bag.newCount);
+                        return;
+                    }
+                    self.bagData = {
+                        newCount: bag.newCount,
+                        deposit: bag.deposit
+                    };
+                    var name = 'buyClothes_mask';
+                    var page = '../buyClothes_mask.html';
+                    var rect = {
+                        x: 0,
+                        y: 0,
+                        w: 'auto',
+                        h: 'auto'
+                    };
+                    var bounces = false;
+                    var data = {frameName: "renewFrame"};
+                    openNewFrame(name, page, bounces, rect, data);
+
+                },
+                changeBag: function(num){
+                    _loadingShow();
+                    var url = serviceNew + 'user/service/dorabag/changeBag';
+                    var headers = _getAjaxHeaders(true,true);
+                    var data = _getAjaxData({"bags":Number(num)});
+                    var extra = num;
+                    _ajaxData(url,'post',headers,data,function(ret,extra){
+                        _loadingHide();
+                        if(ret.statusCode == '200' ){
+                            vm.sucssAlert();
+                            setTimeout("goWallet()",5000);
+                        }else if(ret.statusCode=='10104'){
+                            goLogin('no',"../winLogin.html");
+                        }else{
+                            toastMsg(ret.msg);
+                        }
+                    },function(err,extra){
+                        _loadingHide();
+                        toastMsg(err.msg);
+                    },0,extra);
+                },
+                pay: function(pay){
+                    api.showProgress({
+                        style: 'default',
+                        animationType: 'fade',
+                        title: '正在支付···',
+                        text: '请稍候'
+                    });
+                    var self = this;
+                    var body = {"bags": self.bagData.newCount,channel:pay,amountFront: self.bagData.deposit,coupons:[],"duration":1};
+                    var url = serviceUser + 'service/pay/start/bagChange';
+                    var headers = _getAjaxHeaders(true,true);
+                    var data = _getAjaxData(body);
+                    var extra = null;
+                    _ajaxData(url,'post',headers,data,function(ret,extra){
+                        _loadingHide();
+                        if(ret.statusCode == '200'){
+                            ping(ret.charge,'bagChange');
+                        }else if(ret.statusCode=='10104'){
+                            goLogin('no',"../winLogin.html");
+                        }else{
+                            toastMsg(ret.msg);
+                        }
+                    },function(err,extra){
+                        _loadingHide();
+                        toastMsg(err.msg);
+                    },0,extra);
+
+                },
+                sucssAlert: function(){
+                    var dialogBox = api.require('dialogBox');
+                    var text = '你的多啦袋已经变更成功!' +"进入我的衣橱查看你增"+"\n"+
+                                    "加的多啦袋,可在“我的”页面查看您的会员时间";
+                    dialogBox.sendMessage({
+                        texts: {
+                            title: '提示',
+                            content: text,
+                            rightBtnTitle: '知道了'
+                        },
+                        styles: {
+                            bg: '#fff',
+                            w: 340,
+                            title: {
+                                h: 60,
+                                show: {
+                                    marginL: 12,
+                                    titleSize: 18,
+                                    titleColor: '#000'
+                                }
+                            },
+                            content: {
+                                marginT: 10,
+                                color: '#000',
+                                size: 14
+                            },
+                            left: {
+                                marginB: 20,
+                                marginL: 130,
+                                w: 70,
+                                h: 35,
+                                corner: 2,
+                                bg: '#FFF',
+                                size: 14,
+                                color: '#000'
+                            },
+                            right: {
+                                marginB: 20,
+                                marginL: 60,
+                                w: 70,
+                                h: 35,
+                                corner: 2,
+                                bg: '#FFF',
+                                size: 16,
+                                color: '#FF6100'
+                            }
+                        }
+                    }, function(ret) {
+                        dialogBox.close({
+                            dialogName: 'sendMessage'
+                        });
+                        api.execScript({
+                            name:'root',
+                            script: 'WinWallet("YES");'
+                        });
+                    });
+                },
+                errTimeAlert:function(){
+                    var dialogBox = api.require('dialogBox');
+                    var text = '欲增加多啦袋,会员时间需要大于'+"\n"+
+                            '30天(不包括30天)您当前所剩会' +"\n"+ '员时间不足,请先延长你的会员时间'
+                    dialogBox.sendMessage({
+                        texts: {
+                            title: '提示',
+                            content: text,
+                            leftBtnTitle:"再考虑下",
+                            rightBtnTitle: '去续费'
+                        },
+                        styles: {
+                            bg: '#fff',
+                            w: 340,
+                            title: {
+                                h: 60,
+                                show: {
+                                    marginL: 30,
+                                    titleSize: 18,
+                                    titleColor: '#000'
+                                }
+                            },
+                            content: {
+                                marginT: 0,
+                                marginL:10,
+                                color: '#000',
+                                size: 14
+                            },
+                            left: {
+                                marginB: 20,
+                                marginL: 170,
+                                w: 70,
+                                h: 35,
+                                corner: 2,
+                                bg: '#FFF',
+                                size: 16,
+                                color: '#000'
+                            },
+                            right: {
+                                marginB: 20,
+                                marginL: 10,
+                                w: 70,
+                                h: 35,
+                                corner: 2,
+                                bg: '#FFF',
+                                size: 16,
+                                color: '#FF6100'
+                            }
+                        }
+                    }, function(ret) {
+
+                        if (ret.eventType !== 'left') {
+                            api.openWin({
+                                name: 'Pay',
+                                url: '../win.html',
+                                pageParam:{
+                                    page: 'Pay',
+                                    title: '缴费',
+                                    bagNum: count ,
+
+                                    type: "serviceFee"
+                                }
+                            });
+                        }
+                        dialogBox.close({
+                            dialogName: 'sendMessage'
+                        });
+                    });
+                },
+                goYearVip: function(){
+                    var name = 'yearVip';
+                    var title = '年费会员VIP专区';
+                    var leftIcon = 'duola-iconfont icon-left';
+                    var leftText = '';
+                    var leftExtra = '';
+                    var leftCallback = 'execCloseSlefWin';
+                    var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+                    var border = true;
+                    var bounces = true;
+                    var params = {};
+                    params.nav= setNav(leftNav,border);
+                    params.frame=setFrame(bounces);
+                    var from = {
+                        winName:api.winName,
+                        frameName:api.frameName
+                    };
+                    var url = '../yearVip.html';
+                    var animation = '';
+                    var page = 'yearVip_0.html';
+                    openNewWinFrame(name,title,params,from,url,animation,page);
+                }
+            }
+        });
+        vm.fnInit();
+        api.parseTapmode();
+    };
+
+    //异步关闭遮罩层调用
+    function execClosePayMask(frameName, index) {
+        index = parseInt(index);
+        if (!isNaN(index)) {
+            if (index == 1) {
+//                支付宝支付方法
+                vm.pay('alipay');
+            } else if (index == 2) {
+//                微信支付方法
+                vm.pay('wx');
+            }
+        }
+        api.closeFrame({
+            name: frameName
+        });
+    }
+    //    支付完成后调用check_pay接口验证
+    function check(){
+        var url = serviceUser+'service/check/payment';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,checkSuccessCallback,checkErrorCallback,0,extra);
+    }
+    function checkSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+            setTimeout("goWallet()",5000);
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function checkErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+    function goWallet(){
+        api.execScript({name:'root',
+            script: 'WinWallet("YES");'
+        })
+    }
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra,winName,value){
+        api.closeWin({
+            name:winName
+        });
+    }
+</script>
+</html>

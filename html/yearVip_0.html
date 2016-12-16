@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>年费会员VIP专区</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    
+    <style>
+        .yearVipShowImg{
+            width: 100%;
+        }
+        .switchMenu{
+            height: 5.3rem;
+            font-family: SourceHanSansCN-Normal;
+            color: #fff;
+            background-color: #1b1b1b;
+        }
+        .switchMenu div{
+            text-align: center;
+        }
+        .switchMenu .en_discrible{
+            padding-top: 1rem;
+        }
+        .switchMenu .cn_discrible{
+            font-family: SourceHanSansCN-Bold;
+            font-size: 0.8rem;
+            color: #FFFFFF;
+            letter-spacing: 0px;
+        }
+        .switchMenu div.cn_discrible{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            padding-top: 0.3rem;
+            padding-bottom: 2.1rem;
+        }
+        .switchMenu div.cn_discrible .wing{
+            font-size: 0.7rem;
+            margin-right: 0;
+        }
+        .switchMenu div.cn_discrible .text{
+            padding-left: 0.4rem;
+            padding-right: 0.4rem;
+        }
+
+        .headerBtnBox{
+            height: 3.2rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.9rem;
+            color: #C4C4C4;
+            background-color: #1b1b1b;
+        }
+        .headerBtnBox span{
+            display: inline;
+        }
+        .waterfall .item{
+            padding: 2.1rem 0.2rem 1.7rem;
+        }
+        div.headerBtn{
+            height: 2rem;
+        }
+        span.duola-iconfont{
+            font-size: 0.8rem;
+            vertical-align: top;
+            margin-right: 0.5rem;
+            line-height: 0.9rem;
+        }
+        .icon-dress-active{
+            font-size: 1rem !important;
+        }
+        .headerBtner{
+            line-height: 1.1rem;
+        }
+        .headerBtn .active{
+            border-bottom: 1px solid #fff;
+            color: #fff;
+        }
+        #cloudset-container, .cloudset-container{
+            margin: 0;
+        }
+        .shadow-11{
+            width: 100%;
+            height: 0.55rem;
+            background: #F5F5F5;
+            box-shadow: inset 0px 1px 1px 0px rgba(0,0,0,0.15);
+        }
+        /*--------------------------------上新先选样式-----------------------------*/
+        .waterfall .size{
+            padding: 0;
+            text-align: center;
+            font-family: Arial-BoldMT;
+            font-size: 0.6rem;
+            color: #1B1B1B;
+            margin-top: 0.4rem;
+        }
+        .waterfall .item .footer .name{
+            text-align: center;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.55rem;
+            color: #4A4A4A;
+            padding-top: 0.6rem;
+        }
+        .waterfall .size span{
+            font-weight: 800 !important;
+            margin: 0 0.2rem;
+        }
+
+        /*--------------------------------专享华服样式-----------------------------*/
+        #special_container{
+            background-color: #F5F5F5;
+            box-shadow: inset 0px -1px 1px 0px rgba(0,0,0,0.15);
+            min-height: 30rem;
+        }
+        .specialItem{
+            width: 100%;
+            background-color: #fff;
+            padding-top: 3.25rem;
+            padding-bottom: 1rem;
+            margin-top: 0.7rem;
+            box-shadow: 0 1px 0 0 rgba(0,0,0,0.15);
+        }
+        .specialItem:first-child{
+            margin-top: 0;
+        }
+        .specialItem .imgShow{
+            width: 80%;
+            margin: 0 auto 1rem;
+        }
+        .specialItem .imgShow img{
+            width: 100%;
+            height: 22.5rem;
+        }
+        .specialItem .detailed{
+            background-color: #1b1b1b;
+            text-align: center;
+            color: #fff;
+        }
+        .specialItem .detailed .one{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #FFFFFF;
+            padding-top: 1.2rem;
+        }
+        .specialItem .detailed .one .line{
+            display: inline-block;
+            width: 1.5rem;
+            height: 1px;
+            background-color: #fff;
+            vertical-align: middle;
+            font-size: 0;
+        }
+        .specialItem .detailed .one .name{
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 0.4rem;
+            font-size: 0.65rem;
+            line-height: 0.65rem;
+        }
+        .specialItem .detailed .two{
+            padding-top: 0.4rem;
+            padding-bottom: 0.3rem;
+        }
+        .specialItem .detailed .two span{
+            margin: 0 0.2rem;
+            font-weight: bold;
+            font-family: Arial-BoldMT;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #FFFFFF;
+        }
+        .specialItem .detailed .three{
+            line-height: 0.6rem;
+            text-align: center;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #FFFFFF;
+            padding-bottom: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div id="pagination">
+    <div class="pagination-bg-1" onclick="changeTop(listenGoTopCallback)">
+        <div id="pagination-pag">
+            <div class="pagination-num" id="pagination-page">1页</div>
+            <div class="pagination-name" id="pagination-pageTotal"></div>
+            <!--<em id="pagination_page">111</em>/<em id="pagination_pageTotal">312</em>-->
+
+        </div>
+        <div id="pagination-top" class="pagination-tops hide">
+            <i class="duola-iconfont icon-dingbu"></i>
+        </div>
+    </div>
+</div>
+<div id="headerBox">
+    <div class="yearVipShowImg">
+        <img id="" src="http://img.duolayimeng.com/public/image/yearVip.png@40q" alt="" width="100%"/>
+    </div>
+    <div class="switchMenu flex flex-center">
+        <div>
+            <div class="en_discrible">BE YOUR EXCLUSIVE GUARDIAN</div>
+            <div class="cn_discrible">
+                <span class="wing duola-iconfont icon-wings-left"></span>
+                <span class="text">我只想成为你的专属守护</span>
+                <span class="wing duola-iconfont icon-wings-right"></span>
+            </div>
+        </div>
+
+    </div>
+    <div class="headerBtnBox flex ">
+        <div id="switch_yearVip_0" class="headerBtn flex-1 flex flex-center " tapmode onclick="switchBoxType(this,'left')">
+            <span class="duola-iconfont icon-newcome-active"></span>
+            <span id="headerBtnOne" class="headerBtner active">上新先选</span>
+        </div>
+
+        <div id="switch_yearVip_1" class="headerBtn flex-1 flex  flex-center" tapmode onclick="switchBoxType(this,'right')">
+            <span class="duola-iconfont icon-dress"></span>
+            <span id="headerBtnTwo" class="headerBtner">专享华服</span>
+        </div>
+    </div>
+</div>
+<!--上新先选容器-->
+<div class="aui-grid">
+    <div id="cloudset-container" class="waterfall">
+
+        <!--<div id="duo-cache-page-cloudset1" class="aui-row">-->
+            <!--<div class="item aui-col-xs-6" tapmode="" onclick="showClothes('1527785')" style="padding-left: 0.4rem;">-->
+                <!--<div class="header"><img src="../image/hold.jpg" class="duo-cache-img"-->
+                                         <!--title="http://img.duolayimeng.com/original/1527785-1.jpg@320w_90q">-->
+                    <!--<div class="label flex flex-space-between">-->
+                        <!--<div></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="footer">-->
+                    <!--<div class="name flex-1 aui-ellipsis-1">背带阔腿裤</div>-->
+                <!--</div>-->
+                <!--<div class="size flex flex-center"><span>S</span> <span>M</span> <span>L</span></div>-->
+            <!--</div>-->
+            <!--<div class="item aui-col-xs-6" tapmode="" onclick="showClothes('1528832')" style="padding-right: 0.4rem;">-->
+                <!--<div class="header"><img src="../image/hold.jpg" class="duo-cache-img"-->
+                                         <!--title="http://img.duolayimeng.com/original/1528832-1.jpg@320w_90q">-->
+                    <!--<div class="label flex flex-space-between">-->
+                        <!--<div></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="footer">-->
+                    <!--<div class="name flex-1 aui-ellipsis-1">印花西装外套</div>-->
+                <!--</div>-->
+                <!--<div class="size flex flex-center"><span>S</span> <span>M</span> <span>L</span></div>-->
+            <!--</div>-->
+            <!--<div class="aui-row shadow-11"></div>-->
+            <!--<div class="item aui-col-xs-6" tapmode="" onclick="showClothes('1510336')" style="padding-left: 0.4rem;">-->
+                <!--<div class="header"><img src="../image/hold.jpg" class="duo-cache-img"-->
+                                         <!--title="http://img.duolayimeng.com/original/1510336-1.jpg@320w_90q">-->
+                    <!--<div class="label flex flex-space-between">-->
+                        <!--<div></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="footer">-->
+                    <!--<div class="name flex-1 aui-ellipsis-1">高腰休闲裤</div>-->
+                <!--</div>-->
+                <!--<div class="size flex flex-center"><span>M</span></div>-->
+            <!--</div>-->
+            <!--<div class="item aui-col-xs-6" tapmode="" onclick="showClothes('1529973')" style="padding-right: 0.4rem;">-->
+                <!--<div class="header"><img src="../image/hold.jpg" class="duo-cache-img"-->
+                                         <!--title="http://img.duolayimeng.com/original/1529973-1.jpg@320w_90q">-->
+                    <!--<div class="label flex flex-space-between">-->
+                        <!--<div></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="footer">-->
+                    <!--<div class="name flex-1 aui-ellipsis-1">长袖打底衫</div>-->
+                <!--</div>-->
+                <!--<div class="size flex flex-center"><span>S</span> <span>M</span> <span>L</span> <span>XL</span></div>-->
+            <!--</div>-->
+            <!--<div class="aui-row shadow-11"></div>-->
+            <!--<div class="item aui-col-xs-6" tapmode="" onclick="showClothes('1529950')" style="padding-left: 0.4rem;">-->
+                <!--<div class="header"><img src="../image/hold.jpg" class="duo-cache-img"-->
+                                         <!--title="http://img.duolayimeng.com/original/1529950-1.jpg@320w_90q">-->
+                    <!--<div class="label flex flex-space-between">-->
+                        <!--<div></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="footer">-->
+                    <!--<div class="name flex-1 aui-ellipsis-1">时尚印花连衣裙</div>-->
+                <!--</div>-->
+                <!--<div class="size flex flex-center"><span>S</span> <span>M</span> <span>L</span> <span>XL</span></div>-->
+            <!--</div>-->
+            <!--<div class="item aui-col-xs-6" tapmode="" onclick="showClothes('1529946')" style="padding-right: 0.4rem;">-->
+                <!--<div class="header"><img src="../image/hold.jpg" class="duo-cache-img"-->
+                                         <!--title="http://img.duolayimeng.com/original/1529946-1.jpg@320w_90q">-->
+                    <!--<div class="label flex flex-space-between">-->
+                        <!--<div></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="footer">-->
+                    <!--<div class="name flex-1 aui-ellipsis-1">连衣裙</div>-->
+                <!--</div>-->
+                <!--<div class="size flex flex-center"><span>S</span> <span>M</span> <span>L</span> <span>XL</span></div>-->
+            <!--</div>-->
+
+    </div>
+</div>
+<!--专享华服容器-->
+<div id="special_container" class="aui-hide">
+
+    <!--<div id="duo-cache-page-special1" class="aui-row">-->
+        <!--<div class="specialItem">-->
+            <!--<div class="imgShow"><img src="../image/hold.jpg" class="duo-cache-img"-->
+                                      <!--title="http://img.duolayimeng.com/original/1527785-1.jpg@320w_90q" tapmode-->
+                                      <!--onclick="showClothes('1527785')"/></div>-->
+            <!--<div class="detailed">-->
+                <!--<div class="one flex flex-center">-->
+                    <!--<span class="line"></span><span class="name">背带阔腿裤</span><span class="line"></span>-->
+                <!--</div>-->
+                <!--<div class="two flex flex-center">-->
+                    <!--<span>S</span><span>M</span><span>L</span>-->
+                <!--</div>-->
+                <!--<div class="three"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="specialItem">-->
+            <!--<div class="imgShow"><img src="../image/hold.jpg" class="duo-cache-img"-->
+                                      <!--title="http://img.duolayimeng.com/original/1527785-1.jpg@320w_90q" tapmode-->
+                                      <!--onclick="showClothes('1527785')"/></div>-->
+            <!--<div class="detailed">-->
+                <!--<div class="one flex flex-center">-->
+                    <!--<span class="line"></span><span class="name">背带阔腿裤</span><span class="line"></span>-->
+                <!--</div>-->
+                <!--<div class="two flex flex-center">-->
+                    <!--<span>S</span><span>M</span><span>L</span>-->
+                <!--</div>-->
+                <!--<div class="three flex flex-center"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="specialItem">-->
+            <!--<div class="imgShow"><img src="../image/hold.jpg" class="duo-cache-img"-->
+                                      <!--title="http://img.duolayimeng.com/original/1527785-1.jpg@320w_90q" tapmode-->
+                                      <!--onclick="showClothes('1527785')"/></div>-->
+            <!--<div class="detailed">-->
+                <!--<div class="one flex flex-center">-->
+                    <!--<span class="line"></span><span class="name">背带阔腿裤</span><span class="line"></span>-->
+                <!--</div>-->
+                <!--<div class="two flex flex-center">-->
+                    <!--<span>S</span><span>M</span><span>L</span>-->
+                <!--</div>-->
+                <!--<div class="three flex flex-center"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+</div>
+<div id="loading" class="aui-text-center" style="font-size: 12px; color: #999999;">
+    <img src="../icon/loading.gif" width="16" />
+    <div>更多数据加载中</div>
+</div>
+<script id="cloudset-container-template" type="text/x-dot-template">
+    <div id="{{=CONSTANT.CACHEPAGEID+'cloudset'+currPage}}" class="aui-row">
+        {{ for(var i = 0; i < it.count; i++) { }}
+            <div class="item aui-col-xs-6" tapmode onclick="{{=getExecScript('showClothes',[it.list[i]._id])}}" style="{{=(i+1)%2 == 0 ? 'padding-right: 0.4rem;' : 'padding-left: 0.4rem;' }}">
+                <div class="header">
+                    <img onload="cacheImgNew(this,'img')" class="opacity0 transition-opacity"
+                         src="{{=getImgUrl(colthPath, it.list[i].img, CONSTANT.PICTUREOSS.CLOTHESLISTQ5)}}"
+                         data-url="{{=getImgUrl(colthPath, it.list[i].img, CONSTANT.PICTUREOSS.CLOTHESLIST)}}" width="100%"/>
+                    <div class="label flex flex-space-between">
+                        {{? isTrue(it.list[i] && it.list[i].new)}}
+                            <div class="new">new</div>
+                        {{??}}
+                            <div></div>
+                        {{?}}
+                        {{? isAvailable(it.list[i] && it.list[i].available)}}
+                            <div class="unavailable">抢光了</div>
+                        {{?}}
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="name flex-1 aui-ellipsis-1">{{=(it.list[i] && it.list[i].name) ? it.list[i].name : '多啦衣梦'}}</div>
+                </div>
+                <div class="size flex flex-center">
+                    {{~it.list[i].stockedSize:value:index}}
+                    <span>{{=value}}</span>
+                    {{~}}
+                </div>
+            </div>
+            {{? (i+1)%2 == 0 && currPage != totalPage}}
+                <div class="aui-row shadow-11" ></div>
+            {{?}}
+        {{ } }}
+    </div>
+</script>
+
+<script id="special-container-template" type="text/x-dot-template">
+    <div id="{{=CONSTANT.CACHEPAGEID+'special'+currPage}}" class="aui-row">
+        {{ for(var i = 0; i < it.count; i++) { }}
+            <div class="specialItem">
+                <div class="imgShow img-holder bc-grey">
+
+                    <img onload="cacheImgNew(this,'img')" class="opacity0 transition-opacity"
+                         src="{{=getImgUrl(colthPath, it.list[i].img,'@400w_5q')}}"
+                         data-url="{{=getImgUrl(colthPath, it.list[i].img, CONSTANT.PICTUREOSS.ANNUAL)}}" width="100%"
+                         tapmode onclick="{{=getExecScript('showClothes',[it.list[i]._id])}}"/>
+                </div>
+                <div class="detailed">
+                    <div class="one flex flex-center">
+                        <span class="line"></span>
+                        <span class="name">{{=(it.list[i] && it.list[i].name) ? it.list[i].name : '多啦衣梦'}}</span>
+                        <span class="line"></span>
+                    </div>
+                    <div class="two flex flex-center">
+                        {{~it.list[i].stockedSize:value:index}}
+                            <span>{{=value}}</span>
+                        {{~}}
+                    </div>
+                    <div class="three flex flex-center">{{=(it.list[i] && it.list[i].name_en) ? upperEnName(it.list[i].name_en) : ''}}</div>
+                </div>
+            </div>
+        {{ } }}
+    </div>
+
+</script>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/components/pagination.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+    var currPage = 1;
+    var totalPage = 1;
+    var boxType =0;
+    //加载更多时候，服务器是否返回，以免用户多次触发
+    var isLoadMoreResponsed = true;
+    var frameData = null;
+    var topHeight = null; //页面导航距离顶部距离
+    apiready = function(){
+        frameData = api.pageParam.data;
+        //数据处理
+        getCloudset(CONSTANT.ACTIONINIT);
+        loadMore();
+        pullRefresh(loadRefresh);
+        api.addEventListener({
+            name:'swipeleft'
+        }, function(ret, err){
+            if(boxType==0){
+                switchBoxType('','right');
+                var scriptFun = getExecScript('execSwitchBoxDom',['','right']);
+                var params = {
+                    script: scriptFun
+                };
+                api.execScript(params);
+            }
+        });
+        api.addEventListener({
+            name:'swiperight'
+        }, function(ret, err){
+            if(boxType==1){
+                switchBoxType('','left');
+                var scriptFun = getExecScript('execSwitchBoxDom',['','left']);
+                var params = {
+                    script: scriptFun
+                };
+                api.execScript(params);
+            }
+        });
+        var scrollMark=$api.byId('headerBox');
+        topHeight = $api.offset(scrollMark).h;
+    };
+
+    function switchBoxType(el,name){
+        execSwitchBoxTypeDom(el,name);
+        currPage = 1;
+        if(name=='left'){
+            boxType=0;
+            getCloudset(CONSTANT.ACTIONINIT);
+        }else if(name=='right'){
+            boxType=1;
+            getSpecial(CONSTANT.ACTIONINIT);
+        }
+        var scriptFun = getExecScript('execSwitchBoxDom',['',name]);
+        var params = {
+            script: scriptFun
+        };
+        api.execScript(params);
+    }
+
+    function execSwitchBoxTypeDom(el,name){
+        var headerBtnOne = $api.byId('headerBtnOne');
+        var headerBtnTwo = $api.byId('headerBtnTwo');
+        var container1 = $api.byId('cloudset-container');
+        var container2 = $api.byId('special_container');
+        if(name=='left'){
+            $api.removeCls(container1, 'aui-hide');
+            $api.removeCls(headerBtnTwo, 'active');
+            $api.addCls(container2, 'aui-hide');
+            $api.addCls(headerBtnOne, 'active');
+
+            $api.addCls($api.prev(headerBtnOne),'icon-newcome-active');
+            $api.removeCls($api.prev(headerBtnOne),'icon-newcome');
+            $api.css($api.prev(headerBtnOne),'color:#FFFFFF;');
+            $api.addCls($api.prev(headerBtnTwo),'icon-dress');
+            $api.removeCls($api.prev(headerBtnTwo),'icon-dress-active');
+            $api.css($api.prev(headerBtnTwo),'color:#C4C4C4;');
+
+        }else if(name=='right'){
+            $api.addCls(container1, 'aui-hide');
+            $api.addCls(headerBtnTwo, 'active');
+            $api.removeCls(container2, 'aui-hide');
+            $api.removeCls(headerBtnOne, 'active');
+
+            $api.addCls($api.prev(headerBtnOne),'icon-newcome');
+            $api.removeCls($api.prev(headerBtnOne),'icon-newcome-active');
+            $api.css($api.prev(headerBtnOne),'color:#C4C4C4;');
+            $api.addCls($api.prev(headerBtnTwo),'icon-dress-active');
+            $api.removeCls($api.prev(headerBtnTwo),'icon-dress');
+            $api.css($api.prev(headerBtnTwo),'color:#FFFFFF;');
+        }
+    }
+
+    function getCloudset(action){
+        _myScroll("cloudset-container", 'div',scrollCallback,true);
+        //请求云衣橱数据，没有任何过滤条件
+        if(action == CONSTANT.ACTIONINIT){
+            loadingShow();
+        }
+        var url = serviceNew + 'cloudCloset/search';
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData({
+            category: "newCome",
+            page: currPage,
+            pageSize: CONSTANT.PAGESIZE
+        });
+        var extra = {action:action};
+        _ajaxData(url,'post',headers,data,getCloudsetSuccessCallback,getCloudsetErrorCallback,0,extra);
+    }
+
+    function getCloudsetSuccessCallback(ret,extra){
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        if(ret.statusCode==200 && ret.cloudCloset){
+            currPage = ret.cloudCloset.page;
+            totalPage = ret.cloudCloset.pageTotal;
+            getCloudsetHtml(ret.cloudCloset);
+            _page(currPage,totalPage,ret.cloudCloset.count);
+        }else{
+            toastMsg(ret.msg);
+        }
+        if(currPage >= totalPage){
+            $api.html($api.byId('loading'),'没有更多了');
+        }
+    }
+
+    function getCloudsetErrorCallback(err,extra){
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            currPage--;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+
+//    testCloudsetHtml();
+    function testCloudsetHtml(){
+//        var ret = {"cloudCloset":{"count":20,"pageTotal":8,"page":1,"list":[{"img":"1527785-1.jpg",'name_en':'this is english desc',"available":"YES","stockedSize":["S","M","L"],"like":11,"_id":"1527785","size":["S","M","L"],"name":"背带阔腿裤"},{"img":"1528832-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":21,"_id":"1528832","size":["S","M","L"],"name":"印花西装外套"},{"img":"1510336-1.jpg","available":"YES","stockedSize":["M"],"like":141,"_id":"1510336","size":["S","M"],"name":"高腰休闲裤"},{"img":"1529973-1.jpg","available":"YES","stockedSize":["S","M","L","XL"],"like":5,"_id":"1529973","size":["S","M","L","XL"],"name":"长袖打底衫"},{"img":"1529950-1.jpg","available":"YES","stockedSize":["S","M","L","XL"],"like":6,"_id":"1529950","size":["S","M","L","XL"],"name":"时尚印花连衣裙"},{"img":"1529946-1.jpg","available":"YES","stockedSize":["S","M","L","XL"],"like":10,"_id":"1529946","size":["S","M","L","XL"],"name":"连衣裙"},{"img":"1528702-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":54,"_id":"1528702","size":["S","M","L"],"name":"淑女装修身显瘦气质收腰蝴蝶结中袖燕尾雪纺衫"},{"img":"1528654-1.jpg","available":"YES","stockedSize":["均码"],"like":282,"_id":"1528654","size":["均码"],"name":"小清新学院风外套"},{"img":"1530348-1.jpg","available":"YES","stockedSize":["均码"],"like":38,"_id":"1530348","size":["均码"],"name":"喇叭袖针织上衣"},{"img":"1530485-1.jpg","available":"YES","stockedSize":["均码"],"like":7,"_id":"1530485","size":["均码"],"name":"针织罩衫"},{"img":"1531878-1.jpg","available":"YES","stockedSize":["均码"],"like":41,"_id":"1531878","size":["均码"],"name":"条纹针织上衣"},{"img":"1530267-1.jpg","available":"YES","stockedSize":["S","M"],"like":28,"_id":"1530267","size":["S","M"],"name":"简约开衫"},{"img":"1531587-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":7,"_id":"1531587","size":["S","M","L"],"name":"灰色针织外套"},{"img":"1530198-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":17,"_id":"1530198","size":["S","M","L"],"name":"貂绒上衣"},{"img":"1530209-1.jpg","available":"YES","stockedSize":["S","M"],"like":20,"_id":"1530209","size":["S","M"],"name":"毛织上衣"},{"img":"1531169-1.jpg","available":"YES","stockedSize":["S","M","L","XL"],"like":44,"_id":"1531169","size":["S","M","L","XL"],"name":"背带裤"},{"img":"1532513-1.jpg","available":"YES","stockedSize":["M","L","XL"],"like":4,"_id":"1532513","size":["M","L","XL"],"name":"迷彩裤"},{"img":"1530229-1.jpg","available":"YES","stockedSize":["S"],"like":17,"_id":"1530229","size":["S"],"name":"条纹连衣裙"},{"img":"1532520-1.jpg","available":"YES","stockedSize":["均码"],"like":3,"_id":"1532520","size":["均码"],"name":"条纹针织马甲"},{"img":"1532328-1.jpg","available":"YES","stockedSize":["S","M","L","XL"],"like":13,"_id":"1532328","size":["S","M","L","XL"],"name":"印花连衣裙"}]},"statusCode":200,"msg":""};
+//        totalPage = ret.pageTotal;
+//        getCloudsetHtml(ret.cloudCloset);
+//        getSpecialHtml(ret.cloudCloset);
+    }
+
+    function getCloudsetHtml(cloudset){
+        var html = doTHtml('cloudset-container-template',cloudset);
+        var cloudsetContainer = $api.byId('cloudset-container');
+        if(currPage == 1){
+            //首次加载或者刷新
+            //图片也刷新了，闪屏，有待于提升性能
+            cloudsetContainer.innerHTML = '';
+        }
+//        console.log(html);
+
+        $api.append(cloudsetContainer, html);
+//        var currPageElId = CONSTANT.CACHEPAGEID+'cloudset'+currPage;
+//        _imgCacheUrl3(cloudsetContainer,currPageElId);
+        api.parseTapmode();
+    }
+
+    function getSpecial(action){
+        _myScroll("special_container", 'div',scrollCallback,true);
+        //请求云衣橱数据，没有任何过滤条件
+        if(action == CONSTANT.ACTIONINIT){
+            loadingShow();
+        }
+        var url = serviceNew + 'cloudCloset/search';
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData({
+            category: "annualFee",
+            page: currPage,
+            pageSize: CONSTANT.PAGESIZE/2
+        });
+        var extra = {action:action};
+        _ajaxData(url,'post',headers,data,getSpecialSuccessCallback,getSpecialErrorCallback,0,extra);
+    }
+
+    function getSpecialSuccessCallback(ret,extra){
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        if(ret.statusCode==200 && ret.cloudCloset){
+            currPage = ret.cloudCloset.page;
+            totalPage = ret.cloudCloset.pageTotal;
+            getSpecialHtml(ret.cloudCloset);
+            _page(currPage,totalPage,ret.cloudCloset.count);
+        }else{
+            toastMsg(ret.msg);
+        }
+        if(currPage >= totalPage){
+            $api.html($api.byId('loading'),'没有更多了');
+        }
+    }
+
+    function getSpecialErrorCallback(err,extra){
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            currPage--;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+
+
+    function getSpecialHtml(cloudset){
+        var html = doTHtml('special-container-template',cloudset);
+        var specialContainer = $api.byId('special_container');
+        if(currPage == 1){
+            //首次加载或者刷新
+            //图片也刷新了，闪屏，有待于提升性能
+            specialContainer.innerHTML = '';
+        }
+//        console.log(html);
+        $api.append(specialContainer, html);
+//        var currPageElId = CONSTANT.CACHEPAGEID+'special'+currPage;
+//        _imgCacheUrl3(specialContainer,currPageElId);
+        api.parseTapmode();
+    }
+
+    function loadMore(){
+        api.addEventListener({
+            name:'scrolltobottom',
+            extra:{threshold:0}
+        }, function(ret, err){
+//            console.log(getLogStr([ret,err]));
+            if(isLoadMoreResponsed && currPage < totalPage){
+                currPage++;
+                isLoadMoreResponsed = false;
+                if(boxType==0){
+                    getCloudset(CONSTANT.ACTIONLOAD);
+                }else if(boxType==1){
+                    getSpecial(CONSTANT.ACTIONLOAD);
+                }
+            }
+        });
+    }
+
+    function loadRefresh(){
+        currPage = 1;
+        if(boxType==0){
+            getCloudset(CONSTANT.ACTIONREFRESH);
+        }else if(boxType==1){
+            getSpecial(CONSTANT.ACTIONREFRESH);
+        }
+    }
+
+    function scrollCallback(yheight){
+        if(yheight >= topHeight){
+            var callback = 'showNavSwitch()';
+            var params = {
+                script: callback
+            };
+            api.execScript(params);
+            api.setStatusBarStyle({
+                style: 'light'
+            });
+        }else{
+            var callback = 'showNavTitle()';
+            var params = {
+                script: callback
+            };
+            api.execScript(params);
+            api.setStatusBarStyle({
+                style: 'dark'
+            });
+        }
+    }
+
+    //公用头部导航栏坐侧点击异步执行的方法
+    function execNavLeftCallback(value){
+        var from = frameData.from;
+        var callback = frameData.leftNavCallback ? frameData.leftNavCallback : '';
+        if(!isDefine(callback)){
+            return;
+        }
+        var extra = frameData.leftNavExtra ? frameData.leftNavExtra : '';
+        var params = {
+            script: getExecScript(callback,new Array(extra,api.winName,value))
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+        api.setStatusBarStyle({
+            style: 'dark'
+        });
+    }
+
+    //公用头部导航栏右侧点击异步执行的方法
+    function execNavRightCallback(value){
+        var from = frameData.from;
+        var callback = frameData.rightNavCallback ? frameData.rightNavCallback : '';
+        if(!isDefine(callback)){
+            return;
+        }
+        var extra = frameData.rightNavExtra ? frameData.rightNavExtra : '';
+        var params = {
+            script: getExecScript(callback,new Array(extra,api.winName,value))
+        };
+        if(isDefine(from.winName)){
+            params.name = from.winName;
+        }
+        if(isDefine(from.frameName)){
+            params.frameName = from.frameName;
+        }
+        api.execScript(params);
+    }
+
+    //分页器回到顶部回调方法
+    function listenGoTopCallback(){
+        var callback = 'showNavTitle()';
+        var params = {
+            script: callback
+        };
+        api.execScript(params);
+        api.setStatusBarStyle({
+            style: 'dark'
+        });
+    }
+</script>
+</html>

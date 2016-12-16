@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>历史订阅</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        body {
+            background-color: #FFFFFF;
+        }
+
+        .total {
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #828282;
+            letter-spacing: 0px;
+            height: 1.25rem;
+            line-height: 1.25rem;
+            padding-left: 0.45rem;
+            background-color: #EBEBEB;
+        }
+
+        .order_content {
+            box-sizing: border-box;
+            padding-top: 1.6rem;
+            background-color: #FFFFFF;
+            padding-bottom: 1.6rem;
+
+        }
+
+        .order_content:not(:last-child) {
+            box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        .order_content .good_list {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .order_content .good_list > div:not(:last-child) {
+            float: left;
+        }
+
+        .leftBox {
+            padding-left: 0.9rem;
+            padding-right: 0.4rem;
+        }
+
+        .leftBox img {
+            width: 4rem;
+            height: 6rem;
+        }
+
+        .centerBox {
+        }
+
+        .centerBox .top {
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            /*line-height: 0.75rem;*/
+            color: #000000;
+            letter-spacing: 0;
+            max-width: 10rem;
+        }
+
+        .centerBox .middle {
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #A6A6A6;
+            letter-spacing: 0;
+            margin: 0.3rem 0 0.4rem;
+        }
+
+        .centerBox .bottom {
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #A6A6A6;
+            letter-spacing: 0;
+        }
+
+        .rightBox {
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #000000;
+            letter-spacing: 0;
+            text-align: right;
+            float: right !important;
+            padding-right: 0.9rem;
+            font-weight: 800;
+        }
+
+        .btnBox {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+
+        .orderBtn {
+            width: 4rem;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            border: 1px solid #FF6404;
+            border-radius: 2px;
+            font-size: 0.6rem;
+            color: #FF6404;
+            text-align: center;
+            margin-right: 0.9rem;
+        }
+
+        .orderBtnWuliu {
+            border: 1px solid #7F7F7F;
+            color: #7F7F7F;
+        }
+        #loading{
+            height: 2.2rem;
+        }
+        /*灰色分割条样式*/
+        .separated {
+            width: 100%;
+            height: 0.5rem;
+            background: #EBEBEB;
+
+        }
+        #duo-cache-page-his1 .separated:first-child{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="pagination">
+    <div class="pagination-bg-1" onclick="changeTop(listenGoTopCallback)">
+        <div id="pagination-pag">
+            <div class="pagination-num" id="pagination-page">1页</div>
+            <div class="pagination-name" id="pagination-pageTotal"></div>
+            <!--<em id="pagination_page">111</em>/<em id="pagination_pageTotal">312</em>-->
+
+        </div>
+        <div id="pagination-top" class="pagination-tops hide">
+            <i class="duola-iconfont icon-dingbu"></i>
+        </div>
+    </div>
+</div>
+<section class="total">
+    总价值:￥<span id="totalMoney"></span>
+</section>
+<div id="order_his_list"></div>
+<div id="loading" class="aui-text-center" style="font-size: 12px; color: #999999;">
+    <img src="../icon/loading.gif" width="16" />
+    <div>更多数据加载中</div>
+</div>
+<script id="order-his-template" type="text/x-dot-template">
+    <div id="{{=CONSTANT.CACHEPAGEID+'his'+currPage}}">
+        {{ for(var i = 0; i < it.count; i++) { }}
+        <div class="separated"></div>
+        <section class="order_content bg-white">
+            <div class="good_list">
+                <div class="leftBox">
+                    <img src="../image/hold.jpg" class="{{=CONSTANT.CACHECLASSNAME}}"
+                         title="{{=getImgUrl(colthPath, it.list[i].img, CONSTANT.PICTUREOSS.ORDER)}}"
+                         tapmode onclick="{{=getExecScript('showClothes',[it.list[i].id])}}"/>
+                </div>
+                <div class="centerBox" tapmode onclick="{{=getExecScript('showClothes',[it.list[i].id])}}">
+                    <div class="top">{{=it.list[i].name}} {{=it.list[i].size}}</div>
+                    <div class="middle">条码{{~it.list[i].barcode:value:index}} {{=value}}{{~}}
+                        价格:￥{{=it.list[i].price.toFixed(2)}}
+                    </div>
+                    <div class="bottom">{{=it.list[i].lease_time.substr(0,16)}}</div>
+                </div>
+                <div class="rightBox">
+                    <span>{{=it.list[i].state=='无' ? '' : it.list[i].state}}</span>
+                </div>
+                <div class="btnBox">
+                    <div class="flex flex-right">
+                        {{? it.list[i].exp_no}}
+                        <div class="orderBtn orderBtnWuliu" tapmode
+                             onclick="{{=getExecScript('showWuliu',[it.list[i].name, it.list[i].id, serviceUser + 'orders/current', it.list[i].exp_no, it.list[i].lease_time.substring(0, 19)])}}">
+                            查看物流
+                        </div>
+                        {{?}}
+                        <div class="orderBtn" tapmode
+                             onclick="{{=getExecScript('addComments',['',it.list[i].name,it.list[i].id])}}">评价晒单
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {{ } }}
+    </div>
+</script>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/components/pagination.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+    var currPage = 1;
+    var totalPage = 1;
+    var isLoadMoreResponsed = true;
+    apiready = function () {
+        loadMore();
+        pullRefresh(loadRefresh);
+        init(CONSTANT.ACTIONINIT);
+        _myScroll("order_his_list", 'div');
+        api.addEventListener({
+            name: 'swiperight'
+        }, function (ret, err) {
+            var scriptFun = getExecScript('switchBtn', ['', '当前订阅', 0]);
+            var params = {
+                script: scriptFun
+            };
+            api.execScript(params);
+        });
+    };
+
+//    function test(){
+//        var testData='{"statusCode":200,"count":10,"pageTotal":3,"page":1,"pageSize":10,"list":[{"id":"1531428","lease_time":"2016-09-21 16:37:15.455","com":"顺丰","price":337.5,"name":"透视短袖上衣","exp_no":"973863405753","state":"已终止","img":"1531428-1.jpg","barcode":["437563"],"type":"包月","size":"M","expType":"express"},{"id":"1525037","lease_time":"2016-09-21 16:37:15.455","com":"顺丰","price":193.5,"name":"露背连体裤","exp_no":"973863405753","state":"已终止","img":"1525037-4.jpg","barcode":["378406"],"type":"包月","size":"M","expType":"express"},{"id":"1533802","lease_time":"2016-09-21 16:37:15.455","com":"顺丰","price":127.5,"name":"高领打底衫","exp_no":"973863405753","state":"已终止","img":"1533802-1.jpg","barcode":["468172"],"type":"包月","size":"J","expType":"express"},{"id":"1510710","lease_time":"2016-09-22 22:28:45.824","com":null,"price":82.5,"name":"短款菱格卡其色棉衣","exp_no":null,"state":"已终止","img":"1510710-1.jpg","barcode":["202144"],"type":"包月","size":"M"},{"id":"1511201","lease_time":"2016-09-22 22:28:45.824","com":null,"price":577.5,"name":"黑色中长棉服","exp_no":null,"state":"已终止","img":"1511201-1.jpg","barcode":["203621"],"type":"包月","size":"S"},{"id":"1533258","lease_time":"2016-09-22 22:28:45.824","com":null,"price":117,"name":"小棉裙","exp_no":null,"state":"已终止","img":"1533258-1.jpg","barcode":["458126"],"type":"包月","size":"M"},{"id":"1533583","lease_time":"2016-09-22 22:43:12.207","com":null,"price":187.5,"name":"吊带连衣裙","exp_no":null,"state":"已终止","img":"1533583-1.jpg","barcode":["449151"],"type":"包月","size":"J"},{"id":"1521094","lease_time":"2016-09-22 22:43:12.207","com":null,"price":315,"name":"性感简约鱼尾裙","exp_no":null,"state":"已终止","img":"1521094-2.jpg","barcode":["305512"],"type":"包月","size":"M"},{"id":"1528269","lease_time":"2016-09-22 22:43:12.207","com":null,"price":225,"name":"复古花边大摆吊后 绑带连衣裙","exp_no":null,"state":"已终止","img":"1528269-1.jpg","barcode":["363601"],"type":"包月","size":"M"},{"id":"1513265","lease_time":"2016-09-29 15:03:57.272","com":null,"price":43.455,"name":"蓝色交叉大露背吊带连衣裙","exp_no":null,"state":"已终止","img":"1513265-1.jpg","barcode":["393995"],"type":"包月","size":"M"}],"msg":"OK","totalMoney":4954.455}';
+//        getHisHtml(JSON.parse(testData));
+//    }
+//    test();
+
+    function loadRefresh() {
+        currPage = 1;
+        init(CONSTANT.ACTIONREFRESH);
+        if($api.byId('loading').innerHTML=='没有更多了'){
+            $api.html($api.byId('loading'),'<img src="../icon/loading.gif" width="16" /><div>更多数据加载中</div>');
+        }
+    }
+
+    //加载更多
+    function loadMore(){
+        api.addEventListener({
+            name:'scrolltobottom',
+            extra:{threshold:0}
+        }, function(ret, err){
+            if(isLoadMoreResponsed && currPage < totalPage){
+                currPage++;
+                isLoadMoreResponsed = false;
+                init(CONSTANT.ACTIONLOAD);
+            }
+        });
+    }
+
+    function initSuccessCallback(ret,extra) {
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        if(ret.statusCode==200){
+            currPage = ret.page;
+            totalPage = ret.pageTotal;
+            getHisHtml(ret);
+            _page(currPage, totalPage, ret.count);
+        }else{
+            toastMsg(ret.msg);
+        }
+        if(currPage >= totalPage){
+            $api.html($api.byId('loading'),'没有更多了');
+        }
+    }
+
+    function initErrorCallback(err,extra){
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            currPage--;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+
+    function getHisHtml(ret) {
+        $api.html($api.byId('totalMoney'), ret.totalMoney.toFixed(2));
+        var html = doTHtml('order-his-template', ret);
+        var cloudsetContainer = $api.byId('order_his_list');
+        if (currPage == 1) {
+            //首次加载或者刷新
+            //图片也刷新了，闪屏，有待于提升性能
+            cloudsetContainer.innerHTML = '';
+        }
+        $api.append(cloudsetContainer, html);
+        var currPageElId = CONSTANT.CACHEPAGEID + 'his' + currPage;
+        _imgCacheUrl3(cloudsetContainer, currPageElId);
+        api.parseTapmode();
+    }
+
+    function init(action){
+        if(action == CONSTANT.ACTIONINIT){
+            loadingShow();
+        }
+        var url = serviceUser + 'orders/history';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData({
+            page: currPage,
+            pageSize: 3
+        });
+        var extra = {action:action};
+        _ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+    }
+
+    function addComments(url, name, id) {
+        var name = 'addComment';
+        var title = '';
+        var leftIcon = 'duola-iconfont icon-Close';
+        var leftText = '';
+        var leftCallback = 'execCloseSlefWin';
+        var leftExtra = '';
+        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+
+        var rightIcon = '';
+        var rightText = '提交';
+        var rightExtra = '';
+        var rightCallback = 'execAddComment';
+        var rightClass = 'font-bold';
+        var rightNav = setNavData(rightIcon, rightText, rightCallback, rightExtra, rightClass);
+
+        var border = false;
+        var bounces = false;
+        var params = {};
+        params.nav = setNav(leftNav, border, rightNav);
+        params.frame = setFrame(bounces, {
+            imgUrl: url,
+            clothes: name,
+            id: id
+        },true);
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'header_new.html';
+        openNewWinFrame(name, title, params, from, url);
+    }
+
+    //异步评论
+    function execAddComment(extra, winName, value){
+        var execScriptFun = getExecScript('submitComment',[]);
+        api.execScript({
+            name:'addCommentWin',
+            frameName:'addCommentFrame',
+            script: execScriptFun
+        });
+    }
+
+    function showWuliu(name, id, url, exp_no) {
+        api.openWin({
+            name: 'wuLiuInfo',
+            url: 'win.html',
+            pageParam: {
+                bounces: true,
+                title: "物流信息",
+                page: "wuLiuInfo",
+                name: "wuLiuInfo",
+                data: name,
+                type: url,
+                id: id,
+                exp_no: exp_no
+            }
+        });
+    }
+
+    //分页器回到顶部回调方法
+    function listenGoTopCallback() {
+        var callback = 'showNavTitle()';
+        var params = {
+            script: callback
+        };
+        api.execScript(params);
+    }
+
+    function execCloseSlefWin(extra, winName, value) {
+        api.closeWin({
+            name: winName
+        });
+    }
+</script>
+</html>

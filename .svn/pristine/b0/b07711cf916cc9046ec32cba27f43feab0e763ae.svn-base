@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>首页</title>
+
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/swiper.min.css" />
+	<style>
+		/*图标栅格部分*/
+		.icon-item i{
+			font-size: 1.05rem;
+			color: #707070;
+		}
+		.icon-item .aui-grid-label{
+			font-family: SourceHanSansCN-Light;
+			font-size: 0.6rem;
+			padding-top: 0.1rem;
+			color: #959595;
+		}
+		.hotCloset-item{
+			margin-bottom: 0.85rem;
+		}
+		.hotCloset-item .hotCloset-header{
+			padding: 1rem 0.5rem 0.7rem 0.5rem;
+		}
+		.hotCloset-item .hotCloset-header .title{
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.8rem;
+			color: #000000;
+		}
+		.hotCloset-item .hotCloset-header .en-name{
+			font-family: ArialMT;
+			font-size: 0.9rem;
+			color: #707070;
+			letter-spacing: 0px;
+			font-weight: bold;
+		}
+		.hotCloset-item .hotCloset-header .more{
+			padding: 0.3rem 0;
+			font-family: ArialMT;
+			font-size: 0.55rem;
+			color: #A6A6A6;
+			text-align: right;
+		}
+		.hotCloset-item .hotCloset-header .more span{
+			font-size: 0.35rem;
+			color: #A6A6A6;
+			margin-left: 0.1rem;
+		}
+
+		.shadow-5{
+			width: 100%;
+			height: 0.25rem;
+			background: #EBEBEB;
+			box-shadow: inset 0px 1px 1px 0px rgba(0,0,0,0.15);
+		}
+		.shadow-13{
+			width: 100%;
+			height: 0.65rem;
+			background: #EBEBEB;
+			box-shadow: inset 0px 1px 1px 0px rgba(0,0,0,0.15);
+		}
+
+		#theme-group-container .waterfall .item img{
+			height: 10.5rem;
+		}
+
+		.hack-space{
+			display: inline-block;
+			width: 0.75rem;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="UIScrollPicture"></div>
+	<div class="aui-grid">
+		<div class="aui-row">
+			<div class="aui-col-xs-3 icon-item" tapmode onclick="goPopularity()">
+				<i class="duola-iconfont icon-love"></i>
+				<!--<img src="../image/theme1.png" alt="" style="width: 30%;height: auto;padding-bottom: 0.3rem">-->
+				<div class="aui-grid-label">人气</div>
+			</div>
+			<div class="aui-col-xs-3 icon-item" tapmode onclick="goYearVip()">
+				<i class="duola-iconfont icon-annual" style="color: #FF6100;"></i>
+				<!--<img src="../image/theme1.png" alt="" style="width: 30%;height: auto;padding-bottom: 0.3rem">-->
+				<div class="aui-grid-label">年费专享</div>
+			</div>
+			<div class="aui-col-xs-3 icon-item" tapmode onclick="goSeason()">
+				<i class="duola-iconfont icon-winter" ></i>
+				<!--<img src="../image/theme2.png" alt="" style="width: 30%;height: auto ;padding-bottom: 0.3rem">-->
+				<div class="aui-grid-label">冬季预选</div>
+			</div>
+			<div class="aui-col-xs-3 icon-item" tapmode onclick="goChoose()">
+				<i class="duola-iconfont icon-star"></i>
+				<!--<img src="../image/theme4.png" alt="" style="width: 30%;height: auto;padding-bottom: 0.3rem">-->
+				<div class="aui-grid-label">选衣达人</div>
+			</div>
+		</div>
+	</div>
+	<div class="shadow-5"></div>
+	<div tapmode onclick="goRecommend()">
+		<img src="../image/recommend.png" width="100%"/>
+	</div>
+	<div class="shadow-5"></div>
+	<div tapmode onclick="goYearVip()">
+		<img src="../image/annual.png" width="100%"/>
+	</div>
+	<div class="shadow-5"></div>
+	<div id="theme-group-container">
+		<img src="../image/hold.jpg" width="100%"/>
+
+		<!--<div class="theme-group-item">-->
+			<!--<img class="duo-cache-img" src="http://img.duolayimeng.com/public/image/theme-muzuheng.jpg@40q" />-->
+			<!--<div class="shadow-13"></div>-->
+			<!--<img class="duo-cache-img" src="http://img.duolayimeng.com/public/image/theme-muzuheng.jpg@40q" />-->
+			<!--<div class="shadow-13"></div>-->
+			<!--<div class="hotCloset-item">-->
+				<!--<div class="hotCloset-header flex flex-space-between flex-vertical-center">-->
+					<!--<div><b class="title">人气排行</b><span class="en-name">&nbsp;|&nbsp;PARTY GIRL</span></div>-->
+					<!--<div class="more flex flex-vertical-center" tapmode onclick="goMore()">MORE<span class="duola-iconfont icon-right"></span></div>-->
+				<!--</div>-->
+				<!--<div class="cloudset-container waterfall">-->
+					<!--<div class="swiper-container">-->
+						<!--<div class="swiper-wrapper">-->
+							<!--<div class="item swiper-slide" tapmode onclick="showClothes()">-->
+								<!--<div class="header">-->
+									<!--<img class="swiper-lazy" src="http://img.duolayimeng.com/original/1517718-1.jpg@320h" alt=""/>-->
+									<!--<div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>-->
+									<!--<div class="label flex flex-space-between">-->
+										<!--<div class="new">new</div>-->
+										<!--<div class="unavailable">抢光了</div>-->
+									<!--</div>-->
+								<!--</div>-->
+								<!--&lt;!&ndash;<div class="footer flex flex-space-between flex-vertical-center">&ndash;&gt;-->
+									<!--&lt;!&ndash;<div class="name flex-1 aui-ellipsis-1">宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫</div>&ndash;&gt;-->
+									<!--&lt;!&ndash;<div class="number"><span class="duola-iconfont icon-love"></span>136</div>&ndash;&gt;-->
+								<!--&lt;!&ndash;</div>&ndash;&gt;-->
+							<!--</div>-->
+							<!--<div class="item swiper-slide" tapmode onclick="showClothes()">-->
+								<!--<div class="header">-->
+									<!--<img class="swiper-lazy" src="http://img.duolayimeng.com/original/1517718-1.jpg@320h" alt=""/>-->
+									<!--<div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>-->
+									<!--<div class="label flex flex-space-between">-->
+										<!--<div class="new">new</div>-->
+										<!--<div class="unavailable">抢光了</div>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="item swiper-slide" tapmode onclick="showClothes()">-->
+								<!--<div class="header">-->
+									<!--<img class="swiper-lazy" src="http://img.duolayimeng.com/original/1517718-1.jpg@320h" alt=""/>-->
+									<!--<div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>-->
+									<!--<div class="label flex flex-space-between">-->
+										<!--<div class="new">new</div>-->
+										<!--<div class="unavailable">抢光了</div>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="item swiper-slide" tapmode onclick="showClothes()">-->
+								<!--<div class="header">-->
+									<!--<img class="swiper-lazy" src="http://img.duolayimeng.com/original/1517718-1.jpg@320h" alt=""/>-->
+									<!--<div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>-->
+									<!--<div class="label flex flex-space-between">-->
+										<!--<div class="new">new</div>-->
+										<!--<div class="unavailable">抢光了</div>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="shadow-13"></div>-->
+		<!--</div>-->
+
+	</div>
+	<!--  主题图片模板 -->
+	<script id="theme-group-container-template" type="text/x-dot-template">
+		{{ for(var i = 0; i < it.preItem; i++) { }}
+			<div class="theme-group-item">
+				{{ for(var j = 0; j < it.preTheme; j++) { }}
+					<img src="../image/hold.jpg" class="{{=CONSTANT.CACHECLASSNAME}}" title="{{=getImgUrl(imgPath, it.themes.list[i*it.preTheme+j].img, CONSTANT.PICTUREOSS.Q40)}}"
+						 tapmode onclick="{{=getExecScript('goThemeDatail',[it.themes.list[i*it.preTheme+j]._id])}}"/>
+					<div class="shadow-13"></div>
+				{{ } }}
+				{{ for(var k = 0; k < it.preGroup; k++) { }}
+					<div class="hotCloset-item">
+						<div class="hotCloset-header flex flex-space-between flex-vertical-center">
+							<div>
+								<b class="title">{{=it.groups.list[i*it.preGroup+k].name}}</b>{{?it.groups.list[i*it.preGroup+k].en_name}}<span class="en-name"><i class="hack-space"></i>|<i class="hack-space"></i>{{=upperEnName(it.groups.list[i*it.preGroup+k].en_name)}}</span>{{?}}
+							</div>
+							<div class="more flex flex-vertical-center" tapmode onclick="{{=getExecScript('goMore',[it.groups.list[i*it.preGroup+k].name])}}">MORE<span class="duola-iconfont icon-right"></span></div>
+						</div>
+						<div class="cloudset-container waterfall">
+							<div class="swiper-container">
+								<div class="swiper-wrapper">
+									{{ for(var m = 0; m < it.groups.list[i*it.preGroup+k].count; m++) { }}
+										<div class="item swiper-slide" tapmode onclick="{{=getExecScript('showClothes',it.groups.list[i*it.preGroup+k].name == CONSTANT.TEXT.PRESELBEFORE ? [it.groups.list[i*it.preGroup+k].list[m]._id,CONSTANT.TEXT.PRESELBEFORE] : [it.groups.list[i*it.preGroup+k].list[m]._id])}}">
+											<div class="header">
+												<img src="{{=getImgUrl(colthPath, it.groups.list[i*it.preGroup+k].list[m].img, CONSTANT.PICTUREOSS.CLOTHESLIST)}}" class="swiper-lazy" title="{{=getImgUrl(colthPath, it.groups.list[i*it.preGroup+k].list[m].img, CONSTANT.PICTUREOSS.CLOTHESLIST)}}"/>
+												<div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+											</div>
+										</div>
+									{{ } }}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="shadow-13"></div>
+				{{ } }}
+			</div>
+		{{ } }}
+	</script>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/sendInfo.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/swiper.min.js"></script>
+<script type="text/javascript">
+	var UIScrollPicture = null;
+	var UIScrollPictureUrls = null;
+	apiready = function(){
+		//下拉刷新
+		pullRefresh(loadRefresh);
+		init(CONSTANT.ACTIONINIT);
+		getlocation();//获取地理位置
+	};
+	function loadRefresh(){
+		init(CONSTANT.ACTIONREFRESH);
+	}
+	function initSuccessCallback(ret,extra){
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else{
+			loadingHide();
+		}
+		if(ret.statusCode==200){
+			if(ret.ad && action == CONSTANT.ACTIONINIT){
+				getAdHtml(ret.ad);
+			}else if(ret.ad && action == CONSTANT.ACTIONREFRESH){
+				refreshAdHtml(ret.ad);
+			}
+			getThemesGroupsHtml(ret);
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+
+	function initErrorCallback(err,extra){
+		var action = extra.action;
+		if(action == CONSTANT.ACTIONREFRESH){
+			pullRefreshDone();
+		}else{
+			loadingHide();
+		}
+		toastMsg(err.msg);
+	}
+
+	function init(action){
+		if(action == CONSTANT.ACTIONINIT){
+			loadingShow();
+		}
+		var url = serviceNew + 'home/new';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData();
+		var extra = {action:action};
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+//	testHtml()
+	function testHtml(){
+		var ret = {
+			"statusCode": 200,
+			"msg": "OK",
+			"themesCount": "2:1",
+			"ad": {
+				"count": 6,
+				"list": [
+					{
+						"img": "public-dora-activity0918yinian11.jpg",
+						"url": "http://mp.weixin.qq.com/s?__biz=MzIyMjA0ODAwMg==&mid=503555330&idx=1&sn=650757e07152eefd54563aa51e0ebe06&chksm=73c47f6f44b3f679e81523a1f0e531d61bc6ecbea7001cdf936d8847103e50d725fa548e3441&scene=20#wechat_redirect"
+					},
+					{
+						"img": "public-dora-moshi09181.jpg",
+						"url": "http://mp.weixin.qq.com/s?__biz=MzIyMjA0ODAwMg==&mid=2651038824&idx=2&sn=d86034e791afd5bfa6208cbb4734ae26&chksm=f3c47e05c4b3f71344dbded9e0f613a7c81d7626eedad9d2f513609224b19b13c67b6af00d37&scene=4#wechat_redirect"
+					},
+					{
+						"img": "public-dora-activity0918VIP2.jpg",
+						"url": "http://mp.weixin.qq.com/s?__biz=MzIyMjA0ODAwMg==&mid=503555106&idx=1&sn=4fbaa146a4cfeeb5ffcc6906ab458b53&chksm=73c47e4f44b3f759fb324a7e6f33650ee69648eaa740235750b53078637950b9bd64c95c1f03&scene=20#wechat_redirect"
+					},
+					{
+						"img": "public-dora-activity0918sanheyi.jpg",
+						"url": "http://mp.weixin.qq.com/s?__biz=MzIyMjA0ODAwMg==&mid=503555218&idx=1&sn=b5eb80d5f594f0b3eb6cd6d9c5ecf272&chksm=73c47eff44b3f7e9df7522c6ceca0abb2c21afc33e539ed0294e6cd0e9d7b9395386b604ca71&scene=1&srcid=0909qfSPWZBfR08HBy4nN6RV#rd"
+					},
+					{
+						"img": "public-dora-activity0919bofang169.jpg",
+						"url": "http://mp.weixin.qq.com/s?__biz=MzIyMjA0ODAwMg==&mid=503555372&idx=1&sn=b2ed48616ee0edf3b543bb87c221aac4&chksm=73c47f4144b3f6574f5ee1867ae6b8be95542f822822141c1b355c669e284d913b41970cd0d8&scene=20#rd"
+					},
+					{
+						"img": "public-dora-activity0919start169.jpg",
+						"url": "http://mp.weixin.qq.com/s?__biz=MzIyMjA0ODAwMg==&mid=2651039048&idx=2&sn=8dd38193b22e81eac7ca66db85573e14&chksm=f3c47f25c4b3f63362c110452813aacdc50456e169d733a6cd91a8ee1199f75fe032f02d6b9c&scene=0#wechat_redirect"
+					}
+				]
+			},
+			"themes": {
+				"count": 16,
+				"list": [
+					{
+						"_id": "wFfwwaQzStTDuhsiu",
+						"img": "theme-AQG.png"
+					},
+					{
+						"_id": "JtqYNHxoFw7X8hvCA",
+						"img": "theme-beiliyaheng.jpg"
+					},
+					{
+						"_id": "Ldtcs5gCXEFLbHaRh",
+						"img": "theme-zhongqiulalaheng.jpg"
+					},
+					{
+						"_id": "avkT82bEnvTtrA9PH",
+						"img": "theme-laohuliliheng.jpg"
+					},
+					{
+						"_id": "XQ8Yzi8yaJmvTz3Py",
+						"img": "theme-duzi2.jpg"
+					},
+					{
+						"_id": "z2WJ3ziiry4PrCzYY",
+						"img": "theme-zhongqiuheng.jpg"
+					},
+					{
+						"_id": "Fh8idWdMJnkeRAabY",
+						"img": "theme-hongyifudazuihenmeihehehehe.jpg"
+					},
+					{
+						"_id": "wnNv9rmayqSm4z3Wa",
+						"img": "theme-xiajineidaheng.jpg"
+					},
+					{
+						"_id": "rHfoFvuqmCjnZZJNH",
+						"img": "theme-hongyifudazuihenmei11111.jpg"
+					},
+					{
+						"_id": "mwJtrFBd5ShFK6EWG",
+						"img": "theme-zwjjj-2333.jpg"
+					},
+					{
+						"_id": "grDLDmYaBPGhocGTd",
+						"img": "theme-zhongqiulalaheng.jpg"
+					},
+					{
+						"_id": "2MQiPTiRw6ytZgrRP",
+						"img": "theme-zhongqiulalaheng.jpg"
+					},
+					{
+						"_id": "Ezb53cjfANuXfKGYG",
+						"img": "theme-zhongqiulalaheng.jpg"
+					},
+					{
+						"_id": "Zur5fmCdJpAF65Fdu",
+						"img": "theme-zhongqiulalaheng.jpg"
+					},
+					{
+						"_id": "xmiJJJ3PKgCggNDk8",
+						"img": "theme-zhongqiulalaheng.jpg"
+					},
+					{
+						"_id": "pX9GbuA6q7hFnYQRn",
+						"img": "theme-zhongqiulalaheng.jpg"
+					}
+				]
+			},
+			"groups": {
+				"count": 8,
+				"list": [
+					{
+						"en_name": "newCome",
+						"name": "冬季预选",
+						"count": 4,
+						"list": [
+							{
+								"img": "1529764-1.jpg",
+								"_id": "1529764",
+								"title": "复古文艺立领风衣",
+								"like": 140
+							},
+							{
+								"img": "1531498-1.jpg",
+								"_id": "1531498",
+								"title": "印花民族外套",
+								"like": 9
+							},
+							{
+								"img": "1531772-1.jpg",
+								"_id": "1531772",
+								"title": "韩版文艺清新宽松长袖学生衬衣",
+								"like": 48
+							},
+							{
+								"img": "1532042-1.jpg",
+								"_id": "1532042",
+								"title": "文艺复古宽松花边袖衬衫 纯色圆领长袖上衣",
+								"like": 48
+							}
+						]
+					},
+					{
+						"en_name": "popularity",
+						"name": "人气排行",
+						"count": 4,
+						"list": [
+							{
+								"img": "1528114-1.jpg",
+								"_id": "1528114",
+								"title": "欧洲站印花A字 连衣裙",
+								"like": 219
+							},
+							{
+								"img": "1528224-1.jpg",
+								"_id": "1528224",
+								"title": "印花A字 连衣裙",
+								"like": 238
+							},
+							{
+								"img": "1528321-1.jpg",
+								"_id": "1528321",
+								"title": "刺绣蜜蜂T恤",
+								"like": 105
+							},
+							{
+								"img": "1528323-1.jpg",
+								"_id": "1528323",
+								"title": "刺绣蜜蜂T恤",
+								"like": 150
+							}
+						]
+					},
+					{
+						"en_name": "feast",
+						"name": "聚会",
+						"count": 4,
+						"list": [
+							{
+								"img": "1528007-1.jpg",
+								"_id": "1528007",
+								"title": "黑色无袖修身连衣裙",
+								"like": 267
+							},
+							{
+								"img": "1528030-1.jpg",
+								"_id": "1528030",
+								"title": "腰部抽绳连衣裙",
+								"like": 367
+							},
+							{
+								"img": "1528041-1.jpg",
+								"_id": "1528041",
+								"title": "一字领连衣裙",
+								"like": 266
+							},
+							{
+								"img": "1530749-1.jpg",
+								"_id": "1530749",
+								"title": "白色阔腿裤",
+								"like": 94
+							}
+						]
+					},
+					{
+						"en_name": "officeWorker",
+						"name": "通勤",
+						"count": 4,
+						"list": [
+							{
+								"img": "1513525-1.jpg",
+								"_id": "1513525",
+								"title": "黑色套装",
+								"like": 659
+							},
+							{
+								"img": "1514072-1.jpg",
+								"_id": "1514072",
+								"title": "直筒侧开叉喇叭裤",
+								"like": 991
+							},
+							{
+								"img": "1514089-1.jpg",
+								"_id": "1514089",
+								"title": "风衣自带腰带马甲",
+								"like": 332
+							},
+							{
+								"img": "1514097-1.jpg",
+								"_id": "1514097",
+								"title": "露肩双层吊带上衣",
+								"like": 613
+							}
+						]
+					},
+					{
+						"en_name": "renaissance",
+						"name": "文艺复古",
+						"count": 4,
+						"list": [
+							{
+								"img": "1511894-4.jpg",
+								"_id": "1511894",
+								"title": "花草印花无袖圆领大褶分体式连衣裙",
+								"like": 446
+							},
+							{
+								"img": "1513959-1.jpg",
+								"_id": "1513959",
+								"title": "侧腰系带三字牌小花连衣裙",
+								"like": 140
+							},
+							{
+								"img": "1516007-1.jpg",
+								"_id": "1516007",
+								"title": "蕾丝前圆后V领多层荷叶边连衣裙",
+								"like": 648
+							},
+							{
+								"img": "1518469-1.jpg",
+								"_id": "1518469",
+								"title": "黑底白边无袖连衣裙",
+								"like": 584
+							}
+						]
+					},
+					{
+						"en_name": "sweetLovely",
+						"name": "甜美可爱",
+						"count": 4,
+						"list": [
+							{
+								"img": "1516195-1.jpg",
+								"_id": "1516195",
+								"title": "复古褶裥领衬衫上衣",
+								"like": 319
+							},
+							{
+								"img": "1516640-1.jpg",
+								"_id": "1516640",
+								"title": "网眼短袖上衣",
+								"like": 562
+							},
+							{
+								"img": "1517079-1.jpg",
+								"_id": "1517079",
+								"title": "白色不规则下摆包裙",
+								"like": 320
+							},
+							{
+								"img": "1517430-1.jpg",
+								"_id": "1517430",
+								"title": "韩范儿不规则开叉包裙",
+								"like": 547
+							}
+						]
+					},
+					{
+						"en_name": "suite",
+						"name": "套装",
+						"count": 4,
+						"list": [
+							{
+								"img": "1522261-1.jpg",
+								"_id": "1522261",
+								"title": "小V领两件套裤裙（腰带）",
+								"like": 312
+							},
+							{
+								"img": "1522553-1.jpg",
+								"_id": "1522553",
+								"title": "黑色网状套装",
+								"like": 204
+							},
+							{
+								"img": "1522784-1.jpg",
+								"_id": "1522784",
+								"title": "马甲套装",
+								"like": 170
+							},
+							{
+								"img": "1522787-1.jpg",
+								"_id": "1522787",
+								"title": "白T短裤套装（配饰）",
+								"like": 346
+							}
+						]
+					},
+					{
+						"en_name": "originalDesign",
+						"name": "原创设计",
+						"count": 4,
+						"list": [
+							{
+								"img": "1524284-1.jpg",
+								"_id": "1524284",
+								"title": "拉链包包条纹T恤连衣裙",
+								"like": 129
+							},
+							{
+								"img": "1524289-1.jpg",
+								"_id": "1524289",
+								"title": "拉链包包条纹T恤连衣裙",
+								"like": 125
+							},
+							{
+								"img": "1525002-1.jpg",
+								"_id": "1525002",
+								"title": "蓝色侧开叉吊带裙",
+								"like": 158
+							},
+							{
+								"img": "1525006-1.jpg",
+								"_id": "1525006",
+								"title": "蓝条纹拼接连衣裙",
+								"like": 35
+							}
+						]
+					}
+				]
+			}
+		};
+		getThemesGroupsHtml(ret);
+	}
+
+
+	function getThemesGroupsHtml(ret){
+		if(ret.themesCount){
+			var preTheme = isNaN(parseInt(ret.themesCount.split(':')[0])) ? 0 : parseInt(ret.themesCount.split(':')[0]);
+			var preGroup = isNaN(parseInt(ret.themesCount.split(':')[1])) ? 0 : parseInt(ret.themesCount.split(':')[1]);
+			var preItemTheme = preTheme == 0 ? 0 : ret.themes.count / preTheme;
+			var preItemGroup = preGroup == 0 ? 0 : ret.groups.count / preGroup;
+			var preItem = preItemTheme < preItemGroup ? preItemTheme : preItemGroup;
+			var data = {
+				preItem:preItem,
+				preTheme:preTheme,
+				preGroup:preGroup,
+				themes:ret.themes,
+				groups:ret.groups
+			};
+			var html = doTHtml('theme-group-container-template',data);
+//			console.log(html);
+			var themeGroupContainer = $api.byId('theme-group-container');
+			themeGroupContainer.innerHTML = html;
+			var swiper = new Swiper('.swiper-container', {
+				slidesPerView: 2.5,
+				freeMode: true,
+				preloadImages: false,
+				lazyLoading: true,
+				spaceBetween: 0
+			});
+			_imgCacheUrl3(themeGroupContainer);
+			api.parseTapmode();
+		}
+	}
+
+	//顶部图片轮放
+	function getAdHtml(ad){
+		UIScrollPicture = api.require('UIScrollPicture');
+		if(!isDefine(UIScrollPicture)){
+			return;//项目没有加载这个模块
+		}
+		//更改轮播图片高宽比
+		var w = api.winWidth;
+		var h = w * 1 / CONSTANT.UISCROLLPICTURERATE;
+		var paths = ad.list.map(function (value){
+			return getImgUrl(imgPath, value.img, CONSTANT.PICTUREOSS.Q40);
+		});
+		UIScrollPictureUrls = ad.list.map(function (value){
+			return value.url;
+		});
+		UIScrollPicture.open({
+			rect: {
+				x: 0,
+				y: 0,
+				w:w,
+				h:h
+			},
+			data: {
+				paths: paths
+			},
+			styles: {
+				indicator: {
+					align: 'center',
+					color: '#FFFFFF',
+					activeColor: '#FF6100'
+				}
+			},
+			//缺少占位图
+			placeholderImg:'widget://image/hold.jpg',
+			contentMode: 'scaleToFill',
+			interval: 4,
+			fixedOn: api.frameName,
+			loop: true,
+			fixed: false
+		}, function(ret, err) {
+			if( ret.status && ret.eventType=='show' ){
+				var UIScrollPictureEl = $api.byId('UIScrollPicture');
+				if(UIScrollPictureEl){
+					$api.css(UIScrollPictureEl,'height:'+h+'px');
+				}
+			}else if( ret.status && ret.eventType=='click' ){
+				goAd(UIScrollPictureUrls[ret.index]);
+				sendEventUmeng(CONSTANT.UMENGEVENT.SCROLL_PICTURE,{
+					index:ret.index
+				});
+			}
+		});
+	}
+	//刷新顶部图片轮放
+	function refreshAdHtml(ad){
+		if(!isDefine(UIScrollPicture)){
+			getAdHtml(ad);
+		}else{
+			UIScrollPictureUrls = ad.list.map(function (value){
+				return value.url;
+			});
+			var paths = ad.list.map(function (value){
+				return getImgUrl(imgPath, value.img, CONSTANT.PICTUREOSS.Q40);
+			});
+			UIScrollPicture.reloadData({
+				data: {
+					paths: paths
+				}
+			});
+			UIScrollPicture.setCurrentIndex({
+				index: 1
+			});
+		}
+	}
+
+	//点击轮播图片
+	function goAd(url){
+		if(!isDefine(url)){
+			return;
+		}
+		var isNeedLogin = isNeedLoginUrl(url);
+		if(isNeedLogin && !isLogin()){
+			goLogin();
+			return;
+		}else{
+			api.openWin({
+				name: 'adweb',
+				url: 'winWeb.html',
+				pageParam:{
+					url : url,
+					title: '多啦衣梦'
+				}
+			});
+		}
+	}
+
+	//跳转选衣达人页面
+	function goChoose(){
+		if(!isLogin()){
+			goLogin();
+			return;
+		}
+		//换成新的header_new.html
+		var name = 'choose';
+		var title = '选衣达人';
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftText = '';
+		var leftExtra = '';
+		var leftCallback = 'execCloseSlefWin';
+		var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+		var border = true;
+		var bounces = false;
+		var params = {};
+		params.nav= setNav(leftNav,border);
+		params.frame=setFrame(bounces);
+		var from = {
+			winName:api.winName,
+			frameName:api.frameName
+		};
+		var url = 'header_new.html';
+		var animation = '';
+		var page = 'choose.html';
+		sendEventUmeng(CONSTANT.UMENGEVENT.ICON_MODULE,{
+			name:title
+		});
+		openNewWinFrame(name,title,params,from,url,animation,page);
+	}
+
+	//跳转秋季预选页面
+	function goSeason(){
+		var name = 'season';
+		var title = CONSTANT.TEXT.PRESELBEFORE;
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftText = '';
+		var leftExtra = '';
+		var leftCallback = 'execCloseSlefWin';
+		var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+		var border = true;
+		var bounces = false;
+		var params = {};
+		params.nav= setNav(leftNav,border);
+		params.frame=setFrame(bounces);
+		var from = {
+			winName:api.winName,
+			frameName:api.frameName
+		};
+		var url = 'header_new.html';
+		var animation = '';
+		var page = 'season.html';
+		sendEventUmeng(CONSTANT.UMENGEVENT.ICON_MODULE,{
+			name:title
+		});
+		openNewWinFrame(name,title,params,from,url,animation,page);
+	}
+	//跳转人气排行页面
+	function goPopularity(){
+		goMore('人气排行');
+	}
+
+	//跳转年费专区页面
+	function goYearVip(){
+		var name = 'yearVip';
+		var title = '年费会员VIP专区';
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftText = '';
+		var leftExtra = '';
+		var leftCallback = 'execCloseSlefWin';
+		var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+		var border = true;
+		var bounces = true;
+		var params = {};
+		params.nav= setNav(leftNav,border);
+		params.frame=setFrame(bounces);
+		var from = {
+			winName:api.winName,
+			frameName:api.frameName
+		};
+		var url = 'yearVip.html';
+		var animation = '';
+		var page = 'yearVip_0.html';
+		sendEventUmeng(CONSTANT.UMENGEVENT.ICON_MODULE,{
+			name:title
+		});
+		openNewWinFrame(name,title,params,from,url,animation,page);
+	}
+
+	//跳转主题详情页面
+	function goThemeDatail(id,index){
+		var name = 'content';
+		var title = '主题';
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftText = '';
+		var leftExtra = '';
+		var leftCallback = 'execCloseSlefWin';
+		var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+		var border = true;
+		var bounces = true;
+		var params = {};
+		params.nav= setNav(leftNav,border);
+		params.frame=setFrame(bounces,{
+			id:id
+		});
+		var from = {
+			winName:api.winName,
+			frameName:api.frameName
+		};
+		var url = 'header_new.html';
+		var animation = '';
+		var page = 'content.html';
+		sendEventUmeng(CONSTANT.UMENGEVENT.THEME,{
+			index:index
+		});
+		openNewWinFrame(name,title,params,from,url,animation,page);
+	}
+	//点击更多跳转页面
+	function goMore(keyword){
+		sendEventUmeng(CONSTANT.UMENGEVENT.HOT_MODULE,{
+			name:keyword
+		});
+		if(keyword == CONSTANT.TEXT.PRESELBEFORE){
+			goSeason();
+			return;
+		}
+		var name = 'clothMore';
+		var title = keyword;
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftText = '';
+		var leftExtra = '';
+		var leftCallback = 'execCloseSlefWin';
+		var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+		var border = true;
+		var bounces = true;
+		var params = {};
+		params.nav= setNav(leftNav,border);
+		params.frame=setFrame(bounces,{
+			value:keyword
+		});
+		var from = {
+			winName:api.winName,
+			frameName:api.frameName
+		};
+		var url = 'header_new.html';
+		var animation = '';
+		var page = 'clothMore.html';
+		openNewWinFrame(name,title,params,from,url,animation,page);
+	}
+	//点击返回图标异步执行关闭窗口
+	function execCloseSlefWin(extra,winName,value){
+		api.closeWin({
+			name:winName
+		});
+	}
+
+
+	//点击推荐跳转页面
+	function goRecommend() {
+		if(!isLogin()){
+			goLogin();
+			return;
+		}
+		var name = 'Recommend';
+		var title = '推荐有奖';
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftText = '';
+		var leftExtra = '';
+		var leftCallback = 'execCloseSlefWin';
+		var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+		var border = true;
+		var bounces = false;
+		var params = {};
+		params.nav= setNav(leftNav,border);
+		params.frame=setFrame(bounces);
+		var from = {
+			winName:api.winName,
+			frameName:api.frameName
+		};
+		var url = 'header_new.html';
+		var animation = '';
+		var page = 'Recommend.html';
+		sendEventUmeng(CONSTANT.UMENGEVENT.SHARE_AWARD,{
+			name:title
+		});
+		openNewWinFrame(name,title,params,from,url,animation,page);
+	}
+</script>
+</html>

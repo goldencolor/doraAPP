@@ -1,0 +1,141 @@
+/**
+ * Created by oHHO on 2016-09-02.
+ */
+//默认根据config.xml 的debug来调整友盟的debug
+function initUmeng(){
+    var umengAnalytics = api.require('umengAnalytics');
+    if(!isDefine(umengAnalytics)){
+        return;
+    }
+    umengAnalytics.init({
+        debugMode: api.debug,
+    }, function(ret, err) {
+        console.log(getLogStr(new Array(ret,err)));
+    });
+}
+
+//统计页面进入和离开时间
+function onPageUmeng(pageName){
+    onPageStartUmeng(pageName);
+    listenPageEndUmeng(pageName);
+}
+
+
+
+function onPageStartUmeng(pageName){
+    // 开始统计
+    var umengAnalytics = api.require('umengAnalytics');
+    if(!isDefine(umengAnalytics) || !isDefine(pageName)){
+        return;
+    }
+    umengAnalytics.onPageStart({
+        pageName:pageName,
+    },function(ret,err){
+        console.log(getLogStr([pageName,ret,err]));
+    });
+}
+
+//结束统计
+function onPageEndUmeng(pageName){
+    var umengAnalytics = api.require('umengAnalytics');
+    if(!isDefine(umengAnalytics) || !isDefine(pageName)){
+        return;
+    }
+    umengAnalytics.onPageEnd({
+        pageName:pageName,
+    },function(ret,err){
+        console.log(getLogStr([pageName,ret,err]));
+    });
+}
+// 结束统计
+function listenPageEndUmeng(pageName){
+    var umengAnalytics = api.require('umengAnalytics');
+    //兼容写法
+    var systemType = api.systemType;
+    if(!isDefine(umengAnalytics) || !isDefine(pageName)){
+        return;
+    }
+    if(systemType == 'ios'){
+        // iOS手势关闭页面时结束自定义页面统计
+        api.addEventListener({
+            name:'viewdisappear'
+        },function(ret,err){
+            onPageEndUmeng(pageName);
+        });
+    }else if(systemType == 'android'){
+        // Android按返回键关闭页面时结束自定义页面统计
+        api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            onPageEndUmeng(pageName);
+            api.closeWin();
+        });
+    }
+}
+
+// 计数事件
+function sendEventUmeng(eventId,param) {
+    var umengAnalytics = api.require('umengAnalytics');
+    if(!isDefine(umengAnalytics)){
+        return;
+    }
+    var umengEvent = {
+        eventId: eventId
+    };
+    if(isObj(param)){
+        umengEvent.attributes = param;
+    }
+    umengAnalytics.onEvent(umengEvent, function(ret, err) {
+        console.log(getLogStr([eventId,param,ret,err]));
+    });
+}
+
+// 计算事件
+function sendMathEventUmeng(eventId,param,value) {
+    var umengAnalytics = api.require('umengAnalytics');
+    if(!isDefine(umengAnalytics)){
+        return;
+    }
+    var umengEvent = {
+        eventId: eventId
+    };
+    if(isObj(param)){
+        umengEvent.attributes = param;
+    }
+    if(value){
+        umengEvent.counter = value;
+    }
+    umengAnalytics.onEvent(umengEvent, function(ret, err) {
+        console.log(getLogStr([eventId,param,value,ret,err]));
+    });
+}
+
+//账号登录
+function umengLogin(uid,provider){
+    var umengAnalytics = api.require('umengAnalytics');
+    if(!isDefine(umengAnalytics) || !isDefine(uid)){
+        return;
+    }
+    var umengParams = {
+        uid: uid
+    };
+    if(isDefine(provider)){
+        umengParams.provider = provider;
+    }
+    umengAnalytics.profileSignIn(umengParams, function(ret, err) {
+        console.log(getLogStr([umengParams,ret,err]));
+    });
+}
+//账号退出
+function umengLogout(){
+    var umengAnalytics = api.require('umengAnalytics');
+    if(!isDefine(umengAnalytics)){
+        return;
+    }
+    umengAnalytics.profileSignOff(function(ret,err) {
+        console.log(getLogStr([ret,err]));
+    });
+}
+
+//备注
+//参数值，必须是字符串

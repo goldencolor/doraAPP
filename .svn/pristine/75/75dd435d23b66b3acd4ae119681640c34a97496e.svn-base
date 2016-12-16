@@ -1,0 +1,797 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <title>我的</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+</head>
+<style>
+    .my-header {
+        background: url('../image/mybg.png') no-repeat;
+        background-size: cover;
+        min-height: 11rem;
+        position: relative;
+    }
+    .my-info {
+        position: relative;
+        padding: 1rem 0;
+        width: 100%;
+        bottom: 0;
+        text-align: center;
+        vertical-align: center;
+    }
+    .my-info img {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+    }
+    .my-info .info-desc{
+        padding: 0.7rem 0;
+    }
+    .info-desc p{
+        color: #ffffff;
+        font-size: 0.8rem;
+    }
+    .info-desc p.nickname{
+        font-size: 0.9rem;
+    }
+    .my-menu {
+        position: absolute;
+        width: 100%;
+        height: 2.25rem;
+        line-height: 2.25rem;
+        left: 0;
+        bottom: 0;
+        text-align: center;
+        background: #ffffff;
+        filter:Alpha(opacity=50);
+        background:rgba(255, 255, 255, 0.2) none repeat scroll 0 0 !important;
+        color: #ffffff;
+        font-size: 0.8rem;
+    }
+    .my-menu > div:active {
+        background: #ffffff;
+        filter:Alpha(opacity=50);
+        background:rgba(255, 255, 255, 0.2) none repeat scroll 0 0 !important;
+    }
+    .info-list .aui-iconfont{
+        color: #FF6100 !important;
+        font-size: 0.75rem;
+    }
+    .info-list .aui-list .aui-list-item-title{
+        color: #707070 !important;
+        font-size: 0.75rem !important;
+    }
+    .info-list .icon-service{
+        font-size: 0.45rem;
+        color: #FF6100 !important;
+    }
+    #my-version{
+        font-size: 0.65rem;
+    }
+</style>
+<body>
+<div class="aui-content my-header">
+    <div class="my-info">
+        <img id="user-header" src="../image/defaultHead.jpg" onclick="changeAvatar(this)">
+        <div class="info-desc flex flex-center flex-vertical">
+            <p class="nickname" id="nickname"></p>
+            <p class="mobile" id="mobile"></p>
+        </div>
+    </div>
+    <div class="my-menu">
+        <div class="aui-col-xs-4" tapmode onclick="openMsg(this)">我的消息</div>
+        <div class="aui-col-xs-4" tapmode onclick="openInfo(this)">个人信息</div>
+        <div class="aui-col-xs-4" tapmode onclick="openPwd(this)">密码安全</div>
+    </div>
+</div>
+<section class="info-list">
+    <ul class="aui-list">
+        <li name="notvip" class="aui-list-item" tapmode onclick="openVip(this)">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-my"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">开通会员</div>
+            </div>
+        </li>
+            <li name="vip" class="aui-list-item aui-hide" tapmode onclick="openWallet(this)">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-calendar"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">我的钱包</div>
+                </div>
+            </li>
+            <li name="vip" class="aui-list-item aui-hide" tapmode onclick="openCoupon(this)">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-cert"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">我的优惠券</div>
+                </div>
+            </li>
+            <li name="vip" class="aui-list-item aui-hide" tapmode onclick="openOrder(this)">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-star"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">我的订阅</div>
+                </div>
+            </li>
+            <li name="vip" class="aui-list-item aui-hide" tapmode onclick="openHisOrder(this)">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-date"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">历史订阅</div>
+                </div>
+            </li>
+            <li name="vip" class="aui-list-item aui-hide" tapmode onclick="openRecommend(this)">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-flag"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">推荐有奖</div>
+                </div>
+            </li>
+            <li name="vip" class="aui-list-item aui-hide" tapmode onclick="openAddr(this)">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-location"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">我的收货地址</div>
+                </div>
+            </li>
+
+        <li class="aui-list-item" tapmode onclick="goChat(this)">
+            <div class="aui-list-item-label-icon">
+                <i class="duola-iconfont icon-service"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">在线客服</div>
+            </div>
+        </li>
+        <li class="aui-list-item" tapmode onclick="openManual(this)">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-info"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">操作指南</div>
+            </div>
+        </li>
+        <li class="aui-list-item" tapmode onclick="openQa(this)">
+            <div class="aui-list-item-label-icon" >
+                <i class="aui-iconfont aui-icon-question"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">常见问题</div>
+            </div>
+        </li>
+        <li class="aui-list-item" tapmode onclick="openFeedback(this)">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-paper"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">用户反馈</div>
+            </div>
+        </li>
+        <li class="aui-list-item" tapmode onclick="clearCache(this)">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-trash"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">清除缓存</div>
+                <div class="aui-list-item-right">
+                    <div class="aui-badge" style="position:relative;top:0; left:0" id="cache">0M</div>
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-mobile"></i>
+            </div>
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-title">我的版本</div>
+                <div class="aui-list-item-right">
+                    <div id="my-version" style="position:relative;top:0; left:0" ></div>
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item" tapmode onclick="logout(this)">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-close"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">退出</div>
+            </div>
+        </li>
+    </ul>
+</section>
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/oss.js"></script>
+<script type="text/javascript" src="../script/uploadImg2.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/meiqia_sdk.js"></script>
+<script type="text/javascript">
+    apiready = function () {
+        init();
+    }
+    function showVipEl(){
+        var vipEls = $api.domAll('[name="vip"]');
+        if(vipEls){
+            for(var i = 0; i< vipEls.length; i++){
+                if($api.hasCls(vipEls[i],'aui-hide')){
+                    $api.removeCls(vipEls[i],'aui-hide');
+                }
+            }
+        }
+        var notvipEls =$api.domAll('[name="notvip"]');
+        if(notvipEls){
+            for(var i = 0; i< notvipEls.length; i++){
+                if(!$api.hasCls(notvipEls[i],'aui-hide')){
+                    $api.addCls(notvipEls[i],'aui-hide');
+                }
+
+            }
+        }
+    }
+    function hideVipEl(){
+        var vipEls = $api.domAll('[name="vip"]');
+        if(vipEls){
+            for(var i = 0; i< vipEls.length; i++){
+                if(!$api.hasCls(vipEls[i],'aui-hide')){
+                    $api.addCls(vipEls[i],'aui-hide');
+                }
+            }
+        }
+        var notvipEls =$api.domAll('[name="notvip"]');
+        if(notvipEls){
+            for(var i = 0; i< notvipEls.length; i++){
+                if($api.hasCls(notvipEls[i],'aui-hide')){
+                    $api.removeCls(notvipEls[i],'aui-hide');
+                }
+
+            }
+        }
+    }
+    //登录完成后需要重新刷新一次!!!
+    function init(flag){
+        if(!flag){
+            loadingShow();
+        }
+        var nickname = $api.getStorage('userNickname');
+        var mobile = $api.getStorage('userPhone');
+        var myVersion = getMyVersion();
+        _setHtmlVal('my-version',myVersion);
+        _setHtmlVal('nickname',nickname);
+        _setHtmlVal('mobile',mobile);
+        var userVipType = $api.getStorage('userVipType');
+        var userheader = $api.getStorage('userHead');
+//        console.log(getLogStr([userheader]));
+        if(isDefine(userheader) && userheader != '../image/defaultHead.jpg'){
+            $api.attr($api.byId('user-header'), 'src', userheader);
+        }
+        if(!isMember()){
+            hideVipEl();
+        }else{
+            //是会员
+            showVipEl();
+        }
+        loadingHide();
+        dorabag();
+        getCache();
+    }
+    function getMyVersion(){
+        var version = api.appVersion;
+        var versionArray = version.split('.');
+        var versionTemp =versionArray.map(function(value){
+            return parseInt(value);
+        });
+        var repair =  api.getPrefs({
+                    sync: true,
+                    key: 'appRepair'
+                }) || 0;
+        return 'V'+versionTemp.toString().replace(/,/g,'.')+'_'+repair;
+    }
+    //获取缓存大小
+    function getCache(){
+        api.getCacheSize(function(ret){
+            var size = ret.size/(1024*1024);
+            $api.html($api.byId('cache'), size.toFixed(1)+'M');
+        });
+    }
+
+    function dorabag(){
+        var url = serviceNew + 'dorabag';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,dorabagSuccessCallback,dorabagErrorCallback,0,extra);
+    }
+
+    function dorabagSuccessCallback(ret,extra){
+        loadingHide();
+        if(ret.statusCode=='200'){
+            var dorabag =ret.dorabag; //多啦袋信息
+            var bagCount = ret.dorabag.bagCount; 	 //多啦袋数量
+            var bag      = ret.dorabag.perBag; 	 	 //多啦袋的容量
+            var drabagT  = ret.dorabag.count;    	 //用户持有多啦袋总量
+            var bagOwn   = ret.dorabag.list.length;  //用户持有的多啦袋数量
+            $api.setStorage('count',bagCount);
+            $api.setStorage('perBag',bag);//每个多啦袋放衣服数量
+            $api.setStorage('ownNum',bagOwn);
+            $api.setStorage('chooseCan',drabagT-bagOwn);
+        }else if(ret.statusCode=='10104'){
+            goLogin();
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function dorabagErrorCallback(err,extra){
+        loadingHide();
+        toastMsg(err.msg);
+    }
+
+    //打开我的消息
+    function openMsg(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'msg',
+            url: 'win.html',
+            pageParam:{
+                page: 'msg',
+                title: '我的信息'
+            }
+        });
+    }
+    //打开个人信息
+    function openInfo(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'myInfo',
+            url: 'win.html',
+            pageParam:{
+                page: 'myInfo',
+                title: '个人信息'
+            }
+        });
+    }
+    //打开密码安全
+    function openPwd(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'updatePwd',
+            url: 'win.html',
+            pageParam:{
+                page: 'updatePwd',
+                title: CONSTANT.PAGE.UPDATEPWD
+            }
+        });
+    }
+
+    //打开开通会员
+    function openVip(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'Vip',
+            url: 'win.html',
+            pageParam:{
+                page: 'Vip',
+                title: '开通会员'
+            }
+        });
+    }
+    //打开我的钱包
+    function openWallet(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'Wallet',
+            url: 'win.html',
+            pageParam:{
+                page: 'Wallet',
+                title: '我的账户',
+                type:'NO'
+            }
+        });
+    }
+
+    //ping++付款后异步调用关闭
+    function WinWallet(type){
+        if(type=='YES'){
+            api.closeWin({name:'Wallet'});
+        }
+        api.openWin({
+            name: 'Wallet',
+            url: 'win.html',
+            pageParam:{
+                page: 'Wallet',
+                title: '我的账户',
+                type:type
+            }
+
+        });
+    }
+
+    //打开我的优惠劵
+    function openCoupon(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'Coupon',
+            url: 'win.html',
+            pageParam:{
+                page: 'Coupon',
+                title: '我的优惠劵'
+            }
+        });
+    }
+
+    //打开我的订阅
+    function openOrder(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+
+//        api.openWin({
+//            name: 'order_frm',
+//            url: 'win.html',
+//            pageParam:{
+//                page: 'order_frm',
+//                title: '我的订阅'
+//            }
+//        });
+
+        //换成新的header_new.html
+        var name = 'order_frm';
+        var title = '我的订阅';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftNav = setNavData(leftIcon);
+        var border = true;
+        var bounces = true;
+        var params = {};
+        params.nav= setNav(leftNav,border);
+        params.frame=setFrame(bounces);
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'header_web.html';
+        openNewWinFrame(name,title,params,from,url);
+
+    }
+    //打开历史订阅
+    function openHisOrder(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'historyOrder',
+            url: 'win.html',
+            pageParam:{
+                page: 'historyOrder',
+                title: '历史订阅'
+            }
+        });
+    }
+    //打开推荐有奖
+    function openRecommend(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+//        api.openWin({
+//            name: 'Recommend',
+//            url: 'win.html',
+//            pageParam:{
+//                page: 'Recommend',
+//                title: '推荐有奖'
+//            }
+//        });
+        var name = 'Recommend';
+        var title = '推荐有奖';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftText = '';
+        var leftExtra = '';
+        var leftCallback = 'execCloseSlefWin';
+        var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+        var border = true;
+        var bounces = false;
+        var params = {};
+        params.nav= setNav(leftNav,border);
+        params.frame=setFrame(bounces,null,true);
+        var from = {
+            winName:api.winName,
+            frameName:api.frameName
+        };
+        var url = 'header_new.html';
+        var animation = '';
+        var page = 'Recommend.html';
+        openNewWinFrame(name,title,params,from,url,animation,page);
+    }
+    //打开我的收获地址
+    function openAddr(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        var name = 'addr';
+        var title = '我的收货地址';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftCallback = 'execCloseSlefWin';
+        var leftNav = setNavData(leftIcon,null,leftCallback);
+        var rightIcon = 'aui-iconfont aui-icon-plus';
+        var rightCallback = 'execAddAddr';
+        var rightNav = setNavData(rightIcon,null,rightCallback);
+        var border = false;
+        var bounces = false;
+        var params = {};
+        params.nav= setNav(leftNav,border,rightNav);
+        params.frame=setFrame(bounces,{
+            id:'nochoose'
+        });
+        var from = {
+            winName:api.winName,
+            frameName:api.frameName
+        };
+        var url = 'header_new.html';
+        var animation = '';
+        var page = 'addr.html';
+        openNewWinFrame(name,title,params,from,url,animation,page);
+    }
+
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra,winName,value){
+        api.closeWin({
+            name:winName
+        });
+    }
+
+    //点击返回图标异步执行添加地址
+    function execAddAddr(extra,winName,value){
+        var name = 'Newly';
+        var title = CONSTANT.PAGE.NEWADDR;
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftCallback = 'execCloseSlefWin';
+        var leftNav = setNavData(leftIcon,null,leftCallback);
+        var border = false;
+        var bounces = false;
+        var params = {};
+        params.nav= setNav(leftNav,border);
+        params.frame=setFrame(bounces);
+        var from = {
+            winName:api.winName,
+            frameName:api.frameName
+        };
+        var url = 'header_new.html';
+        var animation = '';
+        var page = 'Newly.html';
+        openNewWinFrame(name,title,params,from,url,animation,page);
+    }
+
+    //打开在线客服
+    function goChat(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        sendEventUmeng(CONSTANT.UMENGEVENT.ONLINE_SERVICE,{
+            from:'我的'
+        });
+        openChat();
+    }
+    //打开操作指南
+    function openManual(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        var url = serviceNew + 'user/help/manual';
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,manualSuccessCallback,manualErrorCallback,0,extra);
+    }
+    function manualSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+            api.openWin({
+                name: '操作指南',
+                url: 'winWeb.html',
+                pageParam:{
+                    page: 'winWeb',
+                    title: '操作指南',
+                    url:ret.url
+                }
+            });
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function manualErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+    //打开常见问题
+    function openQa(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        var url = serviceNew + 'user/help/qa';
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,qaSuccessCallback,qaErrorCallback,0,extra);
+    }
+    function qaSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+            api.openWin({
+                name: '常见问题',
+                url: 'winWeb.html',
+                pageParam:{
+                    page: 'winWeb',
+                    title: '常见问题',
+                    url:ret.url
+                }
+            });
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function qaErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+    //打开用户反馈
+    function openFeedback(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'feedback',
+            url: 'win.html',
+            pageParam:{
+                page: 'feedback',
+                title: '我的反馈',
+                name:"feedback"
+            }
+        });
+    }
+    //清除缓存
+    function clearCache(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:'清除缓存'
+        });
+        api.clearCache(function(ret,err){
+            api.toast({
+                msg:'清除完成'
+            });
+            $api.html($api.byId('cache'), '0M');
+        });
+    }
+    //退出
+    function logout(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.confirm({
+            msg:'是否确定退出?'
+        },function(ret,err){
+            if(ret.buttonIndex=='2'){
+                umengLogout();
+                api.sendEvent({
+                    name: 'loginOut'
+                });
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '正在退出',
+                    text: '请稍候',
+                    modal: true
+                });
+                $api.rmStorage('token');
+                $api.rmStorage('wxOpenId');
+                $api.clearStorage();
+                setTimeout(function(){
+                    api.hideProgress();
+                    api.execScript({
+                        frameName:'footer_tab_3',
+                        script: 'removeInfo()'
+                    });
+                    api.closeToWin({name:'root'});
+                },1000);
+            }
+        });
+    }
+
+
+    function setPhone(){
+        $api.html($api.byId('uuserphone'),$api.getStorage('userPhone'));
+    }
+    //点击修改头像
+    function changeAvatar(el){
+        openImgAction(true, function (path) {
+            uploadAvatar(path,function(key){
+                postAvatar(key);
+            });
+        });
+    }
+
+
+    //点击返回图标异步执行关闭窗口
+    function execSaveImg(extra,winName,value){
+        if(!isDefine(value)){
+            return ;
+        }
+        uploadAvatar(value,function(key){
+            postAvatar(key);
+        });
+        api.closeWin({
+            name:winName
+        });
+    }
+
+    //更改头像
+    function postAvatar(key){
+//        1476351708688867122
+        if(key.indexOf('error')!=-1){
+            toastMsg('服务器忙，请重试!');
+            return;
+        }
+        api.showProgress({
+            style: 'default',
+            animationType: 'fade',
+            title: '正在上传图片',
+            text: '请稍候',
+            modal: true
+        });
+        var url = serviceUser + 'info/avatar';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData({
+            avatarKey: key
+        });
+        var extra = null;
+        _ajaxData(url,'post',headers,data,postAvatarSuccessCallback,postAvatarErrorCallback,0,extra);
+    }
+
+    function postAvatarSuccessCallback(ret,extra) {
+        _loadingHide();
+        if(ret.statusCode=='200' && ret.result.avatar){
+            console.log(ret.result.avatar);
+            var url = [CONSTANT.PICPRE.RES,ret.result.avatar].join('');
+            setImg(url);
+            $api.setStorage('userHead', url);
+        }else{
+            toastMsg('更改头像失败');
+        }
+    }
+
+    function postAvatarErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+    //dom更新头像
+    function setImg(src){
+        if(isDefine(src)){
+            $api.setStorage('userHead',src);
+            $api.attr($api.byId('user-header'),'src',src);
+            toastMsg('更改头像成功');
+        }
+    }
+</script>
+</html>

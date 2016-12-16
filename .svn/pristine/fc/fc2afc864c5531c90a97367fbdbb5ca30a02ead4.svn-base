@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+		.my-header {
+		    background-size: cover;
+		    position: relative;
+		}
+
+		.my-info img {
+		    width: 80px;
+		    height: 80px;
+		    border-radius: 50%;
+		}
+		.my-info p.nickname {
+		    margin-top: 5px;
+		    color: #666;
+		    font-size: 16px;
+		}
+		.my-aui-arrow-right{
+			color:#666; font-size: 14px;
+		}
+		.my-aui-badg{
+			background-color: #fff;
+		}
+		.my-content{
+			padding-top: 20px;
+		}
+		.my-background{
+			background-color: #fff;
+		}
+    </style>
+</head>
+<body id="main" class="">
+ 	<div class="aui-content my-header">
+        <!--<div class="my-info">-->
+            <!--<img src="../image/header.jpg">-->
+            <!--<p class="nickname">小甜甜</p>
+            <p class="my-margin-b-10">账户类型：<em>活动账户</em></p>
+			<p class="my-margin-b-10">有效期：<em>21天</em></p>-->
+       <!-- </div>
+    </div>-->
+	<!--<div class="aui-content my-content-margin">
+    	<div class="aui-btn aui-btn-block my-aui-btn-block" onclick="official()">开通正式账户</div>
+    </div>-->
+    
+    <!--正式会员-->
+    	<div class="aui-content my-content">
+	        <ul class="aui-list-view">
+	            <li class="aui-list-view-cell" onclick="Frost()">
+	                <a class="aui-arrow-right my-aui-arrow-right" >
+	               	 会员到期时间：<em id="vip-time"></em>
+	                <span class="aui-badge my-aui-badg" id="frozenAt" ></span>
+	                </a>
+	            </li>
+
+	            <!--<li class="aui-list-view-cell" onclick="Reimburse()">-->
+	          
+
+	            <li class="aui-list-view-cell" >
+	                <a class="my-aui-arrow-right">
+	               	 押金：<em id="deposit"></em>元
+	                <!--<span class="aui-badge my-aui-badg" id="" >退款</span>-->
+	                </a>
+	              </li>
+	          
+	            <!--<li class="aui-list-view-cell" onclick="Withdraw()">-->
+	                <!--<a class="aui-arrow-right my-aui-arrow-right" >-->
+	               	 <!--提现-->
+	                <!--</a>-->
+	            <!--</li>-->
+	        </ul>
+	        <div class="my-background" onclick="Renew()">
+	        	<div class="aui-btn aui-btn-block my-color my-while-color" id="my-aui-btn">我要续费
+	        </div>
+	        </div>
+	    </div>
+    <div lass="my-foot-padding"></div>
+   </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+	var token;
+	var type;
+	var is_err  =1 ;
+	apiready = function(){
+		token = $api.getStorage('token');
+		type  =api.pageParam.type;		
+		if(type=='YES'){		
+			_loadingShow();
+			setTimeout(function(){				
+				api.closeWin({name:'Pay'});
+		        api.closeWin({name:'Vip'});
+		        api.closeWin({name:'official_newWin'});
+		        api.closeWin({name:'chooseBrabag'});
+		        init();		       
+			},2000);
+			return;		
+		}else{		
+			init();
+		}
+		api.addEventListener({
+			name: 'sendInit'
+		}, function(ret, err){
+			if(ret){
+				init();
+			}
+		});
+	};
+
+	function initSuccessCallback(ret,extra) {
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			var isMember =	ret.data.user.isMember;
+			if(isMember=='monthly'){
+				var vipType ='月费会员';
+			}
+			if(isMember=='activity'){
+				var vipType ='活动会员';
+			}
+			if(isMember=='annual'){
+				var vipType ='年费会员';
+			}
+			$api.setStorage('token',token);
+			$api.setStorage('isMember',isMember);
+			$api.setStorage('username',ret.data.user.username);
+			$api.setStorage('dueTime',ret.data.user.dueTime);
+			$api.setStorage('count',ret.data.user.dorabag.count);
+			$api.setStorage('vipType',vipType); //会员类型
+			$api.html($api.byId('vip-time'), $api.getStorage('dueTime').substring(0,10));
+			$api.html($api.byId('vip-time'), $api.getStorage('dueTime').substring(0,10));
+			var frozenAt = ret.data.user.frozenAt;
+			if(frozenAt=='undefined'||frozenAt==undefined){
+				var text='未冻结';
+			}else{
+				var text='已冻结';
+			}
+			$api.html($api.byId('frozenAt'), text);
+			$api.setStorage('frozenAt',frozenAt);
+
+			var deposit = ret.data.user.deposit;
+			if(deposit=='undefined'||deposit==undefined){
+				$api.setStorage('deposit',0);
+				$api.html($api.byId('deposit'),'0');
+			}else{
+				$api.setStorage('deposit',deposit);
+				$api.html($api.byId('deposit'),deposit);
+			}
+			api.execScript({
+				name:'root',
+				frameName:"closet_frame",
+				script: 'bagStatus();'
+			});
+			api.execScript({
+				name:'root',
+				frameName:"footer_tab_4",
+				script: 'init("refresh");'
+			});
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function init(flag){
+		if(!flag){
+			_loadingShow();
+		}
+		var url = serviceNew+'user';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+
+	}		
+	
+	function official(){
+			api.openWin({
+	            name: 'official',
+	            url: 'win.html', 
+	            pageParam:{
+	            	page: 'official',
+			        title: '正式会员'
+	            }
+            });
+		}	
+	function Frost(){
+			api.openWin({
+	            name: 'Frost',
+	            url: 'win.html', 
+	            pageParam:{
+	            	page: 'Frost',
+			        title: '冻结账号'
+	            }
+            });
+		}
+	function Reimburse(){
+			api.openWin({
+	            name: 'Reimburse',
+	            url: 'win.html', 
+	            pageParam:{
+	            	page: 'Reimburse',
+			        title: '申请退款'
+	            }
+            });
+		}
+		
+	function Renew(){
+			api.openWin({
+	            name: 'Renew',
+	            url: 'win.html', 
+	            pageParam:{
+	            	page: 'Renew_new',
+			        title: '我要续费'
+	            }
+            });
+		}
+	function Withdraw(){
+			api.openWin({
+	            name: 'Withdraw',
+	            url: 'win.html', 
+	            pageParam:{
+	            	page: 'Withdraw',
+			        title: '提现'
+	            }
+            });
+		}
+		
+	
+</script>
+</html>

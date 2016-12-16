@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>新手引导</title>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            /*background-color: rgba(0, 0, 0, 0.2);*/
+            /*color: #FFFFFF;*/
+            /*-webkit-filter: blur(1px) !important;*/
+            /*filter: blur(1px) !important;*/
+        }
+        #guideBox{
+            height: 100%;
+            width: 100%;
+        }
+        .item{
+            /*background-color: #4f4f4f;*/
+            /*opacity: 0.4;*/
+            /*-webkit-filter: blur(2px) !important;*/
+            /*background-image: url("../image/hold.jpg");*/
+            /*filter: blur(2px) !important;*/
+            height: 100%;
+            width: 100%;
+            /*background-position:0 -1rem;*/
+        }
+
+        @keyframes upDown{
+            0%{
+                transform:translateY(0);
+                -webkit-transform:translateY(0);
+            }
+            25%{
+                transform:translateY(-0.25rem);
+                -webkit-transform:translateY(-0.25rem);
+            }
+            50%{
+                transform:translateY(0);
+                -webkit-transform:translateY(0);
+            }
+            75%{
+                transform:translateY(0.25rem);
+                -webkit-transform:translateY(0.25rem);
+            }
+            100%{
+                transform:translateY(0);
+                -webkit-transform:translateY(0);
+            }
+        }
+        @-webkit-keyframes upDown{
+            0%{
+                transform:translateY(0);
+                -webkit-transform:translateY(0);
+            }
+            25%{
+                transform:translateY(-0.5rem);
+                -webkit-transform:translateY(-0.5rem);
+            }
+            50%{
+                transform:translateY(0);
+                -webkit-transform:translateY(0);
+            }
+            75%{
+                transform:translateY(0.5rem);
+                -webkit-transform:translateY(0.5rem);
+            }
+            100%{
+                transform:translateY(0);
+                -webkit-transform:translateY(0);
+            }
+        }
+        @keyframes leftRight {
+            0%{
+                transform:translateX(0);
+                -webkit-transform:translateX(0);
+            }
+            25%{
+                transform:translateX(-1rem);
+                -webkit-transform:translateX(-1rem);
+            }
+            50%{
+                transform:translateX(0);
+                -webkit-transform:translateX(0);
+            }
+            75%{
+                transform:translateX(1rem);
+                -webkit-transform:translateX(1rem);
+            }
+            100%{
+                transform:translateX(0);
+                -webkit-transform:translateX(0);
+            }
+        }
+        @-webkit-keyframes leftRight {
+            0%{
+                transform:translateX(0);
+                -webkit-transform:translateX(0);
+            }
+            25%{
+                transform:translateX(-1rem);
+                -webkit-transform:translateX(-1rem);
+            }
+            50%{
+                transform:translateX(0);
+                -webkit-transform:translateX(0);
+            }
+            75%{
+                transform:translateX(1rem);
+                -webkit-transform:translateX(1rem);
+            }
+            100%{
+                transform:translateX(0);
+                -webkit-transform:translateX(0);
+            }
+        }
+        #one{
+
+            background-image: url("../image/guide1.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 1;
+            padding-top: 3rem;
+            padding-left: 0.8rem
+        }
+        #one img{
+            width: 1.65rem;
+            animation: upDown 1000ms linear 0ms infinite;
+            -webkit-animation: upDown 1000ms linear 0ms infinite;
+        }
+
+        #two{
+            background-image: url("../image/guide2.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 1;
+            padding-top: 26.8rem;
+            padding-left: 9rem;
+        }
+        #two img{
+            height: 2.75rem;
+            animation: leftRight 1500ms linear 0ms infinite;
+            -webkit-animation: leftRight 1500ms linear 0ms infinite;
+        }
+
+        #three{
+            background-image: url("../image/guide3.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 1;
+            padding-top: 15.5rem;
+            padding-left: 2.6rem;
+        }
+        #three img{
+            width: 1.65rem;
+            animation: upDown 1000ms linear 0ms infinite;
+            -webkit-animation: upDown 1000ms linear 0ms infinite;
+        }
+
+        #four{
+            background-image: url("../image/guide4.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 1;
+            padding-top: 22.5rem;
+            padding-left: 2.8rem;
+        }
+        #four img{
+            width: 1.65rem;
+            animation: upDown 1000ms linear 0ms infinite;
+            -webkit-animation: upDown 1000ms linear 0ms infinite;
+        }
+
+        #five{
+            background-image: url("../image/guide5.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 1;
+            padding-top: 16.2rem;
+            padding-left: 8.8rem;
+        }
+        #five img{
+            width: 1.65rem;
+            animation: upDown 1000ms linear 0ms infinite;
+            -webkit-animation: upDown 1000ms linear 0ms infinite;
+        }
+
+        #six{
+            background-image: url("../image/guide6.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 1;
+            padding-top: 4.8rem;
+            padding-left: 9rem;
+        }
+        #six img{
+            height: 2.75rem;
+            animation: leftRight 1500ms linear 0ms infinite;
+            -webkit-animation: leftRight 1500ms linear 0ms infinite;
+        }
+    </style>
+</head>
+<body>
+
+<div id="guideBox">
+    <div class="aui-hide item" onclick="closeFrame()" id="one">
+        <img src="../image/handOne.png" alt="">
+    </div>
+    <div class="aui-hide item" onclick="closeFrame()" id="two">
+        <img src="../image/handTwo.png" alt="">
+    </div>
+    <div class="aui-hide item" onclick="showFour()" id="three">
+        <img src="../image/handOne.png" alt="">
+    </div>
+    <div class="aui-hide item" onclick="closeFrame()" id="four">
+        <img src="../image/handThree.png" alt="">
+    </div>
+    <div class="aui-hide item" onclick="closeFrame()" id="five">
+        <img src="../image/handOne.png" alt="">
+    </div>
+    <div class="aui-hide item" onclick="closeFrame()" id="six">
+        <img src="../image/handTwo.png" alt="">
+    </div>
+</div>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script>
+    apiready = function () {
+        var guideBoxEl = $api.byId('guideBox');
+        $api.fixStatusBar(guideBoxEl);
+
+        var guideIndex = api.pageParam.guideIndex;
+        var divEls = $api.domAll(guideBoxEl, '.item');
+        for (var i = 0; i < divEls.length; i++) {
+            (!$api.hasCls(divEls[i], 'aui-hide')) && ($api.addCls(divEls[i], 'aui-hide'));
+        }
+        if (guideIndex == 0) {
+            $api.removeCls($api.byId('one'),'aui-hide');
+        } else if (guideIndex == 1) {
+            $api.removeCls($api.byId('two'),'aui-hide');
+        } else if (guideIndex == 2) {
+            $api.removeCls($api.byId('three'),'aui-hide');
+        } else if (guideIndex == 3) {
+            $api.removeCls($api.byId('five'),'aui-hide');
+        } else {
+            $api.removeCls($api.byId('six'),'aui-hide');
+        }
+    };
+
+    function closeFrame() {
+        api.closeFrame();
+    }
+
+    function showFour(){
+        $api.addCls($api.byId('three'),'aui-hide');
+        $api.removeCls($api.byId('four'),'aui-hide');
+    }
+</script>
+
+</body>
+</html>

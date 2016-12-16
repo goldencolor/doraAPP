@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+		.my-logo-box{
+        	margin: 15px 0px; text-align: center;
+        }
+        textarea{
+        	margin: 0px;
+        	padding:5px;
+        }
+   
+	</style>  
+</head>
+<body>
+<div class="my-line"></div>
+<div class="aui-card">
+    <ul class="aui-list-view">
+        <li class="aui-list-view-cell my-list-view-cell" data-win="list-image">
+            <div class="textArea">
+        		<textarea placeholder="我想说..."  rows="5" id="feedback-text"></textarea>
+   			 </div>
+        </li>
+    </ul>
+</div>
+<div class="aui-content">
+    <ul class="aui-list-view" id="feedback-list">
+        
+   	</ul>
+</div>
+	<div class="my-btn-box">
+		<div class="aui-btn aui-btn-block my-bg-color my-text-color" onclick="submit();">提交</div>
+	</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	var token;
+	var is_err =1 ;
+	apiready = function(){
+		token = $api.getStorage('token');
+		init();
+	};
+	function initErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+	function initSuccessCallback(ret,extra) {
+		if(ret.statusCode=='200'){
+			$api.html($api.byId('feedback-list'),' ');
+			var html='';
+			for(var i =0;ret.count>i;i++){
+				html+='<li class="aui-list-view-cell aui-img">';
+				html+='<div class="aui-img-body">'+ret.list[i].date.substring(0,10)+' '+ret.list[i].date.substring(11,19);
+				html+='<p>'+ret.list[i].content+'</p>';
+				html+='</div>';
+				html+='</li>';
+			}
+			$api.prepend($api.byId('feedback-list'), html);
+		}else if(ret.statusCode=='500'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function init(){
+		var url = serviceUser + 'settings/feedback/list';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+	}
+
+	function submitErrorCallback(err,extra){
+		toastMsg(err.msg);
+	}
+	function submitSuccessCallback(ret,extra) {
+		if(ret.statusCode=='200'){
+			$api.val($api.byId('feedback-text'),' ');
+			init();
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function submit(){
+
+		var text = $api.val($api.byId('feedback-text'));
+		text=String(text);
+		if(!isDefine(text)){
+			toastMsg('亲,请输入你的意见!');
+			return;
+		}
+		var url = serviceUser + 'settings/feedback/add';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData( {
+			content:text
+		});
+		var extra = null;
+		_ajaxData(url,'post',headers,data,submitSuccessCallback,submitErrorCallback,0,extra);
+	}
+	</script>
+</html>

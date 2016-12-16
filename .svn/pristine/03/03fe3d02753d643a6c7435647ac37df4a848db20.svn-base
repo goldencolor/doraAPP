@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<title>title</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+	<style>
+		.aui-radio {
+			width: 24px;
+			height: 24px;
+			position: relative;
+			margin: 8px 10px;
+			background: #ffffff;
+			border: solid 1px #e59c96;
+			border-radius: 0px;
+			display: table;
+			float: left;
+			-webkit-appearance: none;
+			transition: background-color ease 0.1s;
+		}
+		.aui-radio:checked,
+		.aui-radio .aui-checked {
+			background-color: #FF6100;
+			border: solid 1px #FF6100;
+			text-align: center;
+		}
+		.aui-radio:checked:before,
+		.aui-radio.aui-checked:before {
+			position: absolute;
+			left: 4px;
+			top: 1px;
+			font-size: 14px;
+			display: table;
+			font-family: "auiicon";
+			content: "\e645";
+			color: #ffffff;
+		}
+		.aui-radio:checked:after,
+		.aui-radio.aui-checked:after {
+			position: absolute;
+			left: 4px;
+			top: 1px;
+			font-size: 14px;
+			display: table;
+			font-family: "auiicon";
+			content: "\e645";
+			color: #ffffff;
+			pointer-events: none;
+
+		}
+
+		.my-aui-input-row:first-child:after {
+			border-top: 0px solid #c8c7cc;
+			display: block;
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			-webkit-transform-origin: 0 0;
+			-webkit-transform: scale(1);
+			pointer-events: none;
+		}
+
+		.my-aui-input-row:last-child:after {
+			border-bottom: 0px solid #c8c7cc;
+		}
+
+		.my-aui-list-view:after {
+			border-top: 0px solid #c8c7cc;
+			display: block;
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			-webkit-transform-origin: 0 0;
+			-webkit-transform: scale(1);
+			pointer-events: none;
+		}
+		.my-aui-li-style:last-child:after {
+			border-bottom: 0px solid #c8c7cc;
+		}
+		.aui-radio-name {
+			height: 26px;
+			line-height: 26px;
+			margin: 8px 10px 8px -5px;
+			float: none;
+			color: #777777;
+			font-size: 14px;
+		}
+		.my-aui-background-f{
+			background-color:#fff;
+		}
+		.my-aui-colo{
+			color:#E59C96;
+		}
+		#my-aui-input-row {
+			width: 100%;
+			position: relative;
+			display: table;
+			padding: 0px 0;
+		}
+		.my-aui-li-style{
+			font-size: 12px;
+			color:#777777;
+		}
+		.my-aui-content{
+			margin-top:15px;
+		}
+		.my-content-margin{
+			margin: 0px 10px 0px 10px;
+		}
+		.my-aui-btn-block{
+			background-color:#FF6100;
+			color: #fff;
+			font-size: 14px;
+			padding:10px 0px 10px 0px;
+		}
+		.my-position{
+			position: absolute;top: 0px ;right:0px; padding: 2px;background-color: #ff830f;color:#fff; z-index: 100; font-size: 8px; line-height: 2
+		}
+		.bagchange-rules{
+			margin-top: 20px;
+			padding: 10px 10px;
+			background-color: white;
+		}
+		.bagchange-rules p {
+			font-size: 12px;
+		}
+	</style>
+</head>
+<body>
+<div class="aui-content my-aui-content">
+	<div class="aui-form">
+		<div class="aui-input-row my-aui-input-row" id="my-aui-input-row">
+			<div id="my-input-id"> </div>
+		</div>
+	</div>
+</div>
+<div class="aui-content">
+	<ul class="aui-list-view my-aui-list-view hide" id="content-text">
+		<li class="aui-list-view-cell my-aui-li-style">
+			单次可选<em class="my-aui-colo" id="choose-clothes-num"></em>件衣服，  <span class="my-aui-colo" id="choose-clothes-money"></span>/月。
+		</li>
+	</ul>
+
+	<!--  选择2个和3个才显示，并更改em 和 span-->
+
+	<ul class="aui-list-view my-aui-list-view hide" id="brag-content">
+		<li class="aui-list-view-cell my-aui-li-style">
+		<!--您当前订阅有<em id="brag-count"></em>个多啦袋，本次缴费选择<em id="choose-count"></em>个多啦袋，您前一次缴费剩余的会员时间将折算为之前的<span id="time-multiple"></span>倍。-->
+		您当前订阅有<em id="brag-count"></em>个多啦袋，本次变包选择<em id="choose-count"></em>个多啦袋，确定去缴费吗？
+		</li>
+	</ul>
+</div>
+<div class="aui-content my-content-margin">
+	<div class="aui-btn aui-btn-block my-aui-btn-block my-bg-color" id="pay-btn" onclick="Pay()">下一步</div>
+</div>
+<div class="bagchange-rules" id="bagchange-rule" >
+	<p>变包费用计算规则：</p>
+	<p>
+		1.减包，当前多余订单已终结，即可申请减包。减包剩余会员时间折算为之前的 n / m 倍。例如减包前2个包，减包后1个包，剩余会员时间将折算为之前的2倍。
+	</p>
+	<p>
+		2.加包。剩余会员时间大于30天，将直接折算会员时间，剩余会员时间小于30天，您需要补齐剩余时间费用，并至少缴纳1个月月费。例如您当前剩余会员时间为10天，加包变成两个包，您需要缴费 249 * 0.34 + 498 * 1 ≈ 583元。
+	</p>
+	<p>
+		3.变包在确认或者缴费后即时生效。
+	</p>
+	<p>
+		4.请勿频繁变包。
+	</p>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+	var BragCount;
+	var money;
+	var serviceType='serviceFee';
+	var bagNum;
+	var token;
+	var dorabag;
+	var leaseLimit=0;
+	var is_err =1 ;
+	var dueTime ;
+	var day30 = 30 * 24 * 60 * 60 * 1000;
+	var now;
+	apiready = function(){
+		token  = $api.getStorage('token');
+		dueTime = $api.getStorage('dueTime');
+		dueTime = new Date(dueTime);
+		now = new Date();
+		init();
+
+	};
+
+	function initSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode=='200'){
+			var html = '';
+			dorabag=ret.dorabag;
+			if(ret.dorabag.length<=0){
+				$api.html($api.byId('pay-btn'), '暂无包可变');
+				$api.removeAttr($api.byId('pay-btn'), 'onclick');
+			}
+			for(var i =0;ret.dorabag.length>i;i++){
+				html+='<div  class="aui-col-xs-4 aui-text-center aui-border-l  my-aui-background-f">';
+				html+='<input class="aui-radio" type="radio"  name="demo1" value="'+ret.dorabag[i].bags+'" onclick="change('+ret.dorabag[i].bags+');" id="select-'+ret.dorabag[i].bags+'">';
+				html+='<div class="aui-radio-name">'+ret.dorabag[i].bags+'个</div>';
+				if(i==0){
+					html+='<div class="my-position">推荐</div>';
+				}
+				html+='</div>';
+			}
+			$api.html($api.byId('my-input-id'), html);
+			$api.html($api.byId('brag-count'), BragCount);
+			$api.attr($api.byId('select-'+BragCount), 'checked', 'true');
+			$api.removeCls($api.byId('content-text'), 'hide');
+			change(BragCount);
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function initErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function init(){
+		BragCount  = $api.getStorage('count');
+		_loadingShow();
+		var url = serviceNew + 'user/service/dorabag';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData();
+		var extra = null;
+		_ajaxData(url,'post',headers,data,initSuccessCallback,initErrorCallback,0,extra);
+
+	}
+
+	function change(num){
+		bagNum = num;
+		if(num==BragCount){
+			$api.attr($api.byId('brag-content'), 'class', 'hide');
+			$api.addCls($api.byId('bagchange-rule'), 'hide');
+		}else{
+			$api.removeCls($api.byId('brag-content'),'hide');
+			$api.removeCls($api.byId('bagchange-rule'),'hide');
+		}
+		for(var x in dorabag){
+			if(dorabag[x].bags==num){
+				money=dorabag[x].fee;
+				leaseLimit = dorabag[x].leaseLimit;
+				var time_multiple= BragCount/bagNum;
+			}
+		}
+		$api.html($api.byId('choose-count'), num);
+		$api.html($api.byId('choose-clothes-money'), money);
+		$api.html($api.byId('choose-clothes-num'), leaseLimit);
+	}
+	function Pay(){
+		var type = $api.hasCls($api.byId('brag-content'), 'hide');
+		//var type = $api.hasCls($api.byId("bagchange-rule"), 'hide');
+		if(type){
+			api.openWin({
+				name: 'Pay',
+				url: 'win.html',
+				pageParam:{
+					page: 'Pay',
+					title: '缴费',
+					data: money,
+					bagNum:bagNum,
+					type: serviceType
+				}
+			});
+		}else{
+			var a = document.getElementById('brag-content');
+			var text = $api.text(a).replace(/\s+/g,"");
+			api.confirm({
+				msg: text,
+				buttons: ['确定', '取消']
+			}, function(ret, err){
+				if( ret ){
+					if(ret.buttonIndex==1 ){
+						var num = $api.dom("input[name='demo1']:checked").value;
+						if ((dueTime.getTime() - now.getTime()) >= day30 || BragCount > num) {
+							changeBag(num);
+						} else {
+							if (dueTime.getTime() < now.getTime()) {
+								toastMsg("您的会员已经过期，无法变包");
+								return;
+							}
+							changePay();
+						}
+					}
+				}else{
+
+					api.toast({
+						msg: ret.msg,
+						duration:1000,
+						location: 'bottom'
+					});
+				}
+			});
+		}
+	}
+	function changePay(){
+		api.openWin({
+			name: 'Pay',
+			url: 'win.html',
+			pageParam:{
+				page: 'Pay',
+				title: '变包',
+				data: money,
+				bagNum:bagNum,
+				type: "bagChange"
+			}
+		});
+	}
+	function changeBagSuccessCallback(ret,extra){
+		_loadingHide();
+		if(ret.statusCode==200)	{
+			var num = extra;
+			bagNum = num;
+			$api.setStorage('choose-num',num);
+			$api.setStorage('count',num);
+			if(ret.dueTime){
+				dueTime = new Date(ret.dueTime);
+			}
+			init();
+			api.toast({
+				msg: ret.msg,
+				duration:2000,
+				location: 'bottom'
+			});
+		}else if(ret.statusCode=='10104'){
+			toLogin();
+		}else{
+			toastMsg(ret.msg);
+		}
+	}
+	function changeBagErrorCallback(err,extra){
+		_loadingHide();
+		toastMsg(err.msg);
+	}
+	function changeBag(num){
+		_loadingShow();
+		var url = serviceNew + 'user/service/dorabag/changeBag';
+		var headers = _getAjaxHeaders(true,true);
+		var data = _getAjaxData({"bags":Number(num)});
+		var extra = num;
+		_ajaxData(url,'post',headers,data,changeBagSuccessCallback,changeBagErrorCallback,0,extra);
+	}
+</script>
+</html>

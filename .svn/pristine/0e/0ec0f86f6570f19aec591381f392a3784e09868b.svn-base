@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page4</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+.my-header {
+    background: url('../image/mybg.png') no-repeat;
+    background-size: cover;
+    min-height: 220px;
+    position: relative;
+}
+.my-info {
+    position: relative;
+    padding: 20px 0;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+    vertical-align: center;
+}
+.my-info img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+.my-info p.nickname {
+    margin-top: 5px;
+    color: #ffffff;
+    font-size: 18px;
+}
+.my-menu {
+    position: absolute;
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+    background: #ffffff;
+    filter:Alpha(opacity=50);
+    background:rgba(255, 255, 255, 0.2) none repeat scroll 0 0 !important;
+    color: #ffffff;
+    font-size: 14px;
+}
+.my-menu .aui-col-xs-3 {
+    border-right: 1px solid #9bd6d5;
+}
+.my-menu .aui-col-xs-3:last-child {
+    border-right: none;
+}
+.my-menu > div:active {
+    background: #ffffff;
+    filter:Alpha(opacity=50);
+    background:rgba(255, 255, 255, 0.2) none repeat scroll 0 0 !important;
+}
+.aui-list-view-cell {
+    line-height: 26px; font-size: 14px; color: #777777;
+}
+.aui-card:after{
+    border:0px;
+}
+.aui-text-pink{
+	/*background-color: #E59C96;*/
+	color: #d6584c !important;
+}
+
+    </style>  
+</head>
+<body id="main" class="hide">
+    <div class="aui-content my-header">
+        <div class="my-info">
+            <img  id="user-header" onclick="updataImg();" src="../image/defaultHead.jpg">
+            <p class="nickname" id="username" onclick="login();">登录/注册</p>
+            <p class="nickname" id="userphone" style="font-size: 12px;"></p>
+        </div>
+        <div class="my-menu" id="my-menu">
+            <div class="aui-col-xs-4" id="color1" onclick="Onclick(this,1)">我的消息</div>
+            <div class="aui-col-xs-4" id="color2" onclick="Onclick(this,2)">个人信息</div>
+            <div class="aui-col-xs-4" id="color3" onclick="Onclick(this,3)">密码安全</div>
+        </div>
+    </div>
+    <div class="aui-content aui-card">
+        <ul class="aui-list-view">
+            <li class="aui-list-view-cell hide" tapmode  id="login" onclick="login(this,0)">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-myfill my-color"></span>
+                    登录
+                </a>
+            </li>
+            <li class="aui-list-view-cell hide" tapmode id="reg" onclick="reg(this,1);">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-upstagefill my-color"></span>
+                    注册
+                </a>
+            </li>
+            <li class="aui-list-view-cell hide" tapmode id="WinVip" onclick="WinVip(this,2)">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-myfill my-color"></span>
+                    开通会员
+                </a>
+            </li>
+            <li class="aui-list-view-cell hide" tapmode id="WinWallet" onclick="WinWallet('NO',this,3)">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-recharge my-color"></span>
+                    我的钱包
+                </a>
+            </li>
+            <li class="aui-list-view-cell "  tapmode id="Coupon" onclick="Coupon(this,4)">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont my-color aui-icon-vipcard "></span>
+                     我的优惠劵
+                </a>
+            </li>
+            <!--<li class="aui-list-view-cell hide" tapmode id="openMyDrabag" onclick="openMyDrabag()">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-goods my-color"></span>
+                    我的多啦袋
+                </a>
+            </li>-->
+            <li class="aui-list-view-cell hide" tapmode id="WinOrder" onclick="WinOrder(this,5)">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-sort my-color"></span>
+                		我的订阅
+                </a>
+            </li>
+            <li class="aui-list-view-cell hide" tapmode id="WinHisOrder" onclick="WinHisOrder(this,6)">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-remind my-color"></span>
+                		历史订阅
+                </a>
+            </li>
+            <li class="aui-list-view-cell " tapmode id="showAddrList" onclick="showAddrList(this,7)">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-location my-color"></span>
+                    我的收货地址
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="aui-content aui-card">
+        <ul class="aui-list-view">
+            <li class="aui-list-view-cell hide" tapmode id="WinRecommend" onclick="WinRecommend(this,8)">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-upstage my-color"></span>
+                    推荐有奖
+                </a>
+            </li>
+            <li class="aui-list-view-cell hide " tapmode id="clearL" onclick="clearL(this,9);">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-delete my-color"></span>
+                    清除缓存
+                    <span class="aui-badge my-bg-color my-text-color" id="cache">0M</span>
+                </a>
+            </li>
+            <li class="aui-list-view-cell " onclick="WinChat(this,10)">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-service my-color"></span>
+                    在线客服
+                </a>
+            </li>
+            <!--<li class="aui-list-view-cell">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-roundaddfill my-color"></span>
+                    更多...
+                </a>
+            </li>-->
+             
+            <li class="aui-list-view-cell " id="manual" onclick="manual(this,11);">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-emoji my-color"></span>
+                    操作指南
+                </a>
+            </li>
+            <li class="aui-list-view-cell " id="qa" onclick="qa(this,12);">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-question my-color"></span>
+                    常见问题
+                </a>
+            </li>
+            
+           <li class="aui-list-view-cell hide" id="feedback" onclick="feedback(this,13);">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-message my-color"></span>
+                    用户反馈
+                </a>
+            </li>
+            <li class="aui-list-view-cell hide" id="out" onclick="out(this,14);">
+                <a class="aui-arrow-right">
+                    <span class="aui-iconfont aui-icon-apps my-color"></span>
+                    退出
+                </a>
+            </li>
+        </ul>
+    </div>  
+    <div class="my-line"></div>
+
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/uploadImg.js"></script>
+    <script type="text/javascript" src="../script/umeng_sdk.js"></script>
+    <script type="text/javascript">
+    var token;
+    var FreezeStatus;
+    var clothesNum;
+    var FreeZable;
+    var is_err =1;
+    apiready = function(){
+        init();
+    };
+    function init(){
+        token = $api.getStorage('token');   
+        if(token=='undefined'||token==undefined){
+            $api.removeCls($api.byId('login'), 'hide');
+            $api.removeCls($api.byId('reg'), 'hide');
+            $api.removeAttr($api.byId('user-header'), 'onclick');
+//          $api.attr($api.byId('user-header'), 'src', '../image/logo.png');
+            $api.attr($api.byId('username'), 'onclick', 'login();');
+            _setHtmlVal('username','登陆/注册');
+            _setHtmlVal('userphone','');
+            $api.addCls($api.byId('my-menu'), 'hide');
+            $api.addCls($api.byId('WinVip'), 'hide');
+            $api.addCls($api.byId('out'), 'hide');
+            $api.addCls($api.byId('clearL'), 'hide');
+            $api.addCls($api.byId('WinRecommend'), 'hide');
+            $api.addCls($api.byId('showAddrList'), 'hide');
+            $api.addCls($api.byId('WinOrder'), 'hide');
+            $api.addCls($api.byId('WinHisOrder'), 'hide');
+//          $api.addCls($api.byId('openMyDrabag'), 'hide');
+            $api.addCls($api.byId('WinWallet'), 'hide');
+            $api.addCls($api.byId('Coupon'), 'hide');
+        }else{
+            var isMember = $api.getStorage('isMember');
+//          alert(isMember);
+            if(isMember=='undefined'||isMember==undefined){
+                $api.removeCls($api.byId('WinVip'), 'hide');
+                $api.removeCls($api.byId('clearL'), 'hide');
+                $api.removeCls($api.byId('out'), 'hide');  
+                $api.removeCls($api.byId('feedback'), 'hide');
+//              $api.removeCls($api.byId('my-menu'), 'hide'); 
+        
+                $api.addCls($api.byId('login'), 'hide');
+                $api.addCls($api.byId('reg'), 'hide');
+                $api.addCls($api.byId('my-menu'), 'hide');                  
+                $api.addCls($api.byId('WinRecommend'), 'hide');
+                $api.addCls($api.byId('showAddrList'), 'hide');
+                $api.addCls($api.byId('WinOrder'), 'hide');
+                $api.addCls($api.byId('WinHisOrder'), 'hide');
+//              $api.addCls($api.byId('openMyDrabag'), 'hide');
+                $api.addCls($api.byId('WinWallet'), 'hide');
+                $api.addCls($api.byId('Coupon'), 'hide');
+            }else{
+                $api.addCls($api.byId('login'), 'hide');
+                $api.addCls($api.byId('reg'), 'hide');
+                $api.addCls($api.byId('WinVip'), 'hide');
+                
+                $api.removeCls($api.byId('out'), 'hide');
+                $api.removeCls($api.byId('clearL'), 'hide');
+                $api.removeCls($api.byId('WinRecommend'), 'hide');
+                $api.removeCls($api.byId('showAddrList'), 'hide');
+                $api.removeCls($api.byId('WinOrder'), 'hide');
+                $api.removeCls($api.byId('WinHisOrder'), 'hide');
+//              $api.removeCls($api.byId('openMyDrabag'), 'hide');
+                $api.removeCls($api.byId('WinWallet'), 'hide');
+                $api.removeCls($api.byId('Coupon'), 'hide');
+                $api.removeCls($api.byId('my-menu'), 'hide');
+                $api.removeCls($api.byId('feedback'), 'hide');
+            }       
+            var username = $api.getStorage('userNickname');
+            var userphone = $api.getStorage('userPhone');
+            var userVipType = $api.getStorage('userVipType');
+            var userheader = $api.getStorage('userHead');
+//          if(userheader=='undefined'||userheader==undefined||userheader==''){
+//          	userheader='../image/defaultHead.jpg';
+//          }
+    //      var userimg = $api.getStorage('username');
+            getCache();
+            _showPage();
+            $api.removeAttr($api.byId('username'), 'onclick');
+            if(isDefine(userheader)){
+            	$api.attr($api.byId('user-header'), 'src', userheader);
+            }
+//            console.log(typeof username == 'object' ? JSON.stringify(username) : username);
+            _setHtmlVal('username',username);
+            _setHtmlVal('userphone',userphone); 
+            dorabag();
+        }      
+    }
+
+    function checkFreezeSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+            if(ret.freezeStatus =='unfrozen'){
+                FreezeStatus='未冻结';
+                if(ret.info.freezable=="YES"){
+                    FreeZable ='可以冻结';
+                    $api.attr($api.byId('change-freeze'), 'onclick', 'changeFreeze("commit")');
+                }else{
+                    FreeZable ='不可以冻结';
+                    clothesNum = ret.info.clothes;//手上的衣服数量
+                    $api.attr($api.byId('change-freeze'), 'onclick', 'changeFreeze("Notthaw")');
+                }
+                $api.html($api.byId('freezeStatus'), FreeZable);
+            }else{
+                FreezeStatus='已冻结';
+                $api.html($api.byId('freezeStatus'), FreezeStatus);
+                $api.attr($api.byId('change-freeze'), 'onclick', 'changeFreeze("thaw")');
+            }
+        }else if(ret.statusCode=='500'){
+            goLogin();
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function checkFreezeErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+
+    //查询冻结状态
+    function checkFreeze(){
+        var url = serviceUser + 'service/frozen';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,checkFreezeSuccessCallback,checkFreezeErrorCallback,0,extra);
+    }
+
+    function changeFreezeSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+            checkFreeze();
+        }else if(ret.statusCode=='10104'){
+            goLogin();
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function changeFreezeErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+
+    function changeFreeze(type){
+        if(type =='Notthaw'){
+            api.toast({
+                msg: '手上的衣服数'+clothesNum,
+                duration: 2000,
+                location: 'bottom'
+            });
+        }else{
+            var url = serviceUser + 'service/frozen/'+type;
+            var headers = _getAjaxHeaders(true,true);
+            var data = _getAjaxData();
+            var extra = null;
+            _ajaxData(url,'post',headers,data,changeFreezeSuccessCallback,changeFreezeErrorCallback,0,extra);
+        }
+    }
+    function out(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.confirm({
+            msg:'是否确定退出?'
+        },function(ret,err){
+            if(ret.buttonIndex=='2'){
+                umengLogout();
+                api.sendEvent({
+                    name: 'loginOut'
+                });
+            	api.showProgress({
+				    style: 'default',
+				    animationType: 'fade',
+				    title: '正在退出',
+				    text: '请稍候',
+				    modal: true
+				});		
+           	 	$api.rmStorage('token');     
+           	 	$api.rmStorage('wxOpenId');
+                $api.clearStorage();
+                setTimeout(function(){    
+				    api.execScript({
+                        name:'root',
+                        frameName:'footer_tab_3',
+                        script: 'removeInfo()'
+                     });
+               	    api.closeToWin({name:'root'});
+               	    api.hideProgress();
+                },1000)
+              
+            }       
+        });
+    }
+
+    function depositSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+            var shouldPay = ret.info.shouldPay;//应交押金
+            var refunding = ret.refunding;//是否有赔偿
+            var canRefund = ret.canRefund;//是否能退款
+            var reasons = ret.reasons//退款理由
+            var clothes = ret.info.clothes;//当前衣服数
+        }else{
+            api.toast({
+                msg:ret.msg,
+                duration: 2000,
+                location: 'bottom'
+            });
+        }
+    }
+    function depositErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+//押金查询
+    function deposit(){
+
+        var url = serviceUser + 'service/deposit';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,depositSuccessCallback,depositErrorCallback,0,extra);
+    }
+
+    function refundSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function refundErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+
+//申请退款
+    function refund(){
+        var url = serviceUser + 'service/deposit/refund';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData({
+            amount: 1,
+            reason: '测试'
+        });
+        var extra = null;
+        _ajaxData(url,'post',headers,data,refundSuccessCallback,refundErrorCallback,0,extra);
+    }
+
+    function dorabagSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+            var dorabag =ret.dorabag; //多啦袋信息
+            var bagCount = ret.dorabag.bagCount; 	 //多啦袋数量
+            var bag      = ret.dorabag.perBag; 	 	 //多啦袋的容量
+            var drabagT  = ret.dorabag.count;    	 //用户持有多啦袋总量
+            var bagOwn   = ret.dorabag.list.length;  //用户持有的多啦袋数量
+            $api.setStorage('count',bagCount);
+            $api.setStorage('perBag',bag);//每个多啦袋放衣服数量
+            $api.setStorage('ownNum',bagOwn);
+            $api.setStorage('chooseCan',drabagT-bagOwn);
+        }else if(ret.statusCode=='10104'){
+            goLogin();
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function dorabagErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+
+    function dorabag(){
+
+        var url = serviceNew + 'dorabag';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,dorabagSuccessCallback,dorabagErrorCallback,0,extra);
+    }
+
+
+
+        
+    function getCache(){
+         api.getCacheSize(function(ret){
+            var size = ret.size/(1024*1024);
+           $api.html($api.byId('cache'), size.toFixed(1)+'M');
+        });
+    }
+    function clearL(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.clearCache(function(ret,err){       
+            api.toast({
+                msg:'清除完成'
+            });
+            //getCache();
+            $api.html($api.byId('cache'), '0M');
+        });
+    }
+    function Onclick(nian,one){
+        if(one==1){
+            api.openWin({
+                name: 'msg',
+                url: 'win.html', 
+                pageParam:{
+                    page: 'msg',
+                    title: '我的信息'
+                }
+            });
+        }if(one==2){
+            api.openWin({
+                name: 'myInfo',
+                url: 'win.html', 
+                pageParam:{
+                    page: 'myInfo',
+                    title: '个人信息'
+                }
+            });
+        }if(one==3){	    
+            api.openWin({
+                name: 'updatePwd',
+                url: 'win.html', 
+                pageParam:{
+                    page: 'updatePwd',
+                    title: CONSTANT.PAGE.UPDATEPWD
+                }
+            });
+        };
+        return true;
+    };
+//  链接()
+    function WinVip(el,index){
+            sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+                index:index,
+                name:$api.text(el).replace(/\s/g,'')
+            });
+            api.openWin({
+                name: 'Vip',
+                url: 'win.html', 
+                pageParam:{
+                    page: 'Vip',
+                    title: '开通会员'
+                }
+            });
+        }
+
+    function manualSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+            api.openWin({
+                name: '操作指南',
+                url: 'winWeb.html',
+                pageParam:{
+                    page: 'winWeb',
+                    title: '操作指南',
+                    url:ret.url
+                }
+            });
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function manualErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+    function manual(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        var url = serviceNew + 'user/help/manual';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,manualSuccessCallback,manualErrorCallback,0,extra);
+    }
+    function qaSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+            api.openWin({
+                name: '常见问题',
+                url: 'winWeb.html',
+                pageParam:{
+                    page: 'winWeb',
+                    title: '常见问题',
+                    url:ret.url
+                }
+            });
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function qaErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+    function qa(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        var url = serviceNew + 'user/help/qa';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,qaSuccessCallback,qaErrorCallback,0,extra);
+    }
+    function WinWallet(type,el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+    	if(type=='YES')api.closeWin({name:'Wallet'});
+    	api.openWin({
+            name: 'Wallet',
+            url: 'win.html', 
+            pageParam:{
+                page: 'Wallet',
+                title: '我的账户',
+                type:type
+            }
+
+		});
+	}
+    function WinOrder(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'order_frm',
+            url: 'win.html', 
+            pageParam:{
+                page: 'order_frm',
+                title: '我的订阅'
+            }
+        });
+    }
+    function WinHisOrder(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'historyOrder',
+            url: 'win.html',
+            pageParam:{
+                page: 'historyOrder',
+                title: '历史订阅'
+            }
+        });
+    }
+    function WinRecommend(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'Recommend',
+            url: 'win.html',
+            pageParam:{
+                page: 'Recommend',
+                title: '推荐有奖'
+            }
+        });
+    }
+
+    function WinChat(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        var token = $api.getStorage('token');
+        if(token=='undefined'||token==undefined){
+            api.openWin({
+                name: 'login',
+                url: 'win.html',
+                pageParam:{
+                    page: 'login',
+                    title: '登录'
+                },
+                animation:{
+                    type:'movein',
+                    subType:'from_bottom'
+                }
+            });
+        }else{
+            sendEventUmeng(CONSTANT.UMENGEVENT.ONLINE_SERVICE,{
+                from:'我的'
+            });
+            api.openWin({
+                name: '在线客户',
+                url: 'winWeb.html',
+                pageParam:{
+                    page: 'winWeb',
+                    title: '在线客服',
+                    url:'http://m.duolayimeng.com/chatService?token='+token
+                }
+            });
+        }
+    }
+        
+    function WinDelivery(){
+        api.openWin({
+            name: 'Delivery',
+            url: 'win.html', 
+            pageParam:{
+                page: 'Delivery',
+                title: '配送信息'
+            }
+        });
+    }
+    function WinAutonym(){
+        api.openWin({
+            name: 'Autonym',
+            url: 'win.html', 
+            pageParam:{
+                page: 'Autonym',
+                title: '实名认证'
+            }
+        });
+    }
+    function WinFigure(){
+        api.openWin({
+            name: 'Figure',
+            url: 'win.html', 
+            pageParam:{
+                page: 'Figure',
+                title: '身材信息'
+            }
+        });
+    }
+    function Coupon(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'Coupon',
+            url: 'win.html',
+            pageParam:{
+                page: 'Coupon',
+                title: '我的优惠劵'
+            }
+        });
+    }
+    function showAddrList(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'Delivery',
+            url: 'winAddr.html', 
+            pageParam:{
+                page: 'Delivery',
+                title: '我的收货地址',
+                name:"Delivery",
+        		id:'nochoose'
+            }
+        });
+    }
+    
+    function openMyDrabag(){
+        api.openWin({
+            name: 'myDrabagList',
+            url: 'win.html', 
+            pageParam:{
+                page: 'myDrabagList',
+                title: '我的多啦袋',
+                name:"myDrabagList"
+            }
+        });
+    }
+    function reg(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'reg',
+            url: 'win.html', 
+            pageParam:{
+                page: 'reg',
+                title: '注册',
+                name:"reg"
+            }
+        });
+    }
+    function login(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+        api.openWin({
+            name: 'login',
+            url: 'win.html', 
+            pageParam:{
+                page: 'login',
+                title: '登录',
+                name:"login"
+            }
+        });
+    }
+    function feedback(el,index){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            index:index,
+            name:$api.text(el).replace(/\s/g,'')
+        });
+    	 api.openWin({
+            name: 'feedback',
+            url: 'win.html', 
+            pageParam:{
+                page: 'feedback',
+                title: '我的反馈',
+                name:"feedback"
+            }
+        });
+    }
+    function updataSuccessCallback(ret,extra){
+        _showPage();
+        _loadingHide();
+        if(ret.statusCode=='200'){
+            $api.setStorage('token',token);
+            $api.setStorage('username',ret.data.user.username);
+            $api.setStorage('userPhone',ret.data.user.mobile);
+            $api.setStorage('userHead',ret.data.user.userheader);
+            init();
+            api.execScript({
+                name:'root',
+                frameName:"footer_tab_3",
+                script: 'init();'
+            });
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+    function updataErrorCallback(err,extra){
+        _showPage();
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+    function updata(token){
+    	_hidePage();
+    	_loadingShow();
+        var url = serviceNew+'user';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,updataSuccessCallback,updataErrorCallback,0,extra);
+    }
+    
+    function updataImg(){
+    	uploadImg();
+    }
+    function setImg(src){
+//      alert(src);
+		if(isDefine(src)){
+			$api.setStorage('userHead',src);
+	    	$api.attr($api.byId('user-header'),'src',src);
+	    	toastMsg('更改头像成功');
+		}
+    	
+    }
+    function setPhone(){
+    	$api.html($api.byId('uuserphone'),$api.getStorage('userPhone'));
+    }
+    </script>
+</html>

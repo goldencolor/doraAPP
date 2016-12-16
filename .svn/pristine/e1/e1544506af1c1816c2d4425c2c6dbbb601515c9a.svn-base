@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>二级分类弹出遮罩</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <style>
+        html{
+            background: rgba(0,0,0,0.0);
+        }
+        body{
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+        }
+        #level2-container{
+            background: #FFFFFF;
+            overflow: hidden;
+            visibility: hidden;
+        }
+        .level2 .item{
+            font-size: 0.8rem;
+            color: #9fa0a0;
+            text-align: center;
+            padding: 0.975rem 0;
+        }
+        .level2 .hit-color{
+            color: #ff6100;
+        }
+    </style>
+</head>
+<body>
+    <div style="height: 100%">
+        <div id="level2-container">
+
+            <!--<div class="level2 flex">-->
+                <!--<div class="item flex-1" tapmode onclick="level2Handler(el,0,0)">外套</div>-->
+                <!--<div class="item flex-1 hit-color">上衣</div>-->
+                <!--<div class="item flex-1">马夹</div>-->
+                <!--<div class="item flex-1">连衣裙</div>-->
+            <!--</div>-->
+                <!--<div class="level2 flex">-->
+                <!--<div class="item flex-1">外套</div>-->
+                <!--<div class="item flex-1">上衣</div>-->
+                <!--<div class="item flex-1">马夹</div>-->
+                <!--<div class="item flex-1">连衣裙</div>-->
+            <!--</div>-->
+            <!--<div class="level2 flex">-->
+                <!--<div class="item flex-1">外套</div>-->
+                <!--<div class="item flex-1">上衣</div>-->
+                <!--<div class="item flex-1">马夹</div>-->
+                <!--<div class="item flex-1">连衣裙</div>-->
+            <!--</div>-->
+            <!--<div class="level2 flex">-->
+                <!--<div class="item flex-1">外套</div>-->
+                <!--<div class="item flex-1">上衣</div>-->
+                <!--<div class="item flex-1">马夹</div>-->
+                <!--<div class="item flex-1">连衣裙</div>-->
+            <!--</div>-->
+
+        </div>
+        <div style="height: 100%" tapmode onclick="closeMask()"></div>
+    </div>
+    <script id="level2-container-template" type="text/x-dot-template">
+        {{ for(var i = 0; i < Math.ceil(it.count/4); i++) { }}
+            <div class="level2 flex">
+                {{ for(var j = 0; j < 4; j++) { }}
+                    <div id={{='"level2'+i+j+'"'}} class={{='"item flex-1 '+ (i == it.i && j == it.j ? 'hit-color' : '')+'"'}} tapmode onclick="{{='level2Handler(this,'+i+','+j+')'}}">{{=isDefine(it.list[i*4+j]) ? it.list[i*4+j].value : '' }}</div>
+                {{ } }}
+            </div>
+        {{ } }}
+    </script>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+    var level1s = null;
+    var isSearch = null;
+    apiready = function(){
+        //优化，从缓存取一级二级标签
+        var data = api.pageParam.data;
+        var level1 = data.level1;
+        var level2 = data.level2;
+        isSearch = data.isSearch;
+        getLevel2Html(level1,level2);
+
+    }
+    function testLevel2Html(){
+//        var testLeve1 = {"count":10,"value":"外套","i":0,"j":1,"list":[{"value":"开衫","order_no":1},{"value":"风衣","order_no":2},{"value":"西服","order_no":3},{"value":"防晒外套","order_no":4},{"value":"棒球服","order_no":5},{"value":"牛仔","order_no":6},{"value":"皮衣","order_no":7},{"value":"毛衣","order_no":8},{"value":"皮草","order_no":9},{"value":"夹克","order_no":10}],"name":"coat"};
+//        var html = doTHtml('level2-container-template',testLeve1);
+//        console.log(html);
+    }
+    function getLevel2Html(level1,level2){
+        var levels = $api.getStorage('levels');
+        if(isTrue(isSearch)){
+            //从搜索页面进来的，渲染一级分类
+            if(levels){
+                var templData = {
+                    count:levels.length,
+                    list:levels
+                };
+                if(!isNaN(parseInt(level1))){
+                    templData.i = Math.floor(level1 /4);
+                    templData.j = level1 % 4;
+                }
+                var html = doTHtml('level2-container-template',templData);
+                var level2Container = $api.byId('level2-container');
+                if(level2Container){
+                    level2Container.innerHTML = html;
+                    api.parseTapmode();
+                }
+            }
+        }else{
+            level1s = levels[level1];
+            if(!isNaN(parseInt(level2))){
+                level1s.i = Math.floor(level2 /4);
+                level1s.j = level2 % 4;
+            }
+            if(levels && level1s){
+                var html = doTHtml('level2-container-template',level1s);
+                var level2Container = $api.byId('level2-container');
+                if(level2Container){
+                    level2Container.innerHTML = html;
+                    api.parseTapmode();
+                }
+            }
+        }
+        var level2ContainerHeight = $api.cssVal($api.byId('level2-container'),'height');
+        $api.css($api.byId('level2-container'),'height:0;-webkit-transition:height 500ms;transition:height 500ms;visibility:visible;');
+        setTimeout(function(){
+            $api.css($api.byId('level2-container'),'height:'+level2ContainerHeight);
+        },0);
+    }
+    function closeMask(i,j,flag){
+        var level2Container = $api.byId('level2-container');
+        $api.css(level2Container,'height:0');
+        var level2Index = i*4+j;
+        var script = getExecScript('execCloseLevelMask',new Array(api.frameName,level2Index,isSearch));
+        if(flag){
+            api.execScript({
+                script: script
+            });
+            return;
+        }
+        setTimeout(function(){
+            api.execScript({
+                script: script
+            });
+        },300);
+    }
+    function level2Handler(el,i,j){
+        var hitLevel2 = $api.dom($api.byId('level2-container'),'.hit-color');
+        if(hitLevel2 == el){
+            return;
+        }
+        if(hitLevel2){
+            $api.removeCls(hitLevel2, 'hit-color');
+        }
+        $api.addCls(el, 'hit-color');
+        setTimeout(function(){
+            //关闭
+            closeMask(i,j,true);
+        },200);
+    }
+
+</script>
+</html>

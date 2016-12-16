@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>独立设计</title>
+
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        .shadow-13 {
+            width: 100%;
+            height: 0.65rem;
+            background: #F4F4F4;
+        }
+
+        .design-name {
+            height: 2.4rem;
+            line-height: 2.4rem;
+            text-align: left;
+            padding: 0 1.5rem;
+            font-family: SourceHanSansCN-Normal;
+            /*font-family: SourceHanSansCN-Medium;*/
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            letter-spacing: 0px;
+        }
+
+        .design-name-bold {
+            font-weight: 700;
+        }
+
+        .icon-line {
+            font-weight: 700;
+            font-size: 0.7rem;
+        }
+
+        #design-container{
+
+        }
+
+        #design-container .design-item div.img-holder{
+            min-height: 10.5rem;
+        }
+
+        #design-container .design-item{
+            position: relative;
+        }
+        #design-container .design-item .newTag{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4.3rem;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            opacity: 0.6;
+            background: #000000;
+            border-bottom-right-radius: 0.5rem;
+            text-align: center;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.65rem;
+            color: #FFFFFF;
+            z-index: 10;
+        }
+        #design-container .design-item .newTag .one{
+            position: absolute;
+            left: 0;
+            top: 0;
+            color:#FFFFFF;
+            width: 4.3rem;
+            height: 1.5rem;
+            line-height: 1.5rem;
+        }
+        /*#design-container .design-item .newTag .two{*/
+            /*font-family: ArialMT;*/
+            /*font-size: 0.55rem;*/
+            /*line-height: 0.55rem;*/
+            /*color: #CDCDCD;*/
+        /*}*/
+
+
+    </style>
+</head>
+<body>
+<!--页码-->
+<div id="pagination">
+    <div class="pagination-bg-1" onclick="changeTop()">
+        <div id="pagination-pag">
+            <div class="pagination-num" id="pagination-page">1页</div>
+            <div class="pagination-name" id="pagination-pageTotal"></div>
+            <!--<em id="pagination_page">111</em>/<em id="pagination_pageTotal">312</em>-->
+
+        </div>
+        <div id="pagination-top" class="pagination-tops hide">
+            <i class=" duola-iconfont icon-dingbu"></i>
+        </div>
+    </div>
+</div>
+<div id="design-container">
+
+
+    <!--<div id="duo-cache-page-design1">-->
+
+        <!--<div class="design-item" tapmode="" onclick="goDesignDatail('AZAwokNX2XYbYspQS','古特','0')">-->
+            <!--<div class="newTag">-->
+                <!--<div class="one">全新入驻</div>-->
+                <!--&lt;!&ndash;<div class="two">mew arrival</div>&ndash;&gt;-->
+            <!--</div>-->
+
+            <!--<div id="testImgHolder" class="img-holder bc-grey flex flex-center">-->
+                <!--<img src="http://img.duolayimeng.com/brand/yy2PD76zdF.jpg@5q" class="hide" title="http://img.duolayimeng.com/brand/yy2PD76zdF.jpg@80q">-->
+            <!--</div>-->
+            <!--<div class="design-name word-wrap" style="background:rgb(32,178,170);"><span class="design-name-bold">古特</span>&nbsp;&nbsp;<span class="duola-iconfont icon-line"></span>&nbsp;&nbsp;短语</div>-->
+            <!--<div class="shadow-13"></div>-->
+        <!--</div>-->
+
+
+    <!--</div>-->
+
+
+</div>
+<div id="loading" class="aui-text-center" style="font-size: 12px; color: #999999;">
+    <img src="../icon/loading.gif" width="16"/>
+    <div>更多数据加载中</div>
+</div>
+<!--  主题图片模板 -->
+<script id="design-container-template" type="text/x-dot-template">
+    <div id="{{=CONSTANT.CACHEPAGEID+'design'+currPage}}">
+        {{ for(var i = 0; i < it.count; i++) { }}
+        <div class="design-item" tapmode onclick="{{=getExecScript('goDesignDatail',[it.list[i]._id,it.list[i].name,i])}}">
+
+            {{? it.list[i].tag == "new"}}
+                <div class="newTag"><div class="one">全新入驻</div></div>
+            {{?}}
+
+            <div class="img-holder bc-grey flex flex-center">
+                <img onload="cacheImgNew(this)" class="opacity0 transition-opacity" src="{{=getImgUrl(CONSTANT.PICPRE.BRAND,it.list[i].img,CONSTANT.PICTUREOSS.Q5)}}" data-url="{{=getImgUrl(CONSTANT.PICPRE.BRAND,it.list[i].img,CONSTANT.PICTUREOSS.Q80)}}" width="100%"/>
+            </div>
+
+            <div class="design-name word-wrap" style="{{=getBackgroudColor(it.list[i].bgColor)}}"><span
+                class="design-name-bold">{{=it.list[i].name}}</span>&nbsp;&nbsp;<span
+                class="duola-iconfont icon-line"></span>&nbsp;&nbsp;{{=it.list[i].slogan || it.list[i].special}}
+            </div>
+            {{? i != it.count -1}}
+            <div class="shadow-13"></div>
+            {{?}}
+        </div>
+        {{ } }}
+    </div>
+</script>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/components/pagination.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+    var currPage = 1;
+    var totalPage = 1;
+    //加载更多时候，服务器是否返回，以免用户多次触发
+    var isLoadMoreResponsed = true;
+    apiready = function () {
+        //下拉刷新
+        getDesign();
+        pullRefresh(loadRefresh);
+        loadMore();
+        _myScroll('design-container','div',null,true);
+    };
+    //下拉刷新
+    function loadRefresh() {
+        currPage = 1;
+        if($api.byId('loading').innerHTML=='没有更多了'){
+            $api.html($api.byId('loading'),'<img src="../icon/loading.gif" width="16" /><div>更多数据加载中</div>');
+        }
+        getDesign(CONSTANT.ACTIONREFRESH);
+    }
+    //加载更多
+    function loadMore() {
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {threshold: 0}
+        }, function (ret, err) {
+            if (isLoadMoreResponsed && currPage < totalPage) {
+                currPage++;
+                isLoadMoreResponsed = false;
+                getDesign(CONSTANT.ACTIONLOAD);
+            }
+        });
+    }
+
+    function designSuccessCallback(ret, extra) {
+        var action = extra.action;
+        if (action == CONSTANT.ACTIONREFRESH) {
+            pullRefreshDone();
+        } else if (action == CONSTANT.ACTIONLOAD) {
+            isLoadMoreResponsed = true;
+            loadingHide();
+        } else {
+            loadingHide();
+        }
+        if (ret.statusCode == 200 && ret.list) {
+            currPage = ret.page;
+            totalPage = ret.pageTotal;
+            _page(currPage,totalPage,ret.count);
+            getDesignHtml(ret);
+        } else {
+            toastMsg(ret.msg);
+        }
+        if (currPage >= totalPage) {
+            $api.html($api.byId('loading'), '没有更多了');
+        }
+
+    }
+
+    function designErrorCallback(err, extra) {
+        var action = extra.action;
+        if (action == CONSTANT.ACTIONREFRESH) {
+            pullRefreshDone();
+        } else {
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+    //发起请求
+    function getDesign(action) {
+        if (action == CONSTANT.ACTIONINIT) {
+            loadingShow();
+        }
+        var url = serviceNew + 'leaseBrand/list';
+        var headers = _getAjaxHeaders(false, true);
+        var data = _getAjaxData({
+            page: currPage,
+            pageSize: CONSTANT.PAGESIZE
+        });
+        var extra = {action: action};
+        _ajaxData(url, 'post', headers, data, designSuccessCallback, designErrorCallback, 0, extra);
+    }
+
+    //	testHtml();
+    function testHtml() {
+        var ret = {
+            "statusCode": 200,
+            "msg": "OK",
+            "count": 6,
+            "page": 1,
+            "pageSize": 20,
+            "pageTotal": 1,
+            "list": [{
+                "_id": "AZAwokNX2XYbYspQS",
+                "name": "古特",
+                "img": "yy2PD76zdF.jpg",
+                "special": "古特专场",
+                "logo": "Tz5bw73rTa.jpg",
+                "slogan": "短语",
+                "bgColor": "RGB(32,178,170)"
+            }, {
+                "_id": "FNzPyysRRXGsT36j5",
+                "name": "王琴",
+                "img": "jNNjKnAxfr.jpg",
+                "special": "王琴",
+                "logo": "Mr7y8TSAD5.jpg",
+                "slogan": "琴"
+            }, {
+                "_id": "YKi8dtnKGfWja2txf",
+                "name": "SHOW·魅",
+                "img": "NsJ45QJ5TG.jpg",
+                "special": "SHOW·魅",
+                "logo": "2WDf63QMZM.jpg",
+                "slogan": "前卫的魅力潮牌"
+            }, {
+                "_id": "QmB36wXFGCMPpCcYn",
+                "name": "FANLIFE",
+                "img": "yb68ptHw8b.JPG",
+                "special": "FANLIFE",
+                "logo": "hyJHjKCb3t.jpg",
+                "slogan": "热爱生活，美搭每一天"
+            }, {
+                "_id": "MQ67WEHRzdKYc3A6p",
+                "name": "小礼芙",
+                "img": "AQECKMnbip.jpg",
+                "special": "小礼芙",
+                "logo": "SpyXk3dSNi.jpg",
+                "slogan": "倾心打造互联网TOP.1小礼服设计师品牌"
+            }, {
+                "_id": "MdF2rxTJ5MB4YDNhf",
+                "name": "范典",
+                "img": "nhn82HeiYP.jpg",
+                "special": "cool and fashionable life",
+                "logo": "x3WzGbMnjP.jpg",
+                "slogan": "范典， 让你时时典范"
+            }]
+        };
+        getDesignHtml(ret, true);
+    }
+
+    //渲染模板
+    function getDesignHtml(data, debug) {
+        var html = doTHtml('design-container-template', data);
+        if (debug)console.log(html);
+        var designContainer = $api.byId('design-container');
+        if (currPage == 1) {
+            //首次加载或者刷新
+            //图片也刷新了，闪屏，有待于提升性能
+            designContainer.innerHTML = html;
+        }else{
+            $api.append(designContainer, html);
+        }
+//        var currPageElId = CONSTANT.CACHEPAGEID + 'design' + currPage;
+//        _imgCacheUrl3(designContainer, currPageElId);
+        api.parseTapmode();
+    }
+
+    //打开品牌详情页面
+    function goDesignDatail(_id, brand, index) {
+        sendEventUmeng(CONSTANT.UMENGEVENT.DESIGN_LIST, {
+            index: index,
+            brand: brand
+        });
+
+        var name = 'designDetail';
+        var title = '原创设计品牌&nbsp;&nbsp;<span class="duola-iconfont icon-line"></span>&nbsp;&nbsp;' + brand;
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftNav = setNavData(leftIcon);
+        var border = false;
+        var bounces = true;
+        var params = {};
+        params.nav = setNav(leftNav, border);
+        params.frame = setFrame(bounces, {
+            _id: _id,
+            transTitle:true
+        });
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'header_web_trans.html';
+        openNewWinFrame(name, title, params, from, url, null, null, '原创设计');
+    }
+
+    //更改列表品牌背景颜色
+    function getBackgroudColor(bgColor) {
+        if (!isDefine(bgColor)) {
+            return 'color:#707070;';
+        }
+        bgColor = bgColor.toLowerCase();
+        var style = 'background:' + bgColor + ';';
+        if (bgColor == '#ffffff' || bgColor == '#fff' || bgColor == 'rgb(255,255,255)') {
+            style += 'color:#707070;';
+        }
+        return style;
+    }
+</script>
+</html>

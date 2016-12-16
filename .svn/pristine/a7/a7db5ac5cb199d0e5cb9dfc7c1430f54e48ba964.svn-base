@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>人气排行头部</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../components/slideswipe/slideswipe.css"/>
+    <style>
+        /*加粗|*/
+        .icon-line {
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        /*navTab*/
+        .duola-header .nav-title .nav-tab-right {
+            margin-left: 1rem;
+            padding-bottom: 0.2rem;
+            font-style: normal;
+        }
+
+        .duola-header .nav-title .nav-tab-left {
+            margin-right: 1rem;
+            padding-bottom: 0.2rem;
+            font-style: normal;
+        }
+
+        .duola-header .nav-title .nav-tab-right i {
+            font-style: normal;
+            -webkit-text-stroke-width: 0;
+            -webkit-font-smoothing: none;
+        }
+
+        .duola-header .nav-title .nav-tab-left i {
+            font-style: normal;
+            -webkit-text-stroke-width: 0;
+            -webkit-font-smoothing: none;
+        }
+
+        /*navTab active border color icon text*/
+        .a, .b {
+            color: #989A9C;
+        }
+
+        .nav-tab-hit-color {
+            color: #1B1B1B;
+            border-bottom: 1px solid #1B1B1B;
+        }
+
+        .nav-tab-hit-color i {
+        }
+
+        /*copy过来的样式*/
+        #short-header {
+            padding: 0 0.5rem;
+            height: 0rem;
+            overflow: hidden;
+            border-bottom: 1px solid #F1F1F1;
+        }
+
+        #short-header .my-hit-color {
+            background: #F6F6F6;
+            border-radius: 2px;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #454545;
+            padding: 0.25rem 0.45rem;
+            margin: 0 0.5rem;
+        }
+
+        #short-header-size {
+
+        }
+
+        #short-header .icon-lower {
+            font-size: 0.5rem;
+            color: #4A4A4A;
+            margin-right: 0.5rem;
+        }
+
+        #all-header {
+            height: 5rem;
+            overflow: hidden;
+        }
+
+        #size-container .slide-swipe {
+            border: none;
+        }
+
+        #size-container .swiper-slide span {
+            font-family: ArialMT;
+        }
+    </style>
+</head>
+<body>
+<div id="header">
+    <header id="header_2" class="duola-header flex">
+        <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWebWin()">
+            <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
+        </a>
+        <div id="nav-title" class="nav-title flex-1">
+        </div>
+        <a id="nav-right" class="duola-icon-area">
+            <span id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon"></span>
+        </a>
+    </header>
+    <div id="short-header" tapmode onclick="showAllHeader(this)" class="flex flex-vertical-center flex-space-between">
+        <div>
+            <span class="my-hit-color">分类 <samll id="short-header-type"></samll></span>
+            <span class="my-hit-color">尺码 <samll id="short-header-size"></samll></span>
+        </div>
+        <span class="duola-iconfont icon-lower"></span>
+    </div>
+    <div id="all-header">
+        <div id="type-slide-swipe"></div>
+        <div id="size-slide-swipe"></div>
+    </div>
+
+</div>
+</body>
+<script id="nav-template" type="text/x-dot-template">
+    <i id="nav-left-tab"
+       class="{{=getNavLeftTabClass(it.leftTab.activeIcon,it.leftTab.icon,it.hitColor,it.leftTab.class)}}"
+       style="{{=it.leftTab.style ? it.leftTab.style : ''}}" tapmode
+       onclick="{{=getExecScript('navLeftTabClick',[it.hitColor,it.leftTab.activeIcon,it.leftTab.icon,it.rightTab.activeIcon,it.rightTab.icon,it.leftTab.callback,it.leftTab.extra])}}"><i>{{=it.leftTab.text
+        ? it.leftTab.text : ''}}</i></i>
+    <i id="nav-right-tab" class="{{=getNavRightTabClass(it.rightTab.icon,it.rightTab.class)}}"
+       style="{{=it.rightTab.style ? it.rightTab.style : ''}}" tapmode
+       onclick="{{=getExecScript('navRightTabClick',[it.hitColor,it.rightTab.activeIcon,it.rightTab.icon,it.leftTab.activeIcon,it.leftTab.icon,it.rightTab.callback,it.rightTab.extra])}}"><i>{{=it.rightTab.text
+        ? it.rightTab.text : ''}}</i></i>
+</script>
+<script id="slideswipe-template" type="text/x-dot-template">
+    <div class="slide-swipe swiper-container">
+        <div class="swiper-wrapper">
+            {{~it.data:value:index}}
+            <div class="swiper-slide flex flex-center" tapmode onclick="{{=" slideSwipeClick(this,
+            '"+index+"','"+value+"','"+it.callback+"')"}}"><span
+            class="{{=index == it.activeIndex ? 'my-hit-color' : ''}}" title="{{=index}}">{{=value}}</span></div>
+        {{~}}
+    </div>
+    </div>
+</script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/sendInfo.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/swiper.min.js"></script>
+<script type="text/javascript" src="../components/slideswipe/slideswipe.js"></script>
+<script type="text/javascript">
+    //    	var navTab = {
+    //    		"hitColor":"nav-tab-hit-color",
+    //    		"leftTab":{
+    //    			"class":"a",
+    //    			"style":"font-size:0.85rem;",
+    //    			"activeIcon":"icon-Stars",//单个不能有空格
+    //    			"icon":"icon-search",
+    //    			"text":"在库",
+    //    			"callback":"",
+    //    			"extra":""
+    //    		},
+    //    		"rightTab":{
+    //    			"class":"b",
+    //    			"style":"font-size:0.85rem;",
+    //    			"icon":"icon-search",
+    //    			"activeIcon":"icon-love",
+    //    			"text":"无库",
+    //    			"callback":"",
+    //    			"extra":""
+    //    		}
+    //    	};
+    //
+    //    	getNavLeft({"icon":"duola-iconfont icon-left","text":"我","callback":function(){alert(1)},"extra":""});
+    //    	getNavRight({"icon":"duola-iconfont icon-left","text":"我","callback":function(){alert(1)},"extra":""});
+    //    	getNavBorder(true);
+    //    	getNavTab(navTab);
+    //	getTitle('标题标');
+    var typeValue = '';
+    var sizeValue = '';
+    var umengPage = null;
+    var headerHeight = null;
+    var remValue = 0;
+    apiready = function () {
+        intOptions();
+        var header = $api.byId('header');
+        remValue = parseInt($api.cssVal($api.dom('html'), 'font-size')) || 20;
+        $api.fixStatusBar(header);
+        var page = api.pageParam.page;//页面url
+        var name = api.pageParam.name;//页面名称
+        var title = api.pageParam.title;//页面标题
+        umengPage = api.pageParam.umengPage;//友盟页面ID
+        var from = api.pageParam.from;//来源于那个页面
+        var data = api.pageParam.data;//页面数据object
+        //获取frame
+        var frame = data.frame ? data.frame : {};
+        var bounces = frame.bounces ? frame.bounces : false; //页面弹动
+        var progress = frame.progress ? frame.progress : false; //页面加载进度条
+        var allowEdit = frame.allowEdit ? frame.allowEdit : false; //长按页面是否可以编辑
+        var frameData = frame.data ? frame.data : {}; //frame 页面参数
+
+        //获取nav
+        var nav = data.nav ? data.nav : {};
+        var tab = data.tab ? data.tab : {};
+        var leftNav = nav.leftNav ? nav.leftNav : {};//导航栏左侧
+        var border = nav.border ? nav.border : false;//导航栏底部边框
+
+        frameData.from = from;
+        onPageUmeng(umengPage);
+        getNavLeft(leftNav);
+        getNavBorder(border);
+        if (isObj(tab)) {
+            getNavTab(tab);
+        } else {
+            getTitle(title);
+        }
+        setShortHeaderValue();
+        headerHeight = $api.offset(header).h;
+        frameData.headerHeight = headerHeight;
+        var rect = {
+            x: 0,
+            y: headerHeight,
+            w: 'auto',
+            h: 'auto'
+        };
+        openNewFrame(name, page, bounces, rect, frameData, null, null, allowEdit, progress);
+        api.parseTapmode();
+    };
+
+    function setShortHeaderValue() {
+        var typeEl = $api.byId('short-header-type');
+        var sizeEl = $api.byId('short-header-size');
+        var typeContent = typeValue == '' ? '全部' : typeValue;
+        var sizeContent = sizeValue == '' ? '全部' : sizeValue;
+        typeEl.innerHTML = typeContent;
+        sizeEl.innerHTML = sizeContent;
+    }
+
+    //在searchLevelFrame异步执行显示折叠头部
+    function showShortHeader() {
+        var el = $api.byId('all-header');
+        $api.css(el, 'height:0px;transition: height 0.1s linear;');
+        var shortHeader = $api.byId('short-header');
+        setShortHeaderValue();
+        $api.css(shortHeader, 'height:2.5rem;transition:none;');
+        setTimeout(function () {
+            api.setFrameAttr({
+                name: 'chooseRank_newFrame',
+                rect: {
+                    x: 0,
+                    y: headerHeight - 2.5 * remValue,
+                    w: 'auto',
+                    h: 'auto'
+                }
+            });
+        }, 100);
+    }
+
+    //点击箭头隐藏折叠头部
+    function showAllHeader() {
+        var targetEl = $api.byId('short-header');
+        $api.css(targetEl, 'height:0px;transition:none;');
+        var allHeader = $api.byId('all-header');
+        $api.css(allHeader, 'height:5rem;transition: height 0.2s linear;');
+        setTimeout(function () {
+            api.setFrameAttr({
+                name: 'chooseRank_newFrame',
+                rect: {
+                    x: 0,
+                    y: headerHeight,
+                    w: 'auto',
+                    h: 'auto'
+                }
+            });
+        }, 100);
+    }
+
+    function closeWebWin() {
+        onPageEndUmeng(umengPage);
+        api.closeWin();
+    }
+
+    //异步更改标题
+    function execChangeTitle(title) {
+        if (isDefine(title)) {
+            getTitle(title);
+        }
+    }
+
+    //左侧NavTab点击事件
+    function navLeftTabClick(hitColor, leftActiveIcon, leftIcon, rightActiveIcon, rightIcon, callback, extra) {
+        var navLeftTabEl = $api.byId('nav-left-tab');
+        var navRightTabEl = $api.byId('nav-right-tab');
+        if ($api.hasCls(navRightTabEl, hitColor)) {
+            $api.removeCls(navRightTabEl, hitColor);
+            if (isDefine(rightActiveIcon)) {
+                $api.removeCls(navRightTabEl, rightActiveIcon);
+                $api.addCls(navRightTabEl, rightIcon);
+            }
+        }
+        if ($api.hasCls(navLeftTabEl, hitColor)) {
+            return;
+        } else {
+            $api.addCls(navLeftTabEl, hitColor);
+            if (isDefine(leftActiveIcon)) {
+                $api.addCls(navLeftTabEl, leftActiveIcon);
+                $api.removeCls(navLeftTabEl, leftIcon);
+            }
+        }
+        if (isDefine(callback)) {
+            var from = api.pageParam.from;//来源于那个页面
+            var frameName = api.pageParam.name;//页面名称
+            var params = {
+                script: getExecScript(callback, new Array(extra, api.winName, frameName, 'tab0'))
+            };
+            if (isDefine(from.winName)) {
+                params.name = from.winName;
+            }
+            if (isDefine(from.frameName)) {
+                params.frameName = from.frameName;
+            }
+            api.execScript(params);
+        }
+    }
+    //右侧NavTab点击事件
+    function navRightTabClick(hitColor, rightActiveIcon, rightIcon, leftActiveIcon, leftIcon, callback, extra) {
+        var navLeftTabEl = $api.byId('nav-left-tab');
+        var navRightTabEl = $api.byId('nav-right-tab');
+        if ($api.hasCls(navLeftTabEl, hitColor)) {
+            $api.removeCls(navLeftTabEl, hitColor);
+            if (isDefine(leftActiveIcon)) {
+                $api.removeCls(navLeftTabEl, leftActiveIcon);
+                $api.addCls(navLeftTabEl, leftIcon);
+            }
+        }
+        if ($api.hasCls(navRightTabEl, hitColor)) {
+            return;
+        } else {
+            $api.addCls(navRightTabEl, hitColor);
+            if (isDefine(rightActiveIcon)) {
+                $api.addCls(navRightTabEl, rightActiveIcon);
+                $api.removeCls(navRightTabEl, rightIcon);
+            }
+        }
+        if (isDefine(callback)) {
+            var from = api.pageParam.from;//来源于那个页面
+            var frameName = api.pageParam.name;//页面名称
+            var params = {
+                script: getExecScript(callback, new Array(extra, api.winName, frameName, 'tab1'))
+            };
+            if (isDefine(from.winName)) {
+                params.name = from.winName;
+            }
+            if (isDefine(from.frameName)) {
+                params.frameName = from.frameName;
+            }
+            api.execScript(params);
+        }
+    }
+
+    //左侧导航tab
+    function getNavLeftTabClass(activeIcon, icon, hitColor, extraClass) {
+        var navLeftClass = 'nav-tab-left duola-iconfont ';
+        if (isDefine(activeIcon)) {
+            navLeftClass = navLeftClass + activeIcon + ' ';
+        } else if (isDefine(icon)) {
+            navLeftClass = navLeftClass + icon + ' ';
+        }
+        if (isDefine(extraClass)) {
+            navLeftClass = navLeftClass + extraClass + ' ';
+        }
+        if (isDefine(hitColor)) {
+            navLeftClass = navLeftClass + hitColor + ' ';
+        }
+        return navLeftClass;
+    }
+
+    //右侧导航tab
+    function getNavRightTabClass(icon, extraClass) {
+        var navRightClass = 'nav-tab-right duola-iconfont ';
+        if (isDefine(icon)) {
+            navRightClass = navRightClass + icon + ' ';
+        }
+        if (isDefine(extraClass)) {
+            navRightClass = navRightClass + extraClass + ' ';
+        }
+        return navRightClass;
+    }
+
+    //渲染NavTab
+    function getNavTab(navTab) {
+        var navTitleEl = $api.byId('nav-title');
+        if (navTitleEl) {
+            $api.html(navTitleEl, doTHtml('nav-template', navTab));
+        }
+    }
+
+    function intOptions() {
+        initSlideSwipe('size-slide-swipe', ['全部'].concat(CONSTANT.SIZES), 0, 'sizeSlideSwipeClick');
+        initSlideSwipe('type-slide-swipe', ['全部'].concat(CONSTANT.COAT), 0, 'typeSlideSwipeClick');
+    }
+
+    //size点击每一个内容
+    function sizeSlideSwipeClick(index, value) {
+        if (sizeValue == value) {
+            return;
+        }
+        sizeValue = value;
+        setFilter();
+    }
+
+    //type点击每一个内容
+    function typeSlideSwipeClick(index, value) {
+        if (typeValue == value) {
+            return;
+        }
+        typeValue = value;
+        setFilter();
+    }
+
+    function setFilter() {
+        (sizeValue == '均码') && (sizeValue = 'J');
+        var scriptFun = getExecScript('getFilter', [typeValue, sizeValue]);
+        var params = {
+            frameName: 'chooseRank_newFrame',
+            script: scriptFun
+        };
+        api.execScript(params);
+    }
+
+    function clearActive() {
+        setSlideSwipeHitColor('size-slide-swipe', 0);
+        setSlideSwipeHitColor('type-slide-swipe', 0);
+        typeValue = '';
+        sizeValue = '';
+    }
+</script>
+</html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget id="A6918652765044" version="0.0.1"> 
+  <name>多啦衣梦</name>  
+  <description/>  
+  <author email="910650887@qq.com" href="http://www.duolayimeng.com">dradream</author>  
+  <content src="index.html"/>  
+  <preference name="appBackground" value="rgba(0,0,0,0.0)"/>  
+  <preference name="windowBackground" value="rgba(0,0,0,0.0)"/>  
+  <preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>  
+  <preference name="autoLaunch" value="true"/>  
+  <preference name="autoUpdate" value="true"/>  
+  <preference name="smartUpdate" value="true"/>  
+  <preference name="debug" value="false"/>  
+  <preference name="statusBarAppearance" value="true"/>  
+  <preference name="iOS7StatusBarAppearance" value="true"/>  
+  <preference name="pageBounce" value="false"/>  
+  <preference name="urlScheme" value="duola"/>  
+  <preference name="softInputMode" value="resize"/>  
+  <preference name="backgroundMode" value="remote-notification"/>  
+  <permission name="location"/>  
+  <permission name="internet"/>  
+  <access origin="*"/>  
+  <feature name="wx"> 
+    <param name="urlScheme" value="wx4a8df4d0d29958b4"/>  
+    <param name="apiKey" value="wx4a8df4d0d29958b4"/>  
+    <param name="apiSecret" value="04fbbcca27b64c9e387447b867d7cf2c"/> 
+  </feature>  
+  <feature name="ajpush"> 
+    <param name="app_key" value="d5c52ffcf4b888641726fa87"/>  
+    <param name="channel" value=""/> 
+  </feature>  
+  <feature name="umengAnalytics"> 
+    <param name="ios_app_key" value="57c576f267e58e7ab2003182"/>  
+    <param name="ios_app_channel" value="APICloud_iOS"/>  
+    <param name="android_app_key" value="57c4e68f67e58eed64003c6c"/>  
+    <param name="android_app_channel" value="APICloud_Android"/> 
+  </feature>  
+  <feature name="aMap"> 
+    <param name="android_api_key" value="a3c970758e1aece14d88b7f115ee68af"/>  
+    <param name="ios_api_key" value="d07f87ab64a8152bf4c600adbcf36bc6"/> 
+  </feature>  
+  <feature name="QQPlus"> 
+    <param name="urlScheme" value="tencent1105043730"/>  
+    <param name="apiKey" value="1105043730"/> 
+  </feature>  
+  <feature name="weibo"> 
+    <param name="urlScheme" value="wb3667761847"/>  
+    <param name="apiKey" value="3667761847"/>  
+    <param name="registUrl" value="http://www.apicloud.com"/> 
+  </feature> 
+</widget>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>预约取件</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+        body,html{
+            background: #FFFFFF;
+        }
+        #address .aui-list-item-media .aui-list-item-title, .aui-list-item-text {
+            font-size: 0.7rem;
+            color: #6F6F6F;
+        }
+        #address .aui-list-item-title {
+            font-size: 0.7rem;
+            color: #1A1A1A;
+        }
+        #address .aui-list-item-media {
+            padding-right: 0;
+            width: 3rem;
+        }
+        .aui-row {
+            padding:1rem;
+            border: 0;
+        }
+        .aui-row .aui-col-xs-12 {
+            padding: 1rem 0rem 1.5rem 0;
+        }
+        .bespeak-span {
+            font-size: 0.7rem;
+            color: #818181;
+        }
+        .bespeak-span .duola-iconfont{
+            font-size: 0.4rem;
+        }
+        .aui-list .aui-list-item {
+            padding-left: 0;
+            border: 0;
+        }
+        .aui-list:before {
+            background-color: #FFFFFF;
+        }
+        .aui-list:after {
+            background-color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+
+<div class="aui-row aui-row-padded">
+    <div class="aui-col-xs-12">
+        <h3>选择取件时间</h3>
+    </div>
+    <div class="aui-col-xs-6">
+        <div class="bespeak-span" onclick="choiceData ()">
+            <div class="aui-col-xs-8">选择日期</div>
+            <div class="aui-col-xs-4"> <i class="duola-iconfont icon-lower"></i></div>
+        </div>
+    </div>
+    <div class="aui-col-xs-6">
+        <div class="bespeak-span" onclick="choiceTime ()">
+            <div class="aui-col-xs-8">选择时间</div>
+            <div class="aui-col-xs-4"> <i class="duola-iconfont icon-lower"></i></div>
+        </div>
+    </div>
+
+    <div class="aui-col-xs-6">
+        <div class="bespeak-span">
+            <div class="aui-col-xs-8"><em id="date"></em></div>
+        </div>
+    </div>
+    <div class="aui-col-xs-6">
+        <div class="bespeak-span">
+            <div class="aui-col-xs-8"><em id="time"></em></div>
+        </div>
+    </div>
+</div>
+
+<div class="aui-row aui-row-padded">
+    <div class="aui-col-xs-12">
+        <h3>确定取件地址</h3>
+    </div>
+    <div class="aui-list aui-media-list" id="address">
+    </div>
+</div>
+
+<div class="aui-row aui-row-padded" onclick="sendBtn()">
+    <div class="aui-col-xs-12">
+        <p><div class="aui-btn aui-btn-warning aui-btn-block my-bg-color">立即预约</div></p>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+
+
+<script id="address-template" type="text/x-dot-template">
+    <div class="aui-list-item" onclick="openAdd()">
+        <div class="aui-media-list-item-inner">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-text">
+                    <div class="aui-list-item-title aui-ellipsis-1" style="width: 12rem;" >
+                        {{=it.province}}{{=it.city}}{{=it.county}}{{=it.detail}}
+                        <div class="aui-list-item-text">
+                            {{=it.name}} {{=it.phone}}
+                        </div>
+                    </div>
+                    <div class="aui-list-item-right">
+                        <i class="duola-iconfont icon-modify"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/javascript">
+
+    var addressList;
+    var addressNum = 0;
+    var date = 0;
+    var time = 0;
+    var count = 0;
+    apiready = function(){
+        openAddress();
+        init();
+        api.addEventListener({
+            name: 'sendAddress'
+        }, function(ret, err){
+            openAddress()
+        });
+    };
+    function openAddress(){
+
+        var url = serviceUser + 'address/list';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url,'post',headers,data,addressSuccessCallback,initErrorCallback,0,extra);
+    }
+    function addressSuccessCallback(ret,extra ) {
+        if(ret.statusCode=='200' && ret.list){
+            addressList = ret.list.splice(0, 7);
+//            for (var i =0 ;i<addressList.length;i++) {
+//                if (addressList[i].defaultAddress == "YES") {
+//                    addressNum = i;
+//                    alert(1);
+//                    doHtml("address","address-template",addressList[i]);
+//                    break;
+//                }
+//            }
+            if (addressList.length > 0) {
+                doHtml("address","address-template",addressList[addressNum]);
+            } else {
+                var data = {
+                    province:"暂无地址,点击新增地址",
+                    city:"",
+                    county:"",
+                    detail:"",
+                    name:"",
+                    phone:""
+                };
+                addressList = [];
+                doHtml("address","address-template",data);
+            }
+
+        }else if(ret.statusCode=='10104'){
+            toLogin();
+        }else{
+            toastMsg(ret.msg)
+        }
+    }
+    function initErrorCallback(err,extra){
+        if(reInfoTag=="NO"){
+            setTimeout(api.refreshHeaderLoadDone(),3000);
+        }
+        _loadingHide();
+        _showPage();
+        toastMsg(err.msg);
+    }
+    function openAdd() {
+        api.openFrame({
+            name: 'address',
+            url: 'addressFoot.html',
+            rect: {
+                x:0,
+                y:0,
+                marginBottom: 20
+            },
+            pageParam: {
+                addList: addressList
+            }
+        });
+    }
+    function init() {
+        _loadingShow();
+        var bodyt = {
+            "page": 1,
+            "pageSize": 20
+        };
+        var url = serviceUser + 'orders/current';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData(bodyt);
+        var extra = {url: url};
+        _ajaxData(url, 'post', headers, data, initSuccessCallback, initErrorCallback, 0, extra);
+    }
+    function initSuccessCallback(ret, extra) {
+        _loadingHide();
+        if (ret.statusCode == '200') {
+            count = ret.count || 0;
+        } else if (ret.statusCode == '10104') {
+            toLogin();
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+    function initErrorCallback(err, extra) {
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+    function choiceData () {
+        api.openPicker({
+            type: 'date',
+            date: (new Date()).format("yyyy-MM-dd"),
+            title: '选择日期'
+        }, function(ret, err) {
+            if (ret) {
+                date = [ret.year, ret.month, ret.day].join("-");
+                $api.html($api.byId('date'), date);
+            } else {
+
+            }
+        });
+    }
+    function choiceTime () {
+        api.openPicker({
+            type: 'time',
+            date: (new Date()).format("hh:mm:ss"),
+            title: '选择时间'
+        }, function(ret, err) {
+            if (ret) {
+                if(ret.minute < 10){
+                    ret.minute = "0" + ret.minute;
+                }
+                time = [ret.hour, ret.minute].join(":");
+                if (ret.hour > 20 || ret.hour < 8) {
+                    toastMsg("工作时间为08:00-20:00,请重新选择");
+                    return;
+                }
+                $api.html($api.byId('time'), time);
+            } else {
+
+            }
+        });
+
+
+    }
+    function closeMask(){
+        api.closeFrame({
+            name: 'address'
+        });
+    }
+    function getChoose(num) {
+        addressNum = num;
+        doHtml("address","address-template",addressList[num]);
+        closeMask();
+    }
+    function sendBtn(){
+
+        if(!count || count == 0){
+            toastMsg("您未下单，无法使用预约功能");
+            return;
+        }
+        if(!date || !time){
+            toastMsg("请选择取件时间");
+            return;
+        }
+        _loadingShow();
+        var postStartTime = date + " " +time ;
+        var body = {
+           "com": "shunfeng",
+            address:  parseInt(addressNum),
+            sendTime: postStartTime,
+            orders: 1
+        };
+        var url = serviceNew + 'express/reverse/book';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData(body);
+        var extra = false;
+        _ajaxData(url,'post',headers,data,uncheckSuccessCallback,uncheckErrorCallback,0,extra);
+
+    }
+    function uncheckSuccessCallback(ret, extra){
+        _loadingHide();
+        if(ret.statusCode=="200"){
+            toastMsg('预约成功，稍后快递员会与您联系');
+            setTimeout(function(){
+                api.closeWin();
+            },1000);
+        }else if(ret.statusCode=='10104'){
+            toLogin();
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+    function uncheckErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+</script>
+</html>
