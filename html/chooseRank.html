@@ -104,10 +104,10 @@
 				$api.append($api.byId('list'), html);
 			}
 			for(var i = 0; ret.count>i;i++){
-				var isWx = ret.list[i].isWxAvatar;
+				var isWx = ret.list[i].avatarFrom;
 				var url = ret.list[i].avatar;
 				if(url){
-					if(isWx=='YES'){
+					if(!!isWx){
 						url = url;
 					}else{
 						url = imgPath+url;

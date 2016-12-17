@@ -298,7 +298,7 @@
 
     <script id="user-container-template" type="text/x-dot-template">
         <div class="avatar">
-            <img onload="cacheImgNew(this,'img','no')" src="../image/avatar.png" class="opacity0 transition-opacity" data-url="{{=getAvatar(it.avatar,it.isWxAvatar)}}" width="100%" />
+            <img onload="cacheImgNew(this,'img','no')" src="../image/avatar.png" class="opacity0 transition-opacity" data-url="{{=getAvatar(it.avatar,it.avatarFrom)}}" width="100%" />
         </div>
         <div class="name">{{=it.nickname}}</div>
         <div class="disc">与我的<i class="duola-iconfont icon-wardrobe"></i>衣橱<span>相似度 {{=it.similar}}</span></div>
@@ -550,8 +550,8 @@
         getSimilar(totalPage * 3);
     }
     //拼接头像url
-    function getAvatar(avatar,isWxAvatar){
-        if(isTrue(isWxAvatar)){
+    function getAvatar(avatar,avatarFrom){
+        if(!!avatarFrom){
             return avatar;
         }else if(avatar && avatar.indexOf('../') == -1){
             return [CONSTANT.PICPRE.RES,avatar].join('');

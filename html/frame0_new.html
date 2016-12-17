@@ -375,7 +375,7 @@
                 <div class="imgBox">
                     <img onload="cacheImgNew(this,'img','no')" src="../image/avatar.png"
                          class="opacity0 transition-opacity"
-                         data-url="{{=getAvatar(it.list[i].avatar,it.list[i].isWxAvatar)}}" width="100%"/>
+                         data-url="{{=getAvatar(it.list[i].avatar,it.list[i].avatarFrom)}}" width="100%"/>
                 </div>
                 <div class="discribleBox">
                     <div class="name flex flex-center word-wrap-2">{{=it.list[i].nickname}}</div>
@@ -576,8 +576,8 @@
     }
 
     //拼接头像url
-    function getAvatar(avatar, isWxAvatar) {
-        if (isTrue(isWxAvatar)) {
+    function getAvatar(avatar, avatarFrom) {
+        if (!!avatarFrom) {
             return avatar;
         } else if (avatar && avatar.indexOf('../') == -1) {
             return [CONSTANT.PICPRE.RES, avatar].join('');

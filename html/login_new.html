@@ -199,16 +199,10 @@
     function qqLogin(){
         qq_login(login_third,'qq')
     }
-    function qqSuccess(ret,type){
-        console.log(getLogStr([ret]));
-    }
 
 //  微博登录
     function weiboLogin(){
         weibo_login(login_third,'weibo');
-    }
-    function weiboSuccess(ret,type){
-        console.log(getLogStr([ret]));
     }
 //    第三方登录
     function login_third(ret,type){
@@ -417,10 +411,10 @@
             $api.setStorage('chooseCan', chooseCan);
             //多啦袋数量
             var imgHeaderUrl = ret.data.user.profile.avatar;
-            var isWxAvatar = ret.data.user.profile.isWxAvatar;
+            var avatarFrom = ret.data.user.profile.avatarFrom;//头像是否为第三方来源
             if (isDefine(imgHeaderUrl)) {
                 //有头像
-                if(isWxAvatar == 'NO'){
+                if(!avatarFrom){
                     $api.setStorage('userHead', userPhoto + imgHeaderUrl);
                 }else{
                     $api.setStorage('userHead', imgHeaderUrl);
@@ -708,10 +702,10 @@
             $api.setStorage('chooseCan', chooseCan);
             //多啦袋数量
             var imgHeaderUrl = ret.data.user.profile.avatar;
-            var isWxAvatar = ret.data.user.profile.isWxAvatar;
+            var avatarFrom = ret.data.user.profile.avatarFrom;//头像是否为第三方来源
             if (isDefine(imgHeaderUrl)) {
                 //有头像
-                if(isWxAvatar == 'NO'){
+                if(!avatarFrom){
                     $api.setStorage('userHead', userPhoto + imgHeaderUrl);
                 }else{
                     $api.setStorage('userHead', imgHeaderUrl);

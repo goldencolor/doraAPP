@@ -1009,7 +1009,7 @@
         {{ for(var i = 0; i < it.list.length; i++) { }}
         <div class="comment-item flex">
             <img onload="cacheImgNew(this,'img','local')" src="../image/avatar.png"
-                 class="avatar opacity0 transition-opacity" data-url="{{=getAvatar(it.list[i].avatar,it.list[i].isWxAvatar)}}">
+                 class="avatar opacity0 transition-opacity" data-url="{{=getAvatar(it.list[i].avatar,it.list[i].avatarFrom)}}">
             <div class="flex-1">
                 <div class="comment-header flex flex-space-between flex-bottom">
                     <span><span class="name">{{=subStr(it.list[i].nickname,10)}}</span>{{~new Array(it.list[i].rate):value:index}}<span
@@ -1627,8 +1627,8 @@
     }
 
     //拼接头像url
-    function getAvatar(avatar, isWxAvatar) {
-        if (isTrue(isWxAvatar)) {
+    function getAvatar(avatar, avatarFrom) {
+        if (!!avatarFrom) {
             return avatar;
         } else if (avatar && avatar.indexOf('../') == -1) {
             return [CONSTANT.PICPRE.RES, avatar].join('');

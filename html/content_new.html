@@ -504,7 +504,7 @@
 
         <div class="info flex flex-space-between flex-center">
             <div class="flex-1 flex flex-vertical-center">
-                <img onload="cacheImgNew(this,'img','local')" src="../image/avatar.png" class="opacity0 transition-opacity" data-url="{{=getAvatar(it.avatar,it.isWxAvatar)}}">
+                <img onload="cacheImgNew(this,'img','local')" src="../image/avatar.png" class="opacity0 transition-opacity" data-url="{{=getAvatar(it.avatar,it.avatarFrom)}}">
                 <div class="name">{{=it.nickname}}</div>
             </div>
             <div class="small">小编说</div>
@@ -672,8 +672,8 @@
     }
 
     //拼接头像url
-    function getAvatar(avatar,isWxAvatar){
-        if(isTrue(isWxAvatar)){
+    function getAvatar(avatar,avatarFrom){
+        if(!!avatarFrom){
             return avatar;
         }else if(avatar && avatar.indexOf('../') == -1){
             return [CONSTANT.PICPRE.RES,avatar].join('');
