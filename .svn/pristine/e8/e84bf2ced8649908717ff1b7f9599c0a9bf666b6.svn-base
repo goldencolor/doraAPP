@@ -82,7 +82,7 @@
 				html+='<ul class="aui-grid-sixteen my-info" id="'+list[i]._id+'" onclick="changeLike(\''+list[i]._id+'\',\''+list[i].like+'\');">';
 				html+='<li class="aui-col-xs-2" id="ranking">'+list[i].ranking+'</li>';
 				html+='<li class="aui-col-xs-2" height="80">';
-				html+='<img onload="cacheImgNew(this,\''+ 'img' + '\',\''+ 'local' + '\')" src="../image/avatar.png" class="avatar opacity0 transition-opacity" data-url="'+getAvatar(list[i].avatar,list[i].avatarFrom)+'" height="18" />';
+				html+='<img  id="avatar-'+list[i]._id+'" src="../image/defaultHead.jpg"  height="18" />';
 				html+=' </li>';
 				var score =Number(list[i].score);
 				score=score.toFixed(2);
@@ -102,6 +102,18 @@
 				html+='</span></li>';
 				html+='</ul>';
 				$api.append($api.byId('list'), html);
+			}
+			for(var i = 0; ret.count>i;i++){
+				var isWx = ret.list[i].avatarFrom;
+				var url = ret.list[i].avatar;
+				if(url){
+					if(!!isWx){
+						url = url;
+					}else{
+						url = imgPath+url;
+					}
+					_imgCacheUrl(url,'avatar-'+ret.list[i]._id);
+				}
 			}
 		}else if(ret.statusCode=='10104'){
 			toLogin()
@@ -175,16 +187,6 @@
 		});
 		var extra = null;
 		_ajaxData(url,'post',headers,data,addLikeSuccessCallback,addLikeErrorCallback,0,extra);
-	}
-	//拼接头像url
-	function getAvatar(avatar,avatarFrom){
-		if(!!avatarFrom){
-			return avatar;
-		}else if(avatar && avatar.indexOf('../') == -1){
-			return [CONSTANT.PICPRE.RES,avatar].join('');
-		}else{
-			return '';
-		}
 	}
 	</script>
 </html>

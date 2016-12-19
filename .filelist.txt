@@ -153,6 +153,7 @@ l/maskType.html
 /A6918652765044/image/10283.png
 /A6918652765044/html/Figure.html
 /A6918652765044/launch/launch1080x1920.png
+/A6918652765044/html/header_design.html
 /A6918652765044/html/winDelivery.html
 /A6918652765044/html/winOrder.html
 /A6918652765044/html/myInfo.html

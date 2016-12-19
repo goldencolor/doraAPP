@@ -91,11 +91,10 @@
             right: 0;
             top: -1.125rem;
             height: 2.25rem;
-            width: 5.3rem;
             border-top-left-radius:1.125rem;
             border-bottom-left-radius:1.125rem;
-            /*padding-left: 1.2rem;*/
-            /*padding-right: 1rem;*/
+            padding-left: 1.2rem;
+            padding-right: 1rem;
             background-color: #FFFFFF;
             box-shadow: 0 2px 4px 0 rgba(0,0,0,0.23);
         }
@@ -426,10 +425,10 @@
             <div class="textBox word-wrap flex-1"><span class="design-name-bold">{{=it.name}}</span> <span
                 class="duola-iconfont icon-line"></span> {{=it.slogan || it.special}}
             </div>
-            <div style="{{=getBackgroudColor(it.bgColor.colorRgbaHex(0.7))}}" id="collection-btn" class="collection-btn flex flex-center" title="{{=it.inStore}}">
+            <div style="{{=getBackgroudColor(it.bgColor.colorRgbaHex(0.7))}}" id="collection-btn" class="collection-btn flex flex-space-between flex-vertical-center" title="{{=it.inStore}}">
                 <span tapmode onclick="toggleCollectBrand('{{=escape(it.name)}}')"
                       title="{{=it.inStore}}" class="duola-iconfont {{=isTrue(it.inStore) ? 'icon-follow' : 'icon-nofollow'}} {{=isWhite(it.bgColor) ? 'hit-color-rewrite' : 'hit-color-white'}}"></span>
-                <span id="shareIcon" style="margin-left: 1.25rem" class="duola-iconfont icon-share aui-hide" tapmode onclick="sharedDesign('{{=escape(it.name)}}')"></span>
+                <span class="duola-iconfont icon-share" tapmode onclick="sharedDesign('{{=escape(it.name)}}')"></span>
             </div>
         </div>
         <div class="brand-socre  flex flex-horizon-center {{=isWhite(it.bgColor) ? '' : 'isColorful'}}"
@@ -558,7 +557,6 @@
 <script type="text/javascript">
     var frameData = null;
     var _id;
-    var brandName;
     var currPage = 1;
     var totalPage = 1;
     //加载更多时候，服务器是否返回，以免用户多次触发
@@ -574,14 +572,6 @@
         getUnRecommend();
         loadMore();
         _myScroll("cloudset-container", 'div', listenScrollHeader, true);
-        isInstalledWx(function(isIntalled,extra){
-            if(isIntalled){
-                var showWexinEl = $api.byId('shareIcon');
-                if(showWexinEl){
-                    $api.removeCls(showWexinEl,'aui-hide');
-                }
-            }
-        });
         api.parseTapmode();
     };
     //滚动监听
@@ -896,15 +886,6 @@
     }
     //渲染品牌html
     function getBrandHtml(data, debug) {
-        brandName=escape(data.name);
-        var iconName=isTrue(data.inStore) ? 'icon-follow' : 'icon-nofollow';
-        var scriptFun = getExecScript('changeCollectIcon', [iconName]);
-        var params = {
-            name:'designDetailWin',
-            frameName: 'header_design',
-            script: scriptFun
-        };
-        api.execScript(params);
         var html = doTHtml('brand-container-template', data);
         if (debug)console.log(html);
         var containerId = 'brand-container';
@@ -1012,18 +993,10 @@
                 $api.removeCls(collectionIconEl, 'icon-nofollow');
                 $api.addCls(collectionIconEl, 'icon-follow');
                 $api.text(collectionTextEl, '已收藏');
+
             }
             var brandCollectedNumEl = $api.byId('brand-collected-number');
             $api.text(brandCollectedNumEl, Math.abs(ret.collected));
-
-            var scriptFun = getExecScript('changeCollectIcon', []);
-            var params = {
-                name:'designDetailWin',
-                frameName: 'header_design',
-                script: scriptFun
-            };
-            api.execScript(params);
-
         } else {
             toastMsg(ret.msg);
         }

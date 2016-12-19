@@ -358,7 +358,7 @@
             if (isMember == 'annual') {
                 var vipType = '年费会员';
             }
-            umengLogin(ret.data.id,extra);
+            umengLogin(ret.data.id);
             //					alert(JSON.stringify(ret));
             $api.setStorage('userVersion', ret.data.user.secfile.version);
             //用户选择的版本

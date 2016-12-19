@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-    <title>透明导航栏</title>
+    <title>品牌详情页透明头部</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
     <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
@@ -17,16 +17,6 @@
 			-webkit-transition-duration:0.1s;
 			-webkit-transition-timing-function:linear;
 		}
-		/*覆盖默认黑色样式*/
-		/*.duola-header .nav-left-icon{*/
-			/*color: #FFFFFF;*/
-		/*}*/
-		/*.duola-header .nav-right-icon{*/
-			/*color: #FFFFFF;*/
-		/*}*/
-		/*.duola-header .nav-title{*/
-			/*color: #FFFFFF;*/
-		/*}*/
 		.leftBg{
 			background: rgba(255,255,255,0.70);
 			width: 1.5rem;
@@ -38,19 +28,16 @@
 			top: 0.45rem;
 			left: 0.75rem;
 		}
-		.rightBg{
-			background: rgba(255,255,255,0.70);
-			width: 1.5rem;
-			height: 1.5rem;
-			text-align: center;
-			line-height: 1.5rem;
-			border-radius: 50%;
-			position: absolute;
-			top: 0.45rem;
-			right: 0.75rem;
+
+		/*右侧图标区域*/
+		.icon-area{
+			width: 1.8rem;
 		}
-		.duola-header .rightBg .nav-right-icon{
-			margin-left: 0;
+		.icon-area:first-child{
+			margin-right: 0.2rem;
+		}
+		.icon-area .icon-love{
+			font-size: 0.9rem;
 		}
 	</style>
 </head>
@@ -58,16 +45,18 @@
 	<header id="header" class="duola-header flex">
 	    <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWebWin()">
 			<div id="leftBg">
-	        	<span id="nav-left-icon" class="nav-left-icon duola-iconfont icon-left"></span><span id="nav-left-text" class="nav-text"></span>
+	        	<span id="nav-left-icon" class="nav-left-icon duola-iconfont icon-left"></span>
 			</div>
 	    </a>
 	    <div id="nav-title" class="nav-title flex-1"></div>
-		<a id="nav-right" class="duola-icon-area" tapmode onclick="navRightHandler()">
-			<!--<span id="nav-right-text" class="nav-text"></span>-->
-			<div id="rightBg" >
-				<span id="nav-right-icon" class="nav-right-icon duola-iconfont icon-share"></span>
-			</div>
-		</a>
+		<div id="nav-right" class="hide">
+			<a class="icon-area"  tapmode onclick="toggleCollectBrand(this)">
+				<span  class=" duola-iconfont icon-love"></span>
+			</a>
+			<a id="share-area" class="icon-area hide" tapmode onclick="sharedBrand()">
+				<span  class=" duola-iconfont icon-share"></span>
+			</a>
+		</div>
 	</header>
 </body>
 
@@ -80,38 +69,33 @@
 	var title = null;
 	var header = null;
 	var navTitle = null;
+	var navRightEl = null;
 	apiready = function() {
 		header = $api.byId('header');
 		$api.fixStatusBar(header);
+		navRightEl = $api.byId('nav-right');
 		navTitle = $api.byId('nav-title');
 		frameData = api.pageParam;
 		title = frameData.title || '多啦衣梦';
 		if(frameData.transTitle){
 			$api.addCls($api.byId('leftBg'),'leftBg');
-			$api.addCls($api.byId('rightBg'),'rightBg');
 		}else{
 			getTitle(title);
 		}
 		//获取nav
 		var nav = frameData.nav ? frameData.nav : {};
-		var leftNav = nav.leftNav ? nav.leftNav : {};//导航栏左侧
-		rightNav = nav.rightNav ? nav.rightNav : {};//导航栏右侧
-		var border = nav.border ? nav.border : false;//导航栏底部边框
 		var headerBg = nav.headerBg ? nav.headerBg : '';//头部颜色
 		if(headerBg){
 			$api.css($api.dom(header,'.nav-left-icon'),'color: '+headerBg);
-			$api.css($api.dom(header,'.nav-right-icon'),'color: '+headerBg);
 			$api.css($api.dom(header,'.nav-title'),'color: '+headerBg);
 		}
-		getNavLeft(leftNav);
-		getNavRight(rightNav);
-		getNavBorder(border);
+
 		if(frameData.sharedPage){
 			isInstalledWx(function(isIntalled,extra){
 				if(isIntalled){
-					var showWexinEl = $api.byId('rightBg');
+					var showWexinEl = $api.byId('share-area');
 					if(showWexinEl){
-						$api.css(showWexinEl,'visibility:visible');
+						$api.removeCls(showWexinEl,'hide');
 					}
 				}
 			});
@@ -129,8 +113,10 @@
 			}
 			if(frameData.transTitle){
 				$api.removeCls($api.byId('leftBg'),'leftBg');
-				$api.removeCls($api.byId('rightBg'),'rightBg');
 			}
+		}
+		if($api.hasCls(navRightEl,'hide')){
+			$api.removeCls(navRightEl,'hide');
 		}
 	}
 
@@ -141,8 +127,10 @@
 			$api.html(navTitle,'');
 			if(frameData.transTitle){
 				$api.addCls($api.byId('leftBg'),'leftBg');
-				$api.addCls($api.byId('rightBg'),'rightBg');
 			}
+		}
+		if(!$api.hasCls(navRightEl,'hide')){
+			$api.addCls(navRightEl,'hide');
 		}
 	}
 
@@ -158,31 +146,6 @@
 		}
 	}
 
-	//导航栏右侧点击事件
-	function navRightHandler(){
-		var sharedPage = frameData.sharedPage;
-		if(sharedPage){
-			openShareWebPage(sharedPage);
-		}else{
-			var from = frameData.from;
-			var callback = rightNav.callback ? rightNav.callback : '';
-			if(!isDefine(callback)){
-				return;
-			}
-			var extra = rightNav.extra ? rightNav.extra : '';
-			var params = {
-				script: getExecScript(callback,[extra,api.winName])
-			};
-			if(isDefine(from.winName)){
-				params.name = from.winName;
-			}
-			if(isDefine(from.frameName)){
-				params.frameName = from.frameName;
-			}
-//			console.log(getLogStr([params]));
-			api.execScript(params);
-		}
-	}
 
 //打开分享弹出框
 function openShareWebPage(value){
@@ -274,6 +237,17 @@ function shareWx(scene,contentUrl,title){
 		toastMsg(msg);
 	});
 }
+
+	//点击收藏图标
+	function toggleCollectBrand(el){
+
+	}
+
+	//点击分享图标
+	function sharedBrand(){
+		var sharedPage = frameData.sharedPage;
+		openShareWebPage(sharedPage);
+	}
 
 </script>
 </html>

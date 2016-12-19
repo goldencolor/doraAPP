@@ -4,8 +4,8 @@
 
 //测试地址
 //
-//var serviceNew = "http://101.201.102.179:10000/app/";
-//var serviceUser = "http://101.201.102.179:10000/app/user/";
+var serviceNew = "http://101.201.102.179:10000/app/";
+var serviceUser = "http://101.201.102.179:10000/app/user/";
 
 //var serviceUser = "http://rest.test.duolayimeng.com/app/user/";
 //var serviceNew = "http://rest.test.duolayimeng.com/app/";
@@ -14,8 +14,8 @@
 //var serviceUser = "http://192.168.4.22:7000/app/user/";
 
 //jim测试
-var serviceNew = "http://192.168.4.108:9000/app/";
-var serviceUser = "http://192.168.4.108:9000/app/user/"; 
+//var serviceNew = "http://192.168.4.108:9000/app/";
+//var serviceUser = "http://192.168.4.108:9000/app/user/"; 
 
 //衣服图片地
 var colthPath  = "http://img.duolayimeng.com/original/";

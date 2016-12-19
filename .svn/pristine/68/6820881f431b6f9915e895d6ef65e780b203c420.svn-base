@@ -126,7 +126,7 @@
 		<div id="{{=CONSTANT.CACHEPAGEID+'comment'+currPage}}">
 			{{ for(var i = 0; i < it.count; i++) { }}
 			<div class="comment-item flex">
-				<img onload="cacheImgNew(this,'img','local')" src="../image/avatar.png" class="avatar opacity0 transition-opacity" data-url="{{=getAvatar(it.list[i].avatar,it.list[i].avatarFrom)}}" />
+				<img onload="cacheImgNew(this,'img','local')" src="../image/avatar.png" class="avatar opacity0 transition-opacity" data-url="{{=getAvatar(it.list[i].avatar,it.list[i].avatarFrom)}}">
 				<div class="flex-1" style="{{=(currPage == totalPage && i == it.count -1) ? 'border:none;' : ''}}">
 					<div class="comment-header flex flex-space-between flex-bottom">
 						<span><span class="name">{{=subStr(it.list[i].nickname,10)}}</span>{{~new Array(it.list[i].rate):value:index}}<span class="duola-iconfont icon-Stars hit-color"></span>{{~}}</span>

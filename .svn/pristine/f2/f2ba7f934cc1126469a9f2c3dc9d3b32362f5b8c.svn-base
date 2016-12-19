@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>社区推荐</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        #user{
+            border-bottom: 1px solid #E4E4E4;
+            text-align: center;
+            margin-top: 2.5rem;
+            z-index: -1;
+        }
+        #user .avatar{
+            width: 3rem;
+            height: 3rem;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        #user .avatar img{
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            /*border: 1px solid #cccccc;*/
+        }
+        #user .name{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.8rem;
+            line-height: 0.8rem;
+            color: #212121;
+            margin-top: 0.6rem;
+            overflow: hidden;
+        }
+        #user .disc{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #9B9B9B;
+            margin: 0.6rem auto 1.1rem;
+        }
+        #user .disc i{
+            color: #FF6100;
+            margin: 0 0.15rem;
+            font-size: 0.6rem;
+        }
+        #user .disc span{
+            color: #212121;
+            margin-left: 0.2rem;
+        }
+        #user .chooseBtnBox{
+            height: 2.5rem;
+            line-height: 2.5rem;
+            overflow: hidden;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #4A4A4A;
+            margin-bottom: -1px;
+        }
+        #user .chooseBtnBox .btn{
+            width: 50%;
+            float: left;
+            z-index: 1000;
+        }
+        #user .chooseBtnBox .btn.active span{
+            width: auto;
+            color: #FF6100;
+            border-bottom: 1px solid #FF6100;
+            display: inline-block;
+            height: 2.5rem;
+        }
+        /*主要内容样式*/
+        .mainContent{
+            padding: 0 0.275rem;
+        }
+        /*第一层样式*/
+        .one{
+            padding-bottom: 1.1rem;
+        }
+        .one .title{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            line-height: 0.7rem;
+            color: #4A4A4A;
+            padding-left: 0.275rem;
+            padding-top: 2rem;
+            padding-bottom: 0.55rem;
+        }
+        /*.one .showAllBox{*/
+            /*max-height: 10.5rem;*/
+            /*overflow: hidden;*/
+        /*}*/
+        #showAllContent .item{
+            width: 5.5rem;
+            height: 10.5rem;
+            margin: 0 0.275rem;
+            padding: 0;
+        }
+        #showAllContent .item .imgBox{
+            width: 100%;
+            min-height: 8.25rem;
+            position: relative;
+        }
+        .aui-grid .aui-col-xs-3:active {
+            background-color: #FFFFFF;
+        }
+        #showAllContent .item .imgBox .sizeMark{
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 0.9rem;
+            line-height: 0.9rem;
+            padding: 0 0.3rem;
+            font-family: Arial-BoldMT;
+            font-size: 0.5rem;
+            color: #FFFFFF;
+            background-color: #212121;
+            border-top-right-radius:0.25rem;
+        }
+        #showAllContent .item .name{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #757575;
+            margin-top: 0.4rem;
+        }
+        .one .btnBox{
+            width: 100%;
+        }
+        .one .btnBox .showAllBtn{
+            width: 5.3rem;
+            height:1.15rem;
+            line-height: 1.15rem;
+            text-align: center;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            color: #4A4A4A;
+            margin: 0 auto;
+            border: 1px solid #9B9B9B;
+            border-radius: 0.1rem;
+        }
+        /*第二层样式*/
+        .two .title{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            line-height: 0.7rem;
+            color: #4A4A4A;
+            padding: 1.1rem 0 0.55rem 0.275rem;
+        }
+        .two .item{
+            width: 5.5rem;
+            height: 10.5rem;
+            margin: 0 0.275rem;
+            padding: 0;
+        }
+        .two .item .imgBox{
+            width: 100%;
+            position: relative;
+            min-height: 8.25rem;
+        }
+        .two .item .imgBox .sizeMark{
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 0.9rem;
+            line-height: 0.9rem;
+            padding: 0 0.3rem;
+            font-family: Arial-BoldMT;
+            font-size: 0.5rem;
+            color: #FFFFFF;
+            background-color: #212121;
+            border-top-right-radius:0.25rem;
+        }
+        .two .item .name{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #757575;
+            margin-top: 0.4rem;
+        }
+        /*分割线样式*/
+        .separated{
+            width: 100%;
+            height: 0.55rem;
+            background-color: #F6F6F6;
+        }
+    </style>
+</head>
+<body>
+    <div id="user">
+
+        <!--<div class="avatar"><img src="../image/avatar.png" class="opacity0 transition-opacity" ></div>-->
+        <!--<div class="name">{{=it.nickname}}</div>-->
+        <!--<div class="disc">与我的<i class="duola-iconfont icon-wardrobe"></i>衣橱<span>相似度 {{=it.similar}}</span></div>-->
+        <!--<div class="chooseBtnBox" id="chooseBtnBoxq">-->
+            <!--<div class="leftBtn btn active"><span id="closetNumq">衣橱</span></div>-->
+            <!--<div class="rightBtn btn" tapmode onclick="switchPage(this,1)"><span>下单记录</span></div>-->
+        <!--</div>-->
+
+    </div>
+    <div id="similar-container">
+
+        <!--<div class="one mainContent">-->
+            <!--<div class="title">我们相同的选择 (3)</div>-->
+            <!--<div id="showAllBox" class="showAllBox">-->
+                <!--<div class="aui-grid">-->
+                    <!--<div class="aui-row" id="showAllContent">-->
+                        <!--<div class="aui-col-xs-3 item" tapmode onclick="">-->
+                            <!--<div class="imgBox  bc-grey"><img onload="cacheImgNew(this,'img')"-->
+                                                              <!--src="http://img.duolayimeng.com/original/1565766-1.jpg@320w_25q"-->
+                                                              <!--class="opacity0 transition-opacity"-->
+                                                              <!--data-url="http://img.duolayimeng.com/original/1565766-1.jpg@320w_90q"-->
+                                                              <!--width="100%"/>-->
+                                <!--<div class="sizeMark">S</div>-->
+                            <!--</div>-->
+                            <!--<div class="name">气质休闲连帽大衣</div>-->
+                        <!--</div>-->
+                        <!--<div class="aui-col-xs-3 item" tapmode onclick="">-->
+                            <!--<div class="imgBox  bc-grey"><img onload="cacheImgNew(this,'img')"-->
+                                                              <!--src="http://img.duolayimeng.com/original/1562426-1.jpg@320w_25q"-->
+                                                              <!--class="opacity0 transition-opacity"-->
+                                                              <!--data-url="http://img.duolayimeng.com/original/1562426-1.jpg@320w_90q"-->
+                                                              <!--width="100%"/>-->
+                                <!--<div class="sizeMark">S</div>-->
+                            <!--</div>-->
+                            <!--<div class="name">长款修身大毛领羽绒服</div>-->
+                        <!--</div>-->
+                        <!--<div class="aui-col-xs-3 item" tapmode onclick="">-->
+                            <!--<div class="imgBox  bc-grey"><img onload="cacheImgNew(this,'img')"-->
+                                                              <!--src="http://img.duolayimeng.com/original/1560799-1.jpg@320w_25q"-->
+                                                              <!--class="opacity0 transition-opacity"-->
+                                                              <!--data-url="http://img.duolayimeng.com/original/1560799-1.jpg@320w_90q"-->
+                                                              <!--width="100%"/>-->
+                                <!--<div class="sizeMark">S</div>-->
+                            <!--</div>-->
+                            <!--<div class="name">高领毛衣阔腿裤两件套</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="btnBox" id="btnBox">-->
+                <!--<div class="showAllBtn" tapmode onclick="showAll()">查看全部</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="separated"></div>-->
+
+
+    </div>
+
+    <div id="not-similar-part">
+
+        <!--<div class="two mainContent">-->
+            <!--<div class="title">我们不同的选择 (33)</div>-->
+            <!--<div class="aui-grid">-->
+                <!--<div class="aui-row">-->
+
+                    <!--<div class="aui-col-xs-3 item">-->
+                        <!--<div class="imgBox">-->
+                            <!--<img src="../image/hold.jpg" alt="多啦衣梦">-->
+                            <!--<div class="sizeMark">XL</div>-->
+                        <!--</div>-->
+                        <!--<div class="name">宽松蕾罩衫</div>-->
+                    <!--</div>-->
+                    <!--<div class="aui-col-xs-3 item">-->
+                        <!--<div class="imgBox">-->
+                            <!--<img src="../image/hold.jpg" alt="多啦衣梦">-->
+                            <!--<div class="sizeMark">XL</div>-->
+                        <!--</div>-->
+                        <!--<div class="name">宽松蕾罩衫</div>-->
+                    <!--</div>-->
+                    <!--<div class="aui-col-xs-3 item">-->
+                        <!--<div class="imgBox">-->
+                            <!--<img src="../image/hold.jpg" alt="多啦衣梦">-->
+                            <!--<div class="sizeMark">XL</div>-->
+                        <!--</div>-->
+                        <!--<div class="name">宽松蕾罩衫</div>-->
+                    <!--</div>-->
+                    <!--<div class="aui-col-xs-3 item">-->
+                        <!--<div class="imgBox">-->
+                            <!--<img src="../image/hold.jpg" alt="多啦衣梦">-->
+                            <!--<div class="sizeMark">XL</div>-->
+                        <!--</div>-->
+                        <!--<div class="name">宽松蕾罩衫</div>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    </div>
+    <div id="loading" class="aui-text-center" style="font-size: 12px; color: #999999;">
+        <img src="../icon/loading.gif" width="16" />
+        <div>更多数据加载中</div>
+    </div>
+
+    <script id="user-container-template" type="text/x-dot-template">
+        <div class="avatar">
+            <img onload="cacheImgNew(this,'img','no')" src="../image/avatar.png" class="opacity0 transition-opacity" data-url="{{=getAvatar(it.avatar,it.avatarFrom)}}" width="100%" />
+        </div>
+        <div class="name">{{=it.nickname}}</div>
+        <div class="disc">与我的<i class="duola-iconfont icon-wardrobe"></i>衣橱<span>相似度 {{=it.similar}}</span></div>
+        <div class="chooseBtnBox" id="chooseBtnBox">
+            <div class="leftBtn btn active"><span id="closetNum">衣橱</span></div>
+            <div class="rightBtn btn" tapmode onclick="switchPage()"><span>下单记录</span></div>
+        </div>
+    </script>
+
+    <script id="similar-container-template" type="text/x-dot-template">
+        <div class="one mainContent">
+            <div class="title">我们相同的选择 ({{=it.total}})</div>
+            <div id="showAllBox" class="showAllBox">
+                <div class="aui-grid">
+                    <div class="aui-row" id="showAllContent">
+                        {{~it.list:value:index}}
+                            <div class="aui-col-xs-3 item" tapmode onclick="showClothes('{{=value._id}}')">
+                                <div class="imgBox  bc-grey">
+                                    <img onload="cacheImgNew(this,'img')" src="{{=getImgUrl(colthPath,value.img,CONSTANT.PICTUREOSS.CLOTHESLISTQ5)}}" class="opacity0 transition-opacity" data-url="{{=getImgUrl(colthPath,value.img,CONSTANT.PICTUREOSS.CLOTHESLIST)}}" width="100%" />
+                                    <div class="sizeMark">{{=value.size}}</div>
+                                </div>
+                                <div class="name word-wrap">{{=value.name}}</div>
+                            </div>
+                        {{~}}
+                    </div>
+                </div>
+            </div>
+            {{? it.pageTotal > 1}}
+                <div class="btnBox" id="btnBox">
+                    <div class="showAllBtn" tapmode onclick="showAll(this,'{{=it.pageTotal}}')">查看全部</div>
+                </div>
+            {{?}}
+        </div>
+        <div class="separated"></div>
+    </script>
+
+    <script id="not-similar-part-template" type="text/x-dot-template">
+        <div class="two mainContent">
+            <div class="title">我们不同的选择 ({{=it.total}})</div>
+            <div class="aui-grid">
+                <div class="aui-row" id="not-similar-container">
+                    {{~it.list:value:index}}
+                    <div class="aui-col-xs-3 item" tapmode onclick="showClothes('{{=value._id}}')">
+                        <div class="imgBox bc-grey">
+                            <img onload="cacheImgNew(this,'img')" src="{{=getImgUrl(colthPath,value.img,CONSTANT.PICTUREOSS.CLOTHESLISTQ5)}}" class="opacity0 transition-opacity" data-url="{{=getImgUrl(colthPath,value.img,CONSTANT.PICTUREOSS.CLOTHESLIST)}}" width="100%" />
+                            <div class="sizeMark">{{=value.size}}</div>
+                        </div>
+                        <div class="name word-wrap">{{=value.name}}</div>
+                    </div>
+                    {{~}}
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="not-similar-container-template" type="text/x-dot-template">
+            {{~it.list:value:index}}
+                <div class="aui-col-xs-3 item" tapmode onclick="showClothes('{{=value._id}}')">
+                    <div class="imgBox bc-grey">
+                        <img onload="cacheImgNew(this,'img')" src="{{=getImgUrl(colthPath,value.img,CONSTANT.PICTUREOSS.CLOTHESLISTQ5)}}" class="opacity0 transition-opacity" data-url="{{=getImgUrl(colthPath,value.img,CONSTANT.PICTUREOSS.CLOTHESLIST)}}" width="100%" />
+                        <div class="sizeMark">{{=value.size}}</div>
+                    </div>
+                    <div class="name word-wrap">{{=value.name}}</div>
+                </div>
+            {{~}}
+    </script>
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script>
+    var currPage = 1;
+    var totalPage = 1;
+    var isLoadMoreResponsed = true;
+    var userHeight = 0;
+    var postData = null;
+    apiready = function(){
+        postData = api.pageParam.data ? api.pageParam.data : {};
+        getUser();
+        getSimilar();
+        getNotSimilar(CONSTANT.ACTIONINIT);
+        loadMore();
+//        pullRefresh(loadRefresh);
+    };
+
+    //加载更多
+    function loadMore(){
+        api.addEventListener({
+            name:'scrolltobottom',
+            extra:{threshold:0}
+        }, function(ret, err){
+            if(isLoadMoreResponsed && currPage < totalPage){
+                currPage++;
+                isLoadMoreResponsed = false;
+                getNotSimilar(CONSTANT.ACTIONLOAD);
+            }
+        });
+    }
+    //刷新
+    function loadRefresh(){
+        currPage = 1;
+        isLoadMoreResponsed = true;
+        if($api.byId('loading').innerHTML=='没有更多了'){
+            $api.html($api.byId('loading'),'<img src="../icon/loading.gif" width="16" /><div>更多数据加载中</div>');
+        }
+        getNotSimilar(CONSTANT.ACTIONREFRESH);
+    }
+
+    //获取用户信息
+    function getUser(){
+        var userHtml = doTHtml('user-container-template', postData);
+        var userEl =$api.byId('user');
+        $api.html(userEl, userHtml);
+        userHeight = $api.offset(userEl).h;
+        listenScroll();
+        api.parseTapmode();
+    }
+
+    //监听滚动
+    function listenScroll() {
+        window.onscroll = function () {
+            var yheight = getScrollTop(); //滚动条距顶端的距离
+            var title = '';
+            if (yheight >= userHeight) {
+                title = postData.nickname;
+            }
+            api.execScript({
+                script: getExecScript('execChangeTitle',[title])
+            });
+        };
+    }
+
+    //获取相同衣服
+    function getSimilar(pageSize){
+        var url = serviceUser + 'similar/closet/'+postData._id;
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData({
+            page:1,
+            pageSize: pageSize || 3,
+            similar: 'YES'
+        });
+        _ajaxData(url, 'post', headers, data, getSimilarSuccessCallback, null, 0,pageSize);
+    }
+
+    function getSimilarSuccessCallback(ret,extra){
+        if (ret.statusCode == 200 && ret.count) {
+            if(extra){
+                var html = doTHtml('not-similar-container-template', ret);
+                var showAllContentEl = $api.byId('showAllContent');
+                showAllContentEl.innerHTML = html;
+            }else{
+                var html = doTHtml('similar-container-template', ret);
+                var similarContainer = $api.byId('similar-container');
+                similarContainer.innerHTML = html;
+            }
+            api.parseTapmode();
+        }
+    }
+
+    //获取不相同衣服
+    function getNotSimilar(action){
+        if(action == CONSTANT.ACTIONINIT){
+            loadingShow();
+        }
+        var url = serviceUser + 'similar/closet/'+postData._id;
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData({
+            page: currPage,
+            pageSize: CONSTANT.PAGESIZE,
+            similar: 'NO'
+        });
+        var extra = {action:action};
+        _ajaxData(url,'post',headers,data,getNotSimilarSuccessCallback,getNotSimilarErrorCallback,0,extra);
+    }
+
+    function getNotSimilarSuccessCallback(ret,extra){
+
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        if(ret.statusCode==200){
+            currPage = ret.page;
+            totalPage = ret.pageTotal;
+            getNotSimilarHtml(ret);
+        }else{
+            toastMsg(ret.msg);
+        }
+        if(currPage >= totalPage){
+            $api.html($api.byId('loading'),'没有更多了');
+        }
+    }
+
+    function getNotSimilarErrorCallback(err,extra){
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            isLoadMoreResponsed = true;
+            currPage--;
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+
+    function getNotSimilarHtml(ret){
+        if(ret.count == 0){
+            return;
+        }
+        if(currPage == 1){
+            var html = doTHtml('not-similar-part-template', ret);
+            var notSimilarPartEl = $api.byId('not-similar-part');
+            notSimilarPartEl.innerHTML = html;
+        }else{
+            var html = doTHtml('not-similar-container-template', ret);
+            var notSimilarContainer = $api.byId('not-similar-container');
+            $api.append(notSimilarContainer, html);
+        }
+        api.parseTapmode();
+    }
+
+    function switchPage(){
+//        var chooseBtnBoxEl=$api.byId('chooseBtnBox');
+//        var chooseBtnActive=$api.dom(chooseBtnBoxEl,'.active');
+//        if(chooseBtnActive==el){
+//            return;
+//        }
+//        $api.removeCls(chooseBtnActive, 'active');
+//        $api.addCls(el, 'active');
+        api.setFrameGroupIndex({
+            name: 'community_tab',
+            index: 1
+        });
+    }
+
+    //我们相同的选择显示全部
+    function showAll(el,totalPage){
+        $api.addCls($api.byId('btnBox'),'hide');
+        getSimilar(totalPage * 3);
+    }
+    //拼接头像url
+    function getAvatar(avatar,avatarFrom){
+        if(!!avatarFrom){
+            return avatar;
+        }else if(avatar && avatar.indexOf('../') == -1){
+            return [CONSTANT.PICPRE.RES,avatar].join('');
+        }else{
+            return '';
+        }
+    }
+</script>
+</html>
