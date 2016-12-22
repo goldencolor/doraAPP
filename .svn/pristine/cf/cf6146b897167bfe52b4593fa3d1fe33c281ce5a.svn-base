@@ -551,63 +551,63 @@
 </div>
 <div id="comment-container">
     <!--<section>-->
-    <!--<div class="title">用户评价</div>-->
-    <!--<div class="comment-item flex"><img src="../image/avatar.png" class="duo-cache-img avatar" title="http://wx.qlogo.cn/mmopen/Q3auHgzwzM6GJMO3ic2zAE48fyibBNwWsWk9unntTiaJbSeia5xcq2GBWDL2ck6c8MhDz7lwSVc2efvYumPyk3bGaMghp3q0ticVTE6A5DdQ7Yx8/0">-->
-    <!--<div class="flex-1">-->
-    <!--<div class="comment-header flex flex-space-between flex-bottom">-->
-    <!--<span>-->
-    <!--<span class="name">杨baobao</span><span class="duola-iconfont icon-Stars hit-color"></span>-->
-    <!--<span class="duola-iconfont icon-Stars hit-color"></span>-->
-    <!--<span class="duola-iconfont icon-Stars hit-color"></span>-->
-    <!--</span>-->
-    <!--<span class="time">10-14</span>-->
-    <!--</div>-->
-    <!--<div class="hack-get-more" style="max-height: 5rem;position: relative;overflow: hidden;">-->
-    <!--<div class="comment-text">不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错</div>-->
-    <!--<span class="get-more aui-hide" tapmode onclick="getMoreComent(this)">查看更多</span>-->
-    <!--</div>-->
-    <!--<div class="comment-img">-->
-    <!--<img src="../image/hold.jpg" class="duo-cache-img" title="http://res.duolayimeng.com/CRuSbHBPKheSDZQkE/community/1476425538702201873@90w" tapmode onclick="goShowImg('0','1476425538702201873,1476425538703677910','CRuSbHBPKheSDZQkE')">-->
-    <!--<img src="../image/hold.jpg" class="duo-cache-img" title="http://res.duolayimeng.com/CRuSbHBPKheSDZQkE/community/1476425538703677910@90w" tapmode onclick="goShowImg('1','1476425538702201873,1476425538703677910','CRuSbHBPKheSDZQkE')">-->
-    <!--<img src="../image/hold.jpg" class="duo-cache-img" title="http://res.duolayimeng.com/CRuSbHBPKheSDZQkE/community/1476425538703677910@90w" tapmode onclick="goShowImg('1','1476425538702201873,1476425538703677910','CRuSbHBPKheSDZQkE')">-->
-    <!--</div>-->
-    <!--<div class="hack-reply-more" style="max-height: 5rem;position: relative;overflow: hidden;">-->
-    <!--<div class="reply-text">多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复</div>-->
-    <!--<span class="reply-more aui-hide" tapmode onclick="getMoreReply(this)">查看更多</span>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="line-1"></div>-->
+        <!--<div class="title">用户评价</div>-->
+        <!--<div class="comment-item flex"><img src="../image/avatar.png" class="duo-cache-img avatar" title="http://wx.qlogo.cn/mmopen/Q3auHgzwzM6GJMO3ic2zAE48fyibBNwWsWk9unntTiaJbSeia5xcq2GBWDL2ck6c8MhDz7lwSVc2efvYumPyk3bGaMghp3q0ticVTE6A5DdQ7Yx8/0">-->
+            <!--<div class="flex-1">-->
+                <!--<div class="comment-header flex flex-space-between flex-bottom">-->
+                    <!--<span>-->
+                        <!--<span class="name">杨baobao</span><span class="duola-iconfont icon-Stars hit-color"></span>-->
+                        <!--<span class="duola-iconfont icon-Stars hit-color"></span>-->
+                        <!--<span class="duola-iconfont icon-Stars hit-color"></span>-->
+                    <!--</span>-->
+                    <!--<span class="time">10-14</span>-->
+                <!--</div>-->
+                <!--<div class="hack-get-more" style="max-height: 5rem;position: relative;overflow: hidden;">-->
+                    <!--<div class="comment-text">不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错</div>-->
+                    <!--<span class="get-more aui-hide" tapmode onclick="getMoreComent(this)">查看更多</span>-->
+                <!--</div>-->
+                <!--<div class="comment-img">-->
+                    <!--<img src="../image/hold.jpg" class="duo-cache-img" title="http://res.duolayimeng.com/CRuSbHBPKheSDZQkE/community/1476425538702201873@90w" tapmode onclick="goShowImg('0','1476425538702201873,1476425538703677910','CRuSbHBPKheSDZQkE')">-->
+                    <!--<img src="../image/hold.jpg" class="duo-cache-img" title="http://res.duolayimeng.com/CRuSbHBPKheSDZQkE/community/1476425538703677910@90w" tapmode onclick="goShowImg('1','1476425538702201873,1476425538703677910','CRuSbHBPKheSDZQkE')">-->
+                    <!--<img src="../image/hold.jpg" class="duo-cache-img" title="http://res.duolayimeng.com/CRuSbHBPKheSDZQkE/community/1476425538703677910@90w" tapmode onclick="goShowImg('1','1476425538702201873,1476425538703677910','CRuSbHBPKheSDZQkE')">-->
+                <!--</div>-->
+                <!--<div class="hack-reply-more" style="max-height: 5rem;position: relative;overflow: hidden;">-->
+                    <!--<div class="reply-text">多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复</div>-->
+                    <!--<span class="reply-more aui-hide" tapmode onclick="getMoreReply(this)">查看更多</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="line-1"></div>-->
 
-    <!--<div class="comment-item flex"><img src="../image/avatar.png" class="duo-cache-img avatar" title="http://wx.qlogo.cn/mmopen/Q3auHgzwzM6GJMO3ic2zAE48fyibBNwWsWk9unntTiaJbSeia5xcq2GBWDL2ck6c8MhDz7lwSVc2efvYumPyk3bGaMghp3q0ticVTE6A5DdQ7Yx8/0">-->
-    <!--<div class="flex-1">-->
-    <!--<div class="comment-header flex flex-space-between flex-bottom">-->
-    <!--<span>-->
-    <!--<span class="name">杨baobao</span><span class="duola-iconfont icon-Stars hit-color"></span>-->
-    <!--<span class="duola-iconfont icon-Stars hit-color"></span>-->
-    <!--<span class="duola-iconfont icon-Stars hit-color"></span>-->
-    <!--</span>-->
-    <!--<span class="time">10-14</span>-->
-    <!--</div>-->
-    <!--<div class="hack-get-more" style="max-height: 5rem;position: relative;overflow: hidden;">-->
-    <!--<div class="comment-text">不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错</div>-->
-    <!--<span class="get-more aui-hide" tapmode onclick="getMoreComent(this)">查看更多</span>-->
-    <!--</div>-->
-    <!--<div class="comment-img">-->
-    <!--<img src="../image/hold.jpg" class="duo-cache-img" title="http://res.duolayimeng.com/CRuSbHBPKheSDZQkE/community/1476425538702201873@90w" tapmode onclick="goShowImg('0','1476425538702201873,1476425538703677910','CRuSbHBPKheSDZQkE')">-->
-    <!--<img src="../image/hold.jpg" class="duo-cache-img" title="http://res.duolayimeng.com/CRuSbHBPKheSDZQkE/community/1476425538703677910@90w" tapmode onclick="goShowImg('1','1476425538702201873,1476425538703677910','CRuSbHBPKheSDZQkE')">-->
-    <!--<img src="../image/hold.jpg" class="duo-cache-img" title="http://res.duolayimeng.com/CRuSbHBPKheSDZQkE/community/1476425538703677910@90w" tapmode onclick="goShowImg('1','1476425538702201873,1476425538703677910','CRuSbHBPKheSDZQkE')">-->
-    <!--</div>-->
-    <!--<div class="hack-reply-more" style="max-height: 5rem;position: relative;overflow: hidden;">-->
-    <!--<div class="reply-text">多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复</div>-->
-    <!--<span class="reply-more aui-hide" tapmode onclick="getMoreReply(this)">查看更多</span>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="line-1"></div>-->
+        <!--<div class="comment-item flex"><img src="../image/avatar.png" class="duo-cache-img avatar" title="http://wx.qlogo.cn/mmopen/Q3auHgzwzM6GJMO3ic2zAE48fyibBNwWsWk9unntTiaJbSeia5xcq2GBWDL2ck6c8MhDz7lwSVc2efvYumPyk3bGaMghp3q0ticVTE6A5DdQ7Yx8/0">-->
+            <!--<div class="flex-1">-->
+                <!--<div class="comment-header flex flex-space-between flex-bottom">-->
+                    <!--<span>-->
+                        <!--<span class="name">杨baobao</span><span class="duola-iconfont icon-Stars hit-color"></span>-->
+                        <!--<span class="duola-iconfont icon-Stars hit-color"></span>-->
+                        <!--<span class="duola-iconfont icon-Stars hit-color"></span>-->
+                    <!--</span>-->
+                    <!--<span class="time">10-14</span>-->
+                <!--</div>-->
+                <!--<div class="hack-get-more" style="max-height: 5rem;position: relative;overflow: hidden;">-->
+                    <!--<div class="comment-text">不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错</div>-->
+                    <!--<span class="get-more aui-hide" tapmode onclick="getMoreComent(this)">查看更多</span>-->
+                <!--</div>-->
+                <!--<div class="comment-img">-->
+                    <!--<img src="../image/hold.jpg" class="duo-cache-img" title="http://res.duolayimeng.com/CRuSbHBPKheSDZQkE/community/1476425538702201873@90w" tapmode onclick="goShowImg('0','1476425538702201873,1476425538703677910','CRuSbHBPKheSDZQkE')">-->
+                    <!--<img src="../image/hold.jpg" class="duo-cache-img" title="http://res.duolayimeng.com/CRuSbHBPKheSDZQkE/community/1476425538703677910@90w" tapmode onclick="goShowImg('1','1476425538702201873,1476425538703677910','CRuSbHBPKheSDZQkE')">-->
+                    <!--<img src="../image/hold.jpg" class="duo-cache-img" title="http://res.duolayimeng.com/CRuSbHBPKheSDZQkE/community/1476425538703677910@90w" tapmode onclick="goShowImg('1','1476425538702201873,1476425538703677910','CRuSbHBPKheSDZQkE')">-->
+                <!--</div>-->
+                <!--<div class="hack-reply-more" style="max-height: 5rem;position: relative;overflow: hidden;">-->
+                    <!--<div class="reply-text">多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复多啦回复</div>-->
+                    <!--<span class="reply-more aui-hide" tapmode onclick="getMoreReply(this)">查看更多</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="line-1"></div>-->
 
 
-    <!--<div class="comment-more" tapmode onclick="goCommentList()">查看全部10条评论</div>-->
+        <!--<div class="comment-more" tapmode onclick="goCommentList()">查看全部10条评论</div>-->
     <!--</section>-->
 </div>
 <section>
@@ -973,7 +973,7 @@
                     <div class="name">{{=it.list[i].name}}</div>
                     <div class="size">
                         {{~it.list[i].size:value:index}}
-                        <span>{{=value=='J'?'均码':value}}</span>
+                            <span>{{=value=='J'?'均码':value}}</span>
                         {{~}}
                     </div>
                 </div>
@@ -1013,7 +1013,7 @@
             <div class="flex-1">
                 <div class="comment-header flex flex-space-between flex-bottom">
                     <span><span class="name">{{=subStr(it.list[i].nickname,10)}}</span>{{~new Array(it.list[i].rate):value:index}}<span
-                            class="duola-iconfont icon-Stars hit-color"></span>{{~}}</span>
+                        class="duola-iconfont icon-Stars hit-color"></span>{{~}}</span>
                     <span class="time">{{=it.list[i].time}}</span>
                 </div>
                 <div class="hack-get-more" style="max-height: 5rem;position: relative;overflow: hidden;">
@@ -1033,12 +1033,12 @@
                 </div>
                 {{?}}
                 {{? it.list[i].replys && it.list[i].replys.length>0}}
-                <div class="hack-reply-bg">
-                    <div class="hack-reply-more" style="max-height: 5rem;position: relative;overflow: hidden;">
-                        <div class="reply-text">多啦衣梦：{{=it.list[i].replys[0].content}}</div>
-                        <span class="reply-more aui-hide" tapmode onclick="getMoreReply(this)">查看更多</span>
+                    <div class="hack-reply-bg">
+                        <div class="hack-reply-more" style="max-height: 5rem;position: relative;overflow: hidden;">
+                            <div class="reply-text">多啦衣梦：{{=it.list[i].replys[0].content}}</div>
+                            <span class="reply-more aui-hide" tapmode onclick="getMoreReply(this)">查看更多</span>
+                        </div>
                     </div>
-                </div>
                 {{?}}
             </div>
         </div>
@@ -1134,9 +1134,9 @@
         id = data.id ? data.id : 0;
         preSoldBefore = data.preSoldBefore ? data.preSoldBefore : null;
         headerHeight = api.getPrefs({
-                    sync: true,
-                    key: 'headerHeight'
-                }) || 50;
+                sync: true,
+                key: 'headerHeight'
+            }) || 50;
 
         var rect = {
             x: 0,
@@ -1293,7 +1293,7 @@
     function sendSimilarUmeng(){
         sendEventUmeng(CONSTANT.UMENGEVENT.SIMILAR_BTN);
     }
-    //    testSimilar();
+//    testSimilar();
     function testSimilar() {
         var testData = {
             "count": 6,

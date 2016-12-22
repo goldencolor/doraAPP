@@ -312,12 +312,6 @@
 				to: 'footer_tab_3'
 			});
 		});
-		//监听跳转登录页面
-		api.addEventListener({
-			name: 'goLogin'
-		}, function (ret, err) {
-			goLogin(CONSTANT.INDEX);
-		});
 		api.addEventListener({
 			name: 'clearMqCountUser'
 		}, function (ret, err) {
@@ -654,7 +648,7 @@
 		var time = (new Date()).format("yyyy-MM-dd hh:mm:ss.S");
 //		time = time.getFullYear() > 0 ? time.Date.format("") : Date.standardDateStr(time);
 		var url = serviceUser + 'messages/count';
-		var headers = _getAjaxHeaders(false, true);
+		var headers = _getAjaxHeaders(true, true);
 		var data = _getAjaxData({
 			type: "unread",
 			readAt: time

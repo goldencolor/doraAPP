@@ -163,7 +163,7 @@
 <div id="UIScrollPicture"></div>
 <div class="aui-grid">
     <div class="aui-row">
-        <div class="aui-col-xs-3 icon-item" tapmode onclick="goPopularity('model')">
+        <div class="aui-col-xs-3 icon-item" tapmode onclick="goMarquee()">
             <i class="duola-iconfont icon-love"></i>
             <!--<img src="../image/theme1.png" alt="" style="width: 30%;height: auto;padding-bottom: 0.3rem">-->
             <div class="aui-grid-label">人气</div>
@@ -304,7 +304,7 @@
     <div class="theme-group-item">
         {{ for(var j = 0; j < it.preTheme; j++) { }}
         <div class="progressive" tapmode
-             onclick="{{=getExecScript('goThemeDatail',[it.themes.list[i*it.preTheme+j]._id,i*it.preTheme+j])}}">
+             onclick="{{=getExecScript('goThemeDatail',[it.themes.list[i*it.preTheme+j]._id])}}">
             <img class="progressive__img progressive--not-loaded"
                  data-progressive="{{=getImgUrl(imgPath,it.themes.list[i*it.preTheme+j].img,CONSTANT.PICTUREOSS.Q80)}}"
                  src="{{=getImgUrl(imgPath,it.themes.list[i*it.preTheme+j].img,CONSTANT.PICTUREOSS.Q25)}}"
@@ -790,6 +790,29 @@
         openNewWinFrame(name, title, params, from, url, animation, page);
     }
 
+//    跳转闪选页
+    function goMarquee(){
+        var name = 'marquee';
+        var title = '多啦闪选';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftText = '';
+        var leftExtra = '';
+        var leftCallback = 'execCloseSlefWin';
+        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+        var border = false;
+        var bounces = false;
+        var params = {};
+        params.nav = setNav(leftNav, border);
+        params.frame = setFrame(bounces);
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'header_marquee.html';
+        var animation = '';
+        var page = 'activity_marquee.html';
+        openNewWinFrame(name, title, params, from, url, animation, page);
+    }
 
     //跳转人气排行页面
     function goPopularity(flag) {
@@ -913,7 +936,7 @@
         var animation = '';
         var page = 'content_new.html';
         sendEventUmeng(CONSTANT.UMENGEVENT.THEME, {
-            'index': index+''
+            index: index+''
         });
         openNewWinFrame(name, title, params, from, url, animation, page);
     }
@@ -1016,7 +1039,7 @@
 
     //其他广告点击处理
     function otherAdClickHandler(i, type, data) {
-        sendEventUmeng(CONSTANT.UMENGEVENT.OTHER_AD, {'index': i+''});
+        sendEventUmeng(CONSTANT.UMENGEVENT.OTHER_AD, {index: i+''});
         if (type == 'internal' && data) {
             //打开内部APP页面
             if (data == 'goActivity' && !isLogin()) {
@@ -1086,43 +1109,6 @@
         var animation = '';
         var page = 'activity.html';
         openNewWinFrame(name, title, params, from, url, animation, page);
-    }
-
-    //跳转圣诞元旦闪选活动页面
-    function goFlashLease(){
-        var name = 'marquee';
-        var title = '多啦闪选';
-        var leftIcon = 'duola-iconfont icon-left';
-        var leftText = '';
-        var leftExtra = '';
-        var leftCallback = 'execMarqueeWin';
-        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
-        var border = false;
-        var bounces = false;
-        var params = {};
-        params.nav = setNav(leftNav, border);
-        params.frame = setFrame(bounces);
-        var from = {
-            winName: api.winName,
-            frameName: api.frameName
-        };
-        var url = 'header_new.html';
-        var animation = '';
-        var page = 'activity_marquee.html';
-        openNewWinFrame(name, title, params, from, url, animation, page);
-    }
-    //点击返回图标异步执行关闭窗口
-    function execMarqueeWin(extra,winName,value){
-        var scriptFun = getExecScript('execClear', []);
-        var params = {
-            name:'marqueeWin',
-            frameName: 'marqueeFrame',
-            script: scriptFun
-        };
-        api.execScript(params);
-        api.closeWin({
-            name:winName
-        });
     }
 </script>
 </html>

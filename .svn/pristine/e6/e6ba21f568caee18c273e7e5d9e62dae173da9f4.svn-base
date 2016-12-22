@@ -147,19 +147,30 @@
         <!--<span style="font-size: 1.2rem;color: #00AF4C;margin-right: 0.6rem;display: block" class="duola-iconfont icon-weixin"></span>第三方登录-->
     <!--</div>-->
     <div class="thirdBox">
-        <div class="title" id="thirdTitle" style="display:none;">第三方登录</div>
+        <div class="title">第三方登录</div>
         <div class="iconBox flex flex-center">
             <div class="item" id="showWeixin" tapmode onclick="wx_login()" style="display:none;">
                 <span class="duola-iconfont icon-weixin1"></span>
             </div>
-            <div id="showQQ" class="item" tapmode onclick="qqLogin()" style="display:none;">
+            <div class="item" tapmode onclick="qqLogin()">
                 <span class="duola-iconfont icon-QQ"></span>
             </div>
-            <div id="showWeiBo" class="item" tapmode onclick="weiboLogin()" style="display:none;">
+            <div class="item" tapmode onclick="weiboLogin()">
                 <span class="duola-iconfont icon-xinlang"></span>
             </div>
         </div>
     </div>
+    <!--<div tapmode onclick="qqLogin()" style="border: 1px solid #ddd;text-align: center;margin-bottom: 1rem">QQ登录</div>-->
+    <!--<div tapmode onclick="weiboLogin()" style="border: 1px solid #ddd;text-align: center;margin-bottom: 1rem">微博登录</div>-->
+
+    <!--<div tapmode onclick="weibo_share_img({title:'tiger',description:'测试QQ分享',type:'QFriend',imageUrl:'widget://image/sharedLogo.png'})" style="border: 1px solid #ddd;text-align: center;margin-bottom: 1rem">QQ分享</div>-->
+    <!--<div tapmode onclick="weibo_share_page({-->
+        <!--text: '这里是测试的内容',-->
+        <!--title: '测试标题',-->
+        <!--description: '分享内容的描述',-->
+        <!--thumb: 'widget://image/sharedLogo.png',-->
+        <!--contentUrl: 'http://apicloud.com'-->
+    <!--})" style="border: 1px solid #ddd;text-align: center;margin-bottom: 1rem">微博分享</div>-->
 </div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -181,41 +192,9 @@
                 showWexin();
             }
         });
-        qq_install(function(isIntalled,extra){
-            if(isIntalled){
-                showQQ();
-            }
-        });
-        weibo_install(function(isIntalled,extra){
-            if(isIntalled){
-                showWeiBo();
-            }
-        });
         api.parseTapmode();
     };
 
-    function showTitle(){
-        var thirdTitleEl = $api.byId('thirdTitle');
-        if(thirdTitleEl && $api.cssVal(thirdTitleEl,'display')=='none'){
-            $api.css(thirdTitleEl,'display:block');
-        }
-    }
-
-    function showQQ(){
-        var showQQEl = $api.byId('showQQ');
-        if(showQQEl){
-            $api.css(showQQEl,'display:block');
-            showTitle();
-        }
-    }
-
-    function showWeiBo(){
-        var showWeiBoEl = $api.byId('showWeiBo');
-        if(showWeiBoEl){
-            $api.css(showWeiBoEl,'display:block');
-            showTitle();
-        }
-    }
 //    qq登录
     function qqLogin(){
         sendEventUmeng(CONSTANT.UMENGEVENT.LOGIN,{
@@ -226,9 +205,6 @@
 
 //  微博登录
     function weiboLogin(){
-        sendEventUmeng(CONSTANT.UMENGEVENT.LOGIN,{
-            from:'weibo'
-        });
         weibo_login(login_third,'weibo');
     }
 //    第三方登录
@@ -359,7 +335,6 @@
         var showWexinEl = $api.byId('showWeixin');
         if(showWexinEl){
             $api.css(showWexinEl,'display:block');
-            showTitle();
         }
     }
     function loginAbout() {
@@ -487,9 +462,6 @@
     }
 
     function login() {
-        sendEventUmeng(CONSTANT.UMENGEVENT.LOGIN,{
-            from:'account'
-        });
         var tel = $api.val($api.byId('phone'));
         var password = $api.val($api.byId('pwd'));
         if (tel == '' || tel.length != 11) {
@@ -588,9 +560,6 @@
 //            text: '请稍候',
 //            modal: false
 //        });
-        sendEventUmeng(CONSTANT.UMENGEVENT.LOGIN,{
-            from:'weixin'
-        });
         wx.auth({
             apiKey : CONSTANT.WEIXINAPPKEY
         }, function(ret, err) {
@@ -778,7 +747,7 @@
     }
     function wechat(ret) {
         var url = serviceNew + 'user/login/wechat';
-        var headers = _getAjaxHeaders(false,true);
+        var headers = _getAjaxHeaders(true,true);
         var data = _getAjaxData({
             accessToken : String(accessToken),
             refreshToken : String(refreshToken),

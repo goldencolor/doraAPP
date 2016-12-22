@@ -998,16 +998,19 @@
         if (ret.statusCode == 200) {
             var collectionBtnEl = $api.byId('collection-btn');
             var collectionIconEl = $api.dom(collectionBtnEl, 'span');
+            var collectionTextEl = $api.dom(collectionBtnEl, 'small');
             if (extra && extra.isCollected) {
                 toastMsg('取消收藏');
                 $api.attr(collectionBtnEl, 'title', 'NO');
                 $api.removeCls(collectionIconEl, 'icon-follow');
                 $api.addCls(collectionIconEl, 'icon-nofollow');
+                $api.text(collectionTextEl, '收藏品牌');
             } else {
                 toastMsg('收藏成功');
                 $api.attr(collectionBtnEl, 'title', 'YES');
                 $api.removeCls(collectionIconEl, 'icon-nofollow');
                 $api.addCls(collectionIconEl, 'icon-follow');
+                $api.text(collectionTextEl, '已收藏');
             }
             var brandCollectedNumEl = $api.byId('brand-collected-number');
             $api.text(brandCollectedNumEl, Math.abs(ret.collected));

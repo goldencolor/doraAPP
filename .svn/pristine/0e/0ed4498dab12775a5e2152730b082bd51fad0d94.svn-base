@@ -1348,14 +1348,6 @@ function _getAjaxHeaders(isToken,isAppInfo,contentType){
 	var header = {};
 	if(isToken){
 		var token = $api.getStorage('token');
-		if(!token){
-			//发起跳转登录页面事件
-			//api.sendEvent({
-			//	name: 'goLogin'
-			//});
-			console.error('没有token');
-			return false;
-		}
 		header.token = token;
 	}else{
 		//有token就传

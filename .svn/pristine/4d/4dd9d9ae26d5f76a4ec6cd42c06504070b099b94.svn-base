@@ -39,19 +39,17 @@
 		.icon-area .icon-love{
 			font-size: 0.9rem;
 		}
-		
-
 	</style>
 </head>
 <body>
-	<header id="header" class="duola-header " style="position: relative">
-	    <a style="z-index: 100" id="nav-left" class="duola-icon-area" tapmode onclick="closeWebWin()">
+	<header id="header" class="duola-header flex">
+	    <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWebWin()">
 			<div id="leftBg">
 	        	<span id="nav-left-icon" class="nav-left-icon duola-iconfont icon-left"></span>
 			</div>
 	    </a>
-	    <div style="position: absolute;width: 100%;left: 0;bottom: 0;z-index: 10" id="nav-title" class="nav-title "></div>
-		<div id="nav-right" class="hide" style="z-index: 100;position: absolute;right: 0;bottom: 0;">
+	    <div id="nav-title" class="nav-title flex-1"></div>
+		<div id="nav-right" class="hide">
 			<a class="icon-area"  tapmode onclick="toggleCollectBrandHead(this)">
 				<span id="toggleIcon" class=" duola-iconfont"></span>
 			</a>

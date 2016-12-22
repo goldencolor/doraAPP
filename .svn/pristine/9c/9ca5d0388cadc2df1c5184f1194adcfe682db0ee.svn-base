@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>闪选</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />-->
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style type="text/css">
+        body{
+            background-color: #F8F8F8;
+        }
+        body:before{
+            content: '';
+            display: table;
+        }
+        .revolveBox {
+            background-color: #F8F8F8;
+            overflow:hidden;
+            width: 100%;
+            margin-top: 0.75rem;
+        }
+        .revolveContent {
+            float: left;
+            /*width: 110rem;*/
+            overflow: hidden;
+        }
+        .revolveItem {
+            float: left;
+            background-color: #F8F8F8;
+        }
+        .revolveContent div.item{
+            /*display: inline-block;*/
+            float: left;
+            width: 6rem;
+            height: 12.2rem;
+            text-align: center;
+            line-height: 100px;
+            margin-left: 0.75rem;
+            background-color: #FFFFFF;
+        }
+        .revolveContent div.item .imgBox{
+            width: 100%;
+            height: 9rem;
+        }
+        .revolveContent div.item .discrible{
+            width: 100%;
+            height: 3.2rem;
+            text-align: center;
+        }
+        .revolveContent div.item .discrible .name{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.5rem;
+            line-height: 0.5rem;
+            color: #464646;
+            margin-top: 0.45rem;
+        }
+        .revolveContent div.item .discrible .size{
+            font-family: Arial-BoldMT;
+            font-size: 0.6rem;
+            color: #666666;
+            line-height: 0.6rem;
+            margin-top: 0.4rem;
+        }
+        .revolveContent div.item .discrible .warn{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.4rem;
+            line-height: 0.4rem;
+            color: #AAAAAA;
+            margin-top: 0.4rem;
+        }
+    </style>
+    <body>
+
+        <div id="revolveBox" class="revolveBox">
+            <div id="revolveContent" class="revolveContent">
+                <div class="revolveItem" id="revolveItem1">
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1558705-1.jpg@!480w" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1558705-2.jpg@!480w" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1558705-3.jpg@!480w" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1558705-4.jpg@!480w" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1560159-1.jpg@!320w480h90q" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1560159-2.jpg@!320w480h90q" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1560159-3.jpg@!320w480h90q" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1560159-4.jpg@!320w480h90q" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="revolveItem" id="revolveItem2"></div>
+            </div>
+        </div>
+
+        <div id="revolveBoxTwo" class="revolveBox">
+            <div id="revolveContentTwo" class="revolveContent">
+                <div class="revolveItem" id="revolveItemTwo1">
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1558705-1.jpg@!480w" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1558705-2.jpg@!480w" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1558705-3.jpg@!480w" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1558705-4.jpg@!480w" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1560159-1.jpg@!320w480h90q" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1560159-2.jpg@!320w480h90q" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1560159-3.jpg@!320w480h90q" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="imgBox">
+                            <img src="http://img.duolayimeng.com/original/1560159-4.jpg@!320w480h90q" alt="">
+                        </div>
+                        <div class="discrible">
+                            <div class="name">气质连衣裙</div>
+                            <div class="size">
+                                <span>S</span>
+                                <span>M</span>
+                                <span>L</span>
+                            </div>
+                            <div class="warn">仅剩1件</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="revolveItem" id="revolveItemTwo2"></div>
+            </div>
+        </div>
+    <script id="marquee-clothes-template" type="text/x-dot-template">
+        {{ for(var i = 0; i < it.length; i++) { }}
+            <div class="item">
+                <div class="imgBox img-holder bc-grey">
+                    <img onload="cacheImgNew(this)" class="opacity0 transition-opacity"
+                         src="{{=getImgUrl(colthPath, it[i].img,'@400w_5q')}}"
+                         data-url="{{=getImgUrl(colthPath, it[i].img, CONSTANT.PICTUREOSS.ANNUAL)}}" width="100%"
+                         tapmode onclick="{{=getExecScript('showClothes',[it[i]._id])}}"/>
+                </div>
+                <div class="discrible">
+                    <div class="name">{{=it[i].name}}</div>
+                    <div class="size">
+                        {{~it[i].size:value:index}}
+                        <span>{{= value }}</span>
+                        {{~}}
+                    </div>
+                    <div class="warn">仅剩{{=it[i].stockCount}}件</div>
+                </div>
+            </div>
+        {{ } }}
+    </script>
+    <script src="../script/hammer.min.js"></script>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/doT_min.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script>
+        (function(){
+            var testData={"statusCode":200,"msg":"OK","data":{"clothes1":[{"_id":"1509021","name":"七分阔腿裤","size":["M","L"],"stockCount":11,"img":"1509021-1.jpg"},{"_id":"1509021","name":"七分阔腿裤","size":["M","L"],"stockCount":11,"img":"1509021-1.jpg"},{"_id":"1509021","name":"七分阔腿裤","size":["M","L"],"stockCount":11,"img":"1509021-1.jpg"},{"_id":"1509021","name":"七分阔腿裤","size":["M","L"],"stockCount":11,"img":"1509021-1.jpg"},{"_id":"1509021","name":"七分阔腿裤","size":["M","L"],"stockCount":11,"img":"1509021-1.jpg"},{"_id":"1509021","name":"七分阔腿裤","size":["M","L"],"stockCount":11,"img":"1509021-1.jpg"}],"clothes2":[{"_id":"1509021","name":"七分阔腿裤","size":["M","L"],"stockCount":0,"img":"1509021-1.jpg"},{"_id":"1509021","name":"七分阔腿裤","size":["M","L"],"stockCount":11,"img":"1509021-1.jpg"},{"_id":"1509021","name":"七分阔腿裤","size":["M","L"],"stockCount":11,"img":"1509021-1.jpg"},{"_id":"1509021","name":"七分阔腿裤","size":["M","L"],"stockCount":11,"img":"1509021-1.jpg"},{"_id":"1509021","name":"七分阔腿裤","size":["M","L"],"stockCount":11,"img":"1509021-1.jpg"},{"_id":"1509021","name":"七分阔腿裤","size":["M","L"],"stockCount":11,"img":"1509021-1.jpg"}],"now":"2016-12-20 17:00:00","start":"2016-12-20 18:00:00","end":"2016-12-20 19:00:00"}};
+            getMarqueeHtml(testData);
+        }());
+
+        function getMarqueeHtml(ret){
+            var marqueeContainer1=$api.byId('revolveItem1');
+            var marqueeContainer2=$api.byId('revolveItemTwo1');
+            marqueeContainer1.innerHTML='';
+            marqueeContainer2.innerHTML='';
+            var html1= doTHtml('marquee-clothes-template',ret.data.clothes1);
+            var html2= doTHtml('marquee-clothes-template',ret.data.clothes2);
+            $api.append(marqueeContainer1, html1);
+            $api.append(marqueeContainer2, html2);
+            var remVal=parseInt($api.cssVal($api.dom('html'),'font-size'));
+            var cssVal1='width:'+(ret.data.clothes1.length*remVal*14)+'px';
+            var cssVal2='width:'+(ret.data.clothes2.length*remVal*14)+'px';
+            $api.css($api.byId('revolveContent'),cssVal1);
+            $api.css($api.byId('revolveContentTwo'),cssVal2);
+
+            var swiperSpeed=1.5;
+            var speed1=60;
+            var revolveBoxEl=document.getElementById("revolveBox");
+            var revolveContentEl=document.getElementById("revolveContent");
+            var revolveItem1=document.getElementById("revolveItem1");
+            var revolveItem2=document.getElementById("revolveItem2");
+            revolveItem2.innerHTML=revolveItem1.innerHTML;
+            function Marquee(){
+                if(revolveItem1.offsetWidth-revolveBoxEl.scrollLeft<=0)
+                    revolveBoxEl.scrollLeft-=revolveItem1.offsetWidth;
+                else{
+                    revolveBoxEl.scrollLeft++;
+                }
+            }
+            var deltaXpre=0;
+            var MyTimer=setInterval(Marquee,speed1);
+            var touchEl = new Hammer(revolveContentEl);
+            touchEl.on('swipe pan panstart panmove panend pancancel multipan press pressup pinch', function (ev) {
+                if (ev.type == 'panstart'||ev.type == 'press') {
+                    deltaXpre=0;
+                    clearInterval(MyTimer);
+                }
+                if (ev.type == 'panmove' && Math.abs(ev.deltaY) < 30) {
+                    if(revolveItem1.offsetWidth-revolveBoxEl.scrollLeft<=0){
+                        revolveBoxEl.scrollLeft-=revolveItem1.offsetWidth;
+                    }
+                    if(revolveBoxEl.scrollLeft<=0){
+                        revolveBoxEl.scrollLeft=revolveItem1.offsetWidth;
+                    }
+                    revolveBoxEl.scrollLeft -= (ev.deltaX-deltaXpre)*swiperSpeed;
+                    deltaXpre=ev.deltaX;
+                }
+                if(ev.type == 'panend'||ev.type == 'pressup'){
+                    MyTimer=setInterval(Marquee,speed1);
+                }
+            });
+
+            var speed2=80;
+            var revolveBoxEl2=document.getElementById("revolveBoxTwo");
+            var revolveContentEl2=document.getElementById("revolveContentTwo");
+            var revolveItem12=document.getElementById("revolveItemTwo1");
+            var revolveItem22=document.getElementById("revolveItemTwo2");
+            revolveItem22.innerHTML=revolveItem12.innerHTML;
+            function Marquee2(){
+                if(revolveItem12.offsetWidth-revolveBoxEl2.scrollLeft<=0)
+                    revolveBoxEl2.scrollLeft-=revolveItem12.offsetWidth;
+                else{
+                    revolveBoxEl2.scrollLeft++;
+                }
+            }
+            var deltaXpre2=0;
+            var MyTimer2=setInterval(Marquee2,speed2);
+            var touchEl2 = new Hammer(revolveContentEl2);
+            touchEl2.on('swipe pan panstart panmove panend pancancel multipan press pressup pinch', function (ev) {
+                if (ev.type == 'panstart'||ev.type == 'press') {
+                    deltaXpre2=0;
+                    clearInterval(MyTimer2);
+                }
+                if (ev.type == 'panmove' && Math.abs(ev.deltaY) < 30) {
+                    if(revolveItem12.offsetWidth-revolveBoxEl2.scrollLeft<=0){
+                        revolveBoxEl2.scrollLeft-=revolveItem12.offsetWidth;
+                    }
+                    if(revolveBoxEl2.scrollLeft<=0){
+                        revolveBoxEl2.scrollLeft=revolveItem12.offsetWidth;
+                    }
+                    revolveBoxEl2.scrollLeft -= (ev.deltaX-deltaXpre2)*swiperSpeed;
+                    deltaXpre2=ev.deltaX;
+                }
+                if(ev.type == 'panend'||ev.type == 'pressup'){
+                    MyTimer2=setInterval(Marquee2,speed2);
+                }
+            });
+            api.parseTapmode();
+        }
+
+    </script>
+</body>
+</html>

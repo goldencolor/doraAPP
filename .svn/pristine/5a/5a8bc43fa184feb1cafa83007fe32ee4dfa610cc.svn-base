@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>闪选</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style type="text/css">
+        body{
+            background-color: #F8F8F8;
+        }
+        body:before{
+            content: '';
+            display: table;
+        }
+        /*顶部大图样式*/
+        .bigImg{
+            width: 100%;
+            height: 8.6rem;
+            overflow: hidden;
+        }
+        .bigImg img{
+            width: 100%;
+        }
+        /*倒计时样式开始*/
+        #downCounter-container{
+            width: 100%;
+            height: 3rem;
+            background: #000000;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #C1C1C1;
+        }
+        #downCounter-container [class*=icon-num-] {
+            color: #282828;
+            font-size:  0.8rem;
+            line-height: 0.9rem;
+            height: 0.9rem;
+            width: 0.65rem;
+        }
+        #downCounter-container [class*=icon-num-].hit-color {
+            position: absolute;
+            left: 0;top:0;
+        }
+        .icon-container{
+            position: relative;
+        }
+        .dot{
+            font-size: 0.8rem;
+            font-weight:  bold;
+            line-height: 0.9rem;
+            height: 0.9rem;
+            text-align: right;
+            width: 0.5rem;
+        }
+        /*倒计时样式结束*/
+        .revolveBox {
+            background-color: #F8F8F8;
+            overflow:hidden;
+            width: 100%;
+            margin-top: 0.75rem;
+        }
+        .revolveContent {
+            float: left;
+            /*width: 110rem;*/
+            overflow: hidden;
+        }
+        .revolveItem {
+            float: left;
+            background-color: #F8F8F8;
+        }
+        .revolveContent div.item{
+            /*display: inline-block;*/
+            float: left;
+            width: 6rem;
+            height: 12.2rem;
+            text-align: center;
+            line-height: 100px;
+            margin-left: 0.75rem;
+            background-color: #FFFFFF;
+        }
+        .revolveContent div.item .imgBox{
+            width: 100%;
+            height: 9rem;
+        }
+        .revolveContent div.item .discrible{
+            width: 100%;
+            height: 3.2rem;
+            text-align: center;
+        }
+        .revolveContent div.item .discrible .name{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.5rem;
+            line-height: 0.5rem;
+            color: #464646;
+            margin-top: 0.45rem;
+        }
+        .revolveContent div.item .discrible .size{
+            font-family: Arial-BoldMT;
+            font-size: 0.6rem;
+            color: #666666;
+            line-height: 0.6rem;
+            margin-top: 0.4rem;
+        }
+        .revolveContent div.item .discrible .warn{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.4rem;
+            line-height: 0.4rem;
+            color: #AAAAAA;
+            margin-top: 0.4rem;
+        }
+        #fullContainer{
+            background-color: #F8F8F8;
+            height: 100%;
+        }
+    </style>
+    <body>
+        <div class="bigImg">
+            <img src="http://img.duolayimeng.com/pc/theme22-2.png" alt="">
+        </div>
+        <div id="fullContainer">
+            <div id="downCounter-container" class="flex flex-center">
+                <div><span class="text">距离开始</span><span class="icon-container"><span class="duola-iconfont icon-num-8"></span><span class="duola-iconfont hit-color icon-num-8"></span></span><span class="icon-container"><span class="duola-iconfont icon-num-8"></span><span class="duola-iconfont hit-color icon-num-8"></span></span><span class="dot hit-color">:</span><span class="icon-container"><span class="duola-iconfont icon-num-8"></span><span class="duola-iconfont hit-color icon-num-8"></span></span><span class="icon-container"><span class="duola-iconfont icon-num-8"></span><span class="duola-iconfont hit-color icon-num-8"></span></span><span class="dot hit-color">:</span><span class="icon-container"><span class="duola-iconfont icon-num-8"></span><span class="duola-iconfont hit-color icon-num-8"></span></span><span class="icon-container"><span class="duola-iconfont icon-num-8"></span><span class="duola-iconfont hit-color icon-num-8"></span></span><span class="dot hit-color" style="width: 0.5rem;">.</span><span class="icon-container"><span class="duola-iconfont icon-num-8"></span><span class="duola-iconfont hit-color icon-num-8"></span></span></div>
+            </div>
+            <div id="revolveBox" class="revolveBox">
+                <div id="revolveContent" class="revolveContent">
+                    <div class="revolveItem" id="revolveItem1">
+
+                    </div>
+                    <div class="revolveItem" id="revolveItem2"></div>
+                </div>
+            </div>
+
+            <div id="revolveBoxTwo" class="revolveBox">
+            <div id="revolveContentTwo" class="revolveContent">
+                <div class="revolveItem" id="revolveItemTwo1">
+
+                </div>
+                <div class="revolveItem" id="revolveItemTwo2"></div>
+            </div>
+        </div>
+        </div>
+
+    <!--衣服列表模板-->
+    <script id="marquee-clothes-template" type="text/x-dot-template">
+        {{ for(var i = 0; i < it.length; i++) { }}
+            <div class="item">
+                <div class="imgBox img-holder bc-grey">
+                    <img onload="cacheImgNew(this)" class="opacity0 transition-opacity"
+                         src="{{=getImgUrl(colthPath, it[i].img,'@400w_5q')}}"
+                         data-url="{{=getImgUrl(colthPath, it[i].img, CONSTANT.PICTUREOSS.ANNUAL)}}" width="100%"
+                         tapmode onclick="goClothes('{{=it[i]._id}}')"/>
+                </div>
+                <div class="discrible">
+                    <div class="name">{{=it[i].name}}</div>
+                    <div class="size">
+                        {{~it[i].size:value:index}}
+                        <span>{{= value }}</span>
+                        {{~}}
+                    </div>
+                    <div class="warn">仅剩{{=it[i].stockCount}}件</div>
+                </div>
+            </div>
+        {{ } }}
+    </script>
+    <!--倒计时模板-->
+    <script id="downCounter-template" type="text/x-dot-template">
+        <div id="downCounter" beginYear="{{=it.nowDate.getFullYear()}}" beginMth="{{=it.nowDate.getMonth()}}" beginDay="{{=it.nowDate.getDate()}}"
+             beginHour="{{=it.nowDate.getHours()}}" beginMin="{{=it.nowDate.getMinutes()}}" beginSec="{{=it.nowDate.getSeconds()}}"
+             endYear="{{=it.endDate.getFullYear()}}" endMth="{{=it.endDate.getMonth()}}" endDay="{{=it.endDate.getDate()}}"
+             endHour="{{=it.endDate.getHours()}}" endMin="{{=it.endDate.getMinutes()}}" endSec="{{=it.endDate.getSeconds()}}">
+            <span id="offsetText" class="text">{{=it.offsetText}}</span>
+        <span class="icon-container">
+            <span class="duola-iconfont icon-num-8"></span>
+            <span class="duola-iconfont hit-color icon-num-8"  id="zh"></span>
+        </span>
+        <span class="icon-container">
+            <span class="duola-iconfont icon-num-8"></span>
+            <span class="duola-iconfont hit-color icon-num-8" id="h"></span>
+        </span>
+            <span class="dot hit-color">:</span>
+        <span class="icon-container">
+            <span class="duola-iconfont icon-num-8"></span>
+            <span class="duola-iconfont hit-color icon-num-8" id="zm"></span>
+        </span>
+        <span class="icon-container">
+            <span class="duola-iconfont icon-num-8"></span>
+            <span class="duola-iconfont hit-color icon-num-8" id="m"></span>
+        </span>
+            <span class="dot hit-color">:</span>
+        <span class="icon-container">
+            <span class="duola-iconfont icon-num-8"></span>
+            <span class="duola-iconfont hit-color icon-num-8" id="zs"></span>
+        </span>
+        <span class="icon-container">
+            <span class="duola-iconfont icon-num-8"></span>
+            <span class="duola-iconfont hit-color icon-num-8" id="s"></span>
+        </span>
+            <span class="dot hit-color" style="width: 0.5rem;">.</span>
+        <span class="icon-container">
+            <span class="duola-iconfont icon-num-8"></span>
+            <span class="duola-iconfont hit-color icon-num-8" id="mills"></span>
+        </span>
+        </div>
+    </script>
+    <script src="../script/hammer.min.js"></script>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/doT_min.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+    <script type="text/javascript" src="../script/downCounter.js"></script>
+    <script>
+
+        var activityStatus = false;//活动状态
+        var OFFSETMINMILLS = 3 * 3600000; //距离下一场时间常量
+        var downCounterInstance = null;//倒计时实例
+        var offsetTextEl = null;//距离开始文字
+        var MyTimer = null;//第一排衣服列表定时器
+        var MyTimer2 = null;//第二排衣服列表定时器
+        var isHammer = false;//第一排衣服列表绑定手势事件
+        var isHammer2 = false;//第二排衣服列表绑定手势事件
+        var preDownCouterData = null;//活动时间数据
+
+        apiready = function(){
+            getActivity(CONSTANT.ACTIONINIT);
+            api.parseTapmode();
+            pullRefresh(loadRefresh);
+            console.log(api.winName);
+            console.log(api.frameName);
+        };
+
+        //刷新
+        function loadRefresh(){
+            getActivity(CONSTANT.ACTIONREFRESH);
+        }
+
+        //请求活动数据
+        function getActivity(action){
+            if(action == CONSTANT.ACTIONINIT){
+                loadingShow();
+            }
+            var url = serviceNew + 'flashLease';
+            var headers = _getAjaxHeaders(true,true);
+            var data = _getAjaxData();
+            var extra = {action:action};
+            _ajaxData(url,'post',headers,data,getActivitySuccessCallback,getActivityErrorCallback,0,extra);
+//            test();
+        }
+        //测试
+        function test(){
+            var ret = {"data":{"_id":2,"now":"2016-12-23 11:01:36.279","start":"2016-12-23 09:00:00.0","end":"2016-12-23 15:00:00.0","next":"2016-12-23 18:00:00.0","clothes2":[{"img":"1509007-1.jpg","stockCount":0,"_id":"1509007","photo":1,"size":[],"popularity":84,"name":"高腰蝙蝠袖毛衣"},{"img":"1509004-1.jpg","stockCount":0,"_id":"1509004","photo":1,"size":[],"popularity":28,"name":"三角印花卫衣"},{"img":"1509020-1.jpg","stockCount":0,"_id":"1509020","photo":1,"size":[],"popularity":43,"name":"光版白衬衣"},{"img":"1509012-1.jpg","stockCount":0,"_id":"1509012","photo":1,"size":[],"popularity":28,"name":"灯芯绒阔腿背带裤"},{"img":"1509006-1.jpg","stockCount":0,"_id":"1509006","photo":1,"size":[],"popularity":175,"name":"高腰蝙蝠袖毛衣"}],"clothes1":[{"img":"1509008-1.jpg","stockCount":1,"_id":"1509008","photo":1,"size":["均码"],"popularity":94,"name":"高腰蝙蝠袖毛衣"},{"img":"1509014-1.jpg","stockCount":1,"_id":"1509014","photo":1,"size":["均码"],"popularity":151,"name":"麻花纹花线毛衣"},{"img":"1509002-1.jpg","stockCount":0,"_id":"1509002","photo":1,"size":[],"popularity":57,"name":"蝙蝠袖带流苏毛衣"},{"img":"1509003-1.jpg","stockCount":0,"_id":"1509003","photo":1,"size":[],"popularity":68,"name":"蝙蝠袖带流苏毛衣"}],"banner":"b83ARmYX5s.jpg"},"statusCode":200,"msg":"OK"};
+            getActivitySuccessCallback(ret,{action:1});
+        }
+        //请求成功
+        function getActivitySuccessCallback(ret,extra) {
+            var action = extra.action;
+            if(action == CONSTANT.ACTIONREFRESH){
+                pullRefreshDone();
+            }else{
+                loadingHide();
+            }
+            console.log(0);
+            if(ret.data && ret.data.now && ret.data.start && ret.data.end && ret.data.clothes1 && ret.data.clothes2){
+                var nowDate = new Date(ret.data.now);
+                var startDate = new Date(ret.data.start);
+                var endDate = new Date(ret.data.end);
+                var offsetText = '距离下场开始';
+                console.log(1);
+                if(nowDate.getTime() < startDate.getTime()){
+                    //活动未开始
+                    var offsetMills = startDate.getTime() - nowDate.getTime();
+                    if(offsetMills < OFFSETMINMILLS){
+                        offsetText = '距离本场开始';
+                    }
+                    console.log(2);
+                }else if(nowDate.getTime() < endDate.getTime()){
+                    //活动正在进行
+                    activityStatus = true;
+                    offsetText = '距离本场结束';
+                    console.log(3);
+                }else{
+                    //活动结束
+                    console.log(4);
+                    return;
+                }
+                //渲染倒计时html
+                preDownCouterData = {
+                    startDate: startDate,
+                    endDate: endDate
+                };
+                getdownCounterHtml({
+                    offsetText: offsetText,
+                    nowDate: nowDate,
+                    endDate: activityStatus ? endDate : startDate
+                });
+                //渲染衣服列表
+                getMarqueeHtml(ret);
+            }else{
+				if(downCounterInstance){
+					downCounterInstance.clearTimer();
+				}
+                clearClothes();
+                toastMsg(ret.msg);
+            }
+        }
+
+//        异步调用清空定时器
+        function execClear(){
+            downCounterInstance.clearTimer();
+            clearClothes();
+        }
+
+        //清空衣服列表和定时器
+        function clearClothes(){
+            console.log('clearClothes--');
+            var marqueeContainer1=$api.byId('revolveItem1');
+            var marqueeContainer1_2=$api.byId('revolveItem2');
+            var marqueeContainer2=$api.byId('revolveItemTwo1');
+            var marqueeContainer2_2=$api.byId('revolveItemTwo2');
+
+            marqueeContainer1.innerHTML='';
+            marqueeContainer1_2.innerHTML='';
+            marqueeContainer2.innerHTML='';
+            marqueeContainer2_2.innerHTML='';
+        }
+
+        function getActivityErrorCallback(err,extra){
+            var action = extra.action;
+            if(action == CONSTANT.ACTIONREFRESH){
+                pullRefreshDone();
+            }else{
+                loadingHide();
+            }
+			if(downCounterInstance){
+				downCounterInstance.clearTimer();
+			}
+            clearClothes();
+            toastMsg(err.msg);
+        }
+
+        //渲染倒计时html
+        function getdownCounterHtml(ret){
+            var downCounterHtml = doTHtml('downCounter-template',ret);
+            $api.byId('downCounter-container').innerHTML = downCounterHtml;
+
+            var zhEl = $api.byId('zh');
+            var hEl = $api.byId('h');
+            var zmEl = $api.byId('zm');
+            var mEl = $api.byId('m');
+            var zsEl = $api.byId('zs');
+            var sEl = $api.byId('s');
+            var millsEl = $api.byId('mills');
+            offsetTextEl = $api.byId('offsetText');
+            if(downCounterInstance){
+                downCounterInstance.clearTimer();
+                downCounterInstance = null;
+            }
+            downCounterInstance = downCounter();
+            downCounterInstance.init(function(h,m,s,mills){
+                var zh = h.charAt(0);
+                h = h.charAt(1);
+                var zm = m.charAt(0);
+                m = m.charAt(1);
+                var zs = s.charAt(0);
+                s = s.charAt(1);
+        //				console.log(['---',zh,h,zm,m,zs,s,mills]);
+                $api.attr(zhEl,'class','duola-iconfont hit-color icon-num-'+zh);
+                $api.attr(hEl,'class','duola-iconfont hit-color icon-num-'+h);
+                $api.attr(zmEl,'class','duola-iconfont hit-color icon-num-'+zm);
+                $api.attr(mEl,'class','duola-iconfont hit-color icon-num-'+m);
+                $api.attr(zsEl,'class','duola-iconfont hit-color icon-num-'+zs);
+                $api.attr(sEl,'class','duola-iconfont hit-color icon-num-'+s);
+                $api.attr(millsEl,'class','duola-iconfont hit-color icon-num-'+mills);
+
+                //倒计时
+                if(parseInt(zh)+parseInt(h)+parseInt(zm)+parseInt(m)+parseInt(zs)+parseInt(s) === 0 && parseInt(mills) == 1){
+                    timeup();
+                    $api.attr(millsEl,'class','duola-iconfont hit-color icon-num-0');
+                }else if(!activityStatus && parseInt(zh)+parseInt(h) < OFFSETMINMILLS/3600000 && offsetTextEl.innerText != '距离本场开始'){
+                    //3个小时内
+                    offsetTextEl.innerText = '距离本场开始';
+                }
+            });
+        }
+
+        //倒计时结束0
+        function timeup(){
+            console.log('timeup------');
+            if(!activityStatus){
+                //活动从未开始到开始，是否重新请求数据？
+                //渲染倒计时html
+                if(preDownCouterData){
+                    activityStatus = true;
+                    getdownCounterHtml({
+                        offsetText: '距离本场结束',
+                        nowDate: preDownCouterData.startDate,
+                        endDate: preDownCouterData.endDate
+                    });
+                }else{
+                    getActivity();
+                }
+            }else{
+                //活动已经开始到结束，重新请求数据
+                downCounterInstance.clearTimer();
+                clearClothes();
+                getActivity();
+            }
+        }
+        //渲染衣服列表HTML
+        function getMarqueeHtml(ret){
+            var marqueeContainer1=$api.byId('revolveItem1');
+            var marqueeContainer2=$api.byId('revolveItemTwo1');
+            var html1= doTHtml('marquee-clothes-template',ret.data.clothes1);
+            var html2= doTHtml('marquee-clothes-template',ret.data.clothes2);
+            marqueeContainer1.innerHTML=html1;
+            marqueeContainer2.innerHTML=html2;
+            var remVal=parseInt($api.cssVal($api.dom('html'),'font-size'));
+            var cssVal1='width:'+(ret.data.clothes1.length*remVal*14)+'px';
+            var cssVal2='width:'+(ret.data.clothes2.length*remVal*14)+'px';
+            $api.css($api.byId('revolveContent'),cssVal1);
+            $api.css($api.byId('revolveContentTwo'),cssVal2);
+
+            var swiperSpeed=1.5;
+            var speed1=60;
+            var revolveBoxEl=document.getElementById("revolveBox");
+            var revolveContentEl=document.getElementById("revolveContent");
+            var revolveItem1=document.getElementById("revolveItem1");
+            var revolveItem2=document.getElementById("revolveItem2");
+            revolveItem2.innerHTML=revolveItem1.innerHTML;
+            function Marquee(){
+                if(revolveItem1.offsetWidth-revolveBoxEl.scrollLeft<=0)
+                    revolveBoxEl.scrollLeft-=revolveItem1.offsetWidth;
+                else{
+                    revolveBoxEl.scrollLeft++;
+                }
+            }
+            var deltaXpre=0;
+            if(MyTimer){
+                clearInterval(MyTimer);
+                MyTimer = null;
+            }
+            MyTimer = setInterval(Marquee,speed1);
+            if(!isHammer){
+                var touchEl = new Hammer(revolveContentEl);
+                touchEl.on('swipe pan panstart panmove panend pancancel multipan press pressup pinch', function (ev) {
+                    if (ev.type == 'panstart'||ev.type == 'press') {
+                        deltaXpre=0;
+                        clearInterval(MyTimer);
+                    }
+                    if (ev.type == 'panmove' && Math.abs(ev.deltaY) < 30) {
+                        if(revolveItem1.offsetWidth-revolveBoxEl.scrollLeft<=0){
+                            revolveBoxEl.scrollLeft-=revolveItem1.offsetWidth;
+                        }
+                        if(revolveBoxEl.scrollLeft<=0){
+                            revolveBoxEl.scrollLeft=revolveItem1.offsetWidth;
+                        }
+                        revolveBoxEl.scrollLeft -= (ev.deltaX-deltaXpre)*swiperSpeed;
+                        deltaXpre=ev.deltaX;
+                    }
+                    if(ev.type == 'panend'||ev.type == 'pressup'){
+                        MyTimer=setInterval(Marquee,speed1);
+                    }
+                });
+                isHammer = true;
+            }
+
+            var speed2=70;
+            var revolveBoxEl2=document.getElementById("revolveBoxTwo");
+            var revolveContentEl2=document.getElementById("revolveContentTwo");
+            var revolveItem12=document.getElementById("revolveItemTwo1");
+            var revolveItem22=document.getElementById("revolveItemTwo2");
+            revolveItem22.innerHTML=revolveItem12.innerHTML;
+            function Marquee2(){
+                if(revolveItem12.offsetWidth-revolveBoxEl2.scrollLeft<=0)
+                    revolveBoxEl2.scrollLeft-=revolveItem12.offsetWidth;
+                else{
+                    revolveBoxEl2.scrollLeft++;
+                }
+            }
+            var deltaXpre2=0;
+            if(MyTimer2){
+                clearInterval(MyTimer2);
+                MyTimer2 = null;
+            }
+            MyTimer2=setInterval(Marquee2,speed2);
+            if(!isHammer2){
+                var touchEl2 = new Hammer(revolveContentEl2);
+                touchEl2.on('swipe pan panstart panmove panend pancancel multipan press pressup pinch', function (ev) {
+                    if (ev.type == 'panstart'||ev.type == 'press') {
+                        deltaXpre2=0;
+                        clearInterval(MyTimer2);
+                    }
+                    if (ev.type == 'panmove' && Math.abs(ev.deltaY) < 30) {
+                        if(revolveItem12.offsetWidth-revolveBoxEl2.scrollLeft<=0){
+                            revolveBoxEl2.scrollLeft-=revolveItem12.offsetWidth;
+                        }
+                        if(revolveBoxEl2.scrollLeft<=0){
+                            revolveBoxEl2.scrollLeft=revolveItem12.offsetWidth;
+                        }
+                        revolveBoxEl2.scrollLeft -= (ev.deltaX-deltaXpre2)*swiperSpeed;
+                        deltaXpre2=ev.deltaX;
+                    }
+                    if(ev.type == 'panend'||ev.type == 'pressup'){
+                        MyTimer2=setInterval(Marquee2,speed2);
+                    }
+                });
+                isHammer2 = true;
+            }
+
+            api.parseTapmode();
+        }
+
+        //跳转衣服详情页
+        function goClothes(_id){
+            console.log(_id);
+            if(activityStatus){
+                showClothes(_id);
+            }else{
+                console.error('活动未开始,敬请期待');
+            }
+        }
+    </script>
+</body>
+</html>

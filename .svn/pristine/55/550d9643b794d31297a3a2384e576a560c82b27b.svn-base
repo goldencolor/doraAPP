@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>滑动评星</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style type="text/css">
+        #demo {
+            background: #FFF;
+            overflow:hidden;
+            border: 1px dashed #CCC;
+            width: 100%;
+        }
+        #indemo a{
+            display: inline-block;
+            width: 50px;
+            height: 100px;
+        }
+        #demo img {
+            border: 3px solid #F2F2F2;
+        }
+        #indemo {
+            float: left;
+            width: 976px;
+            height: 100px;
+            overflow: hidden;
+        }
+        #demo1 {
+            float: left;
+        }
+        #demo2 {
+            float: left;
+        }
+        img{
+            width: 2.5rem;
+        }
+    </style>
+
+    <body>
+        <div id="demo">
+            <div id="indemo">
+                <div id="demo1">
+                    <a>1</a>
+                    <a>2</a>
+                    <a>3</a>
+                    <a>4</a>
+                    <a>5</a>
+                    <a>6</a>
+                    <a>7</a>
+                    <a>8</a>
+                    <a>9</a>
+
+
+                </div>
+                <div id="demo2">
+                </div>
+            </div>
+        </div>
+        <script>
+
+            var speed=50;
+            var tab=document.getElementById("demo");
+            var tab1=document.getElementById("demo1");
+            var tab2=document.getElementById("demo2");
+            tab2.innerHTML=tab1.innerHTML;
+            function Marquee(){
+                if(tab1.offsetWidth-tab.scrollLeft<=0)
+                    tab.scrollLeft-=tab1.offsetWidth;
+                else{
+                    tab.scrollLeft++;
+                }
+            }
+            var MyMar=setInterval(Marquee,speed);
+
+//            tab.onmouseover=function() {clearInterval(MyMar)};
+//            tab.onmouseout=function() {MyMar=setInterval(Marquee,speed)};
+
+        </script>
+</body>
+</html>

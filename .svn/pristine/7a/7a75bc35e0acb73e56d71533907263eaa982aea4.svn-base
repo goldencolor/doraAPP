@@ -9,7 +9,7 @@ var APPADCONSTANT = {
         GOPAGE:'GOPAGE'
     },
     //跳转某个页面
-    PAGENAME:['goAdActivity','goFlashLease']
+    PAGENAME:['goAdActivity']
 };
 
 //启动广告初始化
@@ -76,12 +76,12 @@ function openAppAd(adForce,adImg,action,data,param){
         }else if(ret.eventType == 'image'){
             umengparam = '确定';
             if(action == APPADCONSTANT.ACTION.GOWEB && data ){//跳转网页
-                if($api.getStorage('token')){
+                if($api.getStorage('userPhone')){
                     //已经登陆
                     if(adForce == 'NO'){
                         setAppAdUsed();
                     }
-                    data = data + '?token=' + $api.getStorage('token');
+                    data = data + '?tel=' + $api.getStorage('userPhone');
                     goWebPage('appAdWebUrl',data,param);
                 }else{
                     //未登陆
@@ -92,7 +92,7 @@ function openAppAd(adForce,adImg,action,data,param){
                 });
             }else if(action == APPADCONSTANT.ACTION.GOPAGE && APPADCONSTANT.PAGENAME.indexOf(data) != -1){//跳转APP页面
                 if(param == 'needLogin'){
-                    if($api.getStorage('token')){
+                    if($api.getStorage('userPhone')){
                         //已经登陆
                         if(adForce == 'NO'){
                             setAppAdUsed();
@@ -292,41 +292,3 @@ function execCloseSlefWin(extra,winName,value){
         name:winName
     });
 }
-
-//跳转圣诞元旦闪选活动页面
-function goFlashLease(){
-    var name = 'marquee';
-    var title = '多啦闪选';
-    var leftIcon = 'duola-iconfont icon-left';
-    var leftText = '';
-    var leftExtra = '';
-    var leftCallback = 'execMarqueeWin';
-    var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
-    var border = false;
-    var bounces = false;
-    var params = {};
-    params.nav = setNav(leftNav, border);
-    params.frame = setFrame(bounces);
-    var from = {
-        winName: api.winName,
-        frameName: api.frameName
-    };
-    var url = 'header_new.html';
-    var animation = '';
-    var page = 'activity_marquee.html';
-    openNewWinFrame(name, title, params, from, url, animation, page);
-}
-//点击返回图标异步执行关闭窗口
-function execMarqueeWin(extra,winName,value){
-    var scriptFun = getExecScript('execClear', []);
-    var params = {
-        name:'marqueeWin',
-        frameName: 'marqueeFrame',
-        script: scriptFun
-    };
-    api.execScript(params);
-    api.closeWin({
-        name:winName
-    });
-}
-

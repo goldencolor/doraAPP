@@ -850,24 +850,20 @@
     function goDesignDatail(_id, brand, index) {
         sendEventUmeng(CONSTANT.UMENGEVENT.DESIGN_LIST, {
             index: index,
-            brand: unescape(brand)
+            brand: brand
         });
 
         var name = 'designDetail';
-        var title = brand;
+        var title = '原创设计品牌&nbsp;&nbsp;<span class="duola-iconfont icon-line"></span>&nbsp;&nbsp;' + brand;
         var leftIcon = 'duola-iconfont icon-left';
-        var rightIcon = 'duola-iconfont icon-share';
         var leftNav = setNavData(leftIcon);
-        var rightNav = setNavData(rightIcon);
         var border = false;
         var bounces = true;
         var params = {};
-        params.nav = setNav(leftNav, border,rightNav);
+        params.nav = setNav(leftNav, border);
         params.frame = setFrame(bounces, {
             _id: _id,
-            sharedPage: 'http://m.duolayimeng.com/design/' + _id,
-            sharedTitle: '原创设计品牌 | ' + brand,
-            transTitle: true
+            transTitle:true
         });
         var from = {
             winName: api.winName,

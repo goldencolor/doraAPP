@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>滑动评星</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        .item{
+            width: 2.5rem;
+            height: 5rem;
+            border: 1px solid #ddd;
+            display: inline-block;
+        }
+    </style>
+</head>
+<div id="start-container" class="flex flex-space-between">
+    <marquee behavior="scroll" contenteditable="true"  onstart="this.firstChild.innerHTML+=this.firstChild.innerHTML;" scrollamount="1" width="1"><SPAN unselectable="on"></SPAN></marquee>
+    <div id="scrollobj" style="white-space:nowrap;overflow:hidden;width:100%;" onmouseover="aa()" onmouseout="b()" >
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+    </div>
+    </marquee>
+
+</div>
+<body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script>
+    function scroll(obj) {
+        var tmp = (obj.scrollLeft)++;
+//当滚动条到达右边顶端时
+        if (obj.scrollLeft==tmp) obj.innerHTML += obj.innerHTML;
+//当滚动条滚动了初始内容的宽度时滚动条回到最左端
+        if (obj.scrollLeft>=obj.firstChild.offsetWidth) obj.scrollLeft=0;
+    }
+    var a =	setInterval("scroll(document.getElementById('scrollobj'))",20);
+    function aa(){
+        clearInterval(a);
+    }
+    function b(){
+        a=setInterval("scroll(document.getElementById('scrollobj'))",10);
+    }
+</script>
+</body>
+</html>

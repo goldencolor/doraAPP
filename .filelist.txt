@@ -24,6 +24,7 @@
 /A6918652765044/htm
 /A6918652765044/html/buyClothes_success.html
 /A6918652765044/script/2_0/aui_scroll.js
+/A6918652765044/html/a_test_1.html
 /A6918652765044/image/one6.png
 /A6918652765044/html/buyClothes_test.html
 /A6918652765044/html/size_mask.html
@@ -33,7 +34,9 @@
 /A691/A6918652765044/html/winLogin.html
 /A6918652765044/html/showComImg.html
 /A6918652765044/image/XL.png
+/A6918652765044/html/activity_marquee2.html
 /A6918652765044/image/dialog_cancel.png
+/A6918652765044/html/header_marquee.html
 /A6918652765044/index123.html
 /A6918652765044/script/2_0/aui_skin.js
 /A691865276504
@@ -92,8 +95,8 @@ l/maskType.html
 /A6918652765044/html/maskSizeFoot.html
 /A6918652765044/components/slideswipe/slideswipe.js
 /A6918652765044/html/design.html
-/A6918652765044/script/weibo_sdk.js
 /A6918652765044/css/aui.css
+/A6918652765044/script/weibo_sdk.js
 /A6918652765044/html/winFilter_new.html
 /A6918652765044/html/activity.html
 /A6918652765044/image/handTwo.png
@@ -138,6 +141,7 @@ l/maskType.html
 /A6918652765044/html/Pay3.html
 /A6918652765044/icon/payOk.png
 /A6918652765044/script/version.js
+/A6918652765044/script/downCounter.js
 /A6918652765044/css/fonts/duola_iconfont2.ttf
 /A6918652765044/html/header_web.html
 /A6918652765044/image/weixin_bg.png
@@ -153,6 +157,7 @@ l/maskType.html
 /A6918652765044/image/10283.png
 /A6918652765044/html/Figure.html
 /A6918652765044/launch/launch1080x1920.png
+/A6918652765044/html/activity_marquee.html
 /A6918652765044/html/header_design.html
 /A6918652765044/html/winDelivery.html
 /A6918652765044/html/winOrder.html
@@ -303,6 +308,7 @@ l/maskType.html
 /A6918652765044/html/user/user.html
 /A6918652765044/script/api.js
 /A6918652765044/image/theme3.png
+/A6918652765044/html/testMarquee.html
 /A6918652765044/html/promoMine.html
 /A6918652765044/html/chooseRank.html
 /A6918652765044/html/frame1Header.html

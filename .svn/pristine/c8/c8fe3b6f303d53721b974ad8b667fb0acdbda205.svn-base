@@ -429,7 +429,7 @@
             <div style="{{=getBackgroudColor(it.bgColor.colorRgbaHex(0.7))}}" id="collection-btn" class="collection-btn flex flex-center" title="{{=it.inStore}}">
                 <span tapmode onclick="toggleCollectBrand('{{=escape(it.name)}}')"
                       title="{{=it.inStore}}" class="duola-iconfont {{=isTrue(it.inStore) ? 'icon-follow' : 'icon-nofollow'}} {{=isWhite(it.bgColor) ? 'hit-color-rewrite' : 'hit-color-white'}}"></span>
-                <span id="shareIcon" style="margin-left: 1.25rem" class="duola-iconfont icon-share hide" tapmode onclick="sharedDesign('{{=escape(it.name)}}')"></span>
+                <span id="shareIcon" style="margin-left: 1.25rem" class="duola-iconfont icon-share" tapmode onclick="sharedDesign('{{=escape(it.name)}}')"></span>
             </div>
         </div>
         <div class="brand-socre  flex flex-horizon-center {{=isWhite(it.bgColor) ? '' : 'isColorful'}}"
@@ -910,11 +910,13 @@
         isInstalledWx(function(isIntalled,extra){
             if(isIntalled){
                 var shareIconEl = $api.byId('shareIcon');
-                if(shareIconEl && $api.hasCls(shareIconEl,'hide')){
-                    $api.removeCls(shareIconEl,'hide');
+                if(shareIconEl && $api.hasCls(shareIconEl,'aui-hide')){
+                    $api.removeCls(shareIconEl,'aui-hide');
                 }
             }
         });
+//        if(!debug&&data.action != 'refreshDataOnly')
+//            _imgCacheUrl3(brandContainer);
     }
 
 
@@ -998,16 +1000,19 @@
         if (ret.statusCode == 200) {
             var collectionBtnEl = $api.byId('collection-btn');
             var collectionIconEl = $api.dom(collectionBtnEl, 'span');
+            var collectionTextEl = $api.dom(collectionBtnEl, 'small');
             if (extra && extra.isCollected) {
                 toastMsg('取消收藏');
                 $api.attr(collectionBtnEl, 'title', 'NO');
                 $api.removeCls(collectionIconEl, 'icon-follow');
                 $api.addCls(collectionIconEl, 'icon-nofollow');
+                $api.text(collectionTextEl, '收藏品牌');
             } else {
                 toastMsg('收藏成功');
                 $api.attr(collectionBtnEl, 'title', 'YES');
                 $api.removeCls(collectionIconEl, 'icon-nofollow');
                 $api.addCls(collectionIconEl, 'icon-follow');
+                $api.text(collectionTextEl, '已收藏');
             }
             var brandCollectedNumEl = $api.byId('brand-collected-number');
             $api.text(brandCollectedNumEl, Math.abs(ret.collected));
