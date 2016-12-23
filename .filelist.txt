@@ -155,6 +155,7 @@ l/maskType.html
 /A6918652765044/index_old.html
 /A6918652765044/html/addComment.html
 /A6918652765044/image/10283.png
+/A6918652765044/html/dialog_didi.html
 /A6918652765044/html/Figure.html
 /A6918652765044/launch/launch1080x1920.png
 /A6918652765044/html/activity_marquee.html
@@ -333,6 +334,7 @@ l/maskType.html
 /A6918652765044/html/feedback.html
 /A6918652765044/html/a_frame1_example.html
 /A6918652765044/html/maskStyle.html
+/A6918652765044/html/user/userPay.html
 /A6918652765044/html/season.html
 /A6918652765044/html/searchLevel_mask.html
 /A6918652765044/script/components/pagination.js

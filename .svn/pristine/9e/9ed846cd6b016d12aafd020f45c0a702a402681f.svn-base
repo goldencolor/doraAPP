@@ -229,6 +229,11 @@
 
         apiready = function(){
 
+//            console.log(new Date("2016-12-22 20:40:00.0"));
+//            console.log(new Date("2016-12-22 20:40:00"));
+//            console.log(new Date("2016/12/22 20:40:00.0"));
+//            console.log(new Date("2016/12/22 16:16:11"));
+//			  return;
             getActivity(CONSTANT.ACTIONINIT);
             api.parseTapmode();
             pullRefresh(loadRefresh);

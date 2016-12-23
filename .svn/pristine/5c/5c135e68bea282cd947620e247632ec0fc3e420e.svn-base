@@ -229,6 +229,10 @@
 
         apiready = function(){
 
+            console.log(new Date("2016-12-22 20:40:00.0"));
+            console.log(new Date("2016-12-22 20:40:00"));
+            console.log(new Date("2016/12/22 20:40:00.0"));
+			return;
             getActivity(CONSTANT.ACTIONINIT);
             api.parseTapmode();
             pullRefresh(loadRefresh);
@@ -268,14 +272,11 @@
             var imgHtml='<img  onload="cacheImgNew(this)" class="opacity0 transition-opacity" src="'+imgSrc+'@640w_5q" data-url="'+imgSrc+'@640w" width="100%"/>';
             $api.html($api.byId('bannerImg'),imgHtml);
             if(ret.data && ret.data.now && ret.data.start && ret.data.end && ret.data.clothes1 && ret.data.clothes2){
-
-                ret.data.now=ret.data.now.replace(/-/ig,"/").slice(0,ret.data.now.indexOf('.'));
-                ret.data.start=ret.data.start.replace(/-/ig,"/").slice(0,ret.data.start.indexOf('.'));
-                ret.data.end=ret.data.end.replace(/-/ig,"/").slice(0,ret.data.end.indexOf('.'));
                 var nowDate = new Date(ret.data.now);
                 var startDate = new Date(ret.data.start);
                 var endDate = new Date(ret.data.end);
                 var offsetText = '距离下场开始';
+                console.log(nowDate);
                 if(nowDate.getTime() < startDate.getTime()){
                     activityStatus = false;
                     //活动未开始
