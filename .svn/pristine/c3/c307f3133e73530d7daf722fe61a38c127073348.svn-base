@@ -71,8 +71,6 @@ var CONSTANT = {
 		ORDER:'um_count_order',
 		LOGIN:'um_count_login',
 		USER_CENTER:'um_count_user_center',
-		CLOUDSET:'um_count_cloud_set',
-		YEAR:'um_count_year',
 		SCROLL_PICTURE:'um_count_scroll_picture',
 		CLOTH_DETAIL:'um_count_cloth_detail',
 		COLLECT_CLOTH:'um_math_collect_cloth',

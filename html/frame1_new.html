@@ -730,30 +730,57 @@
 
     //打开搜索页面
     function goSearch() {
-        var name = 'winSearch_new';
-        var title = '搜索';
-        var leftIcon = 'duola-iconfont icon-left';
-        var leftText = '';
-        var leftCallback = 'execCloseSearch';
-        var leftExtra = '';
-        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
-        var border = false;
-        var bounces = false;
-        var allowEdit = true;
+//        var name = 'winSearch_new';
+//        var title = '搜索';
+//        var leftIcon = 'duola-iconfont icon-left';
+//        var leftText = '';
+//        var leftCallback = 'execCloseSearch';
+//        var leftExtra = '';
+//        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+//        var border = false;
+//        var bounces = false;
+//        var allowEdit = true;
+//        var params = {};
+//        params.nav = setNav(leftNav, border);
+//        params.frame = setFrame(bounces, {
+//            gStyle: gStyle
+//        }, allowEdit);
+//        var from = {
+//            winName: api.winName,
+//            frameName: api.frameName
+//        };
+//        var url = 'header_new.html';
+//        var animation = '';
+//        var page = 'winSearch_new.html';
+//        sendEventUmeng(CONSTANT.UMENGEVENT.SEARCH_BTN, {from: '云衣橱'});
+//        openNewWinFrame(name, title, params, from, url, animation, page);
+
+        var name = 'winSearch_new2';
+        var page = 'winSearch_new2.html';
+        var bounces=false;
+        var rect ={
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto'
+        };
         var params = {};
-        params.nav = setNav(leftNav, border);
         params.frame = setFrame(bounces, {
             gStyle: gStyle
-        }, allowEdit);
-        var from = {
-            winName: api.winName,
-            frameName: api.frameName
-        };
-        var url = 'header_new.html';
-        var animation = '';
-        var page = 'winSearch_new.html';
-        sendEventUmeng(CONSTANT.UMENGEVENT.SEARCH_BTN, {from: '云衣橱'});
-        openNewWinFrame(name, title, params, from, url, animation, page);
+        });
+        api.openFrame({
+            name: name,
+            url: page,
+            rect: rect,
+            bounces: bounces,
+            allowEdit: true,
+            pageParam:{
+                data:params
+            },
+            softInputMode:'resize',
+            vScrollBarEnabled: false,
+            hScrollBarEnabled: false
+        });
     }
 
 

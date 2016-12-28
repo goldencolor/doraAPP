@@ -87,7 +87,6 @@
         .revolveContent div.item .imgBox{
             width: 100%;
             height: 9rem;
-            position: relative;
         }
         .revolveContent div.item .discrible{
             width: 100%;
@@ -119,20 +118,7 @@
             background-color: #F8F8F8;
             height: 100%;
         }
-        .annual{
-            position: absolute;
-            top: 0;
-            left: 0;
-            font-size: 0.5rem;
-            min-width: 1.7rem;
-            padding: 0 0.2rem;
-            height: 0.7rem;
-            line-height: 0.7rem;
-            text-align: center;
-            border-radius:0 0 0.3rem 0;
-            background: -webkit-gradient(linear, left top, right bottom, color-stop(40%,#94695E), color-stop(100%,#4D2D28));
-            color: #F0D5B4;
-        }
+
     </style>
     <body>
         <div id="bannerImg" class="bigImg img-holder bc-grey">
@@ -170,11 +156,7 @@
                          src="{{=getImgUrl(colthPath, it[i].img,'@400w_5q')}}"
                          data-url="{{=getImgUrl(colthPath, it[i].img, CONSTANT.PICTUREOSS.ANNUAL)}}" width="100%"
                          tapmode onclick="goClothes('{{=it[i]._id}}')"/>
-                    {{?isTrue(it[i].annualOnly) }}
-                    <div class="annual">{{=CONSTANT.TEXT.ANNUALONLY }}</div>
-                    {{?}}
                 </div>
-
                 <div class="discrible">
                     <div class="name">{{=it[i].name}}</div>
                     <div class="size">
@@ -182,9 +164,7 @@
                         <span>{{= value }}</span>
                         {{~}}
                     </div>
-                    {{?isDisplayStock}}
                     <div class="warn">{{=it[i].stockCount?'仅剩'+it[i].stockCount+'件':'已抢光'}}</div>
-                    {{?}}
                 </div>
             </div>
         {{ } }}
@@ -246,7 +226,7 @@
         var isHammer = false;//第一排衣服列表绑定手势事件
         var isHammer2 = false;//第二排衣服列表绑定手势事件
         var preDownCouterData = null;//活动时间数据
-		var isDisplayStock = false;//是否显示库存
+
         apiready = function(){
 
             getActivity(CONSTANT.ACTIONINIT);
@@ -344,9 +324,7 @@
 
 //        异步调用清空定时器
         function execClear(){
-            if(downCounterInstance){
-                downCounterInstance.clearTimer();
-            }
+            downCounterInstance.clearTimer();
             clearClothes();
         }
 

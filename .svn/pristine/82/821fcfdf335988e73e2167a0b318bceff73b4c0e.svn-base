@@ -909,13 +909,13 @@
                     key: 'also'
                 }) || null;
         var name, title, url;
-        if (carton) {
+        if (!carton) {
             name = 'bespeak_header';
             title = '一键还衣';
             url = '../bespeak_header.html';
         } else {
             name = 'bespeak_rule';
-            title = '一键还衣服务条例';
+            title = '一键还衣规则';
             url = '../header_web.html';
         }
         var leftIcon = 'duola-iconfont icon-left';
@@ -1406,7 +1406,7 @@
             name: 'Pay',
             url: '../win.html',
             pageParam: {
-                page: 'Pay',
+                page: 'Wallet',
                 title: '缴费',
                 bagNum: count,
                 type: "serviceFee"

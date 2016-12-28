@@ -105,6 +105,9 @@
         },function(ret,err){
             if(ret.buttonIndex=='2'){
                 umengLogout();
+                api.sendEvent({
+                    name: 'loginOut'
+                });
                 api.showProgress({
                     style: 'default',
                     animationType: 'fade',
@@ -114,9 +117,6 @@
                 });
                 $api.clearStorage();
                 setTimeout(function(){
-                    api.sendEvent({
-                        name: 'loginOut'
-                    });
                     api.hideProgress();
                     api.execScript({
                         frameName:'footer_tab_3',

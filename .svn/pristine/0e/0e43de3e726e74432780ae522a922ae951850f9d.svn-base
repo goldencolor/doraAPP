@@ -182,9 +182,7 @@
                         <span>{{= value }}</span>
                         {{~}}
                     </div>
-                    {{?isDisplayStock}}
                     <div class="warn">{{=it[i].stockCount?'仅剩'+it[i].stockCount+'件':'已抢光'}}</div>
-                    {{?}}
                 </div>
             </div>
         {{ } }}
@@ -246,7 +244,7 @@
         var isHammer = false;//第一排衣服列表绑定手势事件
         var isHammer2 = false;//第二排衣服列表绑定手势事件
         var preDownCouterData = null;//活动时间数据
-		var isDisplayStock = false;//是否显示库存
+
         apiready = function(){
 
             getActivity(CONSTANT.ACTIONINIT);

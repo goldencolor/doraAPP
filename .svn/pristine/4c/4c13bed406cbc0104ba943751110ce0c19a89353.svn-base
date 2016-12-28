@@ -559,7 +559,6 @@
         toastMsg(err.msg);
     }
     function wechat(ret) {
-        _loadingShow();
         var url = serviceNew + 'user/login/wechat';
         var headers = _getAjaxHeaders(false,true);
         var data = _getAjaxData({
@@ -597,7 +596,6 @@
     }
     //    第三方登录
     function login_third(ret,type){
-        _loadingShow();
         var body={};
         if(type=='qq'){
             body = {

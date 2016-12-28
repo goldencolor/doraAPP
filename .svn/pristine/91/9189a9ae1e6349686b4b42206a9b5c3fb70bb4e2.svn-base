@@ -995,7 +995,7 @@
     //打开游戏页面
     function goH5Game(url) {
         var title = getUrlParam(url, 'title').indexOf('%') == -1 ? getUrlParam(url, 'title') : '多啦衣梦';
-        var page = url.split('?')[0] + '?userPhone=' + $api.getStorage('userPhone');
+        var page = url.split('?')[0] + '?tel=' + $api.getStorage('userPhone');
         var name = 'h5game';
         var leftIcon = 'duola-iconfont icon-left';
         var leftNav = setNavData(leftIcon);
@@ -1006,7 +1006,7 @@
         var params = {};
         params.nav = setNav(leftNav, border, rightNav, '#FFFFFF');
         params.frame = setFrame(bounces, {
-            sharedPage: url
+            sharedPage: 'http://wag.i-h5.cn/lb_game/11yue/Nov_dlam/weixin.php'
         });
         var from = {
             winName: api.winName,

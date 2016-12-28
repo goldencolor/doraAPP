@@ -1,5 +1,7 @@
 
 /A6918652765044/html/winLogin.html
+/A6918652765044/image/marquee1.png
+/A6918652765044/image/que.png
 /A6918652765044/css/aui_flex.css
 /A6918652765044/image/add.png
 /A6918652765044/html/buyClothes_old.html
@@ -8,8 +10,9 @@
 /A6918652765044/html/loginAbout.html
 /A6918652765044/html/frame1.html
 /A6918652765044/script/jquery.min.js
-/A6918652765044/html/msg.html
+/A6918652765044/image/love.png
 /A6918652765044/script/2_0/aui_toast.js
+/A6918652765044/html/msg.html
 /A6918652765044/image/share-award.jpg
 /A6918652765044/html/addr.html
 /A6918652765044/image/logo1.png
@@ -19,9 +22,10 @@
 /A6918652765044/image/Group1.jpg
 /A6918652765044/html/win_promo.html
 /A6918652765044/html/designDetail.html
+/A6918652765044/image/star.png
 /A6918652765044/html/changebind.html
-4/image/10284.png
 /A6918652765044/htm
+4/image/10284.png
 /A6918652765044/html/buyClothes_success.html
 /A6918652765044/script/2_0/aui_scroll.js
 /A6918652765044/html/a_test_1.html
@@ -41,9 +45,9 @@
 /A6918652765044/script/2_0/aui_skin.js
 /A691865276504
 /A6918652765044/html/showInfo.html
+/A6918652765044/image/mybg.png
 /A6918652765044/image/guide2.png
 /A6918652765044/image/add1.png
-/A6918652765044/image/mybg.png
 /A6918652765044/html/frame0.html
 /A6918652765044/html/order_header.html
 /A6918652765044/html/login.html
@@ -73,6 +77,7 @@ l
 /A6918652765044/image/one5.png
 /A6918652765044/html/reg_new_1.html
 /A6918652765044/image/expression3.png
+/A6918652765044/image/5.png
 /A6918652765044/script/progressively.js
 /A6918652765044/html/winShow_new.html
 /A6918652765044/html/closet/delete_closet_win.html
@@ -87,12 +92,13 @@ png
 /A6918652765044/html/winSearch.html
 l/maskType.html
 /A6918652765044/html/content_new.html
+/A6918652765044/image/marquee5.png
 /A6918652765044/html/winClip.html
 /A6918652765044/res/Info.plist
 /A6918652765044/script/aui_range.js
 /A6918652765044/html/orderErr.html
-/A6918652765044/image/logo2.png
 /A6918652765044/html/maskSizeFoot.html
+/A6918652765044/image/logo2.png
 /A6918652765044/components/slideswipe/slideswipe.js
 /A6918652765044/html/design.html
 /A6918652765044/css/aui.css
@@ -139,6 +145,7 @@ l/maskType.html
 /A6918652765044/html/historyOrderOld.html
 /A6918652765044/html/community_right.html
 /A6918652765044/html/Pay3.html
+/A6918652765044/image/marquee6.png
 /A6918652765044/icon/payOk.png
 /A6918652765044/script/version.js
 /A6918652765044/script/downCounter.js
@@ -234,6 +241,7 @@ l/maskType.html
 /A6918652765044/html/yearVip_0.html
 /A6918652765044/html/frame4_new.html
 /A6918652765044/html/closet/closet.html
+/A6918652765044/html/winSearch_new2.html
 /A6918652765044/html/order_header - 副本.html
 /A6918652765044/image/theme1.png
 /A6918652765044/image/guide4.png
@@ -301,6 +309,7 @@ l/maskType.html
 /A6918652765044/image/three4.png
 /A6918652765044/html/bespeak.html
 /A6918652765044/html/winChat.html
+/A6918652765044/image/marquee4.png
 /A6918652765044/html/Pay.html
 /A6918652765044/html/frame2.html
 /A6918652765044/html/bind.html
@@ -319,6 +328,7 @@ l/maskType.html
 /A6918652765044/image/wx_logo.png
 /A6918652765044/image/J.png
 /A6918652765044/image/theme7.png
+/A6918652765044/image/marquee3.png
 /A6918652765044/html/yearVip.html
 /A6918652765044/html/abc.html
 /A6918652765044/html/maskSize.html
@@ -326,7 +336,9 @@ l/maskType.html
 /A6918652765044/script/2_0/aui_dialog.js
 /A6918652765044/html/showInfo_new.html
 /A6918652765044/html/closet/category.html
+/A6918652765044/html/bespeak_rule.html
 /A6918652765044/html/bespeak_new.html
+/A6918652765044/image/marquee2.png
 /A6918652765044/html/Recommend.html
 /A6918652765044/html/Change.html
 /A6918652765044/script/slider.js
@@ -335,6 +347,7 @@ l/maskType.html
 /A6918652765044/html/a_frame1_example.html
 /A6918652765044/html/maskStyle.html
 /A6918652765044/html/user/userPay.html
+/A6918652765044/image/flower.png
 /A6918652765044/html/season.html
 /A6918652765044/html/searchLevel_mask.html
 /A6918652765044/script/components/pagination.js

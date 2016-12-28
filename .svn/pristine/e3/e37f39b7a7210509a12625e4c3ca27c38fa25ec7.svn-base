@@ -11,7 +11,6 @@
     <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
-    <script type="text/javascript" src="../../script/vue/vue.min.js"></script>
     <style>
         body, html {
             height: 100%;
@@ -23,42 +22,25 @@
             padding-bottom: 3rem;
         }
 
-        .pay-radio {
-            width: 1.2rem;
-            height: 1.2rem;
-            background-color: #ffffff;
-            border: solid 1px #dddddd;
-            -webkit-border-radius: 0.6rem;
-            border-radius: 0.6rem;
-            font-size: 0.8rem;
-            margin: 0;
-            padding: 0;
-            position: relative;
-            display: inline-block;
-            vertical-align: top;
-            cursor: default;
-            -webkit-appearance: none;
-            -webkit-user-select: none;
-            user-select: none;
-            -webkit-transition: background-color ease 0.1s;
-            transition: background-color ease 0.1s;
+        .aui-list:before {
+             height: 0px;
         }
-
-        .pay-radio:checked:after {
+        .aui-radio:checked:before, .aui-radio:checked:after {
             content: '';
+            top: 0.4rem;
+            left: 0.4rem;
+            display: inline-block;
             width: 0.8rem;
             height: 0.8rem;
-            position: absolute;
-            top: 15%;
-            left: 15%;
             background: #FF6100;
-            z-index: 2;
-            -webkit-border-radius: 0.4rem;
-            border-radius: 0.4rem;
+            border-radius: 0.5rem;
+            position: absolute;
+            z-index: 99;
+            border: 0;
         }
 
         .aui-radio:checked {
-            background-color: #FF6100;
+            background-color: #ffffff;
             border: 1px solid #FF6100;
         }
 
@@ -166,17 +148,11 @@
             font-size: 0.7rem;
             color: #989898;
         }
-
         .aui-list .chargeMoney span {
             font-size: 0.9rem;
         }
-
         .aui-list .chargeMonth span {
             font-size: 0.8rem;
-        }
-
-        [v-cloak] {
-            display: none;
         }
     </style>
 </head>
@@ -187,17 +163,16 @@
             <li class="aui-list-header">
                 选择服务项目
             </li>
-            <li class="aui-info" v-for="(type, index) in types" v-bind:class="{'active': index === typeMessage}"
-                v-on:click="{typeMessage=index }">
-                <div class="aui-col-xs-3 list-info-money">
+            <li class="aui-info" v-for="(type, index) in types" :class="{'active': index === typeMessage.index}" @click="{typeMessage.index=index }">
+                <div class="aui-col-xs-4 list-info-money">
                     ¥{{type.amount}}/月
                 </div>
-                <div class="aui-col-xs-6">
+                <div class="aui-col-xs-8">
                     <span class="aui-margin-l-5 deposit">可持有{{type.leaseLimit}}件衣服</span>
                 </div>
                 <div class="aui-info-item"><span>{{type.label}}</span><input type="radio" class="aui-radio"
                                                                              v-model="typeMessage" name="type"
-                                                                             v-bind:value="index">
+                                                                             :value={index}>
                 </div>
             </li>
         </ul>
@@ -205,19 +180,17 @@
             <li class="aui-list-header">
                 选择服务时长
             </li>
-            <li v-cloak class="aui-info" v-for="(charge, index) in charges"
-                v-bind:class="{'active': index === chargeMessage}"
-                v-show="index == 0 || typeMessage == 0" v-on:click="{chargeMessage=index}">
-                <div class="aui-col-xs-3 chargeMoney">
-                    <span>¥{{typeMessage == 0 ? charge.amount : charge.firstTryAmount}}</span>
+            <li v-cloak class="aui-info" v-for="(charge, index) in charges" :class="{'active': index === chargeMessage.index}"
+                v-show="index == 0 || typeMessage.index == 0" @click="{chargeMessage.index=index }" >
+                <div class="aui-col-xs-4 chargeMoney">
+                    <span>¥{{typeMessage.index == 0 ? charge.amount : charge.firstTryAmount}}</span>
                 </div>
-                <div class="aui-col-xs-6 chargeMonth">
+                <div class="aui-col-xs-8 chargeMonth">
                     <span class="aui-margin-l-5">{{charge.month}}个月</span><span class="aui-margin-l-10"
                                                                                 v-show="charge.freeDeposit ==='YES'">免押金</span>
                 </div>
                 <div class="aui-info-item"><span><div class="discount" v-if="charge.label">¥{{charge.label}}/月
-                </div></span><input type="radio" v-model="chargeMessage" class="aui-radio" name="aa"
-                                    v-bind:value="index">
+                </div></span><input type="radio" v-model="chargeMessage" class="aui-radio" name="aa" :value={index}>
                 </div>
             </li>
 
@@ -242,11 +215,12 @@
         </ul>
     </div>
     <div class="bottomBox" v-cloak>
-        <div class="right"><span>总计</span> <span class="moneyColor">¥<span id="showTotal">{{total}}</span></span></div>
+        <div class="right"> <span>总计</span>  <span class="moneyColor">¥<span id="showTotal">{{total}}</span></span></div>
         <div class="payBtn" id="payBtn" tapmode onclick="vm.change()">立即支付</div>
     </div>
 </div>
 </body>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/url.js"></script>
 <script type="text/javascript" src="../../script/uz.js"></script>
@@ -260,10 +234,10 @@
     vm = new Vue({
         el: '#app',
         data: {
-            typeMessage: 0,
-            chargeMessage: 0,
+            typeMessage: {index: 0},
+            chargeMessage: {index: 0},
             completed: false, //是否加载了所有数据
-            types: [{amount: 249, leaseLimit: 3, label: null}],
+            types: [{amount: 249, leaseLimit: 3, label: null},{amount: 99, leaseLimit: 1, label: '体验版'}],
             charges: [{amount: 249, firstTryAmount: 99, month: 1, freeDeposit: "NO", label: null},
                 {amount: 747, month: 3, freeDeposit: "YES", label: null},
                 {amount: 1388, month: 6, freeDeposit: "YES", label: 231},
@@ -272,31 +246,8 @@
             coupons: [],
             promotion: promotion || false
         },
-        computed: {
-            deposit: function () {
-                var self = this;
-                self.chargeMessage = self.typeMessage == 1 ? 0 : self.chargeMessage;
-                var newDeposit = self.chargeMessage == 0 ? 300 : 0;
-                newDeposit = self.typeMessage == 1 ? 100 : newDeposit;
-                var data = self.charges[self.chargeMessage];
-                if (data.freeDeposit === "YES") {
-                    newDeposit = 0;
-                }
-                return newDeposit;
-            },
-            total: function () {
-                var self = this;
-                var data = self.charges[self.chargeMessage];
-                var money = self.typeMessage == 0 ? data.amount : data.firstTryAmount;
-                var discount = self.discount ? self.discount : 0;
-                return money + self.deposit - discount;
-            },
-            discount: function () {
-                var self = this;
-                var data = self.charges[self.chargeMessage];
-                var money = data.discount;
-                return self.typeMessage == 1 ? null : money;
-            }
+        created() {
+
         },
         methods: {
             init: function () {
@@ -345,8 +296,8 @@
                     text: '请稍候'
                 });
                 var self = this;
-                var month = self.charges[self.chargeMessage].month;
-                var leaseLimit = this.types[this.typeMessage].leaseLimit;
+                var month = self.charges[self.chargeMessage.index].month;
+                var leaseLimit =  this.types[this.typeMessage.index].leaseLimit;
                 var body = {
                     "bags": 1,
                     channel: pay,
@@ -373,6 +324,25 @@
                     toastMsg(err.msg);
                 }, 0, extra);
 
+            },
+        },
+        computed: {
+            deposit() {
+                this.chargeMessage = this.typeMessage.index == 1 ? {index: 0} : {index: this.chargeMessage.index};
+                let newDeposit = this.chargeMessage.index == 0 ? 300 : 0;
+                newDeposit = this.typeMessage.index == 1 ? 100 : newDeposit;
+                return newDeposit;
+            },
+            total() {
+                let data = this.charges[this.chargeMessage.index];
+                let money = this.typeMessage.index == 0 ? data.amount : data.firstTryAmount;
+                let discount = this.discount ? this.discount : 0;
+                return money + this.deposit - discount;
+            },
+            discount() {
+                let data = this.charges[this.chargeMessage.index];
+                let money = data.discount;
+                return this.typeMessage.index == 1 ? null : money;
             }
         }
     });

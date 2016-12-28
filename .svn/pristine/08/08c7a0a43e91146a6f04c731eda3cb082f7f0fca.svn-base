@@ -182,9 +182,7 @@
                         <span>{{= value }}</span>
                         {{~}}
                     </div>
-                    {{?isDisplayStock}}
                     <div class="warn">{{=it[i].stockCount?'仅剩'+it[i].stockCount+'件':'已抢光'}}</div>
-                    {{?}}
                 </div>
             </div>
         {{ } }}
@@ -246,7 +244,7 @@
         var isHammer = false;//第一排衣服列表绑定手势事件
         var isHammer2 = false;//第二排衣服列表绑定手势事件
         var preDownCouterData = null;//活动时间数据
-		var isDisplayStock = false;//是否显示库存
+
         apiready = function(){
 
             getActivity(CONSTANT.ACTIONINIT);
@@ -284,15 +282,9 @@
             }else{
                 loadingHide();
             }
-            var bannerImgEl = $api.byId('bannerImg');
-            if(ret.data && ret.data.banner){
-                var imgSrc=imgPath+ret.data.banner;
-                var imgHtml='<img  onload="cacheImgNew(this)" class="opacity0 transition-opacity" src="'+imgSrc+'@640w_5q" data-url="'+imgSrc+'@640w" width="100%"/>';
-                $api.html(bannerImgEl,imgHtml);
-                $api.addCls(bannerImgEl,'bigImg');
-            }else{
-                $api.removeCls(bannerImgEl,'bigImg');
-            }
+            var imgSrc=imgPath+ret.data.banner;
+            var imgHtml='<img  onload="cacheImgNew(this)" class="opacity0 transition-opacity" src="'+imgSrc+'@640w_5q" data-url="'+imgSrc+'@640w" width="100%"/>';
+            $api.html($api.byId('bannerImg'),imgHtml);
             if(ret.data && ret.data.now && ret.data.start && ret.data.end && ret.data.clothes1 && ret.data.clothes2){
 
                 ret.data.now=ret.data.now.replace(/-/ig,"/").slice(0,ret.data.now.indexOf('.'));
@@ -309,15 +301,15 @@
                     if(offsetMills < OFFSETMINMILLS){
                         offsetText = '距离本场开始';
                     }
-//                    console.log(2);
+                    console.log(2);
                 }else if(nowDate.getTime() < endDate.getTime()){
                     //活动正在进行
                     activityStatus = true;
                     offsetText = '距离本场结束';
-//                    console.log(3);
+                    console.log(3);
                 }else{
                     //活动结束
-//                    console.log(4);
+                    console.log(4);
                     activityStatus = false;
                     return;
                 }
@@ -333,7 +325,7 @@
                 });
                 //渲染衣服列表
                 getMarqueeHtml(ret);
-            }else if(ret.statusCode != 200){
+            }else{
 				if(downCounterInstance){
 					downCounterInstance.clearTimer();
 				}
@@ -344,9 +336,7 @@
 
 //        异步调用清空定时器
         function execClear(){
-            if(downCounterInstance){
-                downCounterInstance.clearTimer();
-            }
+            downCounterInstance.clearTimer();
             clearClothes();
         }
 
@@ -482,7 +472,7 @@
             MyTimer = setInterval(Marquee,speed1);
             if(!isHammer){
                 var touchEl = new Hammer(revolveContentEl);
-                touchEl.on('swipe pan panstart panmove panend pancancel press pressup', function (ev) {
+                touchEl.on('swipe pan panstart panmove panend pancancel multipan press pressup pinch', function (ev) {
                     if (ev.type == 'panstart'||ev.type == 'press') {
                         deltaXpre=0;
                         clearInterval(MyTimer);
@@ -525,7 +515,7 @@
             MyTimer2=setInterval(Marquee2,speed2);
             if(!isHammer2){
                 var touchEl2 = new Hammer(revolveContentEl2);
-                touchEl2.on('swipe pan panstart panmove panend pancancel press pressup', function (ev) {
+                touchEl2.on('swipe pan panstart panmove panend pancancel multipan press pressup pinch', function (ev) {
                     if (ev.type == 'panstart'||ev.type == 'press') {
                         deltaXpre2=0;
                         clearInterval(MyTimer2);

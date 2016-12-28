@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>一键还衣规则</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+</head>
+<style>
+    .aui-content-padded {
+        padding: 0.75rem;
+        margin: 0;
+
+    }
+
+    .bottomBox {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2.8rem;
+        line-height: 2.8rem;
+    }
+
+    .bottomBox .payBtn {
+        width: 60%;
+        float: right;
+        height: 2.8rem;
+        line-height: 2.8rem;
+        background-color: #FF6100;
+        text-align: center;
+        color: #FFFFFF;
+        font-family: SourceHanSansCN-Regular;
+        font-size: 0.9rem;
+    }
+
+    .bottomBox .right {
+        width: 40%;
+        float: left;
+        text-align: center;
+        font-family: SourceHanSansCN-Regular;
+        font-size: 0.7rem;
+        color: #9F9F9F;
+        background-color: #F0F0F0;
+    }
+
+    .bottomBox .right .moneyColor {
+        font-size: 1.2rem;
+        color: #454545;
+    }
+</style>
+<body>
+<div class="aui-content-padded" style=" padding-bottom: 3rem;">
+    <div class="row">
+        <div class="aui-col-xs-12">
+            <h4>欢迎您使用多啦衣梦“一键还衣”服务。作为双旦节献礼，即日起至春节前夕，多啦衣梦推出“一键还衣”增值服务。使用多啦衣梦APP选择“一键还衣”功能，您可无需等待衣服寄回的过程，直接享受立刻选衣的便捷。使用前，请您完整阅读以下服务条例：
+                </h4>
+            <h4>《一键还衣服务条例》</h4>
+            <p>
+                1：仅支持顺丰作为“一键还衣”指定快递商，使用其他快递系统将无法自动识别及空出多啦袋；
+            </p>
+            <p>2：“一键还衣”功能使用后，需用户收到新的服装可再次使用该功能；
+            </p>
+            <p>3：“一键还衣”是一份信任，建立在双方诚信基础上。若寄回衣服存在用户严重损坏、错还、漏还等异常情况，多啦有义务提醒用户使用规范。提醒1次后，用户无改善，多啦将自动取消用户“一键还衣”使用权限；
+            </p>
+            <p>4：即日起至2017年春节前夕，使用“一键还衣”服务暂不收取功能押金或其他额外费用；
+            </p>
+            <p>5：多啦衣梦公司针对此服务功能及相关服务条款拥有最终解释权；
+            </p>
+            <p>6：如您确认开通此项服务，则表示您同意遵守上述服务细则。
+            </p>
+        </div>
+    </div>
+    <div class="bottomBox" >
+        <div class="right" tapmode onclick="clos()"> <span>不同意</span></div>
+        <div class="payBtn" id="payBtn" tapmode onclick="openNewBespeak()">同意</div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+    function clos() {
+        api.closeWin();
+    }
+    function openNewBespeak() {
+        api.setPrefs({
+            key: 'also',
+            value: "NO"
+        });
+        var name = 'bespeak_header';
+        var title = '一键还衣';
+        var url = 'bespeak_header.html';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftNav = setNavData(leftIcon);
+        var border = true;
+        var bounces = false;
+        var params = {};
+        params.nav = setNav(leftNav, border);
+        params.frame = setFrame(bounces);
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        openNewWinFrame(name, title, params, from, url);
+    }
+    apiready = function () {
+
+    }
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
