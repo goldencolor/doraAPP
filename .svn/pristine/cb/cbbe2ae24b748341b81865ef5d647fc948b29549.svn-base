@@ -65,9 +65,6 @@
             padding: 0 0.5rem;
             margin-top: 1rem;
         }
-        .level1 .item:active{
-            background-color: #FFFFFF;
-        }
         .level1 .item>div{
             border: 1px solid #f1f1f1;
             border-radius: 4px;
@@ -154,16 +151,14 @@
     var yVal=0;
     apiready = function(){
         var searchBoxEl=$api.byId('searchBox');
-//        console.log(searchBoxEl.scrollTop);
-        yVal = parseFloat($api.offset(searchBoxEl).t);
-        var y1 = parseFloat($api.offset(searchBoxEl).h);
+        var y1=parseFloat($api.offset(searchBoxEl).h);
         $api.fixStatusBar(searchBoxEl);
-        var y2 = parseFloat($api.offset(searchBoxEl).h);
-        if (y2 - y1 > 0) {
-            yVal = y2 - y1 + 10;
+        var y2=parseFloat($api.offset(searchBoxEl).h);
+        if(y2-y1>0){
+            yVal=y2-y1+10;
         }
         frameData = api.pageParam.data;
-//        console.log(getLogStr([frameData]));
+        console.log(getLogStr([frameData]));
         getHotSearch();
         openUIinput();
         api.parseTapmode();
@@ -191,7 +186,7 @@
             keyboardType: 'search',
             fixedOn: api.frameName
         }, function(ret, err) {
-//            console.log(getLogStr([ret,err]));
+            console.log(getLogStr([ret,err]));
             if (ret && ret.eventType=='change') {
                 UIInput.value(function(ret, err) {
                     if (ret) {
@@ -255,20 +250,14 @@
 
     //请求热门标签数据
     function getHotSearch(action){
-        var hotSearch = $api.getStorage('hotSearch');
-        if (!hotSearch) {
-//            if(action != CONSTANT.ACTIONREFRESH){
-//                loadingShow();
-//            }
-            var url = serviceNew + 'cloudCloset/hotSearch';
-            var headers = _getAjaxHeaders(false, true);
-            var data = _getAjaxData();
-            var extra = {action: action};
-            _ajaxData(url, 'post', headers, data, getHotSearchSuccessCallback, getHotSearchErrorCallback, 0, extra);
-        } else {
-            getHotSearchHtml(hotSearch);
+        if(action != CONSTANT.ACTIONREFRESH){
+            loadingShow();
         }
-
+        var url = serviceNew + 'cloudCloset/hotSearch';
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData();
+        var extra = {action:action};
+        _ajaxData(url,'post',headers,data,getHotSearchSuccessCallback,getHotSearchErrorCallback,0,extra);
     }
 
     function getHotSearchSuccessCallback(ret,extra){
@@ -280,7 +269,6 @@
         }
         if(ret.statusCode==200 && ret.hot){
             getHotSearchHtml(ret.hot);
-            $api.setStorage('hotSearch',ret.hot);
         }else{
             toastMsg(ret.msg);
         }
@@ -320,14 +308,11 @@
         var UIInput = api.require('UIInput');
         UIInput.value(function(ret, err) {
             if (ret) {
+                console.log(JSON.stringify(ret));
+                console.log(ret.msg);
                 var keywords=$api.trim(ret.msg);
                 if(!!keywords) {
-                    if(keywords.length<75){
-                        goSearchLevel(keywords);
-                    }else {
-                        toastMsg('搜索内容过多！');
-                    }
-
+                    goSearchLevel(keywords);
                 } else{
                     toastMsg('请输入搜索信息！');
                 }

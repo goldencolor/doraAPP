@@ -65,9 +65,6 @@
             padding: 0 0.5rem;
             margin-top: 1rem;
         }
-        .level1 .item:active{
-            background-color: #FFFFFF;
-        }
         .level1 .item>div{
             border: 1px solid #f1f1f1;
             border-radius: 4px;
@@ -320,14 +317,11 @@
         var UIInput = api.require('UIInput');
         UIInput.value(function(ret, err) {
             if (ret) {
+//                console.log(JSON.stringify(ret));
+//                console.log(ret.msg);
                 var keywords=$api.trim(ret.msg);
                 if(!!keywords) {
-                    if(keywords.length<75){
-                        goSearchLevel(keywords);
-                    }else {
-                        toastMsg('搜索内容过多！');
-                    }
-
+                    goSearchLevel(keywords);
                 } else{
                     toastMsg('请输入搜索信息！');
                 }

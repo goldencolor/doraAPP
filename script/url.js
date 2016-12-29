@@ -3,8 +3,8 @@
 //var serviceNew = "http://restful.duolayimeng.com/app/";
 
 //测试地址
-var serviceNew  = "http://60.205.168.13:10000/app/";
-var serviceUser = "http://60.205.168.13:10000/app/user/";
+var serviceNew  = "http://101.201.102.179:10000/app/";
+var serviceUser = "http://101.201.102.179:10000/app/user/";
 
 //jim测试
 //var serviceNew = "http://192.168.4.108:9000/app/";

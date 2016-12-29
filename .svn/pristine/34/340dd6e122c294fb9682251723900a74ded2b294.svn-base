@@ -728,14 +728,73 @@
         });
     }
 
+    //打开搜索页面
+    function goSearch() {
+//        var name = 'winSearch_new';
+//        var title = '搜索';
+//        var leftIcon = 'duola-iconfont icon-left';
+//        var leftText = '';
+//        var leftCallback = 'execCloseSearch';
+//        var leftExtra = '';
+//        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+//        var border = false;
+//        var bounces = false;
+//        var allowEdit = true;
+//        var params = {};
+//        params.nav = setNav(leftNav, border);
+//        params.frame = setFrame(bounces, {
+//            gStyle: gStyle
+//        }, allowEdit);
+//        var from = {
+//            winName: api.winName,
+//            frameName: api.frameName
+//        };
+//        var url = 'header_new.html';
+//        var animation = '';
+//        var page = 'winSearch_new.html';
+//        sendEventUmeng(CONSTANT.UMENGEVENT.SEARCH_BTN, {from: '云衣橱'});
+//        openNewWinFrame(name, title, params, from, url, animation, page);
+
+        var name = 'winSearch_new2';
+        var page = 'winSearch_new2.html';
+        var bounces=false;
+        var rect ={
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto'
+        };
+        var params = {};
+        params.frame = setFrame(bounces, {
+            gStyle: gStyle
+        });
+        api.openFrame({
+            name: name,
+            url: page,
+            rect: rect,
+            bounces: bounces,
+            allowEdit: true,
+            pageParam:{
+                data:params
+            },
+            softInputMode:'resize',
+            vScrollBarEnabled: false,
+            hScrollBarEnabled: false
+        });
+    }
+
+
+
+    //在搜索页面点击返回关闭搜索页面win
+    function execCloseSearch(extra, winName, value) {
+        api.closeWin({
+            name: winName
+        });
+    }
+
     //请求数据拿到一级分类和风格和场合
     function getLevels() {
 //		loadingShow();
-        var category = $api.getStorage('category');
-        if(category){
-            getLevelsSuccessCallback(category);
-            return;
-        }
         var url = serviceNew + 'cloudCloset/category';
         var headers = _getAjaxHeaders(false, true);
         var data = _getAjaxData({
@@ -748,7 +807,6 @@
     function getLevelsSuccessCallback(ret) {
         loadingHide();
         if (ret.statusCode == 200 && ret.category) {
-            $api.setStorage('category',ret);
             getLevelsHtml(ret.category);
         } else {
             toastMsg(ret.msg);

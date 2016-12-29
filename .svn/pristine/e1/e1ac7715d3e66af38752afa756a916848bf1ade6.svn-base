@@ -86,7 +86,7 @@
 
 		#header1 .search .icon-search {
 			margin-right: 0.2rem;
-			color: #B2B2B2 !important;
+			color: #A6A6A6;
 			font-size: 0.7rem;
 		}
 		#header1 .search span {
@@ -137,22 +137,28 @@
 			<div class="flex-1">搜索数万款衣服</div><i class="duola-iconfont icon-search"></i>
 		</div>
 	</div>
+
+	<!--<a id="nav-msg" class="duola-icon-area" tapmode onclick="openMsg()">-->
+		<!--<span class="nav-right-icon duola-iconfont icon-news1"></span>-->
+		<!--&lt;!&ndash;<span class="duola-dot"></span>&ndash;&gt;-->
+		<!--<div class="aui-badge hide" id="messagesCount"></div>-->
+	<!--</a>-->
 </header>
 
 <!--frame4独立设计头部-->
 <header id="header4" class="duola-header flex border-bottom hide">
-	<!--<a class="duola-icon-area"></a>-->
+	<a class="duola-icon-area"></a>
 	<div class="nav-title flex-1"><span class="duola-iconfont icon-Typeface2"></span></div>
-	<!--<a id="nav-design" class="duola-icon-area" tapmode onclick="openDesignSearch()">-->
-		<!--<span class="nav-right-icon duola-iconfont icon-search"></span>-->
-	<!--</a>-->
+	<a id="nav-design" class="duola-icon-area" tapmode onclick="openDesignSearch()">
+		<span class="nav-right-icon duola-iconfont icon-search"></span>
+	</a>
 </header>
 
 <!--frame1云衣橱头部-->
 <header id="header1" class="duola-header border-bottom hide" tapmode onclick="goSearch()">
 	<div class="flex flex-center" style="height: 2.5rem">
 		<div class="search flex-1 flex flex-vertical-center">
-			<span style="display: block"><i class="duola-iconfont icon-search"></i>搜索数万款衣服</span>
+			<span style="display: block"><i class="duola-iconfont icon-search"></i>你想要的都在这里</span>
 		</div>
 	</div>
 </header>
@@ -195,6 +201,7 @@
 	var preIndex = null;//上次切换的preIndex
 	var currIndex = 0;//当前底部导航index
 	var headerHeight = 0;//头部高度
+	var messagesCount;//消息数
 	var isOpencategory = false;//是否打开云衣橱弹窗
 	var isOpenFrame1Header = false; //是否打开frame1Header
 	var mqMsgCountEl = null;//美恰未读消息DOM元素
@@ -221,13 +228,26 @@
 		});
 		openFrameGroup();//打开frameGroup
 		otherInit();//其他初始化事件
-
+		getHotSearch();//缓存热门标签
 //		var mq = api.require('meiQia');
 //		mq.getUnreadMessageCount(function(ret){
 //			console.log(JSON.stringify(ret));
 //		});
 	};
 
+	function getHotSearch(action){
+		var url = serviceNew + 'cloudCloset/hotSearch';
+		var headers = _getAjaxHeaders(false,true);
+		var data = _getAjaxData();
+		var extra = {action:action};
+		_ajaxData(url,'post',headers,data,getHotSearchSuccessCallback,null,0,extra);
+	}
+
+	function getHotSearchSuccessCallback(ret,extra){
+		if(ret.statusCode==200 && ret.hot){
+			$api.setStorage('hotSearch',ret.hot);
+		}
+	}
 
 	//打开云衣橱的头部
 	function openFrame1Header(seasonIndex,sizeIndex){
@@ -343,6 +363,7 @@
 			execGoIndex();
 		});
 
+		messagesCount = $api.getStorage('messagesCount') || 0;
 		messages();
 		var tab = new auiTab({
 			element: document.getElementById("tab"),
@@ -566,7 +587,7 @@
 		}
 
 		if(index == 0){
-//			messages();
+			messages();
 		}else if(index == 1){
 			if(isOpenFrame1Header){
 				showFrame1Header();
@@ -580,6 +601,10 @@
 			});
 		}else if(index == 3){
 			//当footer_tab_4未打开时候会报错
+//			api.execScript({
+//				frameName: "footer_tab_4",
+//				script: 'updateMessages("' + messagesCount + '");'
+//			});
 			openUser();
 			return;
 		}else if(index == 4){
@@ -672,18 +697,74 @@
 			readAt: time
 		});
 		var extra = null;
-		_ajaxData(url, 'post', headers, data, messagesSuccessCallback, null, 0, extra);
+		_ajaxData(url, 'post', headers, data, messagesSuccessCallback, messagesErrorCallback, 0, extra);
 	}
 
 	function messagesSuccessCallback(ret) {
-		if (ret.statusCode == '200' && ret.count) {
-			api.execScript({
-				frameName:'footer',
-				script:'showMyDot();'
-			});
+		if (ret.statusCode == '200') {
+			if (messagesCount !== ret.count) {
+				updateMessages(ret.count);
+			}
+		} else {
+			toastMsg(ret.msg);
 		}
 	}
 
+	function messagesErrorCallback(err) {
+		toastMsg(err.msg);
+	}
+
+	function updateMessages(count) {
+		var messagesCountDom = $api.byId('messagesCount');
+		var isShow = $api.hasCls(messagesCountDom, "aui-hide");
+		if ((!count || count == 0) && !isShow) {
+			$api.addCls(messagesCountDom, 'aui-hide');
+		} else if (count > 0 && count !== messagesCount && !isShow) {
+			$api.html(messagesCountDom, count);
+		} else if (count > 0 && count !== messagesCount && isShow) {
+			$api.removeCls(messagesCountDom, 'aui-hide');
+			$api.html(messagesCountDom, count);
+		}
+		messagesCount = count;
+	}
+
+	function openMsg() {
+		if (!isLogin()) {
+			goLogin(CONSTANT.INDEX);
+			return;
+		}
+		sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+			name:'我的信息'
+		});
+		var name = 'msg';
+		var title = '我的信息';
+		var leftIcon = 'duola-iconfont icon-left';
+		var leftCallback = 'execCloseSlefWin';
+		var leftNav = setNavData(leftIcon,null,leftCallback);
+		var border = false;
+		var params = {};
+		params.nav= setNav(leftNav,border);
+		var from = {
+			winName:api.winName,
+			frameName:api.frameName
+		};
+		var url = 'header_new.html';
+		var animation = {
+			type:"push",                //动画类型（详见动画类型常量）
+			subType:"from_right",       //动画子类型（详见动画子类型常量）
+			duration:300                //动画过渡时间，默认300毫秒
+		};
+		var page = 'msg.html';
+		openNewWinFrame(name,title,params,from,url,animation,page);
+	}
+
+	//点击返回图标异步执行关闭窗口
+	function execCloseSlefWin(extra,winName,value){
+		api.closeWin({
+			name: winName
+		});
+		updateMessages(0);
+	}
 
 	//ping++付款后异步调用关闭
 	function WinWallet(type){
@@ -725,92 +806,18 @@
 		}
 	}
 
-	//点击搜索
-	function goSearch(){
-		sendEventUmeng(CONSTANT.UMENGEVENT.SEARCH_BTN, {from: '云衣橱'});
-		var gStyle = $api.getStorage('gStyle',gStyle);
-		if(gStyle){
-			openSearchFrame(gStyle);
-		}else{
-			getStyles();
-		}
-	}
-
-	//换frame1header的背景色
-	function execHeader1Bg(bgColor){
-		$api.css($api.byId('header1'),'border-bottom: 1px solid ' + bgColor +';background : '+bgColor);
-	}
-
-
 	//打开独立设计搜索页面
 	function openDesignSearch(){
 		sendEventUmeng(CONSTANT.UMENGEVENT.SEARCH_BTN,{from:'独立设计'});
-		var gStyle = $api.getStorage('gStyle',gStyle);
-		if(gStyle){
-			openSearchFrame(gStyle,'isDesign');
-		}else{
-			getStyles('openDesignSearch');
-		}
-	}
-
-	//首页打开搜索页面
-	function goSearchIndex() {
-		sendEventUmeng(CONSTANT.UMENGEVENT.SEARCH_BTN, {from: '首页'});
-		var gStyle = $api.getStorage('gStyle',gStyle);
-		if(gStyle){
-			openSearchFrame(gStyle);
-		}else{
-			getStyles('goSearchIndex');
-		}
-	}
-
-	//打开搜索frame
-	function openSearchFrame(gStyle,flag){
-		var name = 'winSearch_new2';
-		var page = './html/winSearch_new2.html';
-		var bounces=false;
-		var rect ={
-			x: 0,
-			y: 0,
-			w: 'auto',
-			h: 'auto'
-		};
-		var param = {
-			gStyle: gStyle
-		};
-		if(flag){
-			param[flag] = flag;
-		}
-		api.openFrame({
-			name: name,
-			url: page,
-			rect: rect,
-			bounces: bounces,
-			allowEdit: true,
-			pageParam:setFrame(bounces,param),
-			softInputMode:'resize',
-			vScrollBarEnabled: false,
-			animation:{type:'fade'},
-			hScrollBarEnabled: false
-		});
-	}
-
-	//缓存衣服风格
-	function getStyles(flag){
 		var url = serviceNew + 'cloudCloset/category';
 		var headers = _getAjaxHeaders(false, true);
 		var data = _getAjaxData({
 			"position": "sidebar"
 		});
-		var extra = flag;
-		_ajaxData(url, 'post', headers, data, getStylesSuccessCallback, getStylesErrorCallback, 0, extra);
+		var extra = 'openDesignSearch';
+		_ajaxData(url, 'post', headers, data, getLevelsSuccessCallback, getLevelsErrorCallback, 0, extra);
 	}
-
-	function getStylesErrorCallback(err) {
-		toastMsg(err.msg);
-	}
-
-	function getStylesSuccessCallback(ret,extra){
+	function getLevelsSuccessCallback(ret,extra) {
 		if (ret.statusCode == 200 && ret.category) {
 			var gStyle = null;
 			for (var i in ret.category.list) {
@@ -821,12 +828,120 @@
 					break;
 				}
 			}
-			$api.setStorage('gStyle',gStyle);
-			if(extra == 'openDesignSearch'){
-				openSearchFrame(gStyle,'isDesign');
-			}else{
-				openSearchFrame(gStyle);
+			if(gStyle){
+				if(extra === 'goSearchIndex'){
+//					var name = 'winSearch_new';
+//					var title = '搜索';
+//					var leftIcon = 'duola-iconfont icon-left';
+//					var leftText = '';
+//					var leftCallback = 'execCloseSearch';
+//					var leftExtra = '';
+//					var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+//					var border = false;
+//					var bounces = false;
+//					var allowEdit = true;
+//					var params = {};
+//					params.nav = setNav(leftNav, border);
+//					params.frame = setFrame(bounces, {
+//						gStyle: gStyle
+//					}, allowEdit);
+//					var from = {
+//						winName: api.winName,
+//						frameName: api.frameName
+//					};
+//					var url = 'header_new.html';
+//					var animation = '';
+//					var page = 'winSearch_new.html';
+//					openNewWinFrame(name, title, params, from, url, animation, page);
+//				}else if(extra == 'openDesignSearch'){
+//					var name = 'winSearch_new';
+//					var title = '搜索';
+//					var leftIcon = 'duola-iconfont icon-left';
+//					var leftNav = setNavData(leftIcon);
+//					var border = false;
+//					var bounces = false;
+//					var allowEdit = true;
+//					var params = {};
+//					params.nav = setNav(leftNav, border);
+//					params.frame = setFrame(bounces, {
+//						gStyle: gStyle,
+//						isDesign:'isDesign'
+//					},allowEdit);
+//					var from = {
+//						winName: api.winName,
+//						frameName: api.frameName
+//					};
+//					var url = 'header_web.html';
+//					var page = 'winSearch_new.html';
+//					openNewWinFrame(name, title, params, from, url, null, page);
+
+					console.log('11111111111111111111111111111');
+					var name = 'winSearch_new2';
+					var page = './html/winSearch_new2.html';
+					var bounces=false;
+					var rect ={
+						x: 0,
+						y: 0,
+						w: 'auto',
+						h: 'auto'
+					};
+					var params = {};
+					params.frame = setFrame(bounces, {
+						gStyle: gStyle
+					});
+					api.openFrame({
+						name: name,
+						url: page,
+						rect: rect,
+						bounces: bounces,
+						allowEdit: true,
+						pageParam:{
+							data:params
+						},
+						softInputMode:'resize',
+						vScrollBarEnabled: false,
+						hScrollBarEnabled: false
+					});
+				}
 			}
+		} else {
+			toastMsg(ret.msg);
 		}
+	}
+	function getLevelsErrorCallback(err) {
+		toastMsg(err.msg);
+	}
+
+	//点击搜索
+	function goSearch(){
+		api.execScript({
+			frameName:'footer_tab_2',
+			script:'goSearch();'
+		});
+	}
+
+	//换frame1header的背景色
+	function execHeader1Bg(bgColor){
+		$api.css($api.byId('header1'),'border-bottom: 1px solid ' + bgColor +';background : '+bgColor);
+	}
+
+
+	//打开搜索页面
+	function goSearchIndex() {
+		sendEventUmeng(CONSTANT.UMENGEVENT.SEARCH_BTN, {from: '首页'});
+		var url = serviceNew + 'cloudCloset/category';
+		var headers = _getAjaxHeaders(false, true);
+		var data = _getAjaxData({
+			"position": "sidebar"
+		});
+		var extra = 'goSearchIndex';
+		_ajaxData(url, 'post', headers, data, getLevelsSuccessCallback, getLevelsErrorCallback, 0, extra);
+	}
+
+	//在搜索页面点击返回关闭搜索页面win
+	function execCloseSearch(extra, winName, value) {
+		api.closeWin({
+			name: winName
+		});
 	}
 </script>
