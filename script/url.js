@@ -1,10 +1,10 @@
 //接口正式的
-//var serviceUser = "http://restful.duolayimeng.com/app/user/";
-//var serviceNew = "http://restful.duolayimeng.com/app/";
+var serviceUser = "http://restful.duolayimeng.com/app/user/";
+var serviceNew = "http://restful.duolayimeng.com/app/";
 
 //测试地址
-var serviceNew  = "http://101.201.102.179:10000/app/";
-var serviceUser = "http://101.201.102.179:10000/app/user/";
+//var serviceNew  = "http://101.201.102.179:10000/app/";
+//var serviceUser = "http://101.201.102.179:10000/app/user/";
 
 //jim测试
 //var serviceNew = "http://192.168.4.108:9000/app/";

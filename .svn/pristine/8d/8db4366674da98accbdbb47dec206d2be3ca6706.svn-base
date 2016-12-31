@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>交押金</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            background: #ffffff;
+            font-family: SourceHanSansCN-Regular;
+        }
+
+        #app {
+            text-align: center;
+            padding-top: 2.2rem;
+        }
+
+        #app .title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            line-height: 1.6rem;
+            color: #1B1B1B;
+        }
+
+        #app .content {
+            font-size: 0.6rem;
+            font-weight: 400;
+            line-height: 1.2rem;
+            color: #8F8F8F;
+            padding-bottom: 2.2rem;
+        }
+
+        #app .aui-btn-warning {
+            width: 90%;
+            background: #FF6100 !important;;
+            border-radius: 4px;
+            height: 2.3rem;
+            line-height: 1.8rem;
+            font-size: 0.9rem;
+        }
+
+        #app .adequate {
+            background: #A6A6A6 !important;;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <h1 class="title" v-if="deposit === 0">押金充足</h1>
+    <h1 class="title" v-if="deposit > 0">押金不足，还需充押金￥{{deposit}}元</h1>
+    <p class="content">根据你当前的服务需押金￥{{needDeposit}}元，你现有押金￥{{userDeposit}}元</p>
+    <!--交{{deposit}}-->
+    <!--你有{{userDeposit}}，需要{{needDeposit}}-->
+    <p>
+    <div class="aui-btn aui-btn-warning" tapmode onclick="vm.change()" :class="{'adequate': deposit === 0}">立即充值</div>
+    </p>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/pingpp.js"></script>
+<script type="text/javascript">
+    var count, vm, dueTime0, dueTime;
+    apiready = function () {
+
+        vm.fnInit();
+        api.parseTapmode();
+    };
+    vm = new Vue({
+        el: '#app',
+        data: {
+            'deposit': 0,
+            'needDeposit': 0,
+            'userDeposit': 0
+        },
+        methods: {
+            fnInit: function () {
+                _loadingShow();
+                var self = this;
+                var body = {"bags": Number(1)};
+                var url = serviceUser + 'service/pay/query/payDeposit';
+                var headers = _getAjaxHeaders(true, true);
+                var data = _getAjaxData(body);
+                var extra = null;
+                _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                    _loadingHide();
+                    if (ret.statusCode == '200') {
+                        self.deposit = ret.deposit;
+                        self.needDeposit = ret.needDeposit;
+                        self.userDeposit = ret.userDeposit;
+                    } else if (ret.statusCode == '10104') {
+                        goLogin('no', "../winLogin.html");
+                    } else {
+                        toastMsg(ret.msg);
+                    }
+                }, function (err, extra) {
+                    toastMsg(err.msg);
+                    _loadingHide();
+                }, 0, extra);
+            },
+            change: function () {
+                var self = this;
+                if (self.deposit === 0) {
+                    return;
+                }
+                var name = 'buyClothes_mask';
+                var page = '../buyClothes_mask.html';
+                var rect = {
+                    x: 0,
+                    y: 0,
+                    w: 'auto',
+                    h: 'auto'
+                };
+                var bounces = false;
+                var data = {frameName: "userDepositFrame"};
+                openNewFrame(name, page, bounces, rect, data);
+
+            },
+            pay: function (pay) {
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '正在支付···',
+                    text: '请稍候'
+                });
+                var self = this;
+                var body = {
+                    "bags": 1,
+                    channel: pay,
+                    amountFront: self.deposit,
+                    coupons: [],
+                    "duration": 1
+                };
+                var url = serviceUser + 'service/pay/start/payDeposit';
+                var headers = _getAjaxHeaders(true, true);
+                var data = _getAjaxData(body);
+                var extra = null;
+                _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                    _loadingHide();
+                    if (ret.statusCode == '200') {
+                        ping(ret.charge);
+                    } else if (ret.statusCode == '10104') {
+                        goLogin('no', "../winLogin.html");
+                    } else {
+                        toastMsg(ret.msg);
+                    }
+                }, function (err, extra) {
+                    _loadingHide();
+                    toastMsg(err.msg);
+                }, 0, extra);
+            }
+        }
+
+    });
+
+    //异步关闭遮罩层调用
+    function execClosePayMask(frameName, index) {
+        index = parseInt(index);
+        if (!isNaN(index)) {
+            if (index == 1) {
+//                支付宝支付方法
+                vm.pay('alipay');
+            } else if (index == 2) {
+//                微信支付方法
+                vm.pay('wx');
+            }
+        }
+        api.closeFrame({
+            name: frameName
+        });
+    }
+    //    支付完成后调用check_pay接口验证
+    function check() {
+        var url = serviceUser + 'service/check/payment';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url, 'post', headers, data, checkSuccessCallback, checkErrorCallback, 0, extra);
+    }
+    function checkSuccessCallback(ret, extra) {
+        if (ret.statusCode == '200') {
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+    function checkErrorCallback(err, extra) {
+        toastMsg(err.msg);
+    }
+
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra, winName, value) {
+        api.closeWin({
+            name: winName
+        });
+    }
+</script>
+</html>
