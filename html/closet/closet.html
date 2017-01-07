@@ -365,40 +365,40 @@
         });
 
         //打开新手引导
-        var guideValue =  api.getPrefs({
-                sync: true,
-                key: 'guideKey'
-            }) || {};
-        guideValue=typeof (guideValue)=='string'?JSON.parse(guideValue):guideValue;
-        if(!isDefine(guideValue.three)){
-            api.openFrame({
-                name: 'new_user_guide',
-                url: '../new_user_guide.html',
-                rect: {
-                    x: 0,
-                    y: 0,
-                    w: 'auto',
-                    h: 'auto'
-                },
-                pageParam: {
-                    guideIndex:2
-                },
-                bounces: false,
-                vScrollBarEnabled: false,
-                hScrollBarEnabled: false
-            });
-            guideValue.three='yes';
-            api.setPrefs({
-                key: 'guideKey',
-                value: guideValue
-            });
-            setTimeout(function(){
-                api.bringFrameToFront({
-                    from: 'new_user_guide',
-                    to: 'closet_frame'
-                });
-            },300);
-        }
+//        var guideValue =  api.getPrefs({
+//                sync: true,
+//                key: 'guideKey'
+//            }) || {};
+//        guideValue=typeof (guideValue)=='string'?JSON.parse(guideValue):guideValue;
+//        if(!isDefine(guideValue.three)){
+//            api.openFrame({
+//                name: 'new_user_guide',
+//                url: '../new_user_guide.html',
+//                rect: {
+//                    x: 0,
+//                    y: 0,
+//                    w: 'auto',
+//                    h: 'auto'
+//                },
+//                pageParam: {
+//                    guideIndex:2
+//                },
+//                bounces: false,
+//                vScrollBarEnabled: false,
+//                hScrollBarEnabled: false
+//            });
+//            guideValue.three='yes';
+//            api.setPrefs({
+//                key: 'guideKey',
+//                value: guideValue
+//            });
+//            setTimeout(function(){
+//                api.bringFrameToFront({
+//                    from: 'new_user_guide',
+//                    to: 'closet_frame'
+//                });
+//            },300);
+//        }
 
     }
     function newInit(){

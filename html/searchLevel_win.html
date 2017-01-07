@@ -197,36 +197,36 @@
             h:'auto'
         };
         openNewFrame(name,page,bounces,rect,frameData);
-
-        var guideValue =  api.getPrefs({
-                sync: true,
-                key: 'guideKey'
-            }) || {};
-        guideValue=typeof (guideValue)=='string'?JSON.parse(guideValue):guideValue;
-        if(!isDefine(guideValue.result)){
-            api.openFrame({
-                name: 'new_user_guide',
-                url: 'new_user_guide.html',
-                rect: {
-                    x: 0,
-                    y: 0,
-                    w: 'auto',
-                    h: 'auto'
-                },
-                pageParam: {
-                    name: 'test'
-                },
-                bounces: false,
-                bgColor: 'rgba(0,0,0,0.3)',
-                vScrollBarEnabled: false,
-                hScrollBarEnabled: false
-            });
-            guideValue.result='yes';
-            api.setPrefs({
-                key: 'guideKey',
-                value: guideValue
-            });
-        }
+//打开新手图片引导
+//        var guideValue =  api.getPrefs({
+//                sync: true,
+//                key: 'guideKey'
+//            }) || {};
+//        guideValue=typeof (guideValue)=='string'?JSON.parse(guideValue):guideValue;
+//        if(!isDefine(guideValue.result)){
+//            api.openFrame({
+//                name: 'new_user_guide',
+//                url: 'new_user_guide.html',
+//                rect: {
+//                    x: 0,
+//                    y: 0,
+//                    w: 'auto',
+//                    h: 'auto'
+//                },
+//                pageParam: {
+//                    name: 'test'
+//                },
+//                bounces: false,
+//                bgColor: 'rgba(0,0,0,0.3)',
+//                vScrollBarEnabled: false,
+//                hScrollBarEnabled: false
+//            });
+//            guideValue.result='yes';
+//            api.setPrefs({
+//                key: 'guideKey',
+//                value: guideValue
+//            });
+//        }
     }
 
     //侧滑组件季节点击

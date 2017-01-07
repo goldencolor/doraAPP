@@ -270,9 +270,7 @@
     //数据埋点
     function buriedPoint(star,content){
         setLogGrade(clothesId,star);
-        if(!!content){
-            setLogComment(clothesId,content);
-        }
+        setLogComment(clothesId,content);
     }
 
     //    提交评论内容

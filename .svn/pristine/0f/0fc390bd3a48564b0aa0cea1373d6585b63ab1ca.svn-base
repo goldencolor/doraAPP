@@ -350,7 +350,7 @@ function isBindPhone(tel){
 
 //打开登录窗口
 function goLogin(from,url,data){
-	var name = 'loginBetter';
+	var name = 'login_new';
 	var title = "";
 	data = data || {};
 	url = url ||'winLogin.html';
@@ -665,7 +665,7 @@ function closeThisWin(){
 //跳转登录页面
 function toLogin(){
 	api.openWin({
-	    name: 'loginBetter',
+	    name: 'login_new',
 	    url: 'winLogin.html',
 	    animation: {
 		    type:"none",               
@@ -675,7 +675,7 @@ function toLogin(){
 		softInputMode:'resize',
 	    pageParam: {
 	        title: '用户登录',
-	        page: 'loginBetter',
+	        page: 'login_new',
 	        bounces: false,
 	        data: ''
 	    }

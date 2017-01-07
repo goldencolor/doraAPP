@@ -1,167 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-    <title>用户登录</title>
+    <meta name="author" content="tigerHee">
+    <title>新用户登录</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
     <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
     <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
     <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
     <style>
-        html, body,.mainContent,.scaleBg {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
+        .line{
+            height: 1px;
+            background-color: #ddd;
         }
-        
+        .duola-iconfont{
+            font-size: 2rem;
+        }
         .mainContent{
-            padding: 3.5rem 0.95rem 0;
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
-        .inputBox{
-            padding: 0;
-            margin-top: 2rem;
-            overflow: hidden;
-            border-bottom: 1px solid #F8F8F8;
+        .mainContent .loginBtnBox{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
         }
-        .inputBox label{
-            display: block;
-            height: 2.5rem;
-            line-height: 2.5rem;
-            background-color: rgba(255,255,255,0.3);
+        .iconBox{
+            height: 5rem;
         }
-        .inputBox span{
-            color: #000000 !important;
-            font-size: 0.8rem;
+        .iconBox .item{
+            margin: 0 0.25rem;
         }
-        .pre-span{
-            font-size: 1.2rem !important;
-        }
-        .inputBox input{
-            background-color: rgba(255,255,255,0.3);
-        }
-        .inputBox input{
-            height: 2.5rem;
-            font-family: SourceHanSansCN-Normal,ArialMT;
-            font-size: 1rem;
-            line-height: 1rem;
-            margin: 0;
-            border-radius: 0;
-            border: none;
-            color: #454545;
-        }
-        ::-webkit-input-placeholder {
-            font-size: 1rem;
-            line-height: 1rem;
-            color: #BBBBBB;
-            padding-top: 0.1rem;
-        }
-        .afterBtn{
-            margin-right: 1rem;
-        }
-        .inputBox span.deal{
-            color: #C9C9C9 !important;
-            /*margin-right: 0.5rem;*/
-        }
-        .loginBtn{
-            border: none;
-            background-color: #FF6100;
-            border-radius: 0.2rem;
-            height: 2.5rem;
-            line-height: 2.5rem;
-            margin-top: 3.5rem;
-            font-family: SourceHanSansCN-Normal;
-            font-size: 1rem;
-            overflow: hidden;
-            text-align: center;
-            color: #FFFFFF;
-        }
-        .loginBtn.active{
-            background-color: #FF6100;
-        }
-        .otherBtn{
-            font-family: SourceHanSansCN-Normal;
-            font-size: 0.7rem;
-            margin-top: 1rem;
-            /*color: #000000;*/
-            /*padding-left: 6.85rem;*/
-            text-align: right;
-            color: #363636;
-        }
-
-        .weixinBox {
-            /*text-align: center;*/
-            font-family: SourceHanSansCN-Normal;
-            font-size: 0.8rem;
-            color: #000000;
-            /*margin-top: 3.5rem;*/
-        }
-        /*新版第三方登录样式*/
-        .thirdBox{
-            margin-top: 4.5rem;
-        }
-        .thirdBox .title{
-            font-family: SourceHanSansCN-Normal;
-            font-size: 0.7rem;
-            line-height: 0.8rem;
-            color: #BBBBBB;
-            text-align: center;
-        }
-        .thirdBox .iconBox{
-            height: 2rem;
-            margin-top: 0.9rem;
-        }
-        .thirdBox .iconBox .item{
-            margin: 0 0.75rem;
-        }
-        .thirdBox .iconBox .item span{
-            font-size: 2rem !important;
-            color: #BBBBBB !important;
-        }
+        /*test*/
+        /*.weiChat{*/
+            /*font-size: 2.5rem;*/
+        /*}*/
     </style>
 </head>
 <body>
-
 <div class="mainContent">
-    <div class="inputBox flex  flex-vertical-center">
-        <label class="phoneLabel" for="phone"><span class="pre-span duola-iconfont icon-guide"></span></label>
-        <input id="phone" tapmode oninput="inputShow('phone')" type="tel" class="aui-input flex-1" placeholder="请输入手机号" style="display: block"/>
-        <span tapmode onclick="clearVal(this)" class="deal aui-hide duola-iconfont icon-delete2" style="display: block;"></span>
-    </div>
-    <div class="inputBox flex  flex-vertical-center">
-        <label class="pwdLabel" for="pwd"><span class="pre-span duola-iconfont icon-account"></span></label>
-        <input id="pwd" tapmode oninput="inputShow('pwd')" type="password" class="aui-input flex-1" placeholder="请输入密码" style="display: block;"/>
-        <span tapmode onclick="clearVal(this)" class="deal aui-hide afterBtn duola-iconfont icon-delete2" style="display: block;"></span>
-        <span tapmode onclick="changeType(this)" style="font-size: 1rem" class="deal aui-hide duola-iconfont icon-yincang1" style="display: block;"></span>
-    </div>
-    <div class="otherBtn"><span tapmode onclick="openForget();">密码忘了？</span></div>
-    <div id="loginBtn" class="loginBtn" tapmode onclick="login();">立即登录</div>
-
-    <!--<div class="my-btn-forget" tapmode onclick="forget();">-->
-        <!--<span class="aui-iconfont aui-icon-unlock"> 忘记密码</span>-->
-    <!--</div>-->
-    <!--<div class="otherBtn"><span tapmode onclick="openForget();">忘记密码</span> >></div>-->
-    <!--<div class="weixinBox flex flex-center" id="showWeixin" tapmode onclick="wx_login()" style="visibility:hidden;">-->
-        <!--<span style="font-size: 1.2rem;color: #00AF4C;margin-right: 0.6rem;display: block" class="duola-iconfont icon-weixin"></span>第三方登录-->
-    <!--</div>-->
-    <div class="thirdBox">
-    <div class="title" id="thirdTitle" style="display:none;">第三方登录</div>
-    <div class="iconBox flex flex-center">
-        <div class="item" id="showWeixin" tapmode onclick="wx_login()" style="display:none;">
-            <span class="duola-iconfont icon-weixin1"></span>
-        </div>
-        <div id="showQQ" class="item" tapmode onclick="qqLogin()" style="display:none;">
-            <span class="duola-iconfont icon-QQ"></span>
-        </div>
-        <div id="showWeiBo" class="item" tapmode onclick="weiboLogin()" style="display:none;">
-            <span class="duola-iconfont icon-xinlang"></span>
+    <div class="loginBtnBox">
+        <div class="flex flex-center"><div class="line flex-1"></div>选择登录方式<div class="line flex-1"></div></div>
+        <div class="iconBox flex flex-center">
+            <div id="showWeixin" class="item" tapmode onclick="wx_login()" >
+                <span id="weChat" class="weiChat duola-iconfont icon-weixin1"></span>
+            </div>
+            <div id="showQQ" class="item" tapmode onclick="qqLogin()" >
+                <span id="qq" class="duola-iconfont icon-QQ"></span>
+            </div>
+            <div id="showWeiBo" class="item" tapmode onclick="weiboLogin()" >
+                <span id="weibo" class="duola-iconfont icon-xinlang"></span>
+            </div>
+            <div id="accountBtn" class="item" tapmode onclick="" >
+                <span id="account" class="duola-iconfont icon-guide"></span>
+            </div>
         </div>
     </div>
 </div>
-</div>
-</body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/sha_256.js"></script>
 <script type="text/javascript" src="../script/url.js"></script>
@@ -169,11 +68,9 @@
 <script type="text/javascript" src="../script/umeng_sdk.js"></script>
 <script type="text/javascript" src="../script/qq_sdk.js"></script>
 <script type="text/javascript" src="../script/weibo_sdk.js"></script>
-<script type="text/javascript">
-    var wx;
+<script>
     var accessToken;
     var openId;
-    var is_err = 1;
     apiready = function() {
         wx = api.require('wx');
         isInstalledWx(function(isIntalled,extra){
@@ -191,13 +88,20 @@
                 showWeiBo();
             }
         });
+        var loginTypeVal= api.getPrefs({
+            sync: true,
+            key: 'loginType'
+        });
+        var specialEl=$api.byId(loginTypeVal);
+        $api.css(specialEl,'font-size:2.5rem;color:#ff6100');
         api.parseTapmode();
     };
 
-    function showTitle(){
-        var thirdTitleEl = $api.byId('thirdTitle');
-        if(thirdTitleEl && $api.cssVal(thirdTitleEl,'display')=='none'){
-            $api.css(thirdTitleEl,'display:block');
+    //显示微信登录
+    function showWexin(){
+        var showWexinEl = $api.byId('showWeixin');
+        if(showWexinEl){
+            $api.css(showWexinEl,'display:block');
         }
     }
 
@@ -205,7 +109,6 @@
         var showQQEl = $api.byId('showQQ');
         if(showQQEl){
             $api.css(showQQEl,'display:block');
-            showTitle();
         }
     }
 
@@ -213,10 +116,10 @@
         var showWeiBoEl = $api.byId('showWeiBo');
         if(showWeiBoEl){
             $api.css(showWeiBoEl,'display:block');
-            showTitle();
         }
     }
-//    qq登录
+
+    //    qq登录
     function qqLogin(){
         sendEventUmeng(CONSTANT.UMENGEVENT.LOGIN,{
             from:'qq'
@@ -224,16 +127,18 @@
         qq_login(login_third,'qq');
     }
 
-//  微博登录
+    //  微博登录
     function weiboLogin(){
         sendEventUmeng(CONSTANT.UMENGEVENT.LOGIN,{
             from:'weibo'
         });
         weibo_login(login_third,'weibo');
     }
-//    第三方登录
+
+    //    第三方登录
     function login_third(ret,type){
         _loadingShow();
+        setLoginPre(type);
         var body={};
         if(type=='qq'){
             body = {
@@ -268,112 +173,27 @@
                 token: String(ret.token),
                 userId: String(ret.userId)
             };
+        }else if(type=='weChat'){
+            body={
+                accessToken : String(accessToken),
+                refreshToken : String(refreshToken),
+                unionid : String(ret.unionid),
+                openid : String(openId),
+                nickname : String(ret.nickname),
+                sex : String(ret.sex),
+                language : String(ret.language),
+                city : String(ret.city),
+                province : String(ret.province),
+                country : String(ret.country),
+                headimgurl : String(ret.headimgurl),
+                deviceId: getDeviceId()
+            };
         }
         var url = serviceUser + 'login/third_party/'+type;
         var headers = _getAjaxHeaders(false, true);
         var data = _getAjaxData(body);
         var extra=type;
         _ajaxData(url, 'post', headers, data, loginSuccessCallback, loginErrorCallback, 0, extra);
-    }
-
-//    输入时判断按钮是否显示
-    function inputShow(id){
-        var el=$api.byId(id);
-        if(id=='phone'){
-            var phoneVal=$api.val(el);
-            var dealEl=$api.domAll($api.closest(el,'.inputBox'),'.deal');
-            if(!!phoneVal){
-                for(var i=0;i<dealEl.length;i++){
-                    if($api.hasCls(dealEl[i],'aui-hide')){
-                        $api.removeCls(dealEl[i],'aui-hide');
-                    }
-                }
-            }else{
-                for(var i=0;i<dealEl.length;i++){
-                    if(!$api.hasCls(dealEl[i],'aui-hide')){
-                        $api.addCls(dealEl[i],'aui-hide');
-                    }
-                }
-            }
-        }else if(id=='pwd'){
-            var pwdVal=$api.val(el);
-            var dealEl=$api.domAll($api.closest(el,'.inputBox'),'.deal');
-            if(!!pwdVal){
-                for(var i=0;i<dealEl.length;i++){
-                    if($api.hasCls(dealEl[i],'aui-hide')){
-                        $api.removeCls(dealEl[i],'aui-hide');
-                    }
-                }
-            }else{
-                for(var i=0;i<dealEl.length;i++){
-                    if(!$api.hasCls(dealEl[i],'aui-hide')){
-                        $api.addCls(dealEl[i],'aui-hide');
-                    }
-                }
-            }
-        }
-//        checkLoginBtn();
-    }
-
-    function clearVal(el){
-        var inputEl=$api.dom($api.closest(el,'.inputBox'),'input');
-        $api.val(inputEl,'');
-        $api.addCls(el,'aui-hide');
-//        console.log($api.next(el));
-        $api.next(el)&&$api.addCls($api.next(el),'aui-hide');
-        if($api.next(el)&&$api.hasCls($api.next(el),'icon-yiyincang')){
-            $api.addCls($api.next(el),'icon-yincang1');
-            $api.removeCls($api.next(el),'icon-yiyincang');
-        }
-        if($api.attr(inputEl,'type')=='text'){
-            $api.attr(inputEl,'type','password');
-        }
-//        checkLoginBtn();
-    }
-
-    function changeType(el){
-        var inputEl=$api.dom($api.closest(el,'.inputBox'),'input');
-        var typeVal=$api.attr(inputEl,'type');
-        if(typeVal=='password'){
-            $api.attr(inputEl,'type','text');
-            $api.removeCls(el,'icon-yincang1');
-            $api.addCls(el,'icon-yiyincang');
-        }else if(typeVal=='text'){
-            $api.attr(inputEl,'type','password');
-            $api.addCls(el,'icon-yincang1');
-            $api.removeCls(el,'icon-yiyincang');
-        }
-    }
-
-    function checkLoginBtn(){
-        var telVal = $api.val($api.byId('phone'));
-        var passwordVal = $api.val($api.byId('pwd'));
-        var loginBtnEl=$api.byId('loginBtn');
-        if(!!telVal && !!passwordVal && !$api.hasCls(loginBtnEl,'active')){
-            $api.addCls(loginBtnEl,'active');
-        }else if((!telVal || !passwordVal)&& $api.hasCls(loginBtnEl,'active')){
-            $api.removeCls(loginBtnEl,'active');
-        }
-    }
-
-    //显示微信登录
-    function showWexin(){
-        var showWexinEl = $api.byId('showWeixin');
-        if(showWexinEl){
-            $api.css(showWexinEl,'display:block');
-            showTitle();
-        }
-    }
-
-    function loginAbout() {
-        api.openWin({
-            name : 'loginAbout',
-            url : 'win.html',
-            pageParam : {
-                page : 'loginAbout',
-                title : '服务条款'
-            }
-        });
     }
 
     function loginSuccessCallback(ret,extra){
@@ -497,100 +317,6 @@
         toastMsg(err.msg);
     }
 
-    function login() {
-        sendEventUmeng(CONSTANT.UMENGEVENT.LOGIN,{
-            from:'account'
-        });
-        var tel = $api.val($api.byId('phone'));
-        var password = $api.val($api.byId('pwd'));
-        if (tel == '' || tel.length != 11) {
-            api.toast({
-                msg : '请正确填写手机号',
-                duration : 3000,
-                location : 'bottom'
-            });
-            return;
-        } else if (password == '') {
-            api.toast({
-                msg : '请输入密码',
-                duration : 3000,
-                location : 'bottom'
-            });
-            return;
-        }
-        _loadingShow();
-        password = sha256_vm_test(password);
-        var url = serviceNew + 'user/login';
-        var headers = _getAjaxHeaders(false,true);
-        var data = _getAjaxData({
-            username : String(tel),
-            digest : String(password),
-            algorithm:'sha-256',
-            deviceId: getDeviceId()
-        });
-        var extra = null;
-        _ajaxData(url,'post',headers,data,loginSuccessCallback,loginErrorCallback,0,extra);
-    }
-
-    function closeWindow() {
-        onPageEndUmeng(CONSTANT.PAGE.LOGIN);
-        api.closeWin();
-    }
-
-    function openForget() {
-        var name = 'forget';
-        var title = '忘记密码';
-        var leftIcon = 'duola-iconfont icon-left';
-        var leftText = '';
-        var leftExtra = '';
-        var leftCallback = 'execCloseSlefWin';
-        var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
-        var border = true;
-        var bounces = false;
-        var params = {};
-        params.nav= setNav(leftNav,border);
-        params.frame=setFrame(bounces,null,true);
-        var from = {
-            winName:api.winName,
-            frameName:api.frameName
-        };
-        var url = 'header_new.html';
-        var animation = '';
-        var page = 'forget.html';
-        openNewWinFrame(name,title,params,from,url,animation,page);
-    }
-
-//    打开注册页面
-    function openReg(){
-        var name = 'reg';
-        var title = '注册';
-        var leftIcon = 'duola-iconfont icon-left';
-        var leftText = '';
-        var leftExtra = '';
-        var leftCallback = 'execCloseSlefWin';
-        var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
-        var border = true;
-        var bounces = false;
-        var params = {};
-        params.nav= setNav(leftNav,border);
-        params.frame=setFrame(bounces,null,true);
-        var from = {
-            winName:api.winName,
-            frameName:api.frameName
-        };
-        var url = 'header_new.html';
-        var animation = '';
-        var page = 'reg.html';
-        openNewWinFrame(name,title,params,from,url,animation,page);
-    }
-
-    //点击返回图标异步执行关闭窗口
-    function execCloseSlefWin(extra,winName,value){
-        api.closeWin({
-            name: winName
-        });
-    }
-
     function wx_login() {
         api.showProgress({
             style: 'default',
@@ -650,6 +376,7 @@
         }, function(ret, err) {
             if (ret.status) {
                 wechat(ret);
+//                login_third(ret,'weChat');
                 $api.setStorage('wxOpenId', openId);
             } else {
                 console.log(JSON.stringify(err));
@@ -668,7 +395,7 @@
     function refreshToken() {
         wx.refreshToken({
             apiKey : CONSTANT.WEIXINAPPKEY,
-            apiSecret : CONSTANT.WEIXINAPPSECRET,
+            apiSecret : CONSTANT.WEIXINAPPSECRET
         }, function(ret, err) {
             if (ret.status) {
                 getUserInfo(ret.dynamicToken, ret.openId);
@@ -677,11 +404,11 @@
             }
         })
     }
-
     function wechatSuccessCallback(ret,extra){
         _loadingHide();
         if(ret.statusCode=='200'){
             toastMsg('授权成功');
+            setLoginPre('weChat');
             umengLogin(ret.data.id,'wechat');
             setUserStorage(ret);
             //用户头像
@@ -735,5 +462,24 @@
         var extra = null;
         _ajaxData(url,'post',headers,data,wechatSuccessCallback,wechatErrorCallback,0,extra);
     }
+
+    function closeWindow() {
+        onPageEndUmeng(CONSTANT.PAGE.LOGIN);
+        api.execScript({
+            name:"root",
+            script: "initRoot();"
+        });
+        api.closeToWin({
+            name: 'root'
+        });
+    }
+
+    function setLoginPre(val){
+        api.setPrefs({
+            key: 'loginType',
+            value: val
+        });
+    }
 </script>
+</body>
 </html>

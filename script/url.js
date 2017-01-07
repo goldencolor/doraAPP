@@ -10,6 +10,10 @@ var serviceNew = "http://restful.duolayimeng.com/app/";
 //var serviceNew = "http://192.168.4.108:9000/app/";
 //var serviceUser = "http://192.168.4.108:9000/app/user/"; 
 
+//tiger测试
+//var serviceNew = "http://192.168.4.110:9000/app/";
+//var serviceUser = "http://192.168.4.110:9000/app/user/"; 
+
 //衣服图片地
 var colthPath  = "http://img.duolayimeng.com/original/";
 //用户头像

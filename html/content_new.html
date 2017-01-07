@@ -572,9 +572,8 @@
         if(action == CONSTANT.ACTIONINIT){
             loadingShow();
         }
-        console.log(id);
         var url = serviceNew + 'themes/newDetail2/'+id;
-        var headers = _getAjaxHeaders(true,true);
+        var headers = _getAjaxHeaders(false,true);
         var data = _getAjaxData({
             page: currPage,
             pageSize: CONSTANT.PAGESIZE
@@ -619,10 +618,7 @@
         mainContentContainer.innerHTML = '';
         $api.append(mainContentContainer, themeHtml);
         var templates=ret.template;
-        console.log(templates.length);
         for(var i=0;i<templates.length;i++){
-            console.log(i);
-            console.log(getLogStr([templates[i]]));
             switch (templates[i].template) {
                 case 'TEMPA'://小编模版
                     var editorHtml = doTHtml('editor-container-template', templates[i]);
@@ -665,7 +661,7 @@
 
     //测试方法
     function test(){
-        var testData = {};
+        var testData = {"statusCode":200,"_id":"49Ra29P842Z7Wvna4","msg":"OK","template":[{"_id":"ign87hcYi24irHWkyb","content":"文字模板-内容","avatar":"bRiL7EmFrR9TiHpAH/avatar/1478331663257958321","nickname":"你看看","isWxAvatar":"NO","title":"文字模板-标题","template":"TEMPA"},{"_id":"jgrfkbgoSdstvFEKng","template":"TEMPB","image":"QJ4rtHiJ62.jpg"},{"_id":"aL5ZbHSPA9FeCJ4YBR","template":"TEMPC","clothes":[{"size":["M","L"],"_id":"1558103","stockCount":1,"name":"中长款刺绣衬衫","img":"1558103-1.jpg"},{"size":["S","M","L"],"_id":"1559757","stockCount":6,"name":"小香风休闲套装","img":"1559757-1.jpg"}]},{"_id":"GLic4QzCeGpWiFaEDT","template":"TEMPD","clothes":[{"size":["M","L","XL"],"_id":"1559698","stockCount":1,"name":"韩版休闲双排扣风衣","img":"1559698-1.jpg"}]},{"_id":"MQitxykBoL7wvppzRK","template":"TEMPE","clothes":[{"size":["L","XL","M"],"_id":"1557979","stockCount":7,"name":"白色蕾丝衫","img":"1557979-1.jpg"}]},{"_id":"MaGfa7dMWpjKtWfxvx","template":"TEMPF","clothes":[{"size":["XS","S","M","L","XL","J"],"_id":"1533169","stockCount":8,"name":"复古纯色上衣","img":"1533169-1.jpg"},{"size":["M","S"],"_id":"1533798","stockCount":12,"name":"金属圆扣打底上衣","img":"1533798-1.jpg"},{"size":["M","S"],"_id":"1533830","stockCount":19,"name":"修身小V领上衣","img":"1533830-1.jpg"},{"size":["XS","S","M","L","XL"],"_id":"1535511","stockCount":2,"name":"修身高领套头上衣","img":"1535511-1.jpg"}]}],"detailImg":"theme-fenfenda"};
             geThemeHtml(testData);
         var swiper = new Swiper('.swiper-container', {
             slidesPerView: 'auto',

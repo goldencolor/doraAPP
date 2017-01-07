@@ -219,8 +219,20 @@
 			$api.text(mqMsgCountEl,count);
 			$api.removeCls(mqMsgCountEl,'hide');
 		});
-		openFrameGroup();//打开frameGroup
-		otherInit();//其他初始化事件
+		var watchGuideVal =  api.getPrefs({
+			sync: true,
+			key: 'watchGuide'
+		});
+		console.log('===========================================');
+		console.log('===========================================');
+		console.log('===========================================');
+		console.log('===========================================');
+		console.log(watchGuideVal);
+		if(true){
+			openNewGuideWin();
+		}else{
+			initRoot();
+		}
 
 //		var mq = api.require('meiQia');
 //		mq.getUnreadMessageCount(function(ret){
@@ -228,6 +240,33 @@
 //		});
 	};
 
+//	初始化framegrounp数据
+	function initRoot(){
+		openFrameGroup();//打开frameGroup
+		otherInit();//其他初始化事件
+	}
+
+//	打开新手引导窗口
+	function openNewGuideWin(){
+		var name = 'newGuide';
+		var title = '新手引导';
+		var params = {
+
+		};
+		var from = {
+			winName: api.winName,
+			frameName: api.frameName
+		};
+		var url = 'html/newGuide.html';
+		openNewWin(name, title, params, from, url, {
+			type: "fade",                //动画类型（详见动画类型常量）
+			duration: 300                //动画过渡时间，默认300毫秒
+		});
+		api.setPrefs({
+			key: 'watchGuide',
+			value: "yes"
+		});
+	}
 
 	//打开云衣橱的头部
 	function openFrame1Header(seasonIndex,sizeIndex){
@@ -421,7 +460,8 @@
 //			api.removePrefs({
 //				key: 'guideKey'
 //			});
-			openGuide(ret.index);
+//			打开新手引导(图片)
+//			openGuide(ret.index);
 		});
 
 		//打开底部导航
