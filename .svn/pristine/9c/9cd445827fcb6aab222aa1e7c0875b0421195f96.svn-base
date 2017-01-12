@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>选择地址遮罩层</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <style>
+        html, body {
+            background: rgba(0, 0, 0, 0.3);
+
+            font-family: SourceHanSansCN-Regular;
+        }
+        @keyframes containerBg {
+            from{
+                display: none;
+            }
+            to{
+                display: block;
+            }
+        }
+        @-webkit-keyframes containerBg {
+            from{
+                display: none;
+            }
+            to{
+                display: block;
+            }
+        }
+        #app .background-content {
+            width: 100%;
+            height: 50%;
+            animation: containerBg 2500ms linear 0ms;
+            -webkit-animation: containerBg 2500ms linear 0ms;
+        }
+        @keyframes containerBox {
+            from{
+                transform: translateY(10rem);
+                -webkit-transform: translateY(10rem);
+                display: none;
+            }
+            to{
+                transform: translateY(0);
+                -webkit-transform: translateY(0);
+                display: block;
+            }
+        }
+        @-webkit-keyframes containerBox {
+            from{
+                transform: translateY(10rem);
+                -webkit-transform: translateY(10rem);
+                display: none;
+            }
+            to{
+                transform: translateY(0);
+                -webkit-transform: translateY(0);
+                display: block;
+            }
+        }
+        #app{
+            width: 100%;
+            height: 100%;
+            animation: containerBox 500ms ease 0ms;
+            -webkit-animation: containerBox 500ms ease 0ms;
+        }
+        #app .header {
+            position: relative;
+            background: #FFFFFF;height:3rem;line-height: 2.9rem; padding: 0 0.75rem;
+            text-align: center;
+            z-index: 99;
+        }
+        #app .header .title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #424242;
+        }
+        .aui-list:before {
+            height: 0px;
+        }
+        .aui-list:after {
+            height: 0px;
+        }
+        #app .aui-content{
+            position: fixed;
+            left: 0;
+            top: 50%;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+        #app .aui-list {
+            padding: 0rem 1.3rem;
+        }
+        #app .content {
+            border: 1px solid #dddddd;
+            padding: 0.5rem 1rem;
+            text-align: left;
+            height: 4rem;
+            margin: 0.5rem 0px;
+            position: relative;
+        }
+        #app .content .aui-list-item-inner {
+            font-size: 0.7rem;
+            font-weight: 400;
+            line-height: 1.2rem;
+            color: #424242;
+        }
+        #app .content .aui-list-item-text {
+            font-size: 0.6rem;
+        }
+        #app .content.active{
+            border: 1px solid #424242;
+        }
+        #app .content.newly{
+            border: 1px dotted  #424242;
+        }
+        #app .content.newly .aui-list-item-inner{
+            text-align: center;
+            font-size: 0.6rem;
+            color: #979797;
+            line-height: 2rem;
+        }
+        .list-wrapper {
+            position: absolute;
+            left: 0;
+            top: 3rem;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+        .list-wrapper .list-content {
+            position: relative;
+            z-index: 10;
+            background: #fff;
+        }
+       #app .aui-list .design {
+            left: 0;
+             top: 0;
+             position: absolute;
+            font-size: 0.5rem;
+            color: #FFFFFF;
+            background: #000000;
+            min-width: 1.7rem;
+            max-width: 5.5rem;
+            padding: 0 0.2rem;
+            height: 0.7rem;
+            line-height: 0.7rem;
+            text-align: center;
+            border-radius:0 0 0.3rem 0;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="background-content" tapmode onclick="closeMask()">
+    </div>
+    <div class="aui-content">
+        <div class="header" >
+        <span class="title">
+          选择地址
+         </span>
+        </div>
+        <div class="list-wrapper list-wrapper-hook" ref="addressWrapper">
+            <ul class="aui-list aui-select-list list-content ">
+                <li class="aui-select-list content"  v-for="(address, index) in addressList" :class="{'active': selected === index}" @click="selectIng(index, $event)">
+                    <div class="design" v-if="address.defaultAddress ==='YES' ">
+                        默认
+                    </div>
+                    <div class="aui-list-item-inner">
+                        {{address.name}}   {{address.phone}}
+                        <div class="aui-list-item-text aui-ellipsis-1">
+                            {{address.province}}{{address.city}}{{address.county}}{{address.detail}}
+                        </div>
+                    </div>
+
+                </li>
+                <li class="aui-select-list content newly" tapmode onclick="goAddressList()">
+                    <div class="aui-list-item-inner">
+                        +新增地址
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>·
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../script/vue/bscroll.min.js"></script>
+<script type="text/javascript">
+    var lists= [],addressNum = 0 ;
+    apiready = function () {
+        lists = api.pageParam.addList || [];
+        addressNum = api.pageParam.addressNum || 0;
+        vm.init(lists, addressNum);
+    };
+    
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            completed: false, //是否加载了所有数据
+            picScroll: false,
+            selected: 0,
+            addressList: []
+        },
+        created() {
+            var self = this ;
+            if (!self.picScroll) {
+                self.$nextTick(function(){
+                    self.picScroll = new BScroll(self.$refs.addressWrapper,{click: true});
+                })
+            } else {
+                self.picScroll.refresh();
+            }
+        },
+        methods: {
+            init: function (lists, addressList) {
+                this.addressList = lists;
+                this.selected = addressList;
+            },
+            selectIng: function (index, event) {
+                if (!event._constructed) {
+                    // 去掉自带click事件的点击
+                    return;
+                }
+                this.selected = index;
+                setTimeout(function() {
+                    api.execScript({
+                        name: "bagWin",
+                        frameName: "bagFrame",
+                        script: "getChoose('" + index + "');"
+                    });
+                    api.execScript({
+                        frameName: "bespeak",
+                        script: "getChoose('" + index + "');"
+                    });
+                }, 500);
+
+            },
+        }
+    });
+
+    function goAddressList() {
+        var name = 'addr';
+        var title = '我的收货地址';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftCallback = 'execCloseSlefWin';
+        var leftNav = setNavData(leftIcon, null, leftCallback);
+        var rightIcon = 'aui-iconfont aui-icon-plus';
+        var rightCallback = 'execAddAddr';
+        var rightNav = setNavData(rightIcon, null, rightCallback);
+        var border = false;
+        var params = {};
+        params.nav = setNav(leftNav, border, rightNav);
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'header_new.html';
+        var animation = {
+            type: "push",                //动画类型（详见动画类型常量）
+            subType: "from_right",       //动画子类型（详见动画子类型常量）
+            duration: 300                //动画过渡时间，默认300毫秒
+        };
+        var page = 'addr.html';
+        openNewWinFrame(name, title, params, from, url, animation, page);
+    }
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra, winName, value) {
+
+        api.closeWin({
+            name: winName
+        });
+        api.sendEvent({
+            name: 'sendAddress',
+            extra: {
+                key: true
+            }
+        });
+        closeMask();
+    }
+    function closeMask() {
+        api.closeFrame({
+            name: 'address'
+        });
+    }
+
+    function execAddAddr(extra, winName, value) {
+        api.openWin({
+            name: 'Newly',
+            url: 'win.html',
+            pageParam: {
+                bounces: true,
+                title: CONSTANT.PAGE.NEWADDR,
+                page: "Newly",
+                name: "Newly",
+                data: {}
+            }
+        });
+    }
+
+</script>
+</html>

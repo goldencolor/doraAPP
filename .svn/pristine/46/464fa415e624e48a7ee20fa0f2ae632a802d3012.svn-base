@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>验证码登录</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        body:before{
+            content: '';
+            display: table;
+        }
+        .one{
+            margin-top: 2rem;
+            padding-right: 1.25rem;
+        }
+        .two{
+            margin-top: 0.85rem;
+        }
+        div.name{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.8rem;
+            color: #454545;
+            width: 4.5rem;
+            padding-left: 1.35rem;
+        }
+        input.inputStyle{
+            border: 1px solid #D8D8D8;
+            border-radius: 2px;
+            height: 2.25rem;
+            padding-left: 0.5rem;
+        }
+        div.sendCode{
+            background-color: #D8D8D8;
+            border: 1px solid #D8D8D8;
+            border-radius: 2px;
+            width: 3.6rem;
+            height: 2.25rem;
+            line-height: 2.25rem;
+            margin-right: 1.25rem;
+            margin-left: 0.5rem;
+            text-align: center;
+            color: #FFFFFF;
+        }
+        div.three{
+            width: 16.15rem;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            border-radius: 2px;
+            background-color: #454545;
+            color: #FFFFFF;
+            margin: 6.85rem auto 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="one flex flex-vertical-center">
+            <div class="name">手机号</div>
+            <input oninput="checkCodeBtn(this)" id="phone" class="flex-1 inputStyle" type="text" placeholder="请输入手机号"/>
+        </div>
+        <div class="two flex flex-vertical-center">
+            <div class="name">验证码</div>
+            <input oninput="checkLoginBtn()" id="code" class="flex-1 inputStyle" type="text" placeholder="请输入验证码"/>
+            <div id="codeBtn" status="1" class="sendCode" tapmode onclick="verCode()">发送验证</div>
+        </div>
+        <div id="loginBtn" class="three" tapmode onclick="verify()">立即登录</div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/md5.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+    var token;
+    var authKey;
+    var phone;
+    var str;
+    var is_err = 1 ;
+    var key;
+    var canSend=false;
+    var canLogin=false;
+    apiready = function(){
+        sendEventUmeng(CONSTANT.UMENGEVENT.PAGE_ACCOUNT);
+        $api.rmStorage('wait');
+        token = $api.getStorage('token');
+        checkWait();
+        var telVal=$api.getStorage('userPhone')||'';
+        $api.val($api.byId('phone'),telVal);
+        if(telVal){
+            canSend=true;
+            $api.css($api.byId('codeBtn'),'background-color: #FF6100;');
+        }
+    };
+
+    function checkCodeBtn(el){
+        var telVal=el.value;
+        var reg = /^1[34578]\d{9}$/;
+        if (!reg.test(telVal)) {
+            if(canSend){
+                canSend=false;
+            }
+            $api.css($api.byId('codeBtn'),'background-color: #D8D8D8;');
+            return console.log('请输入有效的手机号码');
+        }
+        canSend=true;
+        $api.css($api.byId('codeBtn'),'background-color: #FF6100;');
+        checkLoginBtn();
+    }
+    function checkLoginBtn(){
+        var telVal = $api.val($api.byId('phone'));
+        var codeVal = $api.val($api.byId('code'));
+        if(!!telVal && !!codeVal && !!canSend){
+            canLogin=true;
+            $api.css($api.byId('loginBtn'),'background-color: #FF6100;');
+        }else{
+            canLogin=false;
+            $api.css($api.byId('loginBtn'),'background-color: #454545;');
+        }
+    }
+
+    function verCode(){
+        if(canSend){
+            sendEventUmeng(CONSTANT.UMENGEVENT.BTN_SCODE);
+            phone = $api.val($api.byId('phone'));
+            if(phone.length!=11){
+                api.toast({
+                    msg: '请输入正确的11位手机号',
+                    duration: 3000,
+                    location: 'bottom'
+                });
+            }else{
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '正在发送验证码',
+                    text: '请稍候',
+                    modal: true
+                });
+                $api.setStorage('userPhone',phone);
+                sendMsg(phone);
+            }
+        }else{
+            toastMsg("请输入正确手机号码");
+        }
+    }
+
+    function sendMsgErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+
+    function sendMsgSuccessCallback(ret,extra){
+        _loadingHide();
+        if(ret.statusCode=='200'){
+//					$api.setStorage('sendcode',ret.code);
+            $api.removeCls($api.byId('my-qr-btn'), 'hide');
+            timeRun();
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+
+    function sendMsg(phone){
+        str = md5_vm_test('appkey=37e08411ef0e84597e073c53c2c7fe5d&mobile='+phone+'&url=/app/user/mobile/bind');
+        var url = serviceUser+'mobile/verify/create';
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData({
+            sendToBound: true,
+            mobile : String(phone),
+            sign:str,
+            url:'/app/user/mobile/bind'
+        });
+        var extra = null;
+        _ajaxData(url,'post',headers,data,sendMsgSuccessCallback,sendMsgErrorCallback,0,extra);
+    }
+
+    function verifySuccessCallback(ret,extra){
+        _loadingHide();
+        if(ret.statusCode=='200'){
+            key =  ret.authKey;
+            bindTel(ret.authKey);
+            sendEventUmeng(CONSTANT.UMENGEVENT.LOGIN,{
+                from:'account'
+            });
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+
+    function verifyErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+
+    function verify(){
+        if(!!canLogin){
+            _loadingShow();
+            var code = $api.val($api.byId('code'));
+
+            var url = serviceUser+'mobile/verify';
+            var headers = _getAjaxHeaders(false,true);
+            var data = _getAjaxData({
+                mobile: phone, // 手机号
+                veriCode:code, // 短信验证码
+                sign: str
+            });
+            var extra = null;
+            _ajaxData(url,'post',headers,data,verifySuccessCallback,verifyErrorCallback,0,extra);
+        }else{
+            toastMsg('请输入完整信息');
+        }
+    }
+
+    function bindSuccessCallback(ret,extra){
+        if(ret.statusCode=='200'){
+            $api.setStorage('userPhone',phone);
+            api.execScript({
+                name:'root',
+                frameName:"footer_tab_4",
+                script: 'setPhone();'
+            });
+            setUserStorage(ret);
+            setTimeout(function() {
+                closeWindow();
+                api.execScript({
+                    name : 'root',
+                    frameName : "footer_tab_4",
+                    script : 'init();'
+                });
+                api.sendEvent({
+                    name : 'loginEvent'
+                });
+                api.execScript({
+                    name : 'root',
+                    frameName : "footer_tab_3",
+                    script : 'init("reInfo");'
+                });
+                api.execScript({
+                    name : 'root',
+                    frameName:"closet_frame",
+                    script: "init();"
+                });
+            }, 500);
+            if(api.pageParam.data && api.pageParam.data.isAd){
+                api.execScript({
+                    name : 'root',
+                    frameName:"footer_tab_1",
+                    script: 'execAppAdInit()'
+                });
+            }
+            api.execScript({
+                name:"root",
+                script: "initRoot();"
+            });
+            api.closeToWin({
+                name: 'root'
+            });
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+
+    function bindErrorCallback(err,extra){
+        toastMsg(err.msg);
+    }
+
+    function bindTel(key){
+        var url = serviceUser + 'login/mobile2';
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData({
+            authKey: String(key), // 新手机的授权码（验证码校验成功后获得）
+            mobile: String(phone) // 新手机号
+        });
+        var extra = null;
+        _ajaxData(url,'post',headers,data,bindSuccessCallback,bindErrorCallback,0,extra);
+    }
+
+    var wait=0;
+    function checkWait(){
+        var thisWait = $api.getStorage('wait');
+        if(typeof(thisWait)=='undefined'||thisWait==120){
+            wait=120;
+        }else{
+            wait = thisWait;
+            timeRun();
+        }
+    }
+
+    function timeRun(){
+        if(wait == 0) {
+            $api.addCls($api.byId('codeBtn'), 'codeBtn');
+            $api.removeCls($api.byId('codeBtn'), 'waitBtn');
+            $api.html($api.byId('codeBtn'), '发送验证');
+            $api.attr($api.byId('codeBtn'),'onclick','verCode()');
+            wait = 120;
+        } else {
+            $api.addCls($api.byId('codeBtn'), 'waitBtn');
+            $api.removeCls($api.byId('codeBtn'), 'codeBtn');
+            $api.html($api.byId('codeBtn'),wait+'s');
+            $api.removeAttr($api.byId('codeBtn'), 'onclick');
+            wait--;
+            setTimeout(function() {
+                    timeRun()
+                },
+                1000)
+        }
+        $api.setStorage('wait',wait);
+    }
+    //异步关闭评论窗口
+    function execCloseSlefWin(extra, winName, value) {
+        api.closeWin({
+            name: winName
+        });
+    }
+
+    //设置用户缓存
+    function setUserStorage(ret){
+        if(ret.data.isNewUser){
+            sendEventUmeng(CONSTANT.UMENGEVENT.NEW_IN_SUCCESS,{
+                phone:phone
+            });
+        }
+        var isMember = ret.data.user.isMember;
+        var vipType = '';
+        if (isMember == 'monthly') {
+            vipType = '月费会员';
+        }else if (isMember == 'activity') {
+            vipType = '活动会员';
+        }else if (isMember == 'annual') {
+            vipType = '年费会员';
+        }
+        //会员类型
+        $api.setStorage('isMember', isMember);
+        //会员类型
+        $api.setStorage('vipType', vipType);
+        //用户选择的版本
+        $api.setStorage('userVersion', ret.data.user.secfile.version);
+        //用户ID
+        $api.setStorage('id', ret.data.id);
+        //beta标记，测试用户
+        $api.setStorage('betaUser', ret.data.user.betaUser || '');
+        //用户token值
+        $api.setStorage('token', ret.data.token || '');
+        //token值到期时间
+        $api.setStorage('tokenExpires', ret.data.tokenExpires || '');
+        //收货地址
+        $api.setStorage('shipAddress', ret.data.user.shipAddress || '');
+        //用户真实姓名
+        $api.setStorage('realName', ret.data.user.realName || '');
+        //用户的电话
+        $api.setStorage('userPhone', ret.data.user.mobile || '');
+        //用户名
+        $api.setStorage('userName', ret.data.user.username || '');
+        //冻结时间
+        $api.setStorage('frozenAt', ret.data.user.frozenAt || '');
+        //注册时间
+        $api.setStorage('startTime', ret.data.user.profile.startTime || '');
+//				//用户openId
+//					$api.setStorage('wxOpenId',ret.data.user.services.wechat.wx.openid);
+        //会员结束时间
+        $api.setStorage('dueTime', ret.data.user.dueTime || '');
+        //账号类型
+        $api.setStorage('userVipType', ret.data.user.profile.membership || '');
+
+//        alert(ret.data.user.profile.nickname);
+
+        //用户昵称
+        $api.setStorage('userNickname', ret.data.user.profile.nickname || '');
+        //多啦袋数量
+        $api.setStorage('count', ret.data.user.dorabag.count);
+        //每个多啦袋放衣服数量
+        $api.setStorage('perBag', ret.data.user.dorabag.perBag);
+        //用户已持有数量
+        var bagT = ret.data.user.dorabag.count * ret.data.user.dorabag.perBag;
+        $api.setStorage('drabagT', bagT);
+        //???
+        $api.setStorage('ownNum', 3);
+        $api.setStorage('ownNum', 0);
+//            var chooseCan = bagT - 3;
+        //押金
+        $api.setStorage('deposit', ret.data.user.deposit || '');
+        //用户可持有总数量
+        var chooseCan = ret.data.user.dorabag.count * ret.data.user.dorabag.perBag;
+        $api.setStorage('chooseCan', chooseCan || '');
+        //头像
+        var imgHeaderUrl = ret.data.user.profile.avatar || '';
+        var avatarFrom = ret.data.user.profile.avatarFrom;//头像是否为第三方来源
+        if (isDefine(imgHeaderUrl)) {
+            if(!!avatarFrom){
+                $api.setStorage('userHead', imgHeaderUrl);
+            }else if(imgHeaderUrl && imgHeaderUrl.indexOf('../') == -1){
+                $api.setStorage('userHead', userPhoto + imgHeaderUrl);
+            }
+        }
+        //用户的邀请码
+        $api.setStorage('userInviteCode',ret.data.user.secfile.inviteCode || '');
+    }
+</script>
+</html>

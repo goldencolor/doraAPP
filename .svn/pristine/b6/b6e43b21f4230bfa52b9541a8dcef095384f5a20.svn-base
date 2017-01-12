@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>新手引导</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_slide.css"/>
+    <style>
+        .skip{
+            position: absolute;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            background-color: #FF6100;
+            top: 0.5rem;
+            right: 0.5rem;
+            color: #FFFFFF;
+            z-index: 10000;
+        }
+        .aui-slide-page-wrap{
+            bottom: 0.25rem;
+        }
+        .aui-slide-page-active{
+            background-color: #FF6100;
+        }
+        .btnBox{
+            position: absolute;
+            z-index: 10000;
+            bottom: 1.75rem;
+            width: 100%;
+            height: 2.5rem;
+            color: #FFFFFF;
+            text-align: center;
+        }
+        .btnBox .clickBtn{
+            width: 35%;
+            margin: 0 1rem;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            background-color: #FF6100;
+        }
+    </style>
+</head>
+<body>
+    <div id="mainContent">
+        <div class="aui-slide-wrap">
+            <div class="aui-slide-node bg-dark">
+                <img src="../image/guide1.png" width="100%"/>
+                <div class="skip" tapmode onclick="closeGuide()">跳过</div>
+            </div>
+            <div class="aui-slide-node bg-dark">
+                <img src="../image/guide2.png" width="100%"/>
+                <div class="skip" tapmode onclick="closeGuide()">跳过</div>
+            </div>
+            <div class="aui-slide-node bg-dark">
+                <img src="../image/guide3.png" width="100%"/>
+                <div class="btnBox flex flex-center">
+                    <div class="clickBtn" tapmode onclick="closeGuide()">随便逛逛</div>
+                    <div class="clickBtn" tapmode onclick="toLogin()">立即注册</div>
+                </div>
+                <div class="skip" tapmode onclick="closeGuide()">跳过</div>
+            </div>
+        </div>
+        <div class="aui-slide-page-wrap"><!--分页容器--></div>
+    </div>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/aui_slide.js"></script>
+<script>
+    new auiSlide({
+        container: document.getElementById("mainContent"),
+        "height": 667,
+        "speed": 1000,
+        "distance": 20,//触发滑动事件水平距离
+        "loop": false,
+        "pageShow": true,
+        "pageStyle": 'dot',
+        'dotPosition': 'center'
+    });
+
+    apiready=function(){
+        var mainContentEl=$api.byId('mainContent');
+        $api.fixStatusBar(mainContentEl);
+        new auiSlide({
+            container: document.getElementById("mainContent"),
+            "height": api.winHeight,
+            "speed": 500,
+            "distance": 20,//触发滑动事件水平距离
+            "loop": false,
+            "pageShow": true,
+            "pageStyle": 'dot',
+            'dotPosition': 'center'
+        });
+        api.parseTapmode();
+    };
+    function closeGuide(){
+        api.execScript({
+            name:"root",
+            script: "initRoot();"
+        });
+        api.closeWin();
+    }
+</script>
+</body>
+</html>

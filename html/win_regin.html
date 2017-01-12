@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>登录注册win</title>
+</head>
+<body>
+
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function(){
+			api.openFrame({
+				name: 'video',
+				url: 'video.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 'auto',
+					h: 'auto'
+				},
+				bgColor: 'rgba(0,0,0,0)',
+				bounces: false,
+				vScrollBarEnabled: false,
+				hScrollBarEnabled: false
+			});
+			api.openFrame({
+				name: 'loginBetter',
+				url: 'loginBetter.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 'auto',
+					h: 'auto'
+				},
+				bounces: false,
+				bgColor: 'rgba(0,0,0,0)',
+				vScrollBarEnabled: false,
+				hScrollBarEnabled: false,
+				slidBackType:'edge',
+				allowEdit:true
+			});
+			api.bringFrameToFront({
+				from: 'loginBetter',
+				to: 'video'
+			});
+		};
+	</script>
+</html>

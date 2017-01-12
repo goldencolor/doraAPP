@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>视频frame</title>
+	<style>
+		html,body{
+			background: #353535;
+		}
+	</style>
+</head>
+<body>
+
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function(){
+			if((api.systemType == 'ios' && parseInt(api.systemVersion) > 7) || (api.systemType == 'android' && parseFloat(api.systemVersion) >= 4.4)){
+				var videoPlayer = api.require('videoPlayer');
+				videoPlayer.open({
+					rect:{
+						x: 0,
+						y: 0,
+						w: api.winWidth,
+						h: api.winHeight
+					},
+					fixedOn:'video',
+					coverImg: 'widget://image/guide1.png',
+					path: 'http://resource.apicloud.com/video/apicloud3.mp4'
+				}, function(ret, err) {
+					if (ret.status) {
+						console.log(JSON.stringify(ret));
+					} else {
+						console.log(JSON.stringify(err));
+					}
+				});
+			}else{
+				//图片动画
+			}
+		};
+	</script>
+</html>

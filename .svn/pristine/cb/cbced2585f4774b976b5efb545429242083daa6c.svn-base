@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>page1</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <style>
+		input{
+			margin-top: 100px;
+		}
+
+	</style>
+</head>
+<body>
+ssss<input type="text" onkeyup="this.t ? clearTimeout(this.t) : ''; this.t = setTimeout(chk.call(this), 500)" />
+
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+
+		apiready = function(){
+		};
+		function chk(){
+			var el = this;
+			return function(){
+				console.log(el.value);
+				el.blur();
+			}
+		}
+	</script>
+</html>

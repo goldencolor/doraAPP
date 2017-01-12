@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="author" content="tigerHee">
+    <title>新用户登录</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html,body{
+            background: transparent;
+        }
+        .duola-iconfont{
+            font-size: 2rem;
+            color: #FFFFFF;
+            height: 2rem;
+            line-height: 2rem;
+        }
+        .mainContent{
+            position: relative;
+            width: 100%;
+            height: 100%;
+            color: #FFFFFF;
+            /*background-color: #353535;*/
+        }
+        /*@keyframes scaleBg {
+            0%{
+                transform: scale(1);
+            }
+            100%{
+                transform: scale(1.3);
+            }
+        }*/
+        .animationBg{
+            position:absolute;
+            width: 100%;
+            height: 100%;
+            /*background-image: url("http://img.duolayimeng.com/original/1536073-5.jpg@!480w");*/
+            /*background-repeat: no-repeat;*/
+            /*background-size: cover;*/
+            /*background-position: center;*/
+            /*animation: scaleBg 2000ms linear 0ms infinite alternate;*/
+        }
+        .mainContent .loginBtnBox{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+        .loginBtnBox .title{
+            width: 100%;
+            text-align: center;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #FFFFFF;
+        }
+        .loginBtnBox .title span{
+            color: #ff6100;
+            margin: 0 0.2rem;
+            display: block;
+            font-size: 1rem;
+            line-height: 1rem;
+        }
+        .iconBox{
+            margin-top: 1.25rem;
+        }
+        .iconBox .item{
+            margin: 0 0.75rem;
+        }
+        /*test*/
+        .weiChat{
+            color: #FF6100;
+        }
+        .closeBox{
+            width: 100%;
+            margin-top: 3.3rem;
+            margin-bottom: 2.2rem;
+        }
+        .closeBox .closeBtn{
+            width: 3rem;
+            margin: 0 auto;
+            opacity: 0.8;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            letter-spacing: 1px;
+            position: relative;
+        }
+        .closeBox .closeBtn span{
+            position: absolute;
+            top: 0;
+            right: -0.7rem;
+        }
+        .specialBtn{
+            width: 9rem;
+            height: 1.7rem;
+            line-height: 1.8rem;
+            background-color: #FF6100;
+            margin: 0.85rem auto 0;
+            text-align: center;
+        }
+        .specialBtn .duola-iconfont{
+            font-size: 0.8rem;
+            line-height: 0.8rem;
+        }
+        .agreementBox{
+            margin-bottom: 1.5rem;
+        }
+        .agreementBox .agreeBtn{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.4rem;
+            color: #D5D5D5;
+            letter-spacing: 0.57px;
+        }
+        .agreementBox .agreeBtn span.duola-iconfont{
+            font-size: 0.4rem;
+        }
+        .agreementBox>span{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.4rem;
+            color: #FF6100;
+            letter-spacing: 0.57px;
+        }
+    </style>
+</head>
+<body>
+<div class="mainContent">
+    <div class="animationBg">
+        <!--<video id="vedioPlay" autoplay loop width="100%" height="100%" style="background-color:black">-->
+            <!--<source src="../vedio/night.mp4">-->
+        <!--</video>-->
+    </div>
+    <div class="loginBtnBox">
+        <div class="title flex flex-center">注册<span>&</span>登录</div>
+        <div id="specialBtn" class="specialBtn aui-hide" tapmode>
+            <span id="specialIcon" class="duola-iconfont icon-weixin1"></span>
+        </div>
+        <div class="iconBox flex flex-center">
+            <div id="showWeixin" class="item" tapmode onclick="wxLogin()"  style="display: none">
+                <span id="wechat" class="weiChat duola-iconfont icon-weixin"></span>
+            </div>
+            <div id="showQQ" class="item" tapmode onclick="qqLogin()" style="display: none">
+                <span id="qq" class="duola-iconfont icon-QQ"></span>
+            </div>
+            <div id="showWeiBo" class="item" tapmode onclick="weiboLogin()"  style="display: none">
+                <span id="weibo" class="duola-iconfont icon-xinlang"></span>
+            </div>
+            <div id="accountBtn" class="item" tapmode onclick="openCodeLOgin()"  style="display: none">
+                <span id="account" class="duola-iconfont icon-shouji"></span>
+            </div>
+        </div>
+        <div class="closeBox">
+            <div class="closeBtn" tapmode onclick="closeWindow()">随便逛逛<span>></span></div>
+        </div>
+        <div class="agreementBox flex flex-center">
+            <div class="agreeBtn" tapmode onclick="turnAgree()">
+                <span id="agreeIcon" class="duola-iconfont icon-yes"></span>
+                已阅读并同意
+            </div>
+            <span tapmode onclick="openloginAbout()">《多啦衣梦用户协议》</span>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/sha_256.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/qq_sdk.js"></script>
+<script type="text/javascript" src="../script/weibo_sdk.js"></script>
+<script type="text/javascript" src="../script/wx_sdk.js"></script>
+<script>
+    var agree=true;
+    apiready = function() {
+        sendEventUmeng(CONSTANT.UMENGEVENT.PAGE_REGIN);
+        var loginTypeVal= api.getPrefs({
+            sync: true,
+            key: 'loginType'
+        })||'';
+        var specialBtnEl=$api.byId('specialBtn');
+        var specialIconEl=$api.byId('specialIcon');
+        (!!loginTypeVal) && $api.removeCls(specialBtnEl,'aui-hide');
+        if(loginTypeVal=='wechat'){
+            $api.attr(specialIconEl,'class','duola-iconfont icon-weixin1');
+            $api.attr(specialBtnEl,'onclick','wxLogin()');
+        }else if(loginTypeVal=='qq'){
+            $api.attr(specialIconEl,'class','duola-iconfont icon-QQ1');
+            $api.attr(specialBtnEl,'onclick','qqLogin()');
+        }else if(loginTypeVal=='weibo'){
+            $api.attr(specialIconEl,'class','duola-iconfont icon-xinlang1');
+            $api.attr(specialBtnEl,'onclick','weiboLogin()');
+        }else if(loginTypeVal=='account'){
+            $api.attr(specialIconEl,'class','duola-iconfont icon-shouji1');
+            $api.attr(specialBtnEl,'onclick','openCodeLOgin()');
+        }
+
+        if(loginTypeVal!='wechat'){
+
+            wx_install(function(isIntalled,extra){
+                if(isIntalled){
+                    showWexin();
+                }
+            });
+        }
+        if(loginTypeVal!='qq'){
+            qq_install(function(isIntalled,extra){
+                if(isIntalled){
+                    showQQ();
+                }
+            });
+        }
+        if(loginTypeVal!='weibo'){
+            weibo_install(function(isIntalled,extra){
+                if(isIntalled){
+                    showWeiBo();
+                }
+            });
+        }
+        if(loginTypeVal!='account'){
+            showAccount();
+        }
+
+        api.addEventListener({
+            name:'resume'
+        }, function(ret, err){
+            _loadingHide();
+        });
+//        var specialEl=$api.byId(loginTypeVal);
+//        $api.css(specialEl,'font-size:2.5rem;color:#FF6100');
+        api.parseTapmode();
+    };
+
+    function turnAgree(){
+        var agreeIconEl=$api.byId('agreeIcon');
+        if ($api.hasCls(agreeIconEl,'icon-yes')){
+            $api.removeCls(agreeIconEl,'icon-yes');
+            $api.addCls(agreeIconEl,'icon-no');
+            agree=false;
+            console.log(agree);
+        }else if($api.hasCls(agreeIconEl,'icon-no')){
+            $api.removeCls(agreeIconEl,'icon-no');
+            $api.addCls(agreeIconEl,'icon-yes');
+            agree=true;
+            console.log(agree);
+        }
+    }
+
+    //显示微信登录
+    function showWexin(){
+        var showWexinEl = $api.byId('showWeixin');
+        if(showWexinEl){
+            $api.css(showWexinEl,'display:block');
+        }
+    }
+
+    function showQQ(){
+        var showQQEl = $api.byId('showQQ');
+        if(showQQEl){
+            $api.css(showQQEl,'display:block');
+        }
+    }
+
+    function showWeiBo(){
+        var showWeiBoEl = $api.byId('showWeiBo');
+        if(showWeiBoEl){
+            $api.css(showWeiBoEl,'display:block');
+        }
+    }
+
+    function showAccount(){
+        var accountBtnEl = $api.byId('accountBtn');
+        if(accountBtnEl){
+            $api.css(accountBtnEl,'display:block');
+        }
+    }
+    //    qq登录
+    function qqLogin(){
+        if(!!agree){
+            sendEventUmeng(CONSTANT.UMENGEVENT.BTN_REGIN,{
+                btn:'qq'
+            });
+            sendEventUmeng(CONSTANT.UMENGEVENT.LOGIN,{
+                from:'qq'
+            });
+            qq_login(login_third,'qq');
+        }else{
+            toastMsg('您未同意用户协议');
+        }
+
+    }
+    //  微信登录
+    function wxLogin() {
+        if(!agree){
+            return toastMsg('您未同意用户协议');
+        }
+        sendEventUmeng(CONSTANT.UMENGEVENT.BTN_REGIN,{
+            btn:'weixin'
+        });
+        sendEventUmeng(CONSTANT.UMENGEVENT.LOGIN,{
+            from:'weixin'
+        });
+        wx_login(login_third,'wechat');
+    }
+    //  微博登录
+    function weiboLogin(){
+        if(!agree){
+            return toastMsg('您未同意用户协议');
+        }
+        sendEventUmeng(CONSTANT.UMENGEVENT.BTN_REGIN,{
+            btn:'weibo'
+        });
+        sendEventUmeng(CONSTANT.UMENGEVENT.LOGIN,{
+            from:'weibo'
+        });
+        weibo_login(login_third,'weibo');
+    }
+
+    //    第三方登录
+    function login_third(ret,type){
+        _loadingShow();
+        setLoginPre(type);
+        var body={};
+        if(type=='qq'){
+            body = {
+                deviceId: getDeviceId(),
+                sex : String(ret.sex),
+                vip: String(ret.vip),
+                is_yellow_year_vip: String(ret.is_yellow_year_vip),
+                province: String(ret.province),
+                is_yellow_vip: String(ret.is_yellow_vip),
+                yellow_vip_level: String(ret.yellow_vip_level),
+                level: String(ret.level),
+                city: String(ret.city),
+                figureurl_2: String(ret.figureurl_qq_2),
+                nickname: String(ret.nickname),
+                gender: String(ret.gender),
+                openId: String(ret.openId),
+                accessToken: String(ret.accessToken)
+            };
+        }else if(type=='weibo'){
+            body={
+                deviceId: getDeviceId(),
+                avatar_large: String(ret.avatar_large),
+                location: String(ret.location),
+                followers_count: Math.round(ret.followers_count),
+                bi_followers_count: Math.round(ret.bi_followers_count),
+                credit_score: Math.round(ret.credit_score),
+                name: String(ret.name),
+                city: String(ret.city),
+                province: String(ret.province),
+                gender: String(ret.gender),
+                friends_count: Math.round(ret.friends_count),
+                token: String(ret.token),
+                userId: String(ret.userId)
+            };
+        }else if(type=='wechat'){
+            body={
+                deviceId: getDeviceId(),
+                accessToken : ret.accessToken,
+                unionid : String(ret.unionid),
+                openid : String(ret.openid),
+                nickname : String(ret.nickname),
+                sex : String(ret.sex),
+                language : 'zh_CN',
+                city : String(ret.city),
+                province : String(ret.province),
+                country : String(ret.country),
+                headimgurl : String(ret.headimgurl)
+            };
+            $api.setStorage('wxOpenId', ret.openid);
+        }
+        var url = serviceUser + 'login/third_party/'+type;
+        var headers = _getAjaxHeaders(false, true);
+        var data = _getAjaxData(body);
+        var extra=type;
+        _ajaxData(url, 'post', headers, data, loginSuccessCallback, loginErrorCallback, 0, extra);
+    }
+
+    function loginSuccessCallback(ret,extra){
+        _loadingHide();
+        if(ret.statusCode=='200'){
+            umengLogin(ret.data.id,extra);
+            setUserStorage(ret,extra);
+            setTimeout(function() {
+                closeWindow();
+                api.execScript({
+                    name : 'root',
+                    frameName : "footer_tab_4",
+                    script : 'init();'
+                });
+                api.sendEvent({
+                    name : 'loginEvent'
+                });
+                api.execScript({
+                    name : 'root',
+                    frameName : "footer_tab_3",
+                    script : 'init("reInfo");'
+                });
+                api.execScript({
+                    name : 'root',
+                    frameName:"closet_frame",
+                    script: "init();"
+                });
+            }, 500);
+            if(api.pageParam.data && api.pageParam.data.isAd){
+                api.execScript({
+                    name : 'root',
+                    frameName:"footer_tab_1",
+                    script: 'execAppAdInit()'
+                });
+            }
+        } else{
+            toastMsg(ret.msg);
+        }
+    }
+
+    //设置用户缓存
+    function setUserStorage(ret,type){
+        if(ret.data.isNewUser){
+            sendEventUmeng(CONSTANT.UMENGEVENT.NEW_IN_SUCCESS,{
+                type:type
+            });
+        }
+        var isMember = ret.data.user.isMember;
+        var vipType = '';
+        if (isMember == 'monthly') {
+            vipType = '月费会员';
+        }else if (isMember == 'activity') {
+            vipType = '活动会员';
+        }else if (isMember == 'annual') {
+            vipType = '年费会员';
+        }
+        //会员类型
+        $api.setStorage('isMember', isMember);
+        //会员类型
+        $api.setStorage('vipType', vipType);
+        //用户选择的版本
+        $api.setStorage('userVersion', ret.data.user.secfile.version);
+        //用户ID
+        $api.setStorage('id', ret.data.id);
+        //beta标记，测试用户
+        $api.setStorage('betaUser', ret.data.user.betaUser || '');
+        //用户token值
+        $api.setStorage('token', ret.data.token || '');
+        //token值到期时间
+        $api.setStorage('tokenExpires', ret.data.tokenExpires || '');
+        //收货地址
+        $api.setStorage('shipAddress', ret.data.user.shipAddress || '');
+        //用户真实姓名
+        $api.setStorage('realName', ret.data.user.realName || '');
+        //用户的电话
+        $api.setStorage('userPhone', ret.data.user.mobile || '');
+        //用户名
+        $api.setStorage('userName', ret.data.user.username || '');
+        //冻结时间
+        $api.setStorage('frozenAt', ret.data.user.frozenAt || '');
+        //注册时间
+        $api.setStorage('startTime', ret.data.user.profile.startTime || '');
+//				//用户openId
+//					$api.setStorage('wxOpenId',ret.data.user.services.wechat.wx.openid);
+        //会员结束时间
+        $api.setStorage('dueTime', ret.data.user.dueTime || '');
+        //账号类型
+        $api.setStorage('userVipType', ret.data.user.profile.membership || '');
+
+//        alert(ret.data.user.profile.nickname);
+
+        //用户昵称
+        $api.setStorage('userNickname', ret.data.user.profile.nickname || '');
+        //多啦袋数量
+        $api.setStorage('count', ret.data.user.dorabag.count);
+        //每个多啦袋放衣服数量
+        $api.setStorage('perBag', ret.data.user.dorabag.perBag);
+        //用户已持有数量
+        var bagT = ret.data.user.dorabag.count * ret.data.user.dorabag.perBag;
+        $api.setStorage('drabagT', bagT);
+        //???
+        $api.setStorage('ownNum', 3);
+        $api.setStorage('ownNum', 0);
+//            var chooseCan = bagT - 3;
+        //押金
+        $api.setStorage('deposit', ret.data.user.deposit || '');
+        //用户可持有总数量
+        var chooseCan = ret.data.user.dorabag.count * ret.data.user.dorabag.perBag;
+        $api.setStorage('chooseCan', chooseCan || '');
+        //头像
+        var imgHeaderUrl = ret.data.user.profile.avatar || '';
+        var avatarFrom = ret.data.user.profile.avatarFrom;//头像是否为第三方来源
+        if (isDefine(imgHeaderUrl)) {
+            if(!!avatarFrom){
+                $api.setStorage('userHead', imgHeaderUrl);
+            }else if(imgHeaderUrl && imgHeaderUrl.indexOf('../') == -1){
+                $api.setStorage('userHead', userPhoto + imgHeaderUrl);
+            }
+        }
+        //用户的邀请码
+        $api.setStorage('userInviteCode',ret.data.user.secfile.inviteCode || '');
+    }
+
+    function loginErrorCallback(err,extra){
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+
+    function closeWindow() {
+        sendEventUmeng(CONSTANT.UMENGEVENT.BTN_REGIN,{
+            btn:'逛逛'
+        });
+        onPageEndUmeng(CONSTANT.PAGE.LOGIN);
+        api.execScript({
+            name:"root",
+            script: "initRoot();"
+        });
+        api.closeToWin({
+            name: 'root'
+        });
+    }
+
+    function setLoginPre(val){
+        api.setPrefs({
+            key: 'loginType',
+            value: val
+        });
+    }
+
+    function openCodeLOgin(){
+        if(!agree){
+            return toastMsg('您未同意用户协议');
+        }
+        sendEventUmeng(CONSTANT.UMENGEVENT.BTN_REGIN,{
+            btn:'account'
+        });
+        setLoginPre('account');
+        var name = 'codeLogin';
+        var title = '验证码登录';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftText = '';
+        var leftExtra = '';
+        var leftCallback = 'execCloseSlefWin';
+        var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+
+        var rightIcon = '';
+        var rightText = '';
+        var rightExtra = '';
+        var rightCallback = '';
+        var rightNav = setNavData(rightIcon, rightText, rightCallback, rightExtra);
+
+        var border = true;
+        var bounces = false;
+        var params = {};
+        params.nav= setNav(leftNav,border,rightNav);
+        params.frame=setFrame(bounces,null,null,null,null,'false');
+        var from = {
+            winName:api.winName,
+            frameName:api.frameName
+        };
+        var url = 'header_new.html';
+        var animation = {
+            type:"push",                //动画类型（详见动画类型常量）
+            duration:300                //动画过渡时间，默认300毫秒
+        };
+        var page = 'accountLogin.html';
+        openNewWinFrame(name,title,params,from,url,animation,page);
+    }
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra,winName,value){
+        api.closeWin({
+            name:winName
+        });
+    }
+    function openloginAbout() {
+        api.openWin({
+            name : 'loginAbout',
+            url : 'win.html',
+            pageParam : {
+                page : 'loginAbout',
+                title : '用户协议'
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -199,6 +199,7 @@
 	var isOpenFrame1Header = false; //是否打开frame1Header
 	var mqMsgCountEl = null;//美恰未读消息DOM元素
 	apiready = function() {
+
 		header0El = $api.byId('header0');
 		$api.fixStatusBar(header0El);
 		mqMsgCountEl = $api.byId('mqMsgCount');
@@ -210,7 +211,7 @@
 			key: 'headerHeight',
 			value: headerHeight
 		});
-
+		getAppSettings();//获取app相关配置
 		setAppRepair();//设置云修复版本
 		jpushInit();//极光推送初始化
 		initUmeng();//初始化友盟
@@ -219,16 +220,44 @@
 			$api.text(mqMsgCountEl,count);
 			$api.removeCls(mqMsgCountEl,'hide');
 		});
+		//监听应用从后台回到前台
+		api.addEventListener({
+			name: 'resume'
+		}, function (ret, err) {
+			api.bringFrameToFront({
+				from: 'closet_frame',
+				to: 'footer_tab_3'
+			});
+		});
+		//监听跳转登录页面
+		api.addEventListener({
+			name: 'goLogin'
+		}, function (ret, err) {
+			goLogin(CONSTANT.INDEX);
+		});
+		api.addEventListener({
+			name: 'clearMqCountUser'
+		}, function (ret, err) {
+			clearMqCount();
+		});
+		//监听用户退出广播事件,切换到footer0
+		api.addEventListener({
+			name: 'loginOut'
+		}, function (ret, err) {
+			execGoIndex();
+			getAppSettings();//获取app相关配置
+		});
+
+		//测试
+//		api.setPrefs({
+//			key: 'watchGuide',
+//			value: ""
+//		});
 		var watchGuideVal =  api.getPrefs({
 			sync: true,
 			key: 'watchGuide'
 		});
-		console.log('===========================================');
-		console.log('===========================================');
-		console.log('===========================================');
-		console.log('===========================================');
-		console.log(watchGuideVal);
-		if(true){
+		if(!watchGuideVal){
 			openNewGuideWin();
 		}else{
 			initRoot();
@@ -239,6 +268,53 @@
 //			console.log(JSON.stringify(ret));
 //		});
 	};
+	//获取app相关配置信息
+	function getAppSettings(){
+		var url = serviceNew + 'sys/settings/app';
+		var headers = _getAjaxHeaders(false, true);
+		var data = _getAjaxData();
+		_ajaxData(url, 'post', headers, data, getVedioUrlSuccessCallback, null, 0);
+	}
+	function getVedioUrlSuccessCallback(ret){
+		if (ret.statusCode == 200) {
+			if(ret.settings.video){
+				var videoUrl = ret.settings.video;
+				$api.setStorage('videoUrl',videoUrl);
+				$api.setStorage('videoFsUrl','');
+				var name = videoUrl.substr(videoUrl.lastIndexOf('/')+1);
+				var savePath = "fs://video/"+name;
+				var fs = api.require('fs');
+				fs.exist({
+					path: savePath
+				}, function(ret, err) {
+					if(ret.exist){
+						$api.setStorage('videoFsUrl',savePath);
+					}else{
+						api.download({
+							url: videoUrl,
+							cache: true,
+							savePath: savePath,
+							allowResume: true
+						}, function(ret, err) {
+							if (ret && ret.state == 1 && ret.savePath) {
+								//下载成功
+								$api.setStorage('videoFsUrl',savePath);
+							}
+						});
+					}
+				});
+			}else{
+				$api.setStorage('videoUrl','');
+				$api.setStorage('videoFsUrl','');
+			}
+			//多啦手册地址
+			if(ret.settings.manual){
+				$api.setStorage('manualUrl',ret.settings.manual);
+			}else{
+				$api.setStorage('manualUrl','');
+			}
+		}
+	}
 
 //	初始化framegrounp数据
 	function initRoot(){
@@ -249,18 +325,15 @@
 //	打开新手引导窗口
 	function openNewGuideWin(){
 		var name = 'newGuide';
-		var title = '新手引导';
-		var params = {
-
-		};
-		var from = {
-			winName: api.winName,
-			frameName: api.frameName
-		};
 		var url = 'html/newGuide.html';
-		openNewWin(name, title, params, from, url, {
-			type: "fade",                //动画类型（详见动画类型常量）
-			duration: 300                //动画过渡时间，默认300毫秒
+		api.openWin({
+			name: name,
+			url: url,
+			slidBackType:'edge',
+			animation: {
+				type: "fade",
+				duration: 300
+			}
 		});
 		api.setPrefs({
 			key: 'watchGuide',
@@ -355,33 +428,6 @@
 	}
 
 	function otherInit(extra) {
-		//监听应用从后台回到前台
-		api.addEventListener({
-			name: 'resume'
-		}, function (ret, err) {
-			api.bringFrameToFront({
-				from: 'closet_frame',
-				to: 'footer_tab_3'
-			});
-		});
-		//监听跳转登录页面
-		api.addEventListener({
-			name: 'goLogin'
-		}, function (ret, err) {
-			goLogin(CONSTANT.INDEX);
-		});
-		api.addEventListener({
-			name: 'clearMqCountUser'
-		}, function (ret, err) {
-			clearMqCount();
-		});
-		//监听用户退出广播事件,切换到footer0
-		api.addEventListener({
-			name: 'loginOut'
-		}, function (ret, err) {
-			execGoIndex();
-		});
-
 		messages();
 		var tab = new auiTab({
 			element: document.getElementById("tab"),
@@ -451,7 +497,7 @@
 			}
 			indexUmeng(ret.index);
 			sendEventUmeng(CONSTANT.UMENGEVENT.FOOTER_TAB, {
-				index: ret.index,
+				index: ret.index+'',
 				name: CONSTANT.PAGE.INDEX[ret.index]
 			});
 			preIndex = ret.index;
@@ -736,7 +782,7 @@
 			pageParam:{
 				page: 'Wallet',
 				title: '我的账户',
-				type:type
+				type: type
 			}
 
 		});

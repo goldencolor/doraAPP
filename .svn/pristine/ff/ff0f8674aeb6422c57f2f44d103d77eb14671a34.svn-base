@@ -1,0 +1,889 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>首页</title>
+
+	<link rel="stylesheet" type="text/css" href="css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="css/2_0/aui_2_0.css" />
+	<link rel="stylesheet" type="text/css" href="css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="css/fonts/duola_iconfont2.css"/>
+
+	<style>
+		/*图标大小调整*/
+		.duola-iconfont.icon-news1,.duola-iconfont.icon-Clear{
+			font-size: 1rem;
+			float: right;
+			margin-right: 0.3rem;
+		}
+		.duola-iconfont.icon-search1{
+			font-size: 1rem;
+		}
+		/*独立设计标题*/
+		#nav-title .icon-Typeface{
+			font-size: 0.9rem;
+		}
+		.aui-tab-item {
+			font-size: 0.9rem;
+			color: #989A9C;
+		}
+		.aui-tab {
+			position: static;
+		}
+		.aui-tab-item.aui-active {
+			color: #1B1B1B;
+			border-bottom: 0;
+			z-index: 100;
+			/*text-decoration:underline;*/
+			text-decoration: none;
+		}
+		.aui-active .tab-span{
+			height: 1.8rem;
+			font-size: 0.9rem;
+			border-bottom: 0.1rem solid #1B1B1B;
+		}
+		#nav-scan{
+			position: relative;
+			right: 5%;
+		}
+		#nav-left-hold{
+			text-align: left;
+		}
+
+		/*aui-tab样式 底部边框*/
+		.aui-tab:after{
+			height: 0;
+		}
+
+
+		.duola-header .nav-left-icon {
+			margin-right: 0rem;
+			margin-left: 0.3rem;
+		}
+
+		/*云衣橱搜索框样式*/
+		#header1{
+			background-color: #F5F5F5;
+			-webkit-transition: background 0.5s;
+			transition: background 0.5s;
+			border-bottom: 1px solid #F5F5F5;
+			padding: 0 1.5rem;
+		}
+
+		#header1 .search {
+			background: #FFFFFF;
+			box-shadow: 0px 1px 2px 0px rgba(178,178,178,0.50);
+			border-radius: 4px;
+			height: 1.8rem;
+			line-height: 1.8rem;
+			box-sizing: border-box;
+			border: 1px solid #EAEAEA;
+			padding-left: 0.5rem;
+		}
+
+		#header1 .search .icon-search {
+			margin-right: 0.2rem;
+			color: #B2B2B2 !important;
+			font-size: 0.7rem;
+		}
+		#header1 .search span {
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.6rem;
+			color: #ACACAC;
+			display: block;
+		}
+		#header1 .search span i{
+			font-size: 0.7rem;
+			color: #454545 !important;
+			margin-right: 0.5rem !important;
+		}
+		/*首页搜索框*/
+		#header0 .search{
+			min-height: 1.6rem !important;/*覆盖aui样式*/
+			height: 1.6rem;
+			/*background: red;*/
+			background: #FBFBFB;
+			border-radius: 4px;
+			margin-right: 0.8rem;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.7rem;
+			color: #B2B2B2;
+			padding: 0 0.5rem;
+			line-height: 1.6rem;
+		}
+		#header0 .search .icon-search{
+			/*margin: 0 0.4rem 0 0.5rem;*/
+			color: #B2B2B2 !important;
+			width: 0.9rem;
+		}
+		#nav-chat .nav-left-icon{
+			margin-left: 0;
+			color: #454545 !important;
+		}
+	</style>
+</head>
+<body>
+<!--frame0首页头部-->
+<header id="header0" class="duola-header flex border-bottom ">
+	<a id="nav-chat" class="duola-icon-area" tapmode onclick="openMeChats()">
+		<span class="nav-left-icon duola-iconfont icon-service"></span>
+		<div class="aui-badge hide" id="mqMsgCount"></div>
+	</a>
+	<div class="flex-1 flex flex-center" tapmode onclick="goSearchIndex()">
+		<div class="search flex-1 flex">
+			<div class="flex-1">搜索数万款衣服</div><i class="duola-iconfont icon-search"></i>
+		</div>
+	</div>
+</header>
+
+<!--frame4独立设计头部-->
+<header id="header4" class="duola-header flex border-bottom hide">
+	<!--<a class="duola-icon-area"></a>-->
+	<div class="nav-title flex-1"><span class="duola-iconfont icon-Typeface2"></span></div>
+	<!--<a id="nav-design" class="duola-icon-area" tapmode onclick="openDesignSearch()">-->
+		<!--<span class="nav-right-icon duola-iconfont icon-search"></span>-->
+	<!--</a>-->
+</header>
+
+<!--frame1云衣橱头部-->
+<header id="header1" class="duola-header border-bottom hide" tapmode onclick="goSearch()">
+	<div class="flex flex-center" style="height: 2.5rem">
+		<div class="search flex-1 flex flex-vertical-center">
+			<span style="display: block"><i class="duola-iconfont icon-search"></i>搜索数万款衣服</span>
+		</div>
+	</div>
+</header>
+
+<!--frame2我的衣橱头部-->
+<header id="header2" class="duola-header flex border-bottom hide">
+	<div  class="aui-tab" id="tab" style="width: 90%;padding-left: 5%">
+		<div class="aui-tab-item aui-active aui-col-xs-4">
+			<span class="tab-span">在库</span></div>
+		<div class="aui-tab-item aui-col-xs-4"><span class="tab-span">暂无货</span></div>
+		<div class="aui-tab-item aui-col-xs-4"><span class="tab-span">品牌</span></div>
+	</div>
+	<a id="nav-scan" class="duola-icon-area " tapmode onclick="opencategory()" style="width: 10%">
+		<i class="nav-right-icon duola-iconfont icon-tuxing2"></i>
+	</a>
+</header>
+
+<!--frame3我的头部-->
+
+<header id="header3" class="duola-header flex border-bottom hide">
+	<!--<div class="nav-title flex-1">我的</div>-->
+</header>
+
+</body>
+</html>
+
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/uz.js"></script>
+<script type="text/javascript" src="script/url.js"></script>
+<script type="text/javascript" src="script/version.js"></script>
+<script type="text/javascript" src="script/umeng_sdk.js"></script>
+<script type="text/javascript" src="script/meiqia_sdk.js"></script>
+<script type="text/javascript" src="script/2_0/aui_tab.js" ></script>
+<script type="text/javascript" src="script/2_0/aui_popup.js" ></script>
+<script type="text/javascript" src="script/jpush_sdk.js" ></script>
+
+<script type="text/javascript">
+
+	var header0El = null;//首页头部
+	var preIndex = null;//上次切换的preIndex
+	var currIndex = 0;//当前底部导航index
+	var headerHeight = 0;//头部高度
+	var isOpencategory = false;//是否打开云衣橱弹窗
+	var isOpenFrame1Header = false; //是否打开frame1Header
+	var mqMsgCountEl = null;//美恰未读消息DOM元素
+	apiready = function() {
+		getVedioUrl();
+		header0El = $api.byId('header0');
+		$api.fixStatusBar(header0El);
+		mqMsgCountEl = $api.byId('mqMsgCount');
+		headerHeight = $api.offset(header0El).h - 1;
+		api.setStatusBarStyle({
+			style: 'dark'
+		});
+		api.setPrefs({
+			key: 'headerHeight',
+			value: headerHeight
+		});
+
+		setAppRepair();//设置云修复版本
+		jpushInit();//极光推送初始化
+		initUmeng();//初始化友盟
+		//初始化美恰
+		mqInit(function(count){
+			$api.text(mqMsgCountEl,count);
+			$api.removeCls(mqMsgCountEl,'hide');
+		});
+		//监听应用从后台回到前台
+		api.addEventListener({
+			name: 'resume'
+		}, function (ret, err) {
+			api.bringFrameToFront({
+				from: 'closet_frame',
+				to: 'footer_tab_3'
+			});
+		});
+		//监听跳转登录页面
+		api.addEventListener({
+			name: 'goLogin'
+		}, function (ret, err) {
+			goLogin(CONSTANT.INDEX);
+		});
+		api.addEventListener({
+			name: 'clearMqCountUser'
+		}, function (ret, err) {
+			clearMqCount();
+		});
+		//监听用户退出广播事件,切换到footer0
+		api.addEventListener({
+			name: 'loginOut'
+		}, function (ret, err) {
+			execGoIndex();
+		});
+
+		//测试
+		api.setPrefs({
+			key: 'watchGuide',
+			value: ""
+		});
+		var watchGuideVal =  api.getPrefs({
+			sync: true,
+			key: 'watchGuide'
+		});
+		if(!watchGuideVal){
+			openNewGuideWin();
+		}else{
+			initRoot();
+		}
+
+//		var mq = api.require('meiQia');
+//		mq.getUnreadMessageCount(function(ret){
+//			console.log(JSON.stringify(ret));
+//		});
+	};
+
+	function getVedioUrl(){
+		var url = serviceNew + 'sys/settings/app';
+		var headers = _getAjaxHeaders(false, true);
+		var data = _getAjaxData({});
+		var extra = null;
+		_ajaxData(url, 'post', headers, data, getVedioUrlSuccessCallback, null, 0, extra);
+	}
+	function getVedioUrlSuccessCallback(ret){
+		if (ret.statusCode == 200) {
+			if(ret.settings.video){
+				$api.setStorage('videoUrl',ret.settings.video);
+				console.log('=================================================');
+				console.log('=================================================');
+				console.log('=================================================');
+				console.log('=================================================');
+				console.log(ret.settings.video);
+			}
+		}
+	}
+
+//	初始化framegrounp数据
+	function initRoot(){
+		openFrameGroup();//打开frameGroup
+		otherInit();//其他初始化事件
+	}
+
+//	打开新手引导窗口
+	function openNewGuideWin(){
+		var name = 'newGuide';
+		var url = 'html/newGuide.html';
+		api.openWin({
+			name: name,
+			url: url,
+			animation: {
+				type: "fade",
+				duration: 300
+			}
+		});
+		api.setPrefs({
+			key: 'watchGuide',
+			value: "yes"
+		});
+	}
+
+	//打开云衣橱的头部
+	function openFrame1Header(seasonIndex,sizeIndex){
+//		console.log(getLogStr(['openFrame1Header',isOpenFrame1Header,seasonIndex,sizeIndex]));
+//		if(isOpenFrame1Header == 'short'){
+//			return;
+//		}
+		if(currIndex != 1){
+			return;
+		}
+		var name = 'frame1Header';
+		var page = 'html/frame1Header.html';
+		var bounces = false;
+		var rect = {
+			x:0,
+			y:0,
+			w:'auto',
+			h:headerHeight
+		};
+		var data = {
+			headerHeight:headerHeight,
+			seasonIndex:seasonIndex,
+			sizeIndex:sizeIndex
+		};
+		if(isOpenFrame1Header == 'all'){
+			//把展开的头部折叠
+			api.setFrameAttr({
+				name: 'frame1Header',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 'auto',
+					h: headerHeight
+				}
+			});
+			api.execScript({
+				frameName:'frame1Header',
+				script:'execHackShowShortHeader();'
+			});
+		}
+		isOpenFrame1Header = 'short';
+		openNewFrame(name,page,bounces,rect,data,'false');
+	}
+
+	//切换footer，隐藏frame1Header
+	function hideFrame1Header2(){
+//		console.log(getLogStr(['hideFrame1Header2',isOpenFrame1Header]));
+		isOpenFrame1Header = false;
+		api.setFrameAttr({
+			name: 'frame1Header',
+			rect: {
+				x: 0,
+				y: 0,
+				w: 'auto',
+				h: headerHeight
+			},
+			hidden: true
+		});
+		api.execScript({
+			frameName:'frame1Header',
+			script:'execHackShowShortHeader();'
+		});
+	}
+
+	function showFrame1Header(){
+//		console.log(isOpenFrame1Header);
+		if(isOpenFrame1Header == false){
+			return;
+		}
+		api.setFrameAttr({
+			name: 'frame1Header',
+			rect: {
+				x: 0,
+				y: 0,
+				w: 'auto',
+				h: headerHeight
+			},
+			hidden: false
+		});
+	}
+
+	//把frame1Header中折叠的头部展开
+	function showFrame1AllHeader(){
+//		console.log(getLogStr(['showFrame1AllHeader',isOpenFrame1Header]));
+		isOpenFrame1Header = 'all';
+	}
+
+	function otherInit(extra) {
+		messages();
+		var tab = new auiTab({
+			element: document.getElementById("tab"),
+			index: 1,
+			repeatClick: false
+		}, function (ret) {
+			api.sendEvent({
+				name: 'tabClothList',
+				extra: {
+					key: ret.index
+				}
+			});
+		});
+	}
+
+	function openFrameGroup(){
+		api.openFrameGroup({
+			name: 'footer_tab',
+			scrollEnabled: false,
+			rect: {
+				x: 0,
+				y: headerHeight,
+				w: 'auto',
+				h: 'auto'
+			},
+			index: 0,
+			preload: 0,
+			frames: [
+				{
+					name: 'footer_tab_1',
+					url: 'html/frame0_new.html',
+					bounces: true,
+					vScrollBarEnabled: false
+				},
+				{
+					name: 'footer_tab_2',
+					url: 'html/frame1_new.html',
+					bounces: true,
+					vScrollBarEnabled: true,
+					pageParam: {
+						headerHeight: headerHeight
+					}
+				},
+				{
+					name: 'footer_tab_3',
+					url: 'html/closet/closet.html',
+					bounces: false,
+					vScrollBarEnabled: false
+				},
+				{
+					name: 'footer_tab_4',
+					url: 'html/user/user.html',
+					bounces: false,
+					vScrollBarEnabled: false
+				},
+				{
+					name: 'footer_tab_5',
+					url: 'html/frame4_new.html',
+					bounces: true,
+					vScrollBarEnabled: true
+				}
+			]
+		}, function (ret, err) {
+			if(ret.index == 1){
+				//云衣橱
+				sendEventUmeng(CONSTANT.UMENGEVENT.CLOUDSET);
+			}
+			indexUmeng(ret.index);
+			sendEventUmeng(CONSTANT.UMENGEVENT.FOOTER_TAB, {
+				index: ret.index+'',
+				name: CONSTANT.PAGE.INDEX[ret.index]
+			});
+			preIndex = ret.index;
+
+			//测试新手引导，每次进入首先清空guideKey的缓存;
+//			api.removePrefs({
+//				key: 'guideKey'
+//			});
+//			打开新手引导(图片)
+//			openGuide(ret.index);
+		});
+
+		//打开底部导航
+		var footerHeight = 2.8 * parseInt($api.cssVal($api.dom('html'),'font-size'));
+		api.openFrame({
+			name: 'footer',
+			url: 'html/footer.html',
+			rect: {
+				x: 0,
+				y: Math.ceil(api.winHeight - footerHeight),
+				w: 'auto',
+				h: footerHeight
+			},
+			bounces: false,
+			vScrollBarEnabled: false,
+			hScrollBarEnabled: false
+		});
+	}
+
+	function openGuide(index){
+		var guideValue =  api.getPrefs({
+					sync: true,
+					key: 'guideKey'
+				}) || {};
+		guideValue = typeof (guideValue)=='string' ? JSON.parse(guideValue) : guideValue;
+		if(index!=4){
+			if(index==0 && !isDefine(guideValue.one)){
+				guideSwitch(index);
+				guideValue.one='yes';
+			}
+			if(index==1 && !isDefine(guideValue.two)){
+				guideSwitch(index);
+				guideValue.two='yes';
+			}
+//			if(index==2 && !isDefine(guideValue.three)){
+//				guideSwitch(index);
+//				guideValue.three='yes';
+//			}
+			if(index==3 && !isDefine(guideValue.four)){
+//				guideSwitch(index);
+//				guideValue.four='yes';
+			}
+			api.setPrefs({
+				key: 'guideKey',
+				value: guideValue
+			});
+		}
+
+//		api.setFrameGroupAttr({
+//			name: 'footer_tab',
+//			rect: {
+//				x: 0,
+//				y: index == "3" ? 0 :headerHeight,
+//				w: 'auto',
+//				h: 'auto'
+//			}
+//		});
+	}
+
+	//打开新手引导页
+	function guideSwitch(index){
+		api.openFrame({
+			name: 'new_user_guide',
+			url: 'html/new_user_guide.html',
+			rect: {
+				x: 0,
+				y: 0,
+				w: 'auto',
+				h: 'auto'
+			},
+			pageParam: {
+				guideIndex:index
+			},
+			bounces: false,
+			vScrollBarEnabled: false,
+			hScrollBarEnabled: false
+		});
+		setTimeout(function(){
+			api.bringFrameToFront({
+				from: 'new_user_guide'
+			});
+		},300);
+	}
+
+	//统计frameGroup友盟页面数据
+	function indexUmeng(index) {
+		onPageStartUmeng(CONSTANT.PAGE.INDEX[index]);
+		if (!isNaN(preIndex)) {
+			onPageEndUmeng(CONSTANT.PAGE.INDEX[preIndex]);
+		}
+		listenPageEndUmeng(CONSTANT.PAGE.INDEX[index]);
+	}
+	function openUser() {
+		api.openFrame({
+			name: 'footer_tab_4',
+			url: 'html/user/user.html',
+			bounces: false,
+			rect: {
+				x: 0,
+				y: 0,
+				w: 'auto',
+				h: api.winHeight - (2.8 * CONSTANT.REM - 2)
+			},
+			vScrollBarEnabled:false,
+			hScrollBarEnabled:false
+		});
+	}
+	//异步切换footer
+	function execSwitchFooter(index){
+		currIndex = index;
+		showFrameHeader(index);
+//		if(preIndex == 1){
+			//从云衣橱footer切换到其他的footer
+			if(isOpenFrame1Header){
+				api.setFrameAttr({
+					name: 'frame1Header',
+					rect: {
+						x: 0,
+						y: 0,
+						w: 'auto',
+						h: headerHeight
+					},
+					hidden: true
+				});
+				api.execScript({
+					frameName:'frame1Header',
+					script:'execHackShowShortHeader();'
+				});
+			}
+//		}
+		if(preIndex == 2){
+			//从我的衣橱footer切换到其他的footer
+			api.execScript({
+				name: 'root',
+				frameName: "closet_frame",
+				script: "closeMyBag();"
+			});
+			api.setFrameAttr({
+				name: 'closet_frame',
+				hidden: true
+			});
+		}
+
+		if(index == 0){
+//			messages();
+		}else if(index == 1){
+			if(isOpenFrame1Header){
+				showFrame1Header();
+			}
+		}else if(index == 2){
+			//当footer_tab_3未打开时候会报错
+			api.execScript({
+				name: 'root',
+				frameName: "footer_tab_3",
+				script: "openFrame();"
+			});
+		}else if(index == 3){
+			//当footer_tab_4未打开时候会报错
+			openUser();
+			return;
+		}else if(index == 4){
+
+		}
+		api.setFrameAttr({
+			name: 'footer_tab_4',
+			hidden: true
+		});
+		api.setFrameGroupIndex({
+			scroll: false,
+			name: 'footer_tab',
+			index: index
+		});
+	}
+
+	//显示Frame的header
+	function showFrameHeader(index) {
+		var preHeaderEl = $api.byId('header'+preIndex);
+		if(preHeaderEl){
+			$api.addCls(preHeaderEl,'hide');
+		}
+		var headerEl = $api.byId('header'+index);
+		if(headerEl){
+			$api.removeCls(headerEl,'hide');
+			$api.fixStatusBar(headerEl);
+//			console.log($api.offset(headerEl).h);
+		}
+	}
+
+
+
+	//在其他页面异步执行切换到我的衣橱
+	function execGoCloudset() {
+		execGoFooter(2);
+		//异步刷新我的衣橱数据
+		api.execScript({
+			frameName: 'footer_tab_3',
+			script: 'newInit("reInfo")'
+		});
+	}
+	//在其他页面异步执行切换到首页
+	function execGoIndex() {
+		execGoFooter(0);
+	}
+	//异步切换footer
+	function execGoFooter(index){
+		api.execScript({
+			frameName: 'footer',
+			script: 'execSwitchFooter("'+index+'");'
+		});
+		execSwitchFooter(index);
+	}
+
+	//打开在线客服
+	function openMeChats() {
+		sendEventUmeng(CONSTANT.UMENGEVENT.ONLINE_SERVICE, {
+			from: '首页'
+		});
+		openChat();
+		api.sendEvent({
+			name: 'clearMqCountIndex'
+		});
+		clearMqCount();
+	}
+
+	//清除美恰未读消息
+	function clearMqCount(){
+		if(!$api.hasCls(mqMsgCountEl,'hide')){
+			$api.addCls(mqMsgCountEl,'hide');
+		}
+	}
+
+	function openDelCloset() {
+		api.openWin({
+			name: '整理衣橱',
+			url: 'html/closet/delete_closet_win.html'
+		});
+	}
+
+
+
+	function messages() {
+		var time = (new Date()).format("yyyy-MM-dd hh:mm:ss.S");
+//		time = time.getFullYear() > 0 ? time.Date.format("") : Date.standardDateStr(time);
+		var url = serviceUser + 'messages/count';
+		var headers = _getAjaxHeaders(false, true);
+		var data = _getAjaxData({
+			type: "unread",
+			readAt: time
+		});
+		var extra = null;
+		_ajaxData(url, 'post', headers, data, messagesSuccessCallback, null, 0, extra);
+	}
+
+	function messagesSuccessCallback(ret) {
+		if (ret.statusCode == '200' && ret.count) {
+			api.execScript({
+				frameName:'footer',
+				script:'showMyDot();'
+			});
+		}
+	}
+
+
+	//ping++付款后异步调用关闭
+	function WinWallet(type){
+		if(type=='YES'){
+			api.closeWin({name:'Wallet'});
+		}
+		api.openWin({
+			name: 'Wallet',
+			url: 'html/win.html',
+			pageParam:{
+				page: 'Wallet',
+				title: '我的账户',
+				type:type
+			}
+
+		});
+	}
+	function opencategory(){
+		if(isOpencategory){
+			isOpencategory = false;
+			api.closeFrame({
+				name: 'category'
+			});
+		}else {
+			isOpencategory = true;
+			api.openFrame({
+				name: 'category',
+				url: 'html/closet/category.html',
+				rect: {
+					x:0,
+					y:70,
+					w:"auto",           //宽度，若传'auto'，页面从x位置开始自动充满父页面宽度
+					h:"auto"
+				},
+				pageParam: {
+				},
+				vScrollBarEnabled: false
+			});
+		}
+	}
+
+	//点击搜索
+	function goSearch(){
+		sendEventUmeng(CONSTANT.UMENGEVENT.SEARCH_BTN, {from: '云衣橱'});
+		var gStyle = $api.getStorage('gStyle',gStyle);
+		if(gStyle){
+			openSearchFrame(gStyle);
+		}else{
+			getStyles();
+		}
+	}
+
+	//换frame1header的背景色
+	function execHeader1Bg(bgColor){
+		$api.css($api.byId('header1'),'border-bottom: 1px solid ' + bgColor +';background : '+bgColor);
+	}
+
+
+	//打开独立设计搜索页面
+	function openDesignSearch(){
+		sendEventUmeng(CONSTANT.UMENGEVENT.SEARCH_BTN,{from:'独立设计'});
+		var gStyle = $api.getStorage('gStyle',gStyle);
+		if(gStyle){
+			openSearchFrame(gStyle,'isDesign');
+		}else{
+			getStyles('openDesignSearch');
+		}
+	}
+
+	//首页打开搜索页面
+	function goSearchIndex() {
+		sendEventUmeng(CONSTANT.UMENGEVENT.SEARCH_BTN, {from: '首页'});
+		var gStyle = $api.getStorage('gStyle',gStyle);
+		if(gStyle){
+			openSearchFrame(gStyle);
+		}else{
+			getStyles('goSearchIndex');
+		}
+	}
+
+	//打开搜索frame
+	function openSearchFrame(gStyle,flag){
+		var name = 'winSearch_new2';
+		var page = './html/winSearch_new2.html';
+		var bounces=false;
+		var rect ={
+			x: 0,
+			y: 0,
+			w: 'auto',
+			h: 'auto'
+		};
+		var param = {
+			gStyle: gStyle
+		};
+		if(flag){
+			param[flag] = flag;
+		}
+		api.openFrame({
+			name: name,
+			url: page,
+			rect: rect,
+			bounces: bounces,
+			allowEdit: true,
+			pageParam:setFrame(bounces,param),
+			softInputMode:'resize',
+			vScrollBarEnabled: false,
+			animation:{type:'fade'},
+			hScrollBarEnabled: false
+		});
+	}
+
+	//缓存衣服风格
+	function getStyles(flag){
+		var url = serviceNew + 'cloudCloset/category';
+		var headers = _getAjaxHeaders(false, true);
+		var data = _getAjaxData({
+			"position": "sidebar"
+		});
+		var extra = flag;
+		_ajaxData(url, 'post', headers, data, getStylesSuccessCallback, getStylesErrorCallback, 0, extra);
+	}
+
+	function getStylesErrorCallback(err) {
+		toastMsg(err.msg);
+	}
+
+	function getStylesSuccessCallback(ret,extra){
+		if (ret.statusCode == 200 && ret.category) {
+			var gStyle = null;
+			for (var i in ret.category.list) {
+				if (ret.category.list[i].key == 'style') {
+					gStyle = ret.category.list[i].list.map(function (item) {
+						return {value: item.value, keywords: item.keywords}
+					});
+					break;
+				}
+			}
+			$api.setStorage('gStyle',gStyle);
+			if(extra == 'openDesignSearch'){
+				openSearchFrame(gStyle,'isDesign');
+			}else{
+				openSearchFrame(gStyle);
+			}
+		}
+	}
+</script>

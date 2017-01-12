@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>缴费</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            font-family: SourceHanSansCN-Bold;
+            background-color: #29415D;
+        }
+        .content {
+            width: 100%;
+            height: auto;
+            position: relative;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background-color: #29415D;
+        }
+        .content header {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            text-align: right;
+            z-index: 20;
+        }
+        .content header span{
+            color: #ffffff;
+            font-size: 0.7rem;
+            padding: 1rem;
+        }
+        .backImg {
+            width: 65%;
+            position: absolute;
+            top: 1rem;
+            right: 0;
+            z-index: 10;
+        }
+        .content .top {
+            width: 100%;
+            padding-bottom: 68%;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(94%, #FF6100), color-stop(100%, #FF6100));
+            position: relative;
+            z-index: 2;
+        }
+        .content .top-content{
+            width: 80%;
+            font-size: 0;
+            height: 100px;
+            position: absolute;
+            left: 2.3rem;
+            top: 4.2rem;
+            z-index: 20;
+            padding-bottom: 19%;
+        }
+        .content .top-content span {
+            display: block;
+            color: #FFFFFF;
+            font-size: 1rem;
+
+        }
+        .content .top-content .money {
+            font-size: 1.5rem;
+            font-weight: 700;
+
+        }
+        .content .top-content .deposit {
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.6rem;
+        }
+        .content .top-content .more {
+            position: absolute;
+            bottom: 1.8rem;
+            left: 0;
+            font-size: 0.8rem;
+            font-weight: 400;
+        }
+        .content .bottom {
+            width: 100%;
+            padding-bottom: 40%;
+            background: #29415D;
+            position: relative;
+            z-index: 2;
+        }
+        .content .center{
+            width: 100%;
+            padding-bottom: 28%;
+            background: rgba(0,0,0,0.1);
+            position: relative;
+            top: 0;
+        }
+        .content .bottom-content{
+            width: 88%;
+            font-size: 1rem;
+            height: 100px;
+            position: absolute;
+            top: 1.7rem;
+            left: 1.9rem;
+            z-index: 20;
+            color: #ffffff;
+        }
+        .content .bottom-content .form-control{
+            width: 11rem;
+            height: 1.5rem;
+            padding-left: 0.7rem;
+            border: 0.5px solid rgba(225,225,225,0.5);
+            border-radius: 4px;
+            color: #ffffff;
+            display: inline-block;
+            opacity: 0.5;
+            font-size: 0.7rem;
+            letter-spacing: 2.4px;
+        }
+        .content  .bottom-content .input-group-addon{
+            position: absolute;
+            left: 9.5rem;
+            line-height: 1.6rem;
+            font-size: 0.7rem;
+        }.content  .bottom-content .prompt{
+             position: absolute;
+             left: 12.5rem;
+             line-height: 1.6rem;
+             font-size: 0.7rem;
+             opacity: 0.5;
+         }
+        input:focus {
+            box-shadow: none;
+            outline: none;
+        }
+        .content .footer {
+            width: 100%;
+            height: auto;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            z-index: 10;
+        }
+        .content .footer .footer-money{
+            width: 100%;
+            position: relative;
+            text-align: center;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(100%, #FF6100), color-stop(80%, #FF6100));
+        }
+        .content .footer .footer-money .footer-money-span{
+            color: #ffffff;
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 2.8rem;
+        }
+        .content .footer .footer-mode {
+            width: 100%;
+            position: relative;
+            display: inline-block;
+            background: #FFFFFF;
+            box-shadow: 0px -4px 13px 0px rgba(0,0,0,0.18);
+            left: 0;
+        }
+        .content .footer .footer-mode  div{
+            display: inline-block;
+            padding: 1rem 0;
+            width: 48%;
+            font-size: 1rem;
+            color: #4A4A4A;
+            text-align: center;
+        }
+        .content .footer .footer-mode .left{
+            border-right: 0.5px solid rgba(216,216,216,0.5);
+        }
+        .content .footer .footer-mode span {
+            vertical-align: top;
+            font-size: 1rem;
+            color: #4A4A4A;
+            line-height: 2rem;
+        }
+        .content .footer .footer-mode .alipay {
+            color: #28405C;
+            font-size: 1.3rem;
+        }
+        .content .footer .footer-mode .wechat {
+            color: #FF6100;
+            font-size: 1.3rem;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="content">
+        <header tapmode onclick="closeWin()">
+            <span class="duola-iconfont icon-Close"></span>
+        </header>
+        <img src="../../image/pay.png" class="backImg"/>
+        <div class="top">
+            <div class="top-content">
+                <span class="money"> {{data.amount}} RMB/月</span>
+                <span class="deposit">押金{{data.deposit}}</span>
+                <span class="more" tapmode onclick="vm.goMore('wx')">更多选择<i class="duola-iconfont icon-right"></i></span>
+            </div>
+        </div>
+        <div class="center">
+            <div class="bottom-content">
+                <input type="text" v-model="data.inviteCode" @focus="handleFocus" @blur="handleBlur" class="form-control" placeholder="推荐码(非必填)" onkeyup="this.t ? clearTimeout(this.t) : ''; this.t = setTimeout(chk.call(this), 500)">
+                <i class="duola-iconfont icon-Scan input-group-addon" tapmode onclick="codeScan();"></i>
+                <span class="prompt" v-show="isInviteCode">立减{{data.discount}}RMB</span>
+                <span class="prompt" v-show="!isInviteCode && data.inviteCode">无效推荐码 </span>
+            </div>
+        </div>
+        <div class="bottom"></div>
+        <div class="footer" v-show="isShow">
+            <div class="footer-money">
+                <span class="footer-money-span">总计：{{total}} RMB</span>
+            </div>
+            <div class="footer-mode">
+                <div class="left" tapmode onclick="vm.pay('alipay')"><span class="duola-iconfont icon-zfb-money alipay"></span>
+                    <span>支付宝支付</span></div>
+                <div class="right"  tapmode onclick="vm.pay('wx')"> <span class="duola-iconfont icon-wechat-money wechat"></span>
+                    <span>微信支付</span></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/pingpp.js"></script>
+<script type="text/javascript">
+    var promotion, vm;
+    apiready = function () {
+        vm.init();
+        sendEventUmeng(CONSTANT.UMENGEVENT.PAGE_VIP,{
+            from:'新用户缴费'
+        });
+    };
+    function chk(){
+        var el = this;
+        return checkInvite(el);
+    }
+    function  checkInvite(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.VIP_CODE,{
+            from:'输入推荐码'
+        });
+        var url = serviceUser + 'service/open/invite_code/member/check';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData({
+            'inviteCode':el.value
+        });
+        var extra = null;
+        _ajaxData(url,'post',headers,data,function(ret,extra){
+            if(ret.statusCode=='200'){
+                vm.init(el.value);
+                el.blur();
+                vm.isShow = true;
+                sendMathEventUmeng(CONSTANT.UMENGEVENT.VIP_CODE_SUCCESS,{
+                    'inviteCode':el.value
+                },50);
+            } else {
+                vm.isInviteCode = false;
+            }
+        },function (err,extra){
+            toastMsg(err.msg);
+        },0,extra);
+    }
+    vm = new Vue({
+        el: '#app',
+        data: {
+            "isInviteCode": false,
+            "isShow": true,
+            data: {
+//                "discount": 50,
+//                "amount": 249,
+//                "deposit": 300,
+//                "describe": "新用户缴费",
+//                "extraFee": 0,
+//                "inviteCode": "m8suHeii",
+//                "leaseLimit": 3
+            }
+        },
+        computed: {
+            total: function () {
+                var self = this;
+                if (!self.data) return 0;
+                return  self.data.deposit + self.data.amount - self.data.discount;
+            }
+        },
+        methods: {
+            init: function (inviteCode) {
+                var self = this;
+                var url = serviceUser + 'service/pay/query/openMember';
+                var headers = _getAjaxHeaders(true, true);
+                var body = {};
+                if (inviteCode) {
+                    body.inviteCode=inviteCode;
+                }
+                var data = _getAjaxData(body);
+                var extra = {promotion: this.promotion};
+                _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                    if (ret.statusCode == '200') {
+                        self.data = {
+                            "discount": ret.discount,
+                            "amount": ret.amount,
+                            "deposit": ret.deposit || 0,
+                            "describe": ret.describe,
+                            "extraFee": ret.extraFee,
+                            "inviteCode": ret.inviteCode,
+                            "leaseLimit": ret.leaseLimit
+                        };
+                        alert(JSON.stringify(self.data));
+                        if (ret.inviteCode) {
+                            self.isInviteCode = true;
+                        }
+                    } else if (ret.statusCode == '10104') {
+                        goLogin('no', "../winLogin.html");
+                    } else {
+                        toastMsg(ret.msg);
+                    }
+                }, function (err, extra) {
+                    toastMsg(err.msg);
+                    loadingHide();
+                }, 0, extra);
+            },
+            handleFocus: function () {
+                this.isShow=false;
+            },
+            handleBlur: function () {
+                this.isShow=true;
+            },
+            goMore: function() {
+                sendEventUmeng(CONSTANT.UMENGEVENT.BTN_VIP_MORE,{
+                    from:'点击缴费更多选择'
+                });
+                var name = 'userPay';
+                var title = '新用户缴费';
+                var leftIcon = 'duola-iconfont icon-left';
+                var leftCallback = 'execCloseSlefWin';
+                var leftNav = setNavData(leftIcon,null,leftCallback);
+                var border = true;
+                var params = {};
+                params.nav= setNav(leftNav,border);
+                var from = {
+                    winName:api.winName,
+                    frameName:api.frameName
+                };
+                var url = '../header_web.html';
+                var animation = {
+                    type: "push",                //动画类型（详见动画类型常量）
+                    subType:"from_right",       //动画子类型（详见动画子类型常量）
+                    duration: 300               //动画过渡时间，默认300毫秒
+                };
+                var bounces = true;
+                var page = 'user/userPay.html';
+                openNewWinFrame(name,title,params,from,url,animation,page);
+            },
+            pay: function (pay) {
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '正在支付···',
+                    text: '请稍候'
+                });
+                var self = this;
+                var leaseLimit = this.data.leaseLimit;
+                var body = {
+                    "bags": 1,
+                    channel: pay,
+                    amountFront: self.total,
+                    coupons: [],
+                    "duration": 1,
+                    leaseLimit: leaseLimit
+                };
+                var url = serviceUser + 'service/pay/start/openMember';
+                var headers = _getAjaxHeaders(true, true);
+                var data = _getAjaxData(body);
+                var extra = null;
+                _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                    _loadingHide();
+                    if (ret.statusCode == '200') {
+                        ping(ret.charge);
+                    } else if (ret.statusCode == '10104') {
+                        goLogin('no', "../winLogin.html");
+                    } else {
+                        toastMsg(ret.msg);
+                    }
+                }, function (err, extra) {
+                    _loadingHide();
+                    toastMsg(err.msg);
+                }, 0, extra);
+
+            }
+        }
+    });
+
+    //    支付完成后调用check_pay接口验证
+    function check() {
+        var url = serviceUser + 'service/check/payment';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url, 'post', headers, data, checkSuccessCallback, checkErrorCallback, 0, extra);
+    }
+    function checkSuccessCallback(ret, extra) {
+        if (ret.statusCode == '200') {
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+    function checkErrorCallback(err, extra) {
+        toastMsg(err.msg);
+    }
+    function goWallet() {
+        api.execScript({
+            name: 'root',
+            script: 'WinWallet("YES");'
+        })
+    }
+    function closeWin() {
+        api.closeWin();
+    }
+    function codeScan(){
+        openScan(function(content){
+            var index = content.lastIndexOf('/');
+            if(index != -1){
+                content = content.substr(index+1);
+                if(content){
+                    vm.data.inviteCode = content;
+                    vm.isInviteCode = false;
+                    checkInvite({value: content});
+                }
+            }else {
+                toastMsg('不是邀请码，请重新扫描');
+            }
+        });
+    }
+</script>
+</html>
