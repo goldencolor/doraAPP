@@ -68,6 +68,7 @@ var CONSTANT = {
 		PAGE_USENOW:'um_count_page_usenow',//新用户使用指南页面
 		BTN_USENOW:'um_count_btn_usenow',//点击新用户使用指南页面
 		BTN_VIP:'um_count_btn_vip',//点击开通会员
+		BTN_REGIN_INDEX:'um_count_btn_regin_index',//点击首页登录注册
 		ICON_MODULE:'um_count_icon_module',
 		HOT_MODULE:'um_count_hot_module',
 		SHARE_AWARD:'um_count_share_award',
@@ -376,7 +377,7 @@ function closeApp(){
 }
 //打开登录窗口
 function goLogin(from,url,data){
-	//var name = 'loginBetter';
+	//var name = 'login_new';
 	//var title = "";
 	//data = data || {};
 	//url = url ||'winLogin.html';
@@ -386,6 +387,7 @@ function goLogin(from,url,data){
 	//	duration:300
 	//};
 	//openNewWin(name,title,data,from,url,animation);
+
 	api.openWin({
 		name: 'reginWin',
 		url: url || 'win_regin.html' ,
@@ -393,6 +395,12 @@ function goLogin(from,url,data){
 			type:"movein",
 			subType:'from_bottom',
 			duration:300
+		},
+		pageParam:{
+			from:{
+				winName:api.winName,
+				frameName:api.frameName
+			}
 		},
 		bounces:false,
 		scrollEnabled:false,

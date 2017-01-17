@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>我在多啦衣梦的2016</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <link rel="stylesheet" href="css/rem.css">
+
+    <!-- Demo styles -->
+    <style>
+        html, body {
+            position: relative;
+            height: 100%;
+            font-family: 'Arial','微软雅黑';
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            color: #FFFFFF;
+            text-align: center;
+        }
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+        }
+        .swiper-container .item{
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+        }
+        .one .btn{
+            background: #FC857A;
+            box-shadow: 0px 2px 4px 0px rgba(51,1,1,0.33);
+            border-radius: 4px;
+            width: 9rem;
+            height: 2.2rem;
+            line-height: 2.2rem;
+            font-size: 1rem;
+            color: #FFFFFF;
+            margin: 15.6rem auto 0;
+            text-align: center;
+        }
+        .two .name{
+            background: #FF57AF;
+            box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.17);
+            border-radius: 4px;
+            width: 14rem;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            margin-top: 3rem;
+            margin-left: 2.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .two .show1{
+            position: relative;
+            background-color: #FF57AF;
+            margin-top: 1rem;
+            margin-left: 2.5rem;
+            width: 8.5rem;
+            height: 1.65rem;
+            line-height: 1.65rem;
+            font-size: 0.7rem;
+            box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.17);
+            border-radius: 4px;
+        }
+        .two .show1 .cloth{
+            position: absolute;
+            line-height: 2.5rem;
+            min-width: 11rem;
+            text-align: left;
+            left: 0.35rem;
+            top: 1.45rem;
+            background-color: #F274B6;
+            box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.06);
+            border-radius: 4px;
+            padding-left: 0.85rem;
+            /*padding-right: 1.5rem;*/
+            font-size: 1.5rem;
+        }
+        .two .static{
+            font-size: 1rem;
+            color: #FFFFFF;
+            line-height: 1rem;
+            margin-top: 3rem;
+        }
+        .two .show2{
+            position: relative;
+            background-color: #FF57AF;
+            margin-top: 1.35rem;
+            margin-left: 2.5rem;
+            width: 8rem;
+            height: 1.65rem;
+            line-height: 1.65rem;
+            font-size: 0.7rem;
+            box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.17);
+            border-radius: 4px;
+        }
+        .two .show2 .money{
+            position: absolute;
+            line-height: 2.5rem;
+            min-width: 9.5rem;
+            text-align: left;
+            left: 0.35rem;
+            top: 1.45rem;
+            background-color: #F274B6;
+            box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.06);
+            border-radius: 4px;
+            padding-left: 0.85rem;
+            /*padding-right: 1.5rem;*/
+            font-size: 1.5rem;
+        }
+        .three .show1{
+            position: relative;
+            background-color: #9B7EFC;
+            margin-top: 3rem;
+            margin-left: 2.5rem;
+            width: 8.5rem;
+            height: 1.65rem;
+            line-height: 1.65rem;
+            font-size: 0.7rem;
+            box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.17);
+            border-radius: 4px;
+        }
+        .three .show1 .cloth{
+            position: absolute;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            min-width: 8.5rem;
+            text-align: left;
+            left: 0.35rem;
+            top: 1.45rem;
+            background-color: #76A4FB;
+            box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.06);
+            border-radius: 4px;
+            padding-left: 0.85rem;
+            /*padding-right: 1.5rem;*/
+            font-size: 1.5rem;
+        }
+        .three .static{
+            font-size: 1rem;
+            color: #FFFFFF;
+            line-height: 1rem;
+            margin-top: 3rem;
+        }
+        .three .show2{
+            position: relative;
+            background-color: #9B7EFC;
+            margin-top: 1.55rem;
+            margin-left: 2.5rem;
+            width: 8rem;
+            height: 1.65rem;
+            line-height: 1.65rem;
+            font-size: 0.7rem;
+            box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.17);
+            border-radius: 4px;
+        }
+        .three .show2 .money{
+            position: absolute;
+            line-height: 2.5rem;
+            min-width: 13rem;
+            text-align: left;
+            left: 0.35rem;
+            top: 1.45rem;
+            background-color: #76A4FB;
+            box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.06);
+            border-radius: 4px;
+            padding-left: 0.85rem;
+            /*padding-right: 1.5rem;*/
+            font-size: 1.5rem;
+        }
+        .four .btn{
+            width: 14rem;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            text-align: center;
+            background-color: #FE9500;
+            margin: 16.25rem auto 0;
+            box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.08);
+            border-radius: 4px;
+        }
+        .five .show1{
+            position: relative;
+            background-color: #FF005C;
+            margin-top: 2rem;
+            margin-left: 1.25rem;
+            width: 11.5rem;
+            height: 1.65rem;
+            line-height: 1.65rem;
+            font-size: 0.7rem;
+            box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.17);
+            border-radius: 4px;
+        }
+        .five .show1 .money1{
+            position: absolute;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            min-width: 12rem;
+            text-align: left;
+            left: 0.35rem;
+            top: 1.45rem;
+            background-color: #FF7BA3;
+            box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.06);
+            border-radius: 4px;
+            padding-left: 0.85rem;
+            font-size: 1.5rem;
+        }
+        .five .show2{
+            position: relative;
+            background-color: #FF005C;
+            margin-top: 3.5rem;
+            margin-left: 1.25rem;
+            width: 12rem;
+            height: 1.65rem;
+            line-height: 1.65rem;
+            font-size: 0.7rem;
+            box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.17);
+            border-radius: 4px;
+        }
+        .five .show2 .money2{
+            position: absolute;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            min-width: 12rem;
+            text-align: left;
+            left: 0.35rem;
+            top: 1.45rem;
+            background-color: #FF7BA3;
+            box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.06);
+            border-radius: 4px;
+            padding-left: 0.85rem;
+            font-size: 1.5rem;
+        }
+        .five .show3{
+            position: relative;
+            background-color: #FF005C;
+            margin-top: 3.5rem;
+            margin-left: 7.5rem;
+            width: 10rem;
+            height: 1.65rem;
+            line-height: 1.65rem;
+            font-size: 0.7rem;
+            box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.17);
+            border-radius: 4px;
+        }
+        .five .show3 .rank{
+            position: absolute;
+            line-height: 2.5rem;
+            min-width: 7.5rem;
+            text-align: center;
+            right: 0.35rem;
+            top: 1.45rem;
+            background-color: #FF7BA3;
+            box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.06);
+            border-radius: 4px;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+<!-- Swiper -->
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+
+        <div class="swiper-slide item one" style="background-image: url(./img/my1.png)">
+            <div class="btn">查看你的多啦账单</div>
+        </div>
+        <div class="swiper-slide item two" style="background-image: url(./img/my2.png)">
+            <div class="name">
+                亲爱的：<span id="nickname">xxx</span>
+            </div>
+            <div class="show1">
+                2016你在多啦衣梦穿了
+                <div class="cloth">
+                    <span class="clothesCount" id="clothesCount">0</span>件美衣
+                </div>
+            </div>
+            <div class="static">
+                白富美都没我穿的衣服多
+            </div>
+            <div class="show2">
+                这一年你在多啦花了
+                <div class="money">
+                    <span class="duolaPayMoney" id="duolaPayMoney">0</span> RMB
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide item three" style="background-image: url(./img/my3.png)">
+            <div class="show1">
+                让你少洗了
+                <div class="cloth">
+                    <span class="orderCount" id="orderCount">0</span>次衣服
+                </div>
+            </div>
+            <div class="static">
+                多看了<span class="korean" id="korean">0</span>集韩剧
+            </div>
+            <div class="show2">
+                帮身边减少了
+                <div class="money">
+                    <span class="emissions" id="emissions">0</span>kg碳排放量
+                </div>
+            </div>
+            <div class="static">
+                姐也为击退雾霾尽过一份力哦
+            </div>
+        </div>
+        <div class="swiper-slide item five" style="background-image: url(./img/my4.png)">
+            <div class="show1">
+                这一年在多啦穿过的衣服总价是
+                <div class="money1">
+                    <span id="clothesMoney">0</span> RMB
+                </div>
+            </div>
+            <div class="show2">
+                多啦衣梦帮你省了买衣服的软银子
+                <div class="money2">
+                    <span id="saveMoney">0</span> RMB
+                </div>
+            </div>
+            <div class="show3">
+                多啦衣梦帮你省了买衣服的软银子
+                <div class="rank">
+                    <span id="rank">0</span> 位
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide item four" style="background-image: url(./img/my5.png)">
+            <div class="btn">
+                点击分享给你的闺蜜们吧
+            </div>
+        </div>
+    </div>
+    <!-- Add Pagination -->
+    <!--<div class="swiper-pagination"></div>-->
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/tiger.js"></script>
+</body>
+</html>

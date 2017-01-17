@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>新用户缴费</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+		html,body{
+			background-color: #ff6100;
+		}
+		.vip-bg{
+			position: relative;
+		}
+		.vip-bg .bg{
+			position: absolute;
+			left: 0;
+			top:0;
+			height: 100%;
+			width: 100%;
+			z-index: 1;
+		}
+		.vip-bg .bg-img{
+			position:absolute;
+			left:40%;
+			top:0;
+			height:100%;
+			width:60%;
+			z-index: 2;
+			overflow: hidden;
+		}
+		.vip-bg .bg-normal{
+			position: absolute;
+			left: 0;
+			top:0;
+			height: 100%;
+			width: 100%;
+			z-index: 3;
+		}
+
+		.vip-header{
+			background-image: linear-gradient(0deg, rgba(255,97,0,0.94) 0%, #FF6100 100%);
+			height: 14.4rem;
+			color:white;
+		}
+		.vip-close{
+			height: 2.3rem;
+		}
+		.vip-close .icon-Close{
+			font-size: 0.7rem;
+			padding: 0 0.5rem;
+			margin-right: 0.5rem;
+			color: white;
+		}
+		.vip-header .text-desc{
+			margin-left: 2.5rem;
+		}
+		.vip-header .text-desc .money{
+			font-family: ArialMT;
+			font-weight: bold;
+			font-size: 1.5rem;
+		}
+		.vip-header .text-desc .deposit{
+			margin-top: 0.6rem;
+			font-family: ArialMT;
+			font-size: 0.9rem;
+		}
+		.vip-header .text-desc .zh{
+			margin-top: 3.8rem;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.8rem;
+			letter-spacing:0.2rem;
+		}
+		.vip-btn{
+			background-image: linear-gradient(-180deg, rgba(255,97,0,0.85) 0%, #FF6100 100%);
+			background-image: -webkit-linear-gradient(-180deg, rgba(255,97,0,0.85) 0%, #FF6100 100%);
+			height: 3.4rem;
+			width: 100%;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 1.1rem;
+			color: white;
+		}
+		.vip-btn .en{
+			font-family: ArialMT;
+			font-size: 1.3rem;
+			font-weight: bold;
+		}
+		.vip-pay{
+			height: 3.4rem;
+			background: #FFFFFF;
+			box-shadow: 0px -4px 13px 0px rgba(0,0,0,0.18);
+		}
+		.vip-pay .zhifubao{
+			border-right: 1px solid #D8D8D8;
+		}
+		.icon-zfb-money{
+			font-size: 1rem;
+			margin-right: 0.7rem;
+			color: #28405c;
+		}
+		.icon-wechat-money{
+			font-size: 1.1rem;
+			color: #ff6100;
+			margin-right: 0.7rem;
+		}
+		.vip-section{
+			background: #29415D;
+		}
+		.vip-section .btn{
+			height: 5.2rem;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.8rem;
+			color: white;
+			letter-spacing: 0.3rem;
+			position: relative;
+		}
+		.vip-section .btn .bg-text{
+			position: absolute;
+			left:2.5rem;
+			height: 100%;
+			z-index: 5;
+			text-align: center;
+			line-height: 5.2rem;
+		}
+		.vip-section .btn .bg-text .icon-Scan{
+			font-size: 0.8rem;
+			position: absolute;
+			right: 0;
+			top: 0;
+			padding: 0 0.2rem 0 0.5rem;
+			color: #ffffff;
+			opacity: 0.15;
+		}
+		#money-code{
+			width: 10rem;
+			height: 1.5rem;
+			/*outline: none;*/
+			border: 1px solid #3e546d;
+			/*opacity: 0.1;*/
+			border-radius: 4px;
+			color: white;
+			padding-left: 0.6rem;
+			letter-spacing: 2px;
+			font-size: 0.7rem;
+		}
+		::-webkit-input-placeholder {
+		　　color:#3e546d;
+			font-size: 0.7rem;
+			font-family: SourceHanSansCN-Normal;
+			letter-spacing: 2.4px;
+		}
+		.tip-money-code{
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.7rem;
+			color:#ffffff;
+			letter-spacing: 0px;
+			opacity: 0.3;
+			margin-left: 0.7rem;
+		}
+		.vip-section .btn .bg-color{
+			position: absolute;
+			left: 0;
+			top:0;
+			width:100%;
+			height:100%;
+			opacity: 0.1;
+			background: #000000;
+			z-index: 4;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="header" class="flex flex-vertical" style="height: 100%">
+		<div class="flex-1 vip-bg">
+			<div class="flex flex-vertical bg">
+				<div class="vip-header">
+					<div class="vip-close flex flex-right">
+					</div>
+					<div class="flex-1 flex flex-vertical-center">
+					</div>
+				</div>
+				<div class="vip-section flex-1 flex flex-vertical">
+					<div class="btn">
+						<div class="bg-color"></div>
+						<div class="bg-text"></div>
+					</div>
+					<div class="flex-1"></div>
+				</div>
+			</div>
+			<div class="bg-img">
+				<img src="../../image/pay.png" alt="" height="100%" />
+			</div>
+			<div class="flex flex-vertical bg-normal">
+				<div class="vip-header flex flex-vertical" style="background: transparent;background-image: none;">
+					<div class="vip-close flex flex-right">
+						<span class="duola-iconfont icon-Close" tapmode onclick="closeIcon()"></span>
+					</div>
+					<div class="flex-1 flex flex-vertical-center">
+						<div class="text-desc">
+							<div class="money">
+								<span id="amount-money"></span> RMB/月<br>
+							</div>
+							<div class="deposit">
+								押金<span id="deposit-money"></span>RMB
+							</div>
+							<div class="zh" tapmode onclick="vipMore()">
+								更多选择>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="vip-section flex-1 flex flex-vertical" style="background: transparent;background-image: none;">
+					<div class="btn">
+						<div class="bg-color"></div>
+						<div class="bg-text flex">
+							<div style="position: relative;">
+								<input id="money-code" type="text" placeholder="推荐码(非必填)" onblur="this.value.trim() && checkMoneyCode(this,this.value.trim())" onkeyup="this.t ? clearTimeout(this.t) : ''; this.t = setTimeout(chk.call(this), 1000)"/>
+								<span class="duola-iconfont icon-Scan" tapmode onclick="codeScan();"></span>
+							</div>
+							<div class="tip-money-code"><span id="discount-money"></span></div>
+						</div>
+					</div>
+					<div class="flex-1 flex flex-bottom">
+						<div class="vip-btn flex flex-center">
+							总计：<span class="en"><span id="pay-money"></span>RMB</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="vip-pay flex">
+			<div class="zhifubao flex-1 flex flex-center" tapmode onclick="payMoney('alipay')">
+				<span class="duola-iconfont icon-zfb-money"></span>支付宝支付
+			</div>
+			<div class="weixin flex-1 flex flex-center" tapmode onclick="payMoney('wx')">
+				<span class="duola-iconfont icon-wechat-money"></span>微信支付
+			</div>
+		</div>
+	</div>
+</body>
+    <script type="text/javascript" src="../../script/api.js"></script>
+    <script type="text/javascript" src="../../script/url.js"></script>
+    <script type="text/javascript" src="../../script/uz.js"></script>
+	<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+	<script type="text/javascript" src="../../script/pingpp.js"></script>
+	<script type="text/javascript">
+		apiready = function(){
+			var header = $api.byId('header');
+			$api.fixStatusBar(header);
+			sendEventUmeng(CONSTANT.UMENGEVENT.PAGE_VIP);
+			init(CONSTANT.ACTIONINIT);
+			api.parseTapmode();
+			if(api.systemType == 'ios'){
+				api.addEventListener({
+					name:'viewdisappear'
+				},function(ret,err){
+					goBackIndex();
+				});
+			}else if(api.systemType == 'android'){
+				api.addEventListener({
+					name: 'keyback'
+				},function(ret,err){
+					goBackIndex();
+				});
+			}
+		};
+
+		//请求初始化套餐
+		function init(action,inviteCode){
+			if(action == CONSTANT.ACTIONINIT){
+				loadingShow();
+			}
+			var url = serviceUser + 'service/pay/query/openMember';
+			var headers = _getAjaxHeaders(true, true);
+			var body ={};
+			if(inviteCode){
+				body.inviteCode = inviteCode;
+			}
+			var data = _getAjaxData(body);
+			var extra = {action:action};
+			_ajaxData(url,'post',headers,data,initSuccessCallback,null,0,extra);
+		}
+
+		function initSuccessCallback(ret,extra){
+			var action = extra.action;
+			if(action == CONSTANT.ACTIONREFRESH){
+				pullRefreshDone();
+			}else{
+				loadingHide();
+			}
+			if(ret.statusCode==200){
+				getMoneyHtml(ret);
+			}else{
+				toastMsg(ret.msg);
+			}
+		}
+
+		//渲染html
+		function getMoneyHtml(ret){
+			$api.text($api.byId('amount-money'),ret.amount);
+			$api.text($api.byId('deposit-money'),ret.deposit);
+			$api.text($api.byId('pay-money'),ret.deposit + ret.amount - ret.discount||0);
+			if(ret.inviteCode){
+				var moneyCodeEl = $api.byId('money-code');
+				$api.val(moneyCodeEl,ret.inviteCode);
+				$api.attr(moneyCodeEl,'disabled','disabled');
+				sendEventUmeng(CONSTANT.UMENGEVENT.VIP_CODE);
+				if(!isNaN(ret.discount)){
+					$api.text($api.byId('discount-money'),'立减'+ret.discount+'RMB');
+					sendMathEventUmeng(CONSTANT.UMENGEVENT.VIP_CODE_SUCCESS,{
+						'inviteCode':ret.inviteCode+''
+					},parseFloat(ret.discount));
+				}
+			}
+		}
+
+		//扫码推荐码
+		function codeScan(){
+			var moneyCodeEl = $api.byId('money-code');
+			if($api.attr(moneyCodeEl,'disabled')){
+				toastMsg('已经绑定推荐码!');
+				return;
+			}
+
+			//打开摄像头,手动触发检查验证码
+			openScan(function(content){
+				var index = content.lastIndexOf('/');
+				if(index != -1){
+					content = content.substr(index+1);
+					if(content){
+						var moneyCodeEl = $api.byId('money-code');
+						$api.val(moneyCodeEl,content);
+						checkMoneyCode(moneyCodeEl,content)
+					}
+				}else {
+					toastMsg('不是邀请码，请重新扫描');
+				}
+			});
+		}
+
+		//检查推荐码是否有效
+		function chk(){
+			var el = this;
+			var inviteCode = el.value.trim();
+			if(!inviteCode){
+				return;
+			}
+			return checkMoneyCode(el,inviteCode);
+		}
+
+		function checkMoneyCode(el,inviteCode){
+				sendEventUmeng(CONSTANT.UMENGEVENT.VIP_CODE);
+				var url = serviceUser + 'service/open/invite_code/member/check';
+				var headers = _getAjaxHeaders(true,true);
+				var data = _getAjaxData({
+					'inviteCode':inviteCode
+				});
+				_ajaxData(url,'post',headers,data,function(ret){
+					var discountMoney = '';
+					if(ret.statusCode=='200'){
+						//有效
+						init(null,inviteCode);
+						el.blur();
+					}else{
+						discountMoney = '无效推荐码';
+					}
+					$api.text($api.byId('discount-money'),discountMoney);
+				},function (err){
+					toastMsg(err.msg);
+				},0);
+		}
+
+		//点击更多选择
+		function vipMore(){
+			sendEventUmeng(CONSTANT.UMENGEVENT.BTN_VIP_MORE);
+			var name = 'userPay';
+			var title = '新用户缴费';
+			var leftIcon = 'duola-iconfont icon-left';
+			var leftNav = setNavData(leftIcon);
+			var border = true;
+			var bounces = false;
+			var params = {};
+			params.nav= setNav(leftNav,border);
+			params.frame = setFrame(bounces);
+			var from = {
+				winName:api.winName,
+				frameName:api.frameName
+			};
+			var url = '../header_web.html';
+			var animation = {
+				type: "push",                //动画类型（详见动画类型常量）
+				subType:"from_right",       //动画子类型（详见动画子类型常量）
+				duration: 300               //动画过渡时间，默认300毫秒
+			};
+			var page = 'user/userPay.html';
+			openNewWinFrame(name,title,params,from,url,animation,page);
+		}
+
+		//点击关闭图标
+		function closeIcon(){
+			goBackIndex();
+		}
+
+		//回到首页
+		function goBackIndex(){
+			var stayTime = 0;
+			//是否新用户
+			if(isTrue($api.getStorage('isNewUser')||'')){
+				api.execScript({
+					name:"root",
+					script: "initRoot();"
+				});
+				stayTime = 100;
+			}
+
+			setTimeout(function(){
+				api.closeToWin({
+					name: 'root'
+				});
+			},stayTime)
+		}
+
+		function payMoney(way){
+			api.showProgress({
+				style: 'default',
+				animationType: 'fade',
+				title: '正在支付···',
+				text: '请稍候'
+			});
+			var inviteCode = $api.val($api.byId('money-code')).trim();
+			if(!inviteCode){
+				//未填写推荐码
+				confirmPay(way);
+			}else{
+				//填写推荐码
+				var url = serviceUser + 'service/open/invite_code/member/check';
+				var headers = _getAjaxHeaders(true,true);
+				var data = _getAjaxData({
+					'inviteCode':inviteCode
+				});
+				_ajaxData(url,'post',headers,data,function(ret){
+					confirmPay(way,inviteCode);
+				},function (err){
+					toastMsg(err.msg);
+				},0);
+			}
+		}
+
+		//支付前确认
+		function confirmPay(way,inviteCode){
+			var url = serviceUser + 'service/pay/query/openMember';
+			var headers = _getAjaxHeaders(true, true);
+			var body ={};
+			if(inviteCode){
+				body.inviteCode = inviteCode;
+			}
+			var data = _getAjaxData(inviteCode);
+			_ajaxData(url,'post',headers,data,function(ret){
+				var amountFront = ret.deposit + ret.amount - ret.discount||0;
+				var url = serviceUser + 'service/pay/start/openMember';
+				var headers = _getAjaxHeaders(true, true);
+				var data = _getAjaxData({
+					"bags": 1,
+					channel: way,
+					amountFront: parseInt(amountFront),
+					coupons: [],
+					"duration": 1,
+					leaseLimit: parseInt(ret.leaseLimit)
+				});
+				_ajaxData(url, 'post', headers, data, function (ret) {
+					_loadingHide();
+					if (ret.statusCode == '200') {
+						ping(ret.charge,'userPayNew');
+					}else {
+						toastMsg(ret.msg);
+					}
+				}, function (err, extra) {
+					_loadingHide();
+					toastMsg(err.msg);
+				}, 0);
+			},null,0);
+		}
+		//    支付完成后调用check_pay接口验证
+		function check(channel,amount) {
+			var url = serviceUser + 'service/check/payment';
+			var headers = _getAjaxHeaders(true, true);
+			var data = _getAjaxData();
+			var extra = {channel:channel,amount:amount};
+			_ajaxData(url, 'post', headers, data, checkSuccessCallback, checkErrorCallback, 0, extra);
+		}
+		function checkSuccessCallback(ret, extra) {
+			if (ret.statusCode == '200') {
+				//跳转到新用户缴费成功立即使用页面
+				var account = $api.getStorage('userPhone') ? 'tel' : '3th';
+				sendMathEventUmeng(CONSTANT.UMENGEVENT.VIP_SUCCESS,{
+					channel:extra.channel,
+					account:account
+				},parseInt(extra.amount));
+				updateUsers();
+				var name = 'newVip_success';
+				var url = '../newVip_success.html';
+				if(account == '3th'){
+					//第三方登录缴费成功后未绑定手机号
+					name = 'bindPhone';
+					url = '../bind_new.html';
+				}
+				api.openWin({
+					name: name +"win",
+					url: url,
+					slidBackType:'edge',
+					delay:100,
+					softInputMode: "pan",
+					pageParam:{
+						from:{
+							winName:api.winName,
+							frameName:api.frameName
+						}
+					}
+				});
+			} else {
+				toastMsg(ret.msg);
+			}
+		}
+		function checkErrorCallback(err, extra) {
+			toastMsg(err.msg);
+		}
+
+		//缴费成功后更新用户缓存
+		function updateUsers(){
+			var url = serviceNew + 'user';
+			var headers = _getAjaxHeaders(true, true);
+			var data = _getAjaxData();
+			_ajaxData(url, 'post', headers, data, updateUsersSuccessCallback, null, 0);
+		}
+
+		function updateUsersSuccessCallback(ret) {
+			if (ret.statusCode == '200') {
+				var isMember = ret.data.user.isMember;
+				var vipType = '';
+				if (isMember == 'monthly') {
+					vipType = '月费会员';
+				}else if (isMember == 'activity') {
+					vipType = '活动会员';
+				}else if (isMember == 'annual') {
+					vipType = '年费会员';
+				}
+				//是否新用户
+//				$api.setStorage('isNewUser', false);
+				$api.setStorage('vipType', vipType); //会员类型
+				$api.setStorage('isMember', isMember);//会员类型
+				$api.setStorage('dueTime', ret.data.user.dueTime ? ret.data.user.dueTime : "");//会员截止时间
+				$api.setStorage('count', ret.data.user.dorabag.count);//多啦袋个数
+				$api.setStorage('perBag', ret.data.user.dorabag.perBag);//每个多啦袋放衣服数量
+				$api.setStorage('deposit', ret.data.user.deposit || 0);//押金
+				$api.setStorage('userInviteCode',ret.data.user.secfile.inviteCode || '');//用户的邀请码
+			} else {
+				toastMsg(ret.msg);
+			}
+		}
+	</script>
+</html>

@@ -53,8 +53,12 @@
             border-radius: 2px;
             background-color: #454545;
             color: #FFFFFF;
-            margin: 6.85rem auto 0;
+            margin: 6rem auto 0;
             text-align: center;
+        }
+        .oldUser{
+            text-align: center;
+            margin-top: 1rem;
         }
     </style>
 </head>
@@ -62,13 +66,14 @@
     <div>
         <div class="one flex flex-vertical-center">
             <div class="name">手机号</div>
-            <input oninput="checkCodeBtn(this)" id="phone" class="flex-1 inputStyle" type="tel" placeholder="请输入手机号"/>
+            <input onkeyup="this.t ? clearTimeout(this.t) : ''; this.t = setTimeout(chk.call(this), 200)"  id="phone" class="flex-1 inputStyle" type="tel" placeholder="请输入手机号"/>
         </div>
         <div class="two flex flex-vertical-center">
             <div class="name">验证码</div>
             <input oninput="checkLoginBtn()" id="code" class="flex-1 inputStyle" type="tel" placeholder="请输入验证码"/>
             <div id="codeBtn" status="1" class="sendCode" tapmode onclick="verCode()">发送验证</div>
         </div>
+        <div class="oldUser" tapmode onclick="openOldUserLogin()">老用户</div>
         <div id="loginBtn" class="three" tapmode onclick="verify()">立即登录</div>
     </div>
 </body>
@@ -85,6 +90,7 @@
     var is_err = 1 ;
     var key;
     var canSend=false;
+    var codeCanSend=true;
     var canLogin=false;
     apiready = function(){
         sendEventUmeng(CONSTANT.UMENGEVENT.PAGE_ACCOUNT);
@@ -100,11 +106,16 @@
             canSend=true;
             $api.css($api.byId('codeBtn'),'background-color: #FF6100;');
         }
+        api.parseTapmode();
     };
-
+    function chk(){
+        var el = this;
+        return function(){
+            checkCodeBtn(el.value);
+        }
+    }
     //实时检查输入手机号有效性
-    function checkCodeBtn(el){
-        var telVal=el.value;
+    function checkCodeBtn(telVal){
         var reg = /^1[34578]\d{9}$/;
         if (!reg.test(telVal)) {
             if(canSend){
@@ -134,25 +145,27 @@
     //点击发送验证码
     function verCode(){
         if(canSend){
-            sendEventUmeng(CONSTANT.UMENGEVENT.BTN_SCODE);
-            phone = $api.val($api.byId('phone'));
-            var reg = /^1[34578]\d{9}$/;
-            if (!reg.test(phone)) {
-                api.toast({
-                    msg: '请输入正确的11位手机号',
-                    duration: 3000,
-                    location: 'bottom'
-                });
-            }else{
-                api.showProgress({
-                    style: 'default',
-                    animationType: 'fade',
-                    title: '正在发送验证码',
-                    text: '请稍候',
-                    modal: true
-                });
-                $api.setStorage('userPhone',phone);
-                sendMsg(phone);
+            if(codeCanSend){
+                sendEventUmeng(CONSTANT.UMENGEVENT.BTN_SCODE);
+                phone = $api.val($api.byId('phone'));
+                var reg = /^1[34578]\d{9}$/;
+                if (!reg.test(phone)) {
+                    api.toast({
+                        msg: '请输入正确的11位手机号',
+                        duration: 3000,
+                        location: 'bottom'
+                    });
+                }else{
+                    api.showProgress({
+                        style: 'default',
+                        animationType: 'fade',
+                        title: '正在发送验证码',
+                        text: '请稍候',
+                        modal: true
+                    });
+                    $api.setStorage('userPhone',phone);
+                    sendMsg(phone);
+                }
             }
         }else{
             toastMsg("请输入正确手机号码");
@@ -190,12 +203,12 @@
     }
 
     function verifySuccessCallback(ret,extra){
-        _loadingHide();
         if(ret.statusCode=='200'){
             key =  ret.authKey;
             bindTel(ret.authKey);
             sendEventUmeng(CONSTANT.UMENGEVENT.CODE_SUCCESS);
         }else{
+            _loadingHide();
             toastMsg('验证码有误');
         }
     }
@@ -227,6 +240,7 @@
 
     //电话号登录成功
     function bindSuccessCallback(ret,extra){
+        _loadingHide();
         if(ret.statusCode=='200'){
             api.setPrefs({
                 key: 'userPhone',
@@ -237,39 +251,12 @@
                 value: 'account'
             });
             umengLogin(ret.data.id,extra);
-
             setUserStorage(ret);
-            api.execScript({
-                name:"root",
-                script: "initRoot();"
-            });
-            api.execScript({
-                name : 'root',
-                frameName : "footer_tab_4",
-                script : 'init();'
-            });
-            api.execScript({
-                name : 'root',
-                frameName : "footer_tab_3",
-                script : 'init("reInfo");'
-            });
-            api.execScript({
-                name : 'root',
-                frameName:"closet_frame",
-                script: "init();"
-            });
-            if(api.pageParam.data && api.pageParam.data.isAd){
-                api.execScript({
-                    name : 'root',
-                    frameName:"footer_tab_1",
-                    script: 'execAppAdInit()'
-                });
-            }
             if(isTrue(ret.data.isNewUser)){
                 sendEventUmeng(CONSTANT.UMENGEVENT.NEW_IN_SUCCESS,{
-                    type:extra
+                    type:'tel'
                 });
-                var name = 'official_new';
+                var name = 'userPayNew';
                 var url = './user/userPayNew.html';
                 api.openWin({
                     name: name +"win",
@@ -277,15 +264,51 @@
                     slidBackType:'edge',
                     delay:100,
                     allowEdit:true,
-                    softInputMode: "pan"
+                    softInputMode: "resize"
                 });
-                return;
+            }else{
+                //老用户是否从app滑动引导进入
+                var stayTime = 50;
+                if(api.pageParam.data.winName == 'newGuide'){
+                    api.execScript({
+                        name:"root",
+                        script: "initRoot();"
+                    });
+                    stayTime = 100;
+                }else{
+                    //更新我的页面
+                    api.execScript({
+                        name : 'root',
+                        frameName : "footer_tab_4",
+                        script : 'init();'
+                    });
+
+                    api.execScript({
+                        name : 'root',
+                        frameName : "footer_tab_3",
+                        script : 'init("reInfo");'
+                    });
+                    //更新我的衣橱
+                    api.execScript({
+                        name : 'root',
+                        frameName:"closet_frame",
+                        script: "init();"
+                    });
+                    //更新开屏广告
+                    if(api.pageParam.data && api.pageParam.data.isAd){
+                        api.execScript({
+                            name : 'root',
+                            frameName:"footer_tab_1",
+                            script: 'execAppAdInit()'
+                        });
+                    }
+                }
+                setTimeout(function() {
+                    api.closeToWin({
+                        name: 'root'
+                    });
+                }, stayTime);
             }
-            setTimeout(function() {
-                api.closeToWin({
-                    name: 'root'
-                });
-            }, 500);
         }else{
             toastMsg(ret.msg);
         }
@@ -306,6 +329,8 @@
         }else if (isMember == 'annual') {
             vipType = '年费会员';
         }
+        //是否新用户
+        $api.setStorage('isNewUser', ret.data.isNewUser);
         //会员类型
         $api.setStorage('isMember', isMember);
         //会员类型
@@ -407,6 +432,7 @@
             $api.html(codeBtnEl, '发送验证');
             $api.attr(codeBtnEl,'onclick','verCode()');
             wait = 120;
+            codeCanSend=true;
             $api.setStorage('wait',wait);
         } else {
             $api.addCls(codeBtnEl, 'waitBtn');
@@ -414,6 +440,7 @@
             $api.html(codeBtnEl,wait+'s');
             $api.removeAttr(codeBtnEl, 'onclick');
             wait--;
+            codeCanSend=false;
             setTimeout(function() {
                     timeRun()
                 },
@@ -422,6 +449,44 @@
 
     }
 
+    function openOldUserLogin(){
+        var name = 'oldUserLogin';
+        var title = '账户登录';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftText = '';
+        var leftExtra = '';
+        var leftCallback = 'execCloseSlefWin';
+        var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
 
+        var rightIcon = '';
+        var rightText = '';
+        var rightExtra = '';
+        var rightCallback = '';
+        var rightNav = setNavData(rightIcon, rightText, rightCallback, rightExtra);
+
+        var border = true;
+        var bounces = false;
+        var params = {};
+        params.nav= setNav(leftNav,border,rightNav);
+        params.frame=setFrame(bounces,null,null,null,null,'false');
+        var from = {
+            winName:api.winName,
+            frameName:api.frameName
+        };
+        var url = 'header_new.html';
+        var animation = {
+            type:"movein",                //动画类型（详见动画类型常量）
+            subType:'from_bottom',
+            duration:300                //动画过渡时间，默认300毫秒
+        };
+        var page = 'oldUserLogin.html';
+        openNewWinFrame(name,title,params,from,url,animation,page);
+    }
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra,winName,value){
+        api.closeWin({
+            name:winName
+        });
+    }
 </script>
 </html>

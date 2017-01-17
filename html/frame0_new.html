@@ -384,7 +384,7 @@
     {{ for(var i = 0; i < it.count; i++) { }}
         <div title="{{=it.list[i].url}}" class="{{=it.list[i].url == 'goRecommend' ? 'hide' : ''}}">
             <div class="shadow-5"></div>
-            <div tapmode onclick="{{=getExecScript('otherAdClickHandler',[i,it.list[i].type,it.list[i].url])}}">
+            <div tapmode onclick="{{=getExecScript('otherAdClickHandler',[i,it.list[i].type,it.list[i].url,it.list[i].name])}}">
                 <div class="progressive">
                     <img class="progressive__img progressive--not-loaded"
                          data-progressive="{{=getImgUrl(CONSTANT.PICPRE.IMG,it.list[i].img,CONSTANT.PICTUREOSS.Q80)}}"
@@ -452,6 +452,7 @@
     };
     //初始化首页按钮文字
     function initBtnContainer(){
+
         var indexBtnContainerEl = $api.byId('index-btn-container');
         var indexBtnNoteEl = $api.dom(indexBtnContainerEl,'.note');
         var indexBtnNoteEnEl = $api.dom(indexBtnContainerEl,'.note-en');
@@ -474,6 +475,10 @@
             }
             $api.addCls(indexBtnContainerEl,'hide');
         }else if(indexBtnStatus == 0){
+            var goRecommendEl = $api.dom($api.byId('other-ad-container'),'[title="goRecommend"]');
+            if(goRecommendEl){
+                $api.addCls(goRecommendEl,'hide');
+            }
             $api.removeCls(indexBtnContainerEl,'hide');
             $api.text(indexBtnNoteEl,'立即注册登录');
             $api.text(indexBtnNoteEnEl,'SIGN UP NOW');
@@ -1092,7 +1097,7 @@
     }
 
     //其他广告点击处理
-    function otherAdClickHandler(i, type, data) {
+    function otherAdClickHandler(i, type, data,name) {
         sendEventUmeng(CONSTANT.UMENGEVENT.OTHER_AD, {'index': i+''});
         if (type == 'internal' && data) {
             //打开内部APP页面
@@ -1104,6 +1109,14 @@
             eval(functionName);
         } else if (type == 'outer' && data) {
             //打开外面weburl
+            if(name=='dora2016'){
+                var token = $api.getStorage('token');
+                if(!token){
+                    toastMsg('请先登录');
+                    return
+                }
+                data=data+'?'+token;
+            }
             var isNeedLogin = isNeedLoginUrl(data);
             if (isNeedLogin && !isLogin()) {
                 goLogin();
@@ -1206,10 +1219,12 @@
     function indexBtnClick(el){
         if(indexBtnStatus == 0){
             //跳转注册
+            sendEventUmeng(CONSTANT.UMENGEVENT.BTN_REGIN_INDEX,{from:'首页'});
             goLogin();
         }else if(indexBtnStatus == 1){
+            sendEventUmeng(CONSTANT.UMENGEVENT.BTN_VIP,{from:'首页'});
             //跳转开通会员
-            var name = 'official_new';
+            var name = 'userPayNew';
             var url = './user/userPayNew.html';
             api.openWin({
                 name: name +"win",
@@ -1217,7 +1232,7 @@
                 slidBackType:'edge',
                 delay:100,
                 allowEdit:true,
-                softInputMode: "pan"
+                softInputMode: "resize"
             });
         }
     }

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>新用户缴费成功</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+		html,body{
+			background-color: #ff6100;
+		}
+		.vip-bg{
+			position: relative;
+		}
+		.vip-bg .bg{
+			position: absolute;
+			left: 0;
+			top:0;
+			height: 100%;
+			width: 100%;
+			z-index: 1;
+		}
+		.vip-bg .bg-img{
+			position:absolute;
+			left:40%;
+			top:0;
+			height:100%;
+			width:60%;
+			z-index: 2;
+			overflow: hidden;
+		}
+		.vip-bg .bg-normal{
+			position: absolute;
+			left: 0;
+			top:0;
+			height: 100%;
+			width: 100%;
+			z-index: 3;
+		}
+
+		.vip-header{
+			background-image: linear-gradient(0deg, rgba(255,97,0,0.94) 0%, #FF6100 100%);
+			height: 14.4rem;
+			color:white;
+		}
+		.vip-close{
+			height: 2.3rem;
+		}
+		.vip-close .icon-Close{
+			font-size: 0.7rem;
+			padding: 0 0.5rem;
+			margin-right: 0.5rem;
+			color: white;
+		}
+		.vip-header .text-desc{
+			margin-left: 2.5rem;
+		}
+		.vip-header .text-desc .en{
+			font-family: ArialMT;
+			font-weight: bold;
+			font-size: 1.5rem;
+		}
+		.vip-header .text-desc .zh{
+			margin-top: 0.7rem;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 1rem;
+			line-height: 1.5rem;
+		}
+		.vip-btn{
+			background-image: linear-gradient(-180deg, rgba(255,97,0,0.85) 0%, #FF6100 100%);
+			height: 3.8rem;
+			width: 100%;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 1rem;
+			letter-spacing:0.3rem;
+			color: white;
+		}
+		.vip-section{
+			background: #29415D;
+		}
+		.vip-section .btn{
+			height: 5.2rem;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.8rem;
+			color: white;
+			letter-spacing: 0.3rem;
+			position: relative;
+		}
+		.vip-section .btn .bg-text{
+			position: absolute;
+			left:2.5rem;
+			height: 100%;
+			z-index: 5;
+			text-align: center;
+			line-height: 5.2rem;
+		}
+		.vip-section .btn .bg-color{
+			position: absolute;
+			left: 0;
+			top:0;
+			width:100%;
+			height:100%;
+			opacity: 0.1;
+			background: #000000;
+			z-index: 4;
+		}
+	</style>
+</head>
+<body>
+	<div id="header" class="flex flex-vertical" style="height: 100%">
+		<div class="flex-1 vip-bg">
+			<div class="flex flex-vertical bg">
+				<div class="vip-header">
+					<div class="vip-close flex flex-right">
+					</div>
+					<div class="flex-1 flex flex-vertical-center">
+					</div>
+				</div>
+				<div class="vip-section flex-1 flex flex-vertical">
+					<div class="btn">
+						<div class="bg-color"></div>
+						<div class="bg-text"></div>
+					</div>
+					<div class="flex-1"></div>
+				</div>
+			</div>
+			<div class="bg-img">
+				<img src="../image/pay.png" alt="" height="100%" />
+			</div>
+			<div class="flex flex-vertical bg-normal">
+				<div class="vip-header flex flex-vertical" style="background: transparent;background-image: none;">
+					<div class="vip-close flex flex-right">
+						<span class="duola-iconfont icon-Close" tapmode onclick="closeIcon()"></span>
+					</div>
+					<div class="flex-1 flex flex-vertical-center">
+						<div class="text-desc">
+							<div class="en">
+								Welcome to join <br>
+								DORA'S DREAM
+							</div>
+							<div class="zh">
+								缴费成功！<br>
+								欢迎你成为多啦衣梦会员。
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="vip-section flex-1 flex flex-vertical" style="background: transparent;background-image: none;">
+					<div class="btn" tapmode onclick="goUserGuide()">
+						<div class="bg-color"></div>
+						<div class="bg-text">查看多啦使用手册></div>
+					</div>
+					<div class="flex-1"></div>
+				</div>
+			</div>
+		</div>
+		<div class="vip-btn flex flex-center" tapmode onclick="goDora()">
+			进入你的多啦衣梦
+		</div>
+	</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+	<script type="text/javascript">
+
+		apiready = function(){
+			var header = $api.byId('header');
+			$api.fixStatusBar(header);
+			sendEventUmeng(CONSTANT.UMENGEVENT.PAGE_USENOW);
+			updateUsers();
+			if(api.systemType == 'ios'){
+				api.addEventListener({
+					name:'viewdisappear'
+				},function(ret,err){
+					goBackIndex();
+				});
+			}else if(api.systemType == 'android'){
+				api.addEventListener({
+					name: 'keyback'
+				},function(ret,err){
+					goBackIndex();
+				});
+			}
+			api.parseTapmode();
+		};
+
+		//缴费成功后更新用户缓存
+		function updateUsers(){
+			var url = serviceNew + 'user';
+			var headers = _getAjaxHeaders(true, true);
+			var data = _getAjaxData();
+			_ajaxData(url, 'post', headers, data, updateUsersSuccessCallback, null, 0);
+		}
+
+		function updateUsersSuccessCallback(ret) {
+			if (ret.statusCode == '200') {
+				var isMember = ret.data.user.isMember;
+				var vipType = '';
+				if (isMember == 'monthly') {
+					vipType = '月费会员';
+				}else if (isMember == 'activity') {
+					vipType = '活动会员';
+				}else if (isMember == 'annual') {
+					vipType = '年费会员';
+				}
+				//是否新用户
+//				$api.setStorage('isNewUser', false);
+				$api.setStorage('vipType', vipType); //会员类型
+				$api.setStorage('isMember', isMember);//会员类型
+				$api.setStorage('dueTime', ret.data.user.dueTime ? ret.data.user.dueTime : "");//会员截止时间
+				$api.setStorage('count', ret.data.user.dorabag.count);//多啦袋个数
+				$api.setStorage('perBag', ret.data.user.dorabag.perBag);//每个多啦袋放衣服数量
+				$api.setStorage('deposit', ret.data.user.deposit || 0);//押金
+				$api.setStorage('userInviteCode',ret.data.user.secfile.inviteCode || '');//用户的邀请码
+			} else {
+				toastMsg(ret.msg);
+			}
+		}
+
+		//点击关闭图标
+		function closeIcon(){
+			console.log('closeIcon');
+			sendBtnEvent('关闭');
+			goBackIndex();
+		}
+
+//		点击进入你的多啦衣梦
+		function goDora(){
+			sendBtnEvent('进入多啦衣梦');
+			goBackIndex();
+		}
+
+		//		点击查看多啦手册
+		function goUserGuide(){
+			if(!$api.getStorage('manualUrl')){
+				return;
+			}
+			console.log('goUserGuide');
+			sendBtnEvent('查看多啦手册');
+			var name = 'newUserGuide';
+			var title = '多啦手册';
+			var leftIcon = 'duola-iconfont icon-left';
+			var leftNav = setNavData(leftIcon);
+			var border = true;
+			var bounces = false;
+			var params = {};
+			params.nav = setNav(leftNav, border);
+			params.frame = setFrame(bounces);
+			var from = {
+				winName: api.winName,
+				frameName: api.frameName
+			};
+			var url = 'header_web.html';
+			var page = $api.getStorage('manualUrl');
+			openNewWinFrame(name, title, params, from, url,null,page);
+		}
+
+		//页面点击友盟埋点
+		function sendBtnEvent(btn){
+			sendEventUmeng(CONSTANT.UMENGEVENT.BTN_USENOW,{
+				'btn':btn
+			});
+		}
+
+		//回到首页
+		function goBackIndex(){
+			var stayTime = 0;
+			//是否新用户
+			if(isTrue($api.getStorage('isNewUser')||'')){
+				api.execScript({
+					name:"root",
+					script: "initRoot();"
+				});
+				stayTime = 100;
+			}
+
+			setTimeout(function(){
+				api.closeToWin({
+					name: 'root'
+				});
+			},stayTime);
+		}
+	</script>
+</html>

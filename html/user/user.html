@@ -578,7 +578,7 @@
         _setHtmlVal('mobile', mobile);
         var userVipType = $api.getStorage('userVipType');
         var userheader = $api.getStorage('userHead');
-
+        $api.attr($api.byId('user-header'), 'src', '../../image/avatar.png');
         if (isDefine(userheader) && userheader != '../../image/avatar.png') {
             $api.attr($api.byId('user-header'), 'src', userheader);
         }
@@ -723,6 +723,7 @@
     }
     //开通会员
     function openVip(el) {
+        sendEventUmeng(CONSTANT.UMENGEVENT.BTN_VIP,{from:'我的'});
         sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
             name: $api.text(el).replace(/\s/g, '')
         });
@@ -731,17 +732,15 @@
 //            return;
 //        }
         //换成新的header_new.html
-        var name = 'official_newWin';
-        var title = '输入推荐码';
+        var name = 'userPayNew';
         var url = 'userPayNew.html';
-//        openNewWinFrame(name, title, params, from, url);
-
         api.openWin({
-            name: name,
+            name: name +"win",
             url: url,
             slidBackType:'edge',
+            allowEdit:true,
             delay:100,
-            softInputMode: "pan"
+            softInputMode: "resize"
         });
     }
     //查看更多
@@ -820,30 +819,44 @@
     }
     //打开我的钱包
     function openWallet(el) {
-        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
-            name: '我的钱包'
-        });
-        var name = 'Wallet';
-        var title = '我的账户';
-        var leftIcon = 'duola-iconfont icon-left';
-        var leftText = '';
-        var leftExtra = '';
-        var leftCallback = 'execCloseSlefWin';
-        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
-        var border = true;
-        var bounces = false;
-        var params = {};
-        params.nav = setNav(leftNav, border);
-        params.frame = setFrame(bounces, null, true);
-        params.type = 'NO';
+//        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
+//            name: '我的钱包'
+//        });
+//        var name = 'Wallet';
+//        var title = '我的账户';
+//        var leftIcon = 'duola-iconfont icon-left';
+//        var leftText = '';
+//        var leftExtra = '';
+//        var leftCallback = 'execCloseSlefWin';
+//        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+//        var border = true;
+//        var bounces = false;
+//        var params = {};
+//        params.nav = setNav(leftNav, border);
+//        params.frame = setFrame(bounces, null, true);
+//        params.type = 'NO';
+//        var from = {
+//            winName: api.winName,
+//            frameName: api.frameName
+//        };
+//        var url = '../header_new.html';
+//        var animation = '';
+//        var page = 'Wallet.html';
+//        openNewWinFrame(name, title, params, from, url, animation, page);
+
+        var name = 'wallet_new';
+        var title = '我的服务';
+        var params = {
+        };
         var from = {
             winName: api.winName,
             frameName: api.frameName
         };
-        var url = '../header_new.html';
-        var animation = '';
-        var page = 'Wallet.html';
-        openNewWinFrame(name, title, params, from, url, animation, page);
+        var url = '../wallet_new.html';
+        openNewWin(name, title, params, from, url, {
+            type: "fade",                //动画类型（详见动画类型常量）
+            duration: 300                //动画过渡时间，默认300毫秒
+        });
     }
     //打开在线客服
     function goChat(el) {

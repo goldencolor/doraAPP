@@ -528,6 +528,7 @@
             algorithm:'sha-256',
             deviceId: getDeviceId()
         });
+        console.log(data);
         var extra = null;
         _ajaxData(url,'post',headers,data,loginSuccessCallback,loginErrorCallback,0,extra);
     }

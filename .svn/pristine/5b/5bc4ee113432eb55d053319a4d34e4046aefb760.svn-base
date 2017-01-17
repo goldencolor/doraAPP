@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>多啦袋尾部</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+
+    <style>
+        .my-foot{
+            height:3rem;
+            line-height: 3rem;
+            color: #ffffff;
+            z-index: 10;
+            width: 100%;
+            min-height: 2.25rem;
+            font-size: 1rem;
+            text-align: center;
+            display: table;
+        }
+        .my-bg-color {
+            background: #FF6100;
+        }
+        .add-bag{
+            width: 100%;
+            position: relative;
+            height: 3rem;
+            background: #F9F9F9;
+        }
+        .add-bag .icon-bag-active{
+            position: absolute;
+            color: #FF6100;
+            font-size: 1.3rem;
+            left: 33%;
+            bottom: 0.5rem;
+
+        }
+        .add-bag .icon-bag{
+            position: relative;
+            font-size: 1.3rem;
+            color: #000000;
+            margin: 0px;
+            bottom: 0.5rem;
+        }
+        .add-bag .see-bag {
+            position: absolute;
+            color: #000000;
+            font-size: 0.6rem;
+            line-height: 0;
+            padding: 0;
+            margin: 0;
+            left: 31%;
+            bottom: 0.6rem;
+        }
+        .add-bag .number-bag {
+            display: inline;
+            font-size: 0.8rem;
+            color: #000000;
+            bottom: 0.5rem;
+            font-weight: bold;
+            position: relative;
+        }
+        .my-bg-cancel {
+            background: #DEDEDE;
+        }
+    </style>
+</head>
+<body>
+
+<footer class="my-foot" id="member">
+    <div class="aui-col-xs-5" style="height: auto">
+        <div class="add-bag"  tapmode onclick="openMyBag()">
+            <!--<i class="duola-iconfont icon-bag-active"></i>-->
+            <!--<i class="duola-iconfont icon-bag" ></i>-->
+            <span class=""></span>
+            <div class="number-bag">
+                <em id="bagOwn">0</em>/<em id="drabagT">3
+            </em>
+            </div>
+            <p class="see-bag" id="openMyBag">查看多啦袋</p>
+            <p class="see-bag aui-hide" id="closeMyBag">隐藏多啦袋</p>
+        </div>
+    </div>
+    <div class="aui-col-xs-7 my-bg-color aui-hide" id="order"  tapmode onclick="showDraBag()">立即下单</div>
+    <div class="aui-col-xs-7 my-bg-cancel" id="need">立即下单</div>
+</footer>
+<footer class="my-foot aui-hide" id="onMember" tapmode onclick="openVip(this)">
+    <div class="aui-col-xs-12 my-bg-color" >开通会员</div>
+</footer>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/doT_min.js"></script>
+
+<script type="text/javascript">
+    var my_own,drabagT,bagOwn,chooseCan,
+            bagState = true;
+    apiready = function(){
+        init("reInfo");
+        api.parseTapmode();
+    };
+    function memberState(){
+        if (!isMember()) {
+            $api.addCls($api.byId("member"), 'aui-hide');
+            $api.removeCls($api.byId("onMember"), 'aui-hide');
+        }else {
+            var member = $api.hasCls($api.byId("onMember"),'aui-hide');
+            if (!member){
+                $api.removeCls($api.byId("member"), 'aui-hide');
+                $api.addCls($api.byId("onMember"), 'aui-hide');
+            }
+        }
+    }
+    function newInit(){
+        init();
+    }
+    function init() {
+        memberState();
+        var url = serviceNew + 'dorabag';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url, 'post', headers, data, initSuccessCallback, initErrorCallback, 0, extra);
+
+    }
+    function initSuccessCallback(ret,extra){
+        _loadingHide();
+        _showPage();
+        if(ret.statusCode=='200'){
+            my_own = ret.dorabag.list;
+            drabagT  = ret.dorabag.count;    	 //用户持有多啦袋总量
+            bagOwn = my_own.length; 	 		 //用户当前持有的多啦袋数量
+            chooseCan = drabagT - bagOwn; //多啦袋剩下数量
+            $api.html($api.byId("drabagT"), drabagT);
+            $api.html($api.byId("bagOwn"), bagOwn);
+            if (drabagT != bagOwn) {
+                var state = $api.hasCls($api.byId("order"), 'aui-hide');
+                if (!state){
+                    $api.addCls($api.byId("order"), 'aui-hide');
+                    $api.removeCls($api.byId("need"), 'aui-hide');
+                }
+            } else {
+                for (var i = 0;i<bagOwn;i++){
+                    if (my_own[i].tag == "NO") {
+                        $api.addCls($api.byId("need"), 'aui-hide');
+                        $api.removeCls($api.byId("order"), 'aui-hide');
+                        break;
+                    }
+                }
+            }
+        }else if(ret.statusCode=='10104'){
+            goLogin('no',"../winLogin.html");
+        }else{
+            toastMsg(ret.msg);
+        }
+    }
+
+    function initErrorCallback(err,extra){
+        _loadingHide();
+        _showPage();
+        toastMsg(err.msg);
+    }
+    function openVip(el){
+        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+            name:$api.text(el).replace(/\s/g,'')
+        });
+//        if(!isBindPhone()){
+//            goWXTelBind(CONSTANT.USER);
+//            return;
+//        }
+        //换成新的header_new.html
+//        var name = 'official_new';
+//        var title = '输入推荐码';
+//        var leftIcon = 'duola-iconfont icon-left';
+//        var leftNav = setNavData(leftIcon);
+//        var border = true;
+//        var bounces = false;
+//        var params = {};
+//        params.nav= setNav(leftNav,border);
+//        params.frame=setFrame(bounces,{
+//            type:  'member'
+//        },true);
+//        var from = {
+//            winName: api.winName,
+//            frameName: api.frameName
+//        };
+//        var url = '../header_web.html';
+//        openNewWinFrame(name,title,params,from,url);
+        var name = 'official_newWin';
+        var title = '输入推荐码';
+        var url = '../user/userPayNew.html';
+//        openNewWinFrame(name, title, params, from, url);
+
+        api.openWin({
+            name: name,
+            url: url,
+            slidBackType:'edge',
+            delay:100,
+            softInputMode: "pan"
+        });
+    }
+    function openMyBag(){
+        if (!bagState) {
+            closeMyBag();
+            return;
+        }
+        bagState = false;
+        api.openFrame({
+            name: 'closet_bag',
+            url: 'closet_bag.html',
+            rect: {
+                x:0,
+                y:0,
+                w:"auto",           //宽度，若传'auto'，页面从x位置开始自动充满父页面宽度
+                h:"auto",
+                marginBottom: 115
+            },
+            pageParam: {
+                bagList: my_own,
+                bagNum: chooseCan
+            },
+            vScrollBarEnabled: false,
+            animation: {
+                type:"push",                //动画类型（详见动画类型常量）
+                subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+                duration:200               //动画过渡时间，默认300毫秒
+            }
+        });
+        $api.addCls($api.byId("openMyBag"),'aui-hide');
+        $api.removeCls($api.byId("closeMyBag"),'aui-hide');
+        sendEventUmeng(CONSTANT.UMENGEVENT.DORABAG,{
+            from:CONSTANT.PAGE.INDEX[2]
+        });
+    }
+    function closeMyBag(){
+        api.closeFrame({
+            name: 'closet_bag'
+        });
+        bagState = true;
+        $api.removeCls($api.byId("openMyBag"),'aui-hide');
+        $api.addCls($api.byId("closeMyBag"),'aui-hide');
+    }
+    function showDraBag(check){
+        if($api.getStorage('userPhone')){
+            var name = 'bag';
+            var title = '下单';
+            var leftIcon = 'duola-iconfont icon-left';
+            var leftText = '';
+            var leftExtra = '';
+            var leftCallback = 'execCloseSlefWin';
+            var leftNav = setNavData(leftIcon,leftText,leftCallback,leftExtra);
+            var border = false;
+            var bounces = false;
+            var params = {};
+            params.nav= setNav(leftNav,border);
+            params.frame=setFrame(bounces);
+            var from = {
+                winName:api.winName,
+                frameName:api.frameName
+            };
+            var url = '../header_new.html';
+            var animation = '';
+            var page = 'closet/bag.html';
+            sendEventUmeng(CONSTANT.UMENGEVENT.ORDER);
+            openNewWinFrame(name,title,params,from,url,animation,page);
+        }else{
+            //第三方登录缴费成功后未绑定手机号
+            var name = 'bindPhone';
+            var url = '../bind_new.html';
+            api.openWin({
+                name: name +"win",
+                url: url,
+                slidBackType:'edge',
+                delay:100,
+                softInputMode: "pan",
+                pageParam:{
+                    from:{
+                        winName:api.winName,
+                        frameName:api.frameName
+                    }
+                }
+            });
+        }
+
+    }
+    function execCloseSlefWin(extra,winName,value){
+        api.closeWin({
+            name:winName
+        });
+    }
+    function updateOrder() {
+        $api.addCls($api.byId("order"), 'aui-hide');
+        $api.removeCls($api.byId("need"), 'aui-hide');
+    }
+    function bagStatus(state){
+        init('reInfo');
+        closeMyBag();
+        api.execScript({
+            name:'root',
+            frameName:"footer_tab_3",
+            script: 'init("reInfo");'
+        });
+        if (state === "YES") {
+            updateOrder();
+        }
+    }
+</script>
+</html>

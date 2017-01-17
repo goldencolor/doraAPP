@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>我的服务</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        .mainContent{
+            width: 100%;
+            height: 100%;
+        }
+        .mainContent .one:before{
+            content: '';
+            display: table;
+        }
+        .mainContent .one{
+            height: 10.75rem;
+            color: #FFFFFF;
+            background-color: #FF6100;
+        }
+        .mainContent .one .headerBar{
+            height: 2.5rem;
+            margin-top: 1rem;
+            /*background-color: #ddd;*/
+        }
+        .mainContent .one .headerBar .left{
+            width: 4rem;
+            text-align: left;
+            padding-left: 1rem;
+        }
+        .mainContent .one .headerBar .left span{
+            font-size: 0.7rem !important;
+        }
+        .mainContent .one .headerBar .center{
+            text-align: center;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.9rem;
+            color: #FFFFFF;
+            letter-spacing: -0.9px;
+        }
+        .mainContent .one .headerBar .right{
+            width: 4rem;
+            text-align: left;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            letter-spacing: -0.7px;
+        }
+        .mainContent .one .valid{
+            padding-top: 1rem;
+            text-align: center;
+        }
+        .mainContent .one .valid .title{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            line-height: 0.8rem;
+            color: #FFFFFF;
+            letter-spacing: 0;
+        }
+        .mainContent .one .valid .time{
+            font-family: Arial-BoldMT,SourceHanSansCN-Normal;
+            font-size: 1.5rem;
+            line-height: 1.5rem;
+            color: #FFFFFF;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .mainContent .one .valid .freeze{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            line-height: 0.7rem;
+            color: #FFFFFF;
+            letter-spacing: -0.7px;
+        }
+        .mainContent .two{
+            color: #000000;
+            background-color: #F8F8F8;
+        }
+        .mainContent .two:before{
+            content: '';
+            display: table;
+        }
+        .mainContent .two .content{
+            padding-left: 1rem;
+            padding-right: 1rem;
+            height: 3.5rem;
+            background-color: #FFFFFF;
+        }
+        .mainContent .two .nowBox{
+            margin-top: 1rem;
+        }
+        .mainContent .two .now,.mainContent .two .giving,.mainContent .two .deposit{
+            height: 3.5rem;
+            padding-top: 0.8rem;
+        }
+        .mainContent .two .now,.mainContent .two .giving{
+            border-bottom: 1px solid #ddd;
+        }
+        .mainContent .two .content .title{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            line-height: 0.6rem;
+            color: #767676;
+            letter-spacing: -0.6px;
+        }
+        .mainContent .two .content .dataBox{
+            height: 0.9rem;
+            margin-top: 0.4rem;
+        }
+        .mainContent .two .content .dataBox .left{
+            width: 6rem;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.8rem;
+            color: #000000;
+            letter-spacing: -0.8px;
+        }
+        .mainContent .two .content .dataBox .right{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.6rem;
+            color: #767676;
+            letter-spacing: -0.6px;
+        }
+    </style>
+</head>
+<body id="main" class="">
+<div class="mainContent flex flex-vertical">
+    <div class="one">
+        <div class="headerBar flex flex-center">
+            <div class="left" onclick="closeThisWin()">
+                <span class="duola-iconfont icon-left"></span>
+            </div>
+            <div class="center flex-1">
+                我的服务
+            </div>
+            <div class="right" onclick="OpenUserHelp()">
+                使用帮助
+            </div>
+        </div>
+        <div class="valid">
+            <div class="title">会员有效期至</div>
+            <div class="time" id="vip-time"></div>
+            <div class="freeze" id="frozenAt" onclick="Frost()"></div>
+        </div>
+    </div>
+    <div class="two flex-1">
+        <div class="nowBox content">
+            <div class="now">
+                <div class="title">当前服务</div>
+                <div class="dataBox flex flex-bottom">
+                    <div class="left" id="dorabagCount"></div>
+                    <div class="right flex-1">249元/月 可持有3件衣服</div>
+                </div>
+            </div>
+        </div>
+        <div class="givingBox content">
+            <div class="giving">
+                <div class="title">赠送服务</div>
+                <div class="dataBox flex flex-bottom">
+                    <div class="left">增加1个多啦袋</div>
+                    <div class="right flex-1">有效期至 2017-01-23</div>
+                </div>
+            </div>
+        </div>
+        <div class="depositBox content">
+            <div class="deposit">
+                <div class="title">我的押金</div>
+                <div class="dataBox flex flex-bottom">
+                    <div class="left"><span id="deposit"></span>元</div>
+                    <div class="right flex-1" onclick="goDeposit()">充押金 ></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+    var token;
+    var type;
+    var is_err = 1;
+    var count;
+    apiready = function () {
+        token = $api.getStorage('token');
+        type = api.pageParam.type;
+        if (type == 'YES') {
+            _loadingShow();
+            setTimeout(function () {
+                api.closeWin({name: 'Pay'});
+                api.closeWin({name: 'Vip'});
+                api.closeWin({name: 'renewWin'});
+                api.closeWin({name: 'official_newWin'});
+                api.closeWin({name: 'chooseBrabag'});
+                api.closeWin({name: 'userPayWin'});
+                api.closeWin({name: 'userDepositWin'});
+                init();
+            }, 1000);
+            return;
+        } else {
+            init();
+        }
+        api.addEventListener({
+            name: 'sendInit'
+        }, function (ret, err) {
+            if (ret) {
+                init();
+            }
+        });
+    };
+
+    function initSuccessCallback(ret, extra) {
+        _loadingHide();
+        if (ret.statusCode == '200') {
+            var isMember = ret.data.user.isMember;
+            var vipType='';
+            if (isMember == 'monthly') {
+                vipType = '月费会员';
+            }
+            if (isMember == 'activity') {
+                vipType = '活动会员';
+            }
+            if (isMember == 'annual') {
+                vipType = '年费会员';
+            }
+            var frozenAt = ret.data.user.frozenAt;
+            count = $api.getStorage('count');
+            var text='';
+            if (frozenAt == 'undefined' || frozenAt == undefined) {
+                text = '未冻结 >';
+            } else {
+                text = '已冻结 >';
+            }
+            $api.setStorage('token', token);
+            $api.setStorage('isMember', isMember);
+            $api.setStorage('username', ret.data.user.username);
+            $api.setStorage('dueTime', ret.data.user.dueTime ? ret.data.user.dueTime : "");
+            $api.setStorage('count', ret.data.user.dorabag.count);
+            $api.setStorage('vipType', vipType); //会员类型
+            $api.setStorage('frozenAt', frozenAt);
+
+            var deposit = ret.data.user.deposit;
+            if (deposit == 'undefined' || deposit == undefined) {
+                $api.setStorage('deposit', 0);
+                $api.html($api.byId('deposit'), '0');
+            } else {
+                $api.setStorage('deposit', deposit);
+                $api.html($api.byId('deposit'), deposit);
+            }
+            $api.html($api.byId('vip-time'), $api.getStorage('dueTime').substring(0, 10));
+            $api.html($api.byId('frozenAt'), text);
+            $api.html($api.byId('dorabagCount'), ret.data.user.dorabag.count?ret.data.user.dorabag.count+'个多啦袋':'');
+
+            api.execScript({
+                name: 'root',
+                frameName: "closet_frame",
+                script: 'bagStatus();'
+            });
+            api.execScript({
+                name: 'root',
+                frameName: "footer_tab_4",
+                script: 'init();'
+            });
+        } else if (ret.statusCode == '10104') {
+            toLogin();
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+
+    function initErrorCallback(err, extra) {
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+    function init(flag) {
+        if (!flag) {
+            _loadingShow();
+        }
+        var url = serviceNew + 'user';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url, 'post', headers, data, initSuccessCallback, initErrorCallback, 0, extra);
+
+    }
+
+    function official() {
+        api.openWin({
+            name: 'official',
+            url: 'win.html',
+            pageParam: {
+                page: 'official',
+                title: '正式会员'
+            }
+        });
+    }
+    function Frost() {
+        api.openWin({
+            name: 'Frost',
+            url: 'win.html',
+            pageParam: {
+                page: 'Frost',
+                title: '冻结账号'
+            }
+        });
+    }
+    function Reimburse() {
+        api.openWin({
+            name: 'Reimburse',
+            url: 'win.html',
+            pageParam: {
+                page: 'Reimburse',
+                title: '申请退款'
+            }
+        });
+    }
+
+    function Renew() {
+        api.openWin({
+            name: 'Pay',
+            url: 'win.html',
+            pageParam: {
+                page: 'Pay',
+                title: '缴费',
+                bagNum: count,
+                type: "serviceFee"
+            }
+        });
+    }
+    function Withdraw() {
+        api.openWin({
+            name: 'Withdraw',
+            url: 'win.html',
+            pageParam: {
+                page: 'Withdraw',
+                title: '提现'
+            }
+        });
+    }
+    function goDeposit() {
+        var name = 'userDeposit';
+        var title = '充押金';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftText = '';
+        var leftExtra = '';
+        var leftCallback = 'execCloseSlefWin';
+        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+        var border = true;
+        var bounces = false;
+        var params = {};
+        params.nav = setNav(leftNav, border);
+        params.frame = setFrame(bounces, null, true);
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'header_web.html';
+        var animation = '';
+        var page = 'user/userDeposit.html';
+        openNewWinFrame(name, title, params, from, url, animation, page);
+    }
+
+    //点击右侧说明打开连接
+    function OpenUserHelp(){
+        goWebUrl('openBuyInfo','http://mp.weixin.qq.com/s?__biz=MzIyMjA0ODAwMg==&mid=503556041&idx=1&sn=99a27fa7f238cb76f3807a1a5089b00d&chksm=73c47da444b3f4b23b8a5cd72aa947124a714f074863970a4eb2dedeb4385ad7e863cd0b7764&scene=20#wechat_redirect','使用帮助');
+    }
+</script>
+</html>
