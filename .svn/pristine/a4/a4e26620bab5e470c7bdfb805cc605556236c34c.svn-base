@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport"
-          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <title>我的服务</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
@@ -11,47 +10,40 @@
     <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
     <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
     <style>
-        .mainContent {
+        .mainContent{
             width: 100%;
             height: 100%;
         }
-
-        .mainContent .one:before {
+        .mainContent .one:before{
             content: '';
             display: table;
         }
-
-        .mainContent .one {
+        .mainContent .one{
             height: 10.75rem;
             color: #FFFFFF;
             background-color: #FF6100;
         }
-
-        .mainContent .one .headerBar {
+        .mainContent .one .headerBar{
             height: 2.5rem;
             margin-top: 1rem;
             /*background-color: #ddd;*/
         }
-
-        .mainContent .one .headerBar .left {
+        .mainContent .one .headerBar .left{
             width: 4rem;
             text-align: left;
             padding-left: 1rem;
         }
-
-        .mainContent .one .headerBar .left span {
+        .mainContent .one .headerBar .left span{
             font-size: 0.7rem !important;
         }
-
-        .mainContent .one .headerBar .center {
+        .mainContent .one .headerBar .center{
             text-align: center;
             font-family: SourceHanSansCN-Regular;
             font-size: 0.9rem;
             color: #FFFFFF;
             letter-spacing: -0.9px;
         }
-
-        .mainContent .one .headerBar .right {
+        .mainContent .one .headerBar .right{
             width: 4rem;
             text-align: left;
             font-family: SourceHanSansCN-Regular;
@@ -59,100 +51,78 @@
             color: #FFFFFF;
             letter-spacing: -0.7px;
         }
-
-        .mainContent .one .valid {
+        .mainContent .one .valid{
             padding-top: 1rem;
             text-align: center;
         }
-
-        .mainContent .one .valid .title {
+        .mainContent .one .valid .title{
             font-family: SourceHanSansCN-Normal;
             font-size: 0.8rem;
             line-height: 0.8rem;
             color: #FFFFFF;
             letter-spacing: 0;
         }
-
-        .mainContent .one .valid .time {
-            font-family: Arial-BoldMT, SourceHanSansCN-Normal;
+        .mainContent .one .valid .time{
+            font-family: Arial-BoldMT,SourceHanSansCN-Normal;
             font-size: 1.5rem;
             line-height: 1.5rem;
             color: #FFFFFF;
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
-
         }
-
-        .mainContent .one .valid .freeze {
+        .mainContent .one .valid .freeze{
             font-family: SourceHanSansCN-Regular;
             font-size: 0.7rem;
             line-height: 0.7rem;
             color: #FFFFFF;
             letter-spacing: -0.7px;
         }
-
-        .mainContent .two {
+        .mainContent .two{
             color: #000000;
             background-color: #F8F8F8;
         }
-
-        .mainContent .two:before {
+        .mainContent .two:before{
             content: '';
             display: table;
         }
-
-        .mainContent .two .content {
+        .mainContent .two .content{
             padding-left: 1rem;
             padding-right: 1rem;
             height: 3.5rem;
             background-color: #FFFFFF;
         }
-
-        .mainContent .two .nowBox {
+        .mainContent .two .nowBox{
             margin-top: 1rem;
         }
-
-        .mainContent .two .now, .mainContent .two .giving, .mainContent .two .deposit {
+        .mainContent .two .now,.mainContent .two .giving,.mainContent .two .deposit{
             height: 3.5rem;
             padding-top: 0.8rem;
         }
-
-        .mainContent .two .now, .mainContent .two .giving {
+        .mainContent .two .now,.mainContent .two .giving{
             border-bottom: 1px solid #ddd;
         }
-
-        .mainContent .two .content .title {
+        .mainContent .two .content .title{
             font-family: SourceHanSansCN-Normal;
             font-size: 0.6rem;
             line-height: 0.6rem;
             color: #767676;
             letter-spacing: -0.6px;
         }
-
-        .mainContent .two .content .dataBox {
+        .mainContent .two .content .dataBox{
             height: 0.9rem;
             margin-top: 0.4rem;
         }
-
-        .mainContent .two .content .dataBox .left {
+        .mainContent .two .content .dataBox .left{
             width: 6rem;
             font-family: SourceHanSansCN-Regular;
             font-size: 0.8rem;
             color: #000000;
             letter-spacing: -0.8px;
         }
-
-        .mainContent .two .content .dataBox .right {
+        .mainContent .two .content .dataBox .right{
             font-family: SourceHanSansCN-Regular;
             font-size: 0.6rem;
             color: #767676;
-            letter-spacing: -0.6px;
-        }
-
-        #overWarm {
-            font-family: SourceHanSansCN-Regular;
-            font-size: 0.6rem;
-            color: #FF6100;
             letter-spacing: -0.6px;
         }
     </style>
@@ -168,37 +138,31 @@
                 我的服务
             </div>
             <div class="right" onclick="OpenUserHelp()">
-
+                使用帮助
             </div>
         </div>
         <div class="valid">
-            <div class="title" id="validTitle">会员有效期至</div>
+            <div class="title">会员有效期至</div>
             <div class="time" id="vip-time"></div>
-            <div class="freeze aui-hide" id="frozenAt" onclick="Frost()"></div>
-            <div class="freeze aui-hide" id="renewal" onclick="Renew()">续费 ></div>
+            <div class="freeze" id="frozenAt" onclick="Frost()"></div>
         </div>
     </div>
     <div class="two flex-1">
         <div class="nowBox content">
             <div class="now">
                 <div class="title">当前服务</div>
-                <div class="dataBox flex flex-bottom aui-hide" id="oneCloth">
-                    <div class="left">1件衣服</div>
-                    <div class="right flex-1">99元/月 可持有1件衣服</div>
-                </div>
-                <div class="dataBox flex flex-bottom" id="moreCloth">
+                <div class="dataBox flex flex-bottom">
                     <div class="left" id="dorabagCount"></div>
                     <div class="right flex-1">249元/月 可持有3件衣服</div>
                 </div>
             </div>
         </div>
-        <div class="givingBox content aui-hide" id="givingBox">
+        <div class="givingBox content">
             <div class="giving">
                 <div class="title">赠送服务</div>
                 <div class="dataBox flex flex-bottom">
-                    <div class="left">增加<em id="bagNum"></em>个多啦袋</div>
-                    <div class="right flex-1">有效期至 <em id="bagTime"></em><span class="aui-hide" id="overWarm">&nbsp;暂不可用</span>
-                    </div>
+                    <div class="left">增加1个多啦袋</div>
+                    <div class="right flex-1">有效期至 2017-01-23</div>
                 </div>
             </div>
         </div>
@@ -224,7 +188,7 @@
     var count;
     apiready = function () {
         token = $api.getStorage('token');
-        type = api.pageParam.data.type;
+        type = api.pageParam.type;
         if (type == 'YES') {
             _loadingShow();
             setTimeout(function () {
@@ -235,8 +199,6 @@
                 api.closeWin({name: 'chooseBrabag'});
                 api.closeWin({name: 'userPayWin'});
                 api.closeWin({name: 'userDepositWin'});
-                api.closeWin({name: 'user_coupon_headerWin'});
-                api.closeWin({name: 'user_coupon_headerFrame'});
                 init();
             }, 1000);
             return;
@@ -252,12 +214,11 @@
         });
     };
 
-
     function initSuccessCallback(ret, extra) {
         _loadingHide();
         if (ret.statusCode == '200') {
             var isMember = ret.data.user.isMember;
-            var vipType = '';
+            var vipType='';
             if (isMember == 'monthly') {
                 vipType = '月费会员';
             }
@@ -269,8 +230,8 @@
             }
             var frozenAt = ret.data.user.frozenAt;
             count = $api.getStorage('count');
-            var text = '';
-            if (frozenAt == 'undefined' || frozenAt == undefined || frozenAt == null || frozenAt == 'null') {
+            var text='';
+            if (frozenAt == 'undefined' || frozenAt == undefined) {
                 text = '未冻结 >';
             } else {
                 text = '已冻结 >';
@@ -282,16 +243,7 @@
             $api.setStorage('count', ret.data.user.dorabag.count);
             $api.setStorage('vipType', vipType); //会员类型
             $api.setStorage('frozenAt', frozenAt);
-            $api.setStorage('extraService', ret.data.user.extraService ? "YES" : "NO");
-            if (ret.data.user.extraService) {
-                if ($api.hasCls($api.byId('givingBox'), 'aui-hide')) {
-                    $api.removeCls($api.byId('givingBox'), 'aui-hide');
-                    $api.html($api.byId('bagNum'), ret.data.user.extraService.bags);
-                    $api.html($api.byId('bagTime'), ret.data.user.extraService.expiredAt.substring(0, 10));
-                }
-            }
-            var extraBags = ret.data.user.extraService ? ret.data.user.extraService.bags : 0;
-            $api.setStorage('extraBags', ret.data.user.extraService ? ret.data.user.extraService.bags : 0);
+
             var deposit = ret.data.user.deposit;
             if (deposit == 'undefined' || deposit == undefined) {
                 $api.setStorage('deposit', 0);
@@ -300,26 +252,9 @@
                 $api.setStorage('deposit', deposit);
                 $api.html($api.byId('deposit'), deposit);
             }
+            $api.html($api.byId('vip-time'), $api.getStorage('dueTime').substring(0, 10));
             $api.html($api.byId('frozenAt'), text);
-
-            if (isMember === "experience") {
-                $api.removeCls($api.byId("oneCloth"), 'aui-hide');
-                $api.addCls($api.byId("moreCloth"), 'aui-hide');
-            } else {
-                $api.html($api.byId('dorabagCount'), ret.data.user.dorabag.count ? ret.data.user.dorabag.count - extraBags + '个多啦袋' : '');
-
-            }
-            var nowTime = new Date();
-            var dueTime = new Date($api.getStorage('dueTime').substring(0, 10).replace(/-/g, '/'));
-            if (dueTime - nowTime > 0) {
-                $api.removeCls($api.byId('frozenAt'), 'aui-hide');
-                $api.html($api.byId('vip-time'), $api.getStorage('dueTime').substring(0, 10));
-            } else if (dueTime - nowTime <= 0) {
-                $api.removeCls($api.byId('renewal'), 'aui-hide');
-                $api.removeCls($api.byId('overWarm'), 'aui-hide');
-                $api.html($api.byId('validTitle'), '');
-                $api.html($api.byId('vip-time'), '当前服务已到期');
-            }
+            $api.html($api.byId('dorabagCount'), ret.data.user.dorabag.count?ret.data.user.dorabag.count+'个多啦袋':'');
 
             api.execScript({
                 name: 'root',
@@ -431,9 +366,8 @@
     }
 
     //点击右侧说明打开连接
-    function OpenUserHelp() {
-        return;
-        goWebUrl('openBuyInfo', 'http://mp.weixin.qq.com/s?__biz=MzIyMjA0ODAwMg==&mid=503556041&idx=1&sn=99a27fa7f238cb76f3807a1a5089b00d&chksm=73c47da444b3f4b23b8a5cd72aa947124a714f074863970a4eb2dedeb4385ad7e863cd0b7764&scene=20#wechat_redirect', '使用帮助');
+    function OpenUserHelp(){
+        goWebUrl('openBuyInfo','http://mp.weixin.qq.com/s?__biz=MzIyMjA0ODAwMg==&mid=503556041&idx=1&sn=99a27fa7f238cb76f3807a1a5089b00d&chksm=73c47da444b3f4b23b8a5cd72aa947124a714f074863970a4eb2dedeb4385ad7e863cd0b7764&scene=20#wechat_redirect','使用帮助');
     }
 </script>
 </html>

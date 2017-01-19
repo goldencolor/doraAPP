@@ -1,6 +1,7 @@
 
 /A6918652765044/css/aui_flex.css
 /A6918652765044/html/searchLevel.html
+/A6918652765044/2016/js/js.zip
 /A6918652765044/html/loginAbout.html
 /A6918652765044/html/frame1.html
 /A6918652765044/html/addr.html
@@ -29,6 +30,7 @@
 /A6918652765044/html/footer.html
 918652765044/image/handThree.png
 /A6918652765044/html/Coupon.html
+/A6918652765044/html/user/user_coupon_header.html
 l
 /A6918652765044/image/expression3.png
 /A6918652765044/script/progressively.js
@@ -44,8 +46,8 @@ l/maskType.html
 /A6918652765044/html/win_regin.html
 /A6918652765044/html/orderErr.html
 /A6918652765044/image/logo2.png
-age.min.js
 eyBg.png
+age.min.js
 /A6918652765044/script/weibo_sdk.js
 /A6918652765044/css/aui.css
 /A6918652765044/html/activity.html
@@ -184,17 +186,19 @@ eyBg.png
 /A6918652765044/image/handOne.png
 /A6918652765044/image/expression4.png
 /A6918652765044/image/wx_logo.png
+/A6918652765044/html/user/userCoupon.html
 /A6918652765044/image/J.png
 /A6918652765044/image/theme7.png
 /A6918652765044/html/user/userDeposit.html
-/A6918652765044/image/marquee3.png
 /A6918652765044/html/yearVip.html
+/A6918652765044/image/marquee3.png
 /A6918652765044/script/wx_sdk.js
 /A6918652765044/html/closet/category.html
 /A6918652765044/html/bespeak_new.html
 /A6918652765044/html/Change.html
 /A6918652765044/script/slider.js
 /A6918652765044/html/template.html
+/A6918652765044/html/user/userPayActivity.html
 /A6918652765044/html/feedback.html
 /A6918652765044/html/maskStyle.html
 /A6918652765044/image/flower.png
@@ -337,6 +341,7 @@ png
 /A6918652765044/html/choose.html
 /A6918652765044/html/frame4_new.html
 /A6918652765044/html/yearVip_0.html
+/A6918652765044/html/user/userCouponTwo.html
 /A6918652765044/html/winSearch_new2.html
 /A6918652765044/html/order_header - 副本.html
 /A6918652765044/image/theme1.png
@@ -377,14 +382,15 @@ png
 /A6918652765044/index.html
 /A6918652765044/html/user/user.html
 /A6918652765044/script/api.js
-/A6918652765044/html/testMarquee.html
 /A6918652765044/image/theme3.png
+/A6918652765044/html/testMarquee.html
 /A6918652765044/html/promoMine.html
 /A6918652765044/html/chooseRank.html
 /A6918652765044/css/aui_win.css
 /A6918652765044/2016/img/my1.png
 /A6918652765044/html/abc.html
 /A6918652765044/html/maskSize.html
+/A6918652765044/html/passwordLogin.html
 /A6918652765044/html/themesList.html
 /A6918652765044/script/2_0/aui_dialog.js
 /A6918652765044/html/bespeak_rule.html
@@ -397,3 +403,4 @@ png
 /A6918652765044/html/season.html
 /A6918652765044/script/components/pagination.js
 /A6918652765044/script/pingpp.js
+/A6918652765044/2016/js/tiger.min.js

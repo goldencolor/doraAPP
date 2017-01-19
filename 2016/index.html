@@ -258,6 +258,12 @@
             border-radius: 4px;
             font-size: 1.5rem;
         }
+        .swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction{
+            bottom: 2rem;
+        }
+        .swiper-pagination-bullet-active{
+            background: #FFFFFF;
+        }
     </style>
 </head>
 <body>
@@ -266,7 +272,7 @@
     <div class="swiper-wrapper">
 
         <div class="swiper-slide item one" style="background-image: url(./img/my1.png)">
-            <div class="btn">查看你的多啦账单</div>
+            <!--<div class="btn">侧滑查看账单</div>-->
         </div>
         <div class="swiper-slide item two" style="background-image: url(./img/my2.png)">
             <div class="name">
@@ -329,17 +335,17 @@
             </div>
         </div>
         <div class="swiper-slide item four" style="background-image: url(./img/my5.png)">
-            <div class="btn">
-                点击分享给你的闺蜜们吧
-            </div>
+            <!--<div class="btn">-->
+                <!--点击分享给你的闺蜜们吧-->
+            <!--</div>-->
         </div>
     </div>
     <!-- Add Pagination -->
-    <!--<div class="swiper-pagination"></div>-->
+    <div class="swiper-pagination"></div>
 </div>
 
 <script src="js/jquery.min.js"></script>
 <script src="js/swiper.min.js"></script>
-<script src="js/tiger.js"></script>
+<script src="js/tiger.min.js"></script>
 </body>
 </html>

@@ -124,12 +124,11 @@
 	function changeFreezeSuccessCallback(ret,extra){
 		if(ret.statusCode=='200'){
 			init();
-			setTimeout(function(){
-				api.execScript({
-					name:'wallet_new',
-					script: 'init()'
-				});
-			},300);
+			api.execScript({
+				name:'wallet_new',
+				script: 'init("refresh")'
+			});
+
 		}else if(ret.statusCode=='10104'){
 			toLogin();
 		}else{

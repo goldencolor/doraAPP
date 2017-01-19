@@ -80,7 +80,7 @@
             <input oninput="checkLoginBtn()" id="code" class="flex-1 inputStyle" type="tel" placeholder="请输入验证码"/>
             <div id="codeBtn" status="1" class="sendCode" tapmode onclick="verCode()">发送验证</div>
         </div>
-        <div class="flex flex-right"> <span class="password-enter" tapmode onclick="goPassword()">我是老用户，密码登录 <span class="duola-iconfont icon-right"></span></span></div>
+        <div class="flex flex-right password-enter" tapmode onclick="goPassword()">我是老用户，密码登录 <span class="duola-iconfont icon-right"></span></div>
         <div id="loginBtn" class="three" tapmode onclick="verify()">立即登录</div>
     </div>
 </body>
@@ -169,6 +169,7 @@
                         text: '请稍候',
                         modal: true
                     });
+                    $api.setStorage('userPhone',phone);
                     sendMsg(phone);
                 }
             }
@@ -377,7 +378,7 @@
         //用户昵称
         $api.setStorage('userNickname', ret.data.user.profile.nickname || '');
         //多啦袋数量
-        $api.setStorage('extraBags',ret.data.user.extraService ?   ret.data.user.extraService.bags : 0);
+        $api.setStorage('count', ret.data.user.dorabag.count);
         //每个多啦袋放衣服数量
         $api.setStorage('perBag', ret.data.user.dorabag.perBag);
         //用户已持有数量

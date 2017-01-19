@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>导航栏</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        .headerBtnBox.active {
+            color: #ff6100;
+        }
+        .headerBtnBox  .headerBtn{
+            height: 2rem;
+        }
+        .headerBtnBox.active .headerBtn {
+            color: #ff6100;
+            border-bottom: 1px solid #ff6100;
+
+        }
+        .duola-header .nav-text {
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            color: #767676;
+        }
+    </style>
+</head>
+<body>
+<header id="header" class="duola-header flex">
+    <a id="nav-left" class="duola-icon-area" tapmode onclick="navLeftHandler()">
+        <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
+    </a>
+    <div id="nav-title" class="nav-title flex-1">
+        我的优惠券
+    </div>
+    <a id="nav-right" class="duola-icon-area" tapmode onclick="navRightHandler()">
+        <span id="nav-right-text" class="nav-text">使用规则</span>
+    </a>
+</header>
+<header id="header2" class="duola-header flex">
+    <div id="nav-switch" class="flex-1 flex">
+        <div id="switch_now_order" class="headerBtnBox active flex-1 flex flex-center" tapmode
+             onclick="switchBtn(this,'服务券',0)">
+            <!--<span class="duola-iconfont icon-newcome-active"></span>-->
+            <span id="headBtnOne" class="headerBtn active">服务券</span>
+        </div>
+
+        <div id="switch_his_order" class="headerBtnBox flex-1 flex flex-center" tapmode
+             onclick="switchBtn(this,'代金券',1)">
+            <!--<span class="duola-iconfont icon-dress"></span>-->
+            <span id="headBtnTwo" class="headerBtn">代金券</span>
+        </div>
+    </div>
+</header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+    var umengPage = null;
+    var betaUser=null;
+    apiready = function () {
+        //标记为betaUser的用户才能看见购买按钮
+        var header = $api.byId('header');
+        var header2 = $api.byId('header2');
+        $api.fixStatusBar(header);
+        var page = api.pageParam.page;//页面url
+        var name = api.pageParam.name;//页面名称
+        var title = api.pageParam.title;//页面标题
+        umengPage = api.pageParam.umengPage;//友盟页面ID
+        var from = api.pageParam.from;//来源于那个页面
+        var data = api.pageParam.data;//页面数据object
+        //获取frame
+        var frame = data.frame ? data.frame : {};
+        var bounces = frame.bounces ? frame.bounces : false; //页面弹动
+        var progress = frame.progress ? frame.progress : false; //页面加载进度条
+        var allowEdit = frame.allowEdit ? frame.allowEdit : false; //长按页面是否可以编辑
+        var scaleEnabled = frame.scaleEnabled ? frame.scaleEnabled : false; //页面缩放
+        var frameData = frame.data ? frame.data : {}; //frame 页面参数
+
+        //获取nav
+        var nav = data.nav ? data.nav : {};
+        var leftNav = nav.leftNav ? nav.leftNav : {};//导航栏左侧
+        var rightNav = nav.rightNav ? nav.rightNav : {};//导航栏右侧
+        var border = nav.border ? nav.border : false;//导航栏底部边框
+
+        frameData.from = from;
+        frameData.leftNavCallback = leftNav.callback ? leftNav.callback : '';
+        frameData.leftNavExtra = leftNav.extra ? leftNav.extra : '';
+        frameData.rightNavCallback = rightNav.callback ? rightNav.callback : '';
+        frameData.rightNavExtra = rightNav.extra ? rightNav.extra : '';
+        getTitle(title);
+        getNavLeft(leftNav);
+        api.parseTapmode();
+
+        var headerHeight = $api.offset(header).h;
+        var headerHeight2 = $api.offset(header2).h;
+
+        api.openFrameGroup({
+            name: 'coupon_tab',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                y: headerHeight + headerHeight2,
+                w: 'auto',
+                h: 'auto'
+            },
+            background: '#F2F2F2',
+            index: 0,
+            preload: 0,
+            frames: [
+                {
+                    name: 'coupon_one',
+                    url: 'userCoupon.html',
+                    bounces: bounces,
+                    vScrollBarEnabled: false,
+                    bgColor: '#F2F2F2',
+                    pageParam: {
+                        data: frameData
+                    }
+                }, {
+                    name: 'coupon_two',
+                    url: 'userCouponTwo.html',
+                    bounces: bounces,
+                    bgColor: '#F2F2F2',
+                    vScrollBarEnabled: false,
+                    pageParam: {
+                        data: frameData
+                    }
+                }
+            ]
+        }, function (ret, err) {
+
+        });
+
+    };
+
+    function closeWebWin(){
+        onPageEndUmeng(umengPage);
+        api.closeWin();
+    }
+    function switchBtn(el, name, index) {
+        var header = $api.byId('nav-switch');
+        var headerAct = $api.dom(header, '.headerBtnBox.active');
+        if (headerAct == el) {
+            return;
+        }
+//        $api.removeCls(headerAct, 'active');
+//        $api.addCls(el, 'active');
+        switchActive(index);
+        if (index == 0) {
+
+        } else if (index == 1) {
+
+        }
+        api.setFrameGroupIndex({
+            scroll: false,
+            name: 'coupon_tab',
+            index: index
+        });
+    }
+    function switchActive(index) {
+        if (index == 0) {
+            $api.addCls($api.byId('switch_now_order'), 'active');
+            $api.removeCls($api.byId('switch_his_order'), 'active');
+
+        } else if (index == 1) {
+            $api.removeCls($api.byId('switch_now_order'), 'active');
+            $api.addCls($api.byId('switch_his_order'), 'active');
+
+        }
+    }
+
+    function closeOrderGroup() {
+        onPageEndUmeng(umengPage);
+        closeWin();
+    }
+
+
+
+    //点击返回图标异步执行关闭窗口
+    function execCloseSlefWin(extra,winName,value){
+        api.closeWin({
+            name:winName
+        });
+    }
+    function navLeftHandler(){
+        api.execScript({
+            name : 'root',
+            frameName : "footer_tab_4",
+            script : 'getNewData("vip")'
+        });
+        api.closeWin({});
+
+    }
+    function navRightHandler(){
+        goWebUrl('openBuyInfo', 'http://mp.weixin.qq.com/s/aj7Gb52OVFAYehVELQOxNw', '使用规则','../header_web.html');
+    }
+
+
+</script>
+</html>

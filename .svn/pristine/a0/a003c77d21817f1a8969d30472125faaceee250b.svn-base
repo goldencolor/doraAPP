@@ -1310,17 +1310,5 @@
         }
     }
 
-    function goUserPayActivity(){
-        var name = 'userPayActivity';
-        var url = './user/userPayActivity.html';
-        api.openWin({
-            name: name +"win",
-            url: url,
-            slidBackType:'edge',
-            delay:100,
-            allowEdit:true,
-            softInputMode: "resize"
-        });
-    }
 </script>
 </html>

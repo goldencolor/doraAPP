@@ -80,7 +80,6 @@
             color: #FFFFFF;
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
-
         }
 
         .mainContent .one .valid .freeze {
@@ -148,13 +147,6 @@
             color: #767676;
             letter-spacing: -0.6px;
         }
-
-        #overWarm {
-            font-family: SourceHanSansCN-Regular;
-            font-size: 0.6rem;
-            color: #FF6100;
-            letter-spacing: -0.6px;
-        }
     </style>
 </head>
 <body id="main" class="">
@@ -172,10 +164,9 @@
             </div>
         </div>
         <div class="valid">
-            <div class="title" id="validTitle">会员有效期至</div>
+            <div class="title">会员有效期至</div>
             <div class="time" id="vip-time"></div>
-            <div class="freeze aui-hide" id="frozenAt" onclick="Frost()"></div>
-            <div class="freeze aui-hide" id="renewal" onclick="Renew()">续费 ></div>
+            <div class="freeze" id="frozenAt" onclick="Frost()"></div>
         </div>
     </div>
     <div class="two flex-1">
@@ -183,7 +174,7 @@
             <div class="now">
                 <div class="title">当前服务</div>
                 <div class="dataBox flex flex-bottom aui-hide" id="oneCloth">
-                    <div class="left">1件衣服</div>
+                    <div class="left" >1件衣服</div>
                     <div class="right flex-1">99元/月 可持有1件衣服</div>
                 </div>
                 <div class="dataBox flex flex-bottom" id="moreCloth">
@@ -197,8 +188,7 @@
                 <div class="title">赠送服务</div>
                 <div class="dataBox flex flex-bottom">
                     <div class="left">增加<em id="bagNum"></em>个多啦袋</div>
-                    <div class="right flex-1">有效期至 <em id="bagTime"></em><span class="aui-hide" id="overWarm">&nbsp;暂不可用</span>
-                    </div>
+                    <div class="right flex-1">有效期至 <em id="bagTime"></em></div>
                 </div>
             </div>
         </div>
@@ -252,7 +242,6 @@
         });
     };
 
-
     function initSuccessCallback(ret, extra) {
         _loadingHide();
         if (ret.statusCode == '200') {
@@ -270,7 +259,7 @@
             var frozenAt = ret.data.user.frozenAt;
             count = $api.getStorage('count');
             var text = '';
-            if (frozenAt == 'undefined' || frozenAt == undefined || frozenAt == null || frozenAt == 'null') {
+            if (frozenAt == 'undefined' || frozenAt == undefined) {
                 text = '未冻结 >';
             } else {
                 text = '已冻结 >';
@@ -282,6 +271,7 @@
             $api.setStorage('count', ret.data.user.dorabag.count);
             $api.setStorage('vipType', vipType); //会员类型
             $api.setStorage('frozenAt', frozenAt);
+            $api.setStorage('frozenAt', frozenAt);
             $api.setStorage('extraService', ret.data.user.extraService ? "YES" : "NO");
             if (ret.data.user.extraService) {
                 if ($api.hasCls($api.byId('givingBox'), 'aui-hide')) {
@@ -290,8 +280,8 @@
                     $api.html($api.byId('bagTime'), ret.data.user.extraService.expiredAt.substring(0, 10));
                 }
             }
-            var extraBags = ret.data.user.extraService ? ret.data.user.extraService.bags : 0;
-            $api.setStorage('extraBags', ret.data.user.extraService ? ret.data.user.extraService.bags : 0);
+            var extraBags = ret.data.user.extraService ?   ret.data.user.extraService.bags : 0;
+            $api.setStorage('extraBags',ret.data.user.extraService ?   ret.data.user.extraService.bags : 0);
             var deposit = ret.data.user.deposit;
             if (deposit == 'undefined' || deposit == undefined) {
                 $api.setStorage('deposit', 0);
@@ -300,26 +290,17 @@
                 $api.setStorage('deposit', deposit);
                 $api.html($api.byId('deposit'), deposit);
             }
+            $api.html($api.byId('vip-time'), $api.getStorage('dueTime').substring(0, 10));
             $api.html($api.byId('frozenAt'), text);
 
             if (isMember === "experience") {
-                $api.removeCls($api.byId("oneCloth"), 'aui-hide');
-                $api.addCls($api.byId("moreCloth"), 'aui-hide');
+                $api.removeCls($api.byId("oneCloth"),'aui-hide');
+                $api.addCls($api.byId("moreCloth"),'aui-hide');
             } else {
                 $api.html($api.byId('dorabagCount'), ret.data.user.dorabag.count ? ret.data.user.dorabag.count - extraBags + '个多啦袋' : '');
 
             }
-            var nowTime = new Date();
-            var dueTime = new Date($api.getStorage('dueTime').substring(0, 10).replace(/-/g, '/'));
-            if (dueTime - nowTime > 0) {
-                $api.removeCls($api.byId('frozenAt'), 'aui-hide');
-                $api.html($api.byId('vip-time'), $api.getStorage('dueTime').substring(0, 10));
-            } else if (dueTime - nowTime <= 0) {
-                $api.removeCls($api.byId('renewal'), 'aui-hide');
-                $api.removeCls($api.byId('overWarm'), 'aui-hide');
-                $api.html($api.byId('validTitle'), '');
-                $api.html($api.byId('vip-time'), '当前服务已到期');
-            }
+
 
             api.execScript({
                 name: 'root',

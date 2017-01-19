@@ -713,7 +713,7 @@
             return getImgUrl(imgPath, value.img, CONSTANT.PICTUREOSS.Q80);
         });
         UIScrollPictureUrls = ad.list.map(function (value) {
-            return {url: value.url, name: value.name, type:value.type};
+            return {url: value.url, name: value.name};
         });
         UIScrollPicture.open({
             rect: {
@@ -759,7 +759,7 @@
             getAdHtml(ad);
         } else {
             UIScrollPictureUrls = ad.list.map(function (value) {
-                return {url: value.url, name: value.name, type:value.type};
+                return {url: value.url, name: value.name};
             });
             var paths = ad.list.map(function (value) {
                 return getImgUrl(imgPath, value.img, CONSTANT.PICTUREOSS.Q80);
@@ -796,93 +796,21 @@
         if (!isDefine(value.url)) {
             return;
         }
-        var type = value.type;//内部链接或外部链接
-        var data = value.url;//url
-        var isNeedLogin = isNeedLoginUrl(data);
+        var isNeedLogin = isNeedLoginUrl(value.url);
         if (isNeedLogin && !isLogin()) {
             goLogin();
             return;
-        }
-        var title = getUrlParam(data, 'title') && getUrlParam(data, 'title').indexOf('%') == -1 ? getUrlParam(data, 'title') : '多啦衣梦';
-        var name = type+index;
-        var leftIcon = 'duola-iconfont icon-left';
-        var leftNav = setNavData(leftIcon);
-        var bounces = getUrlParam(data, 'bounces') || false;
-        var border = false;
-        var params = {};
-        var url = 'header_web.html';
-        var from = {
-            winName: api.winName,
-            frameName: api.frameName
-        };
-        if (type == 'inner') {
-            //打开内部APP页面
-            var isWin = getUrlParam(data, 'win') || false;
-            if(isWin){
-                var special = getUrlParam(data, 'special');
-                if(special == 'user_coupon_header' && !$api.getStorage('isMember')){
-                    sendEventUmeng(CONSTANT.UMENGEVENT.BTN_VIP,{from:'首页'});
-                    //跳转开通会员
-                    var name2 = 'userPayNew';
-                    var url2 = './user/userPayNew.html';
-                    api.openWin({
-                        name: name2 +"win",
-                        url: url2,
-                        slidBackType:'edge',
-                        delay:100,
-                        allowEdit:true,
-                        softInputMode: "resize"
-                    });
-                }else if(special == 'user_coupon_header' && $api.getStorage('isMember')){
-                    var leftCallback = 'execCloseSlefWin';
-                    leftNav = setNavData(leftIcon, null, leftCallback);
-                    params.nav = setNav(leftNav, border);
-                    openNewWinFrame(special, title, params, from, data);
-                }else{
-                    api.openWin({
-                        name: name,
-                        url: data
-                    });
+        } else {
+            api.openWin({
+                name: 'adweb',
+                url: 'winWeb.html',
+                pageParam: {
+                    url: value.url,
+                    title: '多啦衣梦',
+                    name: value.name || "快来看啊，一个有趣的东西！"
                 }
-            }else{
-                border = true;
-                params.nav = setNav(leftNav, border);
-                params.frame = setFrame(bounces);
-                openNewWinFrame(name, title, params, from, url,null,data);
-            }
-
-        } else{
-            //打开外面weburl
-            if (isTrue(getUrlParam(data, 'h5game'))) {
-                goH5Game(data);
-            } else {
-                var rightIcon = 'duola-iconfont icon-share';
-                var rightNav = setNavData(rightIcon);
-                params.nav = setNav(leftNav, border, rightNav);
-                //分享url和加载的url 不一致
-                var needToken = getUrlParam(data,'needToken');
-                var sharedPage = data;
-                if(needToken){
-                    sharedPage += '&token=' + $api.getStorage('token');
-                }
-                params.frame = setFrame(bounces, {
-                    sharedPage: sharedPage,
-                    sharedTitle: getUrlParam(data, 'shareTitle') && getUrlParam(data, 'shareTitle').indexOf('%') == -1 ? getUrlParam(data, 'shareTitle') : title
-                });
-                var isTrans = getUrlParam(data,'trans');
-                url = isTrans ? 'header_web_trans.html' : 'header_web.html';
-                openNewWinFrame(name, title, params, from, url, null, sharedPage);
-            }
+            });
         }
-//            api.openWin({
-//                name: 'adweb',
-//                url: 'winWeb.html',
-//                pageParam: {
-//                    url: value.url,
-//                    title: '多啦衣梦',
-//                    name: value.name || "快来看啊，一个有趣的东西！"
-//                }
-//            });
     }
 
     //跳转选衣达人页面
@@ -1192,10 +1120,10 @@
                     var name = type+i;
                     var title = getUrlParam(data, 'title') && getUrlParam(data, 'title').indexOf('%') == -1 ? getUrlParam(data, 'title') : '多啦衣梦';
                     var leftIcon = 'duola-iconfont icon-left';
-                    var leftNav = setNavData(leftIcon,null,null,null,'whiteColor');
+                    var leftNav = setNavData(leftIcon);
                     var rightIcon = 'duola-iconfont icon-share';
-                    var rightNav = setNavData(rightIcon,null,null,null,'whiteColor');
-                    var border = false;
+                    var rightNav = setNavData(rightIcon);
+                    var border = true;
                     var bounces = false;
                     var params = {};
                     params.nav = setNav(leftNav, border, rightNav);
@@ -1310,17 +1238,5 @@
         }
     }
 
-    function goUserPayActivity(){
-        var name = 'userPayActivity';
-        var url = './user/userPayActivity.html';
-        api.openWin({
-            name: name +"win",
-            url: url,
-            slidBackType:'edge',
-            delay:100,
-            allowEdit:true,
-            softInputMode: "resize"
-        });
-    }
 </script>
 </html>

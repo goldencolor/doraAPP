@@ -298,7 +298,7 @@
                             <div tapmode onclick="openInfo(this)">
                                 <span id="nickname">...</span>
                                 <div class="aui-list-item-text" id="mobile">
-                                    点击绑定手机号码
+                                    ...
                                 </div>
                             </div>
                             <div name="vip" class="aui-list-item-text user-header-dueTime aui-hide" tapmode
@@ -424,7 +424,6 @@
 <section class="aui-grid" id="user-content">
     <div class="aui-row">
         <div name="vip" class="aui-col-xs-3 aui-hide" tapmode onclick="openCoupon(this)">
-            <div class="aui-badge aui-hide" id="newCoupons"></div>
             <i class="duola-iconfont icon-Coupon"></i>
             <div class="aui-grid-label">优惠券</div>
         </div>
@@ -541,14 +540,12 @@
     {{?}}
 </script>
 <script type="text/javascript">
-    var messagesCount = 0, dueTime, canComment = 0, newCoupons = 0,dist, count;
+    var messagesCount = 0, dueTime, canComment = 0, dist, count;
     var betaUser = "YES";
     var mqMsgCountEl = null;//美恰未读消息DOM元素
-    var  extraBags;//美恰未读消息DOM元素
     apiready = function () {
 //        betaUser = CONSTANT.SWITCH.BETAUSER || $api.getStorage('betaUser');
         mqMsgCountEl = $api.byId('mqMsgCount');
-
         //初始化美恰
         mqInit(function (count) {
             $api.text(mqMsgCountEl, count);
@@ -577,9 +574,8 @@
         var nickname = $api.getStorage('userNickname')||'';
         var mobile = $api.getStorage('userPhone');
         count = $api.getStorage('count');
-        extraBags = $api.getStorage('extraBags') || 0;
         _setHtmlVal('nickname', nickname);
-        if(mobile){_setHtmlVal('mobile', mobile);}
+        _setHtmlVal('mobile', mobile);
         var userVipType = $api.getStorage('userVipType');
         var userheader = $api.getStorage('userHead');
         $api.attr($api.byId('user-header'), 'src', '../../image/avatar.png');
@@ -657,11 +653,6 @@
                 updateNews("canComment", canComment, ret.orders.canComment);
                 canComment = ret.orders.canComment;
             }
-            if ( ret.newCoupons && newCoupons !== ret.newCoupons.newCoupons) {
-                updateNews("newCoupons", newCoupons, ret.newCoupons.newCoupons);
-                newCoupons = ret.orders.newCoupons;
-            }
-
             //更新物流信息
             var express = ret.express;
             var posted = express.posted.hasNoOrder;
@@ -863,7 +854,7 @@
         };
         var url = '../wallet_new.html';
         openNewWin(name, title, params, from, url, {
-            type: "push",                //动画类型（详见动画类型常量）
+            type: "fade",                //动画类型（详见动画类型常量）
             duration: 300                //动画过渡时间，默认300毫秒
         });
     }
@@ -1157,7 +1148,7 @@
         sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
             name: $api.text(el).replace(/\s/g, '')
         });
-        var name = 'user_coupon_header';
+        var name = 'Coupon';
         var title = '我的优惠劵';
         var leftIcon = 'duola-iconfont icon-left';
         var leftCallback = 'execCloseSlefWin';
@@ -1169,13 +1160,14 @@
             winName: api.winName,
             frameName: api.frameName
         };
-        var url = 'user_coupon_header.html';
+        var url = '../header_new.html';
         var animation = {
             type: "push",                //动画类型（详见动画类型常量）
             subType: "from_right",       //动画子类型（详见动画子类型常量）
             duration: 300                //动画过渡时间，默认300毫秒
         };
-        openNewWinFrame(name, title, params, from, url, animation);
+        var page = 'Coupon.html';
+        openNewWinFrame(name, title, params, from, url, animation, page);
     }
     //打开推荐有奖
     function openRecommend(el) {
@@ -1428,7 +1420,7 @@
             pageParam: {
                 page: 'Pay',
                 title: '缴费',
-                bagNum: count - extraBags,
+                bagNum: count,
                 type: "serviceFee"
             }
         });

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>推荐有奖详情</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+    <style>
+
+        body {
+            height: 100%;
+            min-height: 50rem;
+            background-color: #F2F2F2;
+            font-family: SourceHanSansCN-Normal;
+        }
+
+        .ticket {
+            width: 100%;
+            border-left: 1px dotted #F2F2F2;
+            height: 4.5rem;
+            text-align: center;
+        }
+
+        .ticket::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -4px;
+            border: 5px solid #F2F2F2;
+            border-radius: 50%;
+        }
+
+        .ticket::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: -4px;
+            border: 5px solid #F2F2F2;
+            border-radius: 50%;
+        }
+
+        .ticket .ticket-in {
+            display: inline-block;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.5rem;
+            color: #FFFFFF;
+            width: auto;
+            border: 1px solid #ffffff;
+            border-radius: 0.4rem;
+            padding: 0px 2px;
+            margin: 1.5rem 0;
+            line-height: 1rem;
+        }
+
+        .aui-row {
+            padding: 1rem;
+        }
+
+        .aui-row .aui-content {
+            background-image: linear-gradient(134deg, #F03576 0%, #FF85BF 100%);
+            height: 4.5rem;
+            border-radius: 0.2rem;
+            margin-bottom: 1rem;
+            width: 100%;
+            box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+        }
+
+        .aui-row .aui-content.expire {
+            background-image: linear-gradient(134deg, #E2E2E2 0%, #D8D8D8 100%);
+        }
+
+        .list-item-media {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .list-item .list-item-inner {
+            flex: 1
+        }
+
+        .list-item-media span {
+            padding: 1.7rem 0;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            font-weight: 500;
+        }
+
+        .list-item-inner {
+            padding: 1rem 0;
+            font-size: 10px;
+            color: #FFFFFF;
+            letter-spacing: -0.41px;
+            line-height: 0.8rem;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="aui-row">
+        <div class="aui-content" v-for="couopn in couopns" :class="{'expire': couopn.expired === 1}">
+            <div class="aui-col-xs-3">
+                <div class="list-item-media">
+                    <span>{{couopn.title}}</span>
+                </div>
+            </div>
+            <div class="aui-col-xs-6">
+                <div class="list-item-inner">
+                    <div class="list-item-text">
+                        {{couopn.desc}}
+                    </div>
+                    <div class="list-item-text ">
+                        有效期 {{couopn.validateOn | newDate }}至{{couopn.validateEnd | newDate}}
+                    </div>
+                    <div class="list-item-text">
+                        会员可用 <span v-if="couopn.extra && couopn.extra.depoist>0">需{{couopn.extra.depoist}}元押金</span>
+                    </div>
+                </div>
+            </div>
+            <div class="aui-col-xs-3">
+                <div class="ticket" v-show="couopn.expired ===0" @click="clickEmploy(couopn.category,couopn.code)">
+                <span class="ticket-in">
+                    立即使用
+                </span>
+                </div>
+            </div>
+        </div>
+        <div class="loading aui-text-center" v-show="loadMore.show">
+            <img src="../../icon/loading.gif" width="16"/>
+            <div v-text="loadMore.text"></div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/pingpp.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+
+<script type="text/javascript">
+    apiready = function () {
+        oneCoupon();
+        vm.init();
+        vm.news();
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 10 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function (ret, err) {
+            vm.init();
+        });
+    };
+
+    function oneCoupon() {
+        var coupon = api.getPrefs({
+                    sync: true,
+                    key: 'oneCoupon'
+                }) || null;
+        if (coupon) {
+            return;
+        }
+        var dialogBox = api.require('dialogBox');
+        var text = '为了感谢广大会员对多啦衣梦的支' + "\n" +
+                '持，多啦衣梦新推出赠送多啦袋和' + "\n" +
+                '会员时间的福利，先了解一下吧';
+        dialogBox.sendMessage({
+            texts: {
+                title: '提示',
+                content: text,
+                leftBtnTitle: '暂不了解',
+                rightBtnTitle: '立即了解'
+            },
+            styles: {
+                bg: '#fff',
+                w: 300,
+                title: {
+                    h: 60,
+                    show: {
+                        marginL: 30,
+                        titleSize: 18,
+                        titleColor: '#000'
+                    }
+                },
+                content: {
+                    marginT: 0,
+                    color: '#000',
+                    size: 14
+                },
+                left: {
+                    marginB: 20,
+                    marginL: 80,
+                    w: 70,
+                    h: 35,
+                    corner: 2,
+                    bg: '#FFF',
+                    size: 14,
+                    color: '#000'
+                },
+                right: {
+                    marginB: 20,
+                    marginL: 40,
+                    w: 70,
+                    h: 35,
+                    corner: 2,
+                    bg: '#FFF',
+                    size: 16,
+                    color: '#FF6100'
+                }
+            }
+        }, function (ret) {
+            dialogBox.close({
+                dialogName: 'sendMessage'
+            });
+            if (ret.eventType !== 'left') {
+                api.setPrefs({
+                    key: 'oneCoupon',
+                    value: "YES"
+                });
+                goWebUrl('openBuyInfo', 'http://mp.weixin.qq.com/s/aj7Gb52OVFAYehVELQOxNw', '使用规则', '../header_web.html');
+            }
+        });
+    }
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            loadMore: {
+                show: false, //控制是否显示 加载更多 默认不显示
+                text: '加载更多...'
+            },
+            "page": 0,
+            "pageSize": 10,
+            codeImg: "../../image/hold.jpg",
+            couopns: [],
+            deposit: 0,
+            needDeposit: 0,
+            userDeposit: 0,
+            choiceCode: false,
+            completed: false //是否加载了所有数据,
+
+        },
+        filters: {
+            newDate: function (time) {
+                if (!time) return '';
+                return time.substring(0, 10);
+            },
+            promote: function (promote) {
+                if (!promote) return '';
+                return promote === "YES" ? '推荐有奖' : ''
+            }
+        },
+        methods: {
+            init: function () {
+                var self = this;
+                if (!self.completed) {//判断是否已经加载了所有数据
+                    self.loadMore.show = true;
+                    //显示加载更多模块
+                    self.page++;
+                    var url = serviceUser + 'service/coupons';
+                    var headers = _getAjaxHeaders(true, true);
+                    var data = _getAjaxData({
+                        type: 'serviceCoupon',
+                        "page": self.page,
+                        "pageSize": self.pageSize
+                    });
+                    var extra = null;
+                    _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                        if (ret.statusCode === 200) {
+                            if (ret.couopns && ret.couopns.length > 0) {
+                                self.couopns = self.couopns.concat(ret.couopns);
+                            } else {
+                                self.completed = true;
+                            }
+                        } else if (ret.statusCode == '10104') {
+                            goLogin('', "../win_regin.html");
+                        } else {
+                            toastMsg(ret.msg);
+                        }
+                        if (self.completed) {
+                            self.loadMore.text = '没有数据了!';
+                        }
+                        self.loadMore.show = false;
+                    }, function (err, extra) {
+                        toastMsg(err.msg);
+                        self.loadMore.show = false;
+                    }, 0, extra);
+                }
+            },
+            news: function () {
+                var url = serviceUser + 'service/coupons/read';
+                var headers = _getAjaxHeaders(true, true);
+                var data = _getAjaxData({});
+                var extra = null;
+                _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                }, function (err, extra) {
+                }, 0, extra);
+
+            },
+            fnInit: function (code) {
+                _loadingShow();
+                var self = this;
+                var body = {"bags": Number(1), code: code};
+                var url = serviceUser + 'service/pay/query/payDeposit';
+                var headers = _getAjaxHeaders(true, true);
+                var data = _getAjaxData(body);
+                var extra = null;
+                _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                    _loadingHide();
+                    if (ret.statusCode == '200') {
+                        self.deposit = ret.deposit;
+                        self.needDeposit = ret.needDeposit;
+                        self.userDeposit = ret.userDeposit;
+                        self.promptlyAlert("bagPlus", code);
+                    } else if (ret.statusCode == '10104') {
+                        goLogin('', "../win_regin.html");
+                    } else {
+                        toastMsg(ret.msg);
+                    }
+                }, function (err, extra) {
+                    toastMsg(err.msg);
+                    _loadingHide();
+                }, 0, extra);
+            },
+            clickEmploy: function (category, code) {
+                var self = this;
+                if (category === "bagPlus") {
+                    self.fnInit(code);
+                    self.choiceCode = code;
+                }
+                if (category === "dueTimeExt") {
+                    self.promptlyAlert("dueTimeExt", code)
+                }
+
+            },
+            change: function () {
+                var self = this;
+                if (self.deposit === 0) {
+                    return;
+                }
+                var name = 'buyClothes_mask';
+                var page = '../buyClothes_mask.html';
+                var rect = {
+                    x: 0,
+                    y: 0,
+                    w: 'auto',
+                    h: 'auto'
+                };
+                var bounces = false;
+                var data = {frameName: "coupon_one"};
+                openNewFrame(name, page, bounces, rect, data);
+
+            },
+            pay: function (pay) {
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '正在支付···',
+                    text: '请稍候'
+                });
+                var self = this;
+                var body = {
+                    "bags": 1,
+                    channel: pay,
+                    amountFront: self.deposit,
+                    coupons: [],
+                    "duration": 1,
+                    code: self.choiceCode
+                };
+                var url = serviceUser + 'service/pay/start/payDeposit';
+                var headers = _getAjaxHeaders(true, true);
+                var data = _getAjaxData(body);
+                var extra = null;
+                _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                    _loadingHide();
+                    if (ret.statusCode == '200') {
+                        ping(ret.charge);
+                    } else if (ret.statusCode == '10104') {
+                        goLogin('', "../win_regin.html");
+                    } else {
+                        toastMsg(ret.msg);
+                    }
+                }, function (err, extra) {
+                    _loadingHide();
+                    toastMsg(err.msg);
+                }, 0, extra);
+            },
+            promptly: function (code) {
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '正在使用···',
+                    text: '请稍候'
+                });
+                var self = this;
+                var body = {
+                    code: code
+                };
+                var url = serviceUser + 'service/coupons/use';
+                var headers = _getAjaxHeaders(true, true);
+                var data = _getAjaxData(body);
+                var extra = null;
+                _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                    _loadingHide();
+                    if (ret.statusCode == '200') {
+                        setTimeout(api.execScript({
+                            name: 'root',
+                            script: 'WinWallet("YES");'
+                        }), 500);
+                    } else if (ret.statusCode == '10104') {
+                        goLogin('', "../win_regin.html");
+                    } else {
+                        toastMsg(ret.msg);
+                    }
+                }, function (err, extra) {
+                    _loadingHide();
+                    toastMsg(err.msg);
+                }, 0, extra);
+            },
+            promptlyAlert: function (type, code) {
+                var text;
+                var self = this;
+                var title;
+                if (type === "bagPlus") {
+                    title = '立即使用';
+                    text = '押金足够，当前剩余押金' + self.userDeposit + "元";
+                }
+                if (type === "bagPlus" && self.deposit > 0) {
+                    text = '押金不足，当前剩余押金' + self.userDeposit + '元,需要冲押金' + self.deposit + '元';
+                    title = '立即缴费';
+                }
+                if (type === "dueTimeExt") {
+                    text = '立即使用这张服务券吗？';
+                    title = '立即使用';
+                }
+                var dialogBox = api.require('dialogBox');
+//                var text = '你的多啦袋已经变更成功!' + "进入我的衣橱查看你增" + "\n" +
+//                        "加的多啦袋,可在“我的”页面查看您的会员时间";
+                dialogBox.sendMessage({
+                    texts: {
+                        title: '提示',
+                        content: text,
+                        leftBtnTitle: '取消',
+                        rightBtnTitle: title
+                    },
+                    styles: {
+                        bg: '#fff',
+                        w: 300,
+                        title: {
+                            h: 60,
+                            show: {
+                                marginL: 30,
+                                titleSize: 18,
+                                titleColor: '#000'
+                            }
+                        },
+                        content: {
+                            marginT: 0,
+                            color: '#000',
+                            size: 14
+                        },
+                        left: {
+                            marginB: 20,
+                            marginL: 100,
+                            w: 70,
+                            h: 35,
+                            corner: 2,
+                            bg: '#FFF',
+                            size: 14,
+                            color: '#000'
+                        },
+                        right: {
+                            marginB: 20,
+                            marginL: 40,
+                            w: 70,
+                            h: 35,
+                            corner: 2,
+                            bg: '#FFF',
+                            size: 16,
+                            color: '#FF6100'
+                        }
+                    }
+                }, function (ret) {
+                    dialogBox.close({
+                        dialogName: 'sendMessage'
+                    });
+                    if (ret.eventType !== 'left') {
+                        if (type === "bagPlus" && self.deposit === 0) {
+                            self.promptly(code);
+                        }
+                        if (type === "bagPlus" && self.deposit > 0) {
+                            self.change();
+                        }
+                        if (type === "dueTimeExt") {
+                            self.promptly(code);
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+    //异步关闭遮罩层调用
+    function execClosePayMask(frameName, index) {
+        index = parseInt(index);
+        if (!isNaN(index)) {
+            if (index == 1) {
+//                支付宝支付方法
+                vm.pay('alipay');
+            } else if (index == 2) {
+//                微信支付方法
+                vm.pay('wx');
+            }
+        }
+        api.closeFrame({
+            name: frameName
+        });
+    }
+    //    支付完成后调用check_pay接口验证
+    function check() {
+        var url = serviceUser + 'service/check/payment';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url, 'post', headers, data, checkSuccessCallback, checkErrorCallback, 0, extra);
+    }
+    function checkSuccessCallback(ret, extra) {
+        if (ret.statusCode == '200') {
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+    function checkErrorCallback(err, extra) {
+        toastMsg(err.msg);
+    }
+
+
+</script>
+</html>

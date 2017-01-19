@@ -7,12 +7,12 @@
 //var serviceUser = "http://101.201.102.179:10000/app/user/";
 
 //jim测试
-var serviceNew = "http://192.168.4.108:9000/app/";
-var serviceUser = "http://192.168.4.108:9000/app/user/"; 
+//var serviceNew = "http://192.168.4.108:9000/app/";
+//var serviceUser = "http://192.168.4.108:9000/app/user/"; 
 
 //tiger测试
-//var serviceNew = "http://192.168.4.110:9000/app/";
-//var serviceUser = "http://192.168.4.110:9000/app/user/";
+var serviceNew = "http://192.168.4.110:9000/app/";
+var serviceUser = "http://192.168.4.110:9000/app/user/";
 
 //衣服图片地
 var colthPath  = "http://img.duolayimeng.com/original/";

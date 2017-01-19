@@ -377,7 +377,7 @@
         //用户昵称
         $api.setStorage('userNickname', ret.data.user.profile.nickname || '');
         //多啦袋数量
-        $api.setStorage('extraBags',ret.data.user.extraService ?   ret.data.user.extraService.bags : 0);
+        $api.setStorage('count', ret.data.user.dorabag.count);
         //每个多啦袋放衣服数量
         $api.setStorage('perBag', ret.data.user.dorabag.perBag);
         //用户已持有数量

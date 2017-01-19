@@ -863,7 +863,7 @@
         };
         var url = '../wallet_new.html';
         openNewWin(name, title, params, from, url, {
-            type: "push",                //动画类型（详见动画类型常量）
+            type: "fade",                //动画类型（详见动画类型常量）
             duration: 300                //动画过渡时间，默认300毫秒
         });
     }

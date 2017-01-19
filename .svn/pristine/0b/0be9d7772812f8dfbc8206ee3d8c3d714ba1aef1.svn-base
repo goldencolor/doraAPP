@@ -52,9 +52,6 @@
 		.duola-header .rightBg .nav-right-icon{
 			margin-left: 0;
 		}
-		.whiteColor{
-			color: #FFFFFF !important;
-		}
 	</style>
 </head>
 <body>
@@ -90,9 +87,6 @@
 		navTitle = $api.byId('nav-title');
 		frameData = api.pageParam;
 		title = frameData.title || '多啦衣梦';
-		if(title=='多啦2016'){
-			title='';
-		}
 		if(frameData.transTitle){
 			$api.addCls($api.byId('leftBg'),'leftBg');
 			$api.addCls($api.byId('rightBg'),'rightBg');

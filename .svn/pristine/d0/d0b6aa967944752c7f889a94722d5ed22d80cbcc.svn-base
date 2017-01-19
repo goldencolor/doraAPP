@@ -128,6 +128,7 @@
     //关闭绑定手机页面
     function closeBindTel(){
         var from = api.pageParam.from;
+        console.log(JSON.stringify(api.pageParam));
         if(from.winName == 'userPayNewwin' || from.winName == 'userPayWin'){
             //ios系统打开新页面触发了viewdisappear事件
             api.removeEventListener({
@@ -145,13 +146,6 @@
                 });
             },50);
         }else{
-            if(from.winName == 'myInfoWin'){
-                //刷新个人信息
-                api.execScript({
-                    name : 'myInfoWin',
-                    script : 'changeBindTel();'
-                });
-            }
             //刷新我的页面
             api.execScript({
                 name : 'root',
@@ -290,10 +284,6 @@
         _loadingHide();
         if(ret.statusCode=='200'){
             $api.setStorage('userPhone',phone);
-            api.setPrefs({
-                key: 'userPhone',
-                value: phone
-            });
             sendEventUmeng(CONSTANT.UMENGEVENT.B3TH_TEL_SUCCESS);
             closeBindTel();
         }else{

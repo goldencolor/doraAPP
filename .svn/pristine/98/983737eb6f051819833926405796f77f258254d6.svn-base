@@ -494,7 +494,6 @@
         $api.setStorage('userPhone', ret.data.user.mobile || '');
         //用户名
         $api.setStorage('userName', ret.data.user.username || '');
-        $api.setStorage('extraBags',ret.data.user.extraService ?   ret.data.user.extraService.bags : 0);
         //冻结时间
         $api.setStorage('frozenAt', ret.data.user.frozenAt || '');
         //注册时间
