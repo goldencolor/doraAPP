@@ -157,6 +157,7 @@
 <script type="text/javascript" src="../../script/url.js"></script>
 <script type="text/javascript" src="../../script/uz.js"></script>
 
+
 <script type="text/javascript">
     var vm;
     apiready = function () {
@@ -182,6 +183,7 @@
             "page": 0,
             "pageSize": 10,
             codeImg: "../../image/hold.jpg",
+            dueTime: dueTime,
             nowTime: new Date(),
             couopns: [],
             completed: false //是否加载了所有数据

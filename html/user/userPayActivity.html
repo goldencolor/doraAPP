@@ -168,7 +168,7 @@
             width:100%;
             height:100%;
             opacity: 0.1;
-            background: #000000;
+            /*background: #000000;*/
             z-index: 4;
         }
 
@@ -214,14 +214,14 @@
             </div>
             <div class="vip-section flex-1 flex flex-vertical" style="background: transparent;background-image: none;">
                 <div class="btn">
-                    <div class="bg-color"></div>
-                    <div class="bg-text flex">
-                        <div style="position: relative;">
-                            <input id="money-code" type="text" placeholder="推荐码(非必填)" onblur="this.value.trim() && checkMoneyCode(this,this.value.trim())" onkeyup="this.t ? clearTimeout(this.t) : ''; this.t = setTimeout(chk.call(this), 1000)"/>
-                            <span class="duola-iconfont icon-Scan" tapmode onclick="codeScan();"></span>
-                        </div>
-                        <div class="tip-money-code"><span id="discount-money"></span></div>
-                    </div>
+                    <!--<div class="bg-color"></div>-->
+                    <!--<div class="bg-text flex">-->
+                        <!--<div style="position: relative;">-->
+                            <!--<input id="money-code" type="text" placeholder="推荐码(非必填)" onblur="this.value.trim() && checkMoneyCode(this,this.value.trim())" onkeyup="this.t ? clearTimeout(this.t) : ''; this.t = setTimeout(chk.call(this), 1000)"/>-->
+                            <!--<span class="duola-iconfont icon-Scan" tapmode onclick="codeScan();"></span>-->
+                        <!--</div>-->
+                        <!--<div class="tip-money-code"><span id="discount-money"></span></div>-->
+                    <!--</div>-->
                 </div>
                 <div class="flex-1 flex flex-bottom">
                     <div class="vip-btn flex flex-center">
@@ -417,7 +417,7 @@
             title: '正在支付···',
             text: '请稍候'
         });
-        var inviteCode = $api.val($api.byId('money-code')).trim();
+        var inviteCode = $api.val($api.byId('money-code'));
         if(!inviteCode){
             //未填写推荐码
             confirmPay(way);
@@ -457,10 +457,12 @@
                 "duration": 1,
                 leaseLimit: parseInt(ret.leaseLimit)
             });
+            console.log('---缴费相关data---');
+            console.log(getLogStr([data]));
             _ajaxData(url, 'post', headers, data, function (ret) {
                 _loadingHide();
                 if (ret.statusCode == '200') {
-                    ping(ret.charge,'userPayNew');
+                    ping(ret.charge,'userPayActivity');
                 }else {
                     toastMsg(ret.msg);
                 }

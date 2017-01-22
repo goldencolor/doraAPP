@@ -1780,15 +1780,3 @@ function getDeviceId(){
 	var device = api.deviceId;
 	return device.split('-').join('');
 }
-
-function openDialogAlert(data,callback){
-	var dialogBox = api.require('dialogBox');
-	dialogBox.alert(data, function(ret) {
-		if(typeof callback == 'function'){
-			callback(ret);
-		}
-		dialogBox.close({
-			dialogName: 'alert'
-		});
-	});
-}

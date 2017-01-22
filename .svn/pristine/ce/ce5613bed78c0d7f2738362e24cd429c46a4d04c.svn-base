@@ -800,38 +800,7 @@
         var data = value.url;//url
         var isNeedLogin = isNeedLoginUrl(data);
         if (isNeedLogin && !isLogin()) {
-            openDialogAlert({
-                texts: {
-                    content: '女神，你还没有登录哦~',
-                    leftBtnTitle: '我知道啦'
-                },
-                styles: {
-                    bg: '#F8F8F8',
-                    w: 325,
-                    corner: 4,
-                    content: {
-                        marginT: 50,
-                        marginB: 50,
-                        color: '#4A4A4A',
-                        size: 16
-                    },
-                    left: {
-                        marginB: 0,
-                        marginL: 0,
-                        w: 325,
-                        h: 50,
-                        corner: 4,
-                        bg: '#FFFFFF',
-                        color: '#FF6100',
-                        size: 18
-                    }
-                },
-                tapClose:true
-            },function(ret){
-                if(ret.eventType == 'left'){
-                    goLogin();
-                }
-            });
+            goLogin();
             return;
         }
         var title = getUrlParam(data, 'title') && getUrlParam(data, 'title').indexOf('%') == -1 ? getUrlParam(data, 'title') : '多啦衣梦';
