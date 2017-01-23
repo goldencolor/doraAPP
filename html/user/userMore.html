@@ -57,6 +57,14 @@
                 </div>
             </div>
         </li>
+        <li class="aui-list-item" tapmode onclick="repairApp()">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-title">一键修复APP</div>
+                <div class="aui-list-item-right">
+                    <i class="duola-iconfont icon-right"></i>
+                </div>
+            </div>
+        </li>
         <li class="aui-list-item" tapmode onclick="logout(this)">
             <div class="aui-list-item-inner">
                 <div class="aui-list-item-title">退出帐号</div>
@@ -83,6 +91,43 @@
 //        getCache();
         api.parseTapmode();
     };
+
+    function repairApp(){
+        openDialogAlert({
+            texts: {
+                content: '点击后自动修复您的APP，请重启',
+                leftBtnTitle: '我知道啦'
+            },
+            styles: {
+                bg: '#F8F8F8',
+                w: 325,
+                corner: 4,
+                content: {
+                    marginT: 50,
+                    marginB: 50,
+                    color: '#4A4A4A',
+                    size: 16
+                },
+                left: {
+                    marginB: 0,
+                    marginL: 0,
+                    w: 325,
+                    h: 50,
+                    corner: 4,
+                    bg: '#FFFFFF',
+                    color: '#FF6100',
+                    size: 18
+                }
+            },
+            tapClose:true
+        },function(ret){
+            if(ret.eventType == 'left'){
+                api.closeWidget({
+                    silent:true
+                });
+            }
+        });
+    }
 
     function getMyVersion(){
         var version = api.appVersion;
