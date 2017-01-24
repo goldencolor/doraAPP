@@ -2,7 +2,7 @@
  * app云修复版本,存入偏好设置
  * ###每次云修复必须更改###
  */
-var appRepair = 1;
+var appRepair = 0;
 function setAppRepair(){
 	api.setPrefs({
 		key: 'appRepair',

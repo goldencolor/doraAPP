@@ -544,7 +544,6 @@
     var messagesCount = 0, dueTime, canComment = 0, newCoupons = 0,dist, count;
     var betaUser = "YES";
     var reverseAvailable=true;
-    var reverseMsg='暂停服务';
     var mqMsgCountEl = null;//美恰未读消息DOM元素
     var  extraBags;//美恰未读消息DOM元素
     apiready = function () {
@@ -643,7 +642,6 @@
     }
     function updateUsers(ret, extra) {
         reverseAvailable=ret.express.reverse.available;
-        reverseMsg=ret.express.reverse.message;
         var stature = ret.stature;
         updateNews1("stature", stature);
         if (!dist) {
@@ -929,7 +927,7 @@
         if(!isTrue(reverseAvailable)){
             openDialogAlert({
                 texts: {
-                    content: reverseMsg,
+                    content: '“一键还衣”功能在春节期间暂停服务，并将于2月3日后恢复使用。由此给您带来的不便，我们深感抱歉。',
                     leftBtnTitle: '我知道啦'
                 },
                 styles: {
