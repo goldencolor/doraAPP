@@ -73,7 +73,7 @@
         }
         /*加载更多*/
         #loading{
-            padding-bottom: 2.8rem;
+            /*padding-bottom: 2.8rem;*/
             text-align: center;
         }
         #pagination{
@@ -335,7 +335,6 @@
             $api.css(UIScrollPictureEl,'height:'+h+'px');
         }
         $api.removeCls($api.byId('separated'),'hide');
-//        console.log(getLogStr([paths]));
         UIScrollPictureUrls = ad.list.map(function (value){
             return {url:value.url,name: value.name};
         });

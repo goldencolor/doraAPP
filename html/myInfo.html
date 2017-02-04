@@ -58,11 +58,21 @@
 		            	<i class="aui-iconfont aui-icon-emoji aui-bg-success" ></i>实名认证
 		            </a>
 	            </li>-->
-	            <li class="aui-list-view-cell" onclick="WinFigure()">
+	            <li class="aui-list-view-cell" onclick="WinFigure('Figure', '身材信息')">
 	            	<a class="aui-arrow-right">
 		            	<i class="aui-iconfont aui-icon-favor aui-bg-pink"></i>身材信息
 		            </a>
 	            </li>
+                <li class="aui-list-view-cell hide" onclick="WinFigure('user/setPassword', '设定密码')">
+                    <a class="aui-arrow-right">
+                        <i class="aui-iconfont aui-icon-edit aui-bg-pink"></i>设定密码
+                    </a>
+                </li>
+                <li class="aui-list-view-cell hide" onclick="WinFigure('user/resetPassword', '修改密码')">
+                    <a class="aui-arrow-right">
+                        <i class="aui-iconfont aui-icon-edit aui-bg-pink"></i>修改密码
+                    </a>
+                </li>
 	            <li class="aui-list-view-cell hide" id="bind-phone" onclick="Winbind()">
 	            	<a class="aui-arrow-right">
 		            	<i class="aui-iconfont aui-icon-favor aui-bg-pink"></i>绑定电话
@@ -124,13 +134,13 @@
             }
         });
 	}
-	function WinFigure(){
+	function WinFigure(page, title){
 		api.openWin({
             name: 'Figure',
             url: 'win.html', 
             pageParam:{
-            	page: 'Figure',
-		        title: '身材信息'
+            	page: page,
+		        title: title
             }
         });
 	}

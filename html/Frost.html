@@ -125,10 +125,7 @@
 		if(ret.statusCode=='200'){
 			init();
 			setTimeout(function(){
-				api.execScript({
-					name:'wallet_new',
-					script: 'init()'
-				});
+				init();
 			},300);
 		}else if(ret.statusCode=='10104'){
 			toLogin();

@@ -1125,6 +1125,7 @@
         sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
             name: $api.text(el).replace(/\s/g, '')
         });
+
         if (!dist) {
             return;
         }
@@ -1174,7 +1175,7 @@
                     color: '#FF6100'
                 }
             }
-        }, function (ret) {
+        }, function (ret, err) {
             dialogBox.close({
                 dialogName: 'sendMessage'
             });
@@ -1413,7 +1414,6 @@
     function postAvatarSuccessCallback(ret, extra) {
         _loadingHide();
         if (ret.statusCode == '200' && ret.result.avatar) {
-            console.log(ret.result.avatar);
             var url = [CONSTANT.PICPRE.RES, ret.result.avatar].join('');
             setImg(url);
             $api.setStorage('userHead', url);
