@@ -201,6 +201,7 @@
 	var isOpenFrame1Header = false; //是否打开frame1Header
 	var mqMsgCountEl = null;//美恰未读消息DOM元素
 	apiready = function() {
+	    console.log("==============")
 		header0El = $api.byId('header0');
 		$api.fixStatusBar(header0El);
 		mqMsgCountEl = $api.byId('mqMsgCount');
@@ -475,8 +476,6 @@
 
 	function openFrameGroup(){
         var footerHeight = 2.8 * parseInt($api.cssVal($api.dom('html'),'font-size'));
-        var footerHeight2 = 1.3 * parseInt($api.cssVal($api.dom('html'),'font-size'));
-
         api.openFrameGroup({
 			name: 'footer_tab',
 			scrollEnabled: false,
@@ -513,7 +512,7 @@
 				{
 					name: 'footer_tab_4',
 					url: 'html/user/user.html',
-                    bounces: false,
+					bounces: false,
 					vScrollBarEnabled: false
 				},
 				{
@@ -534,6 +533,7 @@
 				name: CONSTANT.PAGE.INDEX[ret.index]
 			});
 			preIndex = ret.index;
+
 			//测试新手引导，每次进入首先清空guideKey的缓存;
 //			api.removePrefs({
 //				key: 'guideKey'
@@ -548,9 +548,9 @@
 			url: 'html/footer.html',
 			rect: {
 				x: 0,
-				y: Math.ceil(api.winHeight - footerHeight - footerHeight2),
+				y: Math.ceil(api.winHeight - footerHeight),
 				w: 'auto',
-				h: footerHeight + footerHeight2
+				h: footerHeight
 			},
 			bounces: false,
 			vScrollBarEnabled: false,
@@ -632,19 +632,15 @@
 		listenPageEndUmeng(CONSTANT.PAGE.INDEX[index]);
 	}
 	function openUser() {
-        var footerHeight = 2.8 * parseInt($api.cssVal($api.dom('html'),'font-size'));
-
-        api.openFrame({
+		api.openFrame({
 			name: 'footer_tab_4',
-//			url: 'html/user/user.html',
-            url: 'html/user/userCenter.html',
-
+			url: 'html/user/user.html',
 			bounces: false,
 			rect: {
 				x: 0,
 				y: 0,
 				w: 'auto',
-				h: api.winHeight - footerHeight
+				h: api.winHeight - (2.8 * CONSTANT.REM - 2)
 			},
 			vScrollBarEnabled:false,
 			hScrollBarEnabled:false
@@ -735,9 +731,6 @@
 
 	//在其他页面异步执行切换到我的衣橱
 	function execGoCloudset() {
-		api.closeFrame({
-			name: 'frameSearch_new2'
-		});
 		execGoFooter(2);
 		//异步刷新我的衣橱数据
 		api.execScript({
@@ -891,7 +884,7 @@
 
 	//打开搜索frame
 	function openSearchFrame(gStyle,flag){
-		var name = 'frameSearch_new2';
+		var name = 'winSearch_new2';
 		var page = './html/winSearch_new2.html';
 		var bounces=false;
 		var rect ={

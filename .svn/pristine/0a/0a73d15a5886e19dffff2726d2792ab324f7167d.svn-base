@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>滴滴弹出框</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+		html,body{
+			background: transparent;
+		}
+		.dialog{
+			width: 13.25rem;
+		}
+		.close{
+			position: relative;
+		}
+		.icon-Close1{
+			font-size: 1.4rem;
+			line-height: 1.4rem;
+			color: #ffffff;
+		}
+		.close:before {
+			content: '';
+			position: absolute;
+			top: 1.4rem;
+			width: 1px;
+			height: 1.25rem;
+			background: #ffffff;
+			left: 0.7rem;
+		}
+		.content{
+			margin-top: 1.2rem;
+			height: 16.5rem;
+		}
+		#desc{
+			background: #ffffff;
+			border-radius: 0.25rem 0.25rem 0px 0px;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.9rem;
+			color: #8A8A8A;
+			line-height: 1.4rem;
+			overflow: hidden;
+		}
+		#desc img{
+			width: 100%;
+		}
+		.btn{
+			height: 2.75rem;
+			background: #FF6100;
+			border-radius: 0px 0px 0.25rem 0.25rem;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.9rem;
+			color: #FFFFFF;
+		}
+	</style>  
+</head>
+<body class="flex flex-center">
+	<div class="dialog">
+		<div class="close" tapmode onclick="closeDialog()">
+			<span class="duola-iconfont icon-Close1"></span>
+		</div>
+		<div class="content flex flex-vertical" tapmode onclick="btn()">
+			<div id="desc" class="flex-1 flex flex-center">
+				<!--了解多啦"钱包"使用说明-->
+				<!--<img src="../image/guide1.png" alt="" width="100%">-->
+			</div>
+			<div id="btnText" class="btn flex flex-center hide">
+
+			</div>
+		</div>
+	</div>
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	
+		apiready = function(){
+			var desc = api.pageParam.desc || '';
+			var btnText = api.pageParam.btnText || '';
+			var descEl = $api.byId('desc');
+			descEl.innerHTML = desc;
+
+			if(btnText){
+				var btnTextEl = $api.byId('btnText');
+				btnTextEl.innerHTML = btnText;
+				$api.removeCls(btnTextEl,'hide');
+			}else{
+				$api.css(descEl,'border-radius: 0.25rem');
+			}
+		};
+
+		//关闭弹出框
+		function closeDialog(){
+			api.closeFrame();
+			execDialogDidi(0);
+		}
+
+		//现在了解
+		function btn(){
+			api.closeFrame();
+			execDialogDidi(1);
+		}
+
+		//异步执行点击dialog的方法
+		function execDialogDidi(index){
+			var winName = api.pageParam.from && api.pageParam.from.winName;
+			var frameName = api.pageParam.from && api.pageParam.from.frameName;
+			var callback = api.pageParam.callback || 'execDialogDidi';
+			var extra = api.pageParam.extra || {};
+			var params = {
+				script: getExecScript(callback,[index,extra])
+			};
+			if(winName){
+				params.name = winName;
+			}
+			if(frameName){
+				params.frameName = frameName;
+			}
+			api.execScript(params);
+		}
+
+	</script>
+</html>

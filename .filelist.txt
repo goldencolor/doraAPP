@@ -96,6 +96,7 @@ age.min.js
 /A6918652765044/html/myInfo.html
 /A6918652765044/html/chooseRank_header.html
 /A6918652765044/html/wallet_new.html
+/A6918652765044/html/user/resetPassword.html
 /A6918652765044/script/2_0/aui_pull_refresh.js
 /A6918652765044/image/Group16.png
 /A6918652765044/script/swiper.min.js
@@ -157,6 +158,7 @@ age.min.js
 /A6918652765044/icon/st1.png
 /A6918652765044/html/closet/closet_bag.html
 /A6918652765044/html/official_new.html
+/A6918652765044/html/user/setPassword.html
 /A6918652765044/image/avatar.png
 /A6918652765044/2016/css/swiper.min.css
 /A6918652765044/html/frame1_new1.html
@@ -187,8 +189,8 @@ age.min.js
 /A6918652765044/image/expression4.png
 /A6918652765044/image/wx_logo.png
 /A6918652765044/html/user/userCoupon.html
-/A6918652765044/image/J.png
 /A6918652765044/image/theme7.png
+/A6918652765044/image/J.png
 /A6918652765044/html/user/userDeposit.html
 /A6918652765044/html/yearVip.html
 /A6918652765044/image/marquee3.png

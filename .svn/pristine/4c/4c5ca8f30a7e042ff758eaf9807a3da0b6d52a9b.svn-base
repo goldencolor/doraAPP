@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -173,7 +174,6 @@
     <!--<img src="../../icon/loading.gif" width="16"/>-->
     <!--<div>更多数据加载中</div>-->
     <!--</div>-->
-
 </div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
@@ -351,7 +351,6 @@
             goLogin('',"../win_regin.html");
             return;
         }
-        var footerHeight = 2.8 * parseInt($api.cssVal($api.dom('html'),'font-size'));
         api.openFrame({
             name: 'closet_frame',
             url: 'closet_frame.html',
@@ -359,11 +358,10 @@
                 x:0,
                 y:winHeight-120,
                 w:"auto",           //宽度，若传'auto'，页面从x位置开始自动充满父页面宽度
-                h:120 - footerHeight
+                h:70
             },
             pageParam: {
             },
-            bounces: false,
             vScrollBarEnabled: false
         });
 
@@ -744,7 +742,7 @@
         var extra = null;
         _ajaxData(url,'post',headers,data,removeClothSuccessCallback,removeClothErrorCallback,0,extra);
     }
-    function availableMsgavailableMsg(){
+    function availableMsg(){
         toastMsg('已经被抢光了，刷新试试!')
     }
     function showCheckWin(){

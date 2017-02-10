@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:http="http://www.w3.org/1999/xhtml" xmlns: xmlns:>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>用户中心</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.min.css"/>
+    <style>
+        html, body{
+            font-family: SourceHanSansCN-Regular;
+        }
+
+        .header{
+            width: auto;
+            height: 7.75rem;
+            background-image: linear-gradient(-180deg, #FF9A00 0%, #FF6100 100%);
+        }
+        .shadow-l{
+            background-color: #ECECEC;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            background-color: #ECECEC;
+            height: 1px;
+        }
+        .red-dot{
+            width: 0.6rem;
+            height: 0.6rem;
+            background-color: #FF0000;
+            border-radius: 0.3rem;
+            border: solid #FFFFFF 1px;
+            position: absolute;
+            top: 0.9rem;
+            right: 2.4rem
+        }
+        .user-avatat{
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 1.375rem;
+            border: solid #FFFFFF 1px;
+            position: absolute;
+            top: 1.95rem;
+            left: 1rem;
+
+        }
+        .user-name{
+            font-size: 0.8rem;
+            text-align: left;
+            position: absolute;
+            color: #FFFFFF;
+            left: 5.15rem;
+            top: 2.85rem;
+        }
+        .msg{
+            width: 1.1rem;
+            height: 0.8rem;
+            position: absolute;
+            top: 1.8rem;
+            left: 16.5rem;
+        }
+        .feather{
+            width: 0.53rem;
+            height: 0.53rem;
+            transform: rotate(45deg);
+            border: 1px solid #FFFFFF;
+            border-left: hidden;
+            border-bottom: hidden
+        }
+        .feather-black{
+            width: 0.53rem;
+            height: 0.53rem;
+            transform: rotate(45deg);
+            border: 1px solid #000000;
+            border-left: hidden;
+            border-bottom: hidden;
+            position: absolute;
+        }
+        .font1{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #4A4A4A;
+        }
+        .font2{
+            text-align: center;
+            height: 3rem;
+            font-size: 0.8rem;
+            margin-left: 1rem;
+            line-height: 3rem;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="header">
+        <div style="height: 5.75rem">
+            <img :src="avatar" class="user-avatat" @click="openInfo()">
+            <div class="user-name"  @click="openInfo()">
+                {{userName}}
+            </div>
+            <div class="msg" @click="openMsg()">
+                <div class="red-dot" style="left: 0.7rem; top: -0.1rem; background-color: #FFFFFF" v-if="newCount != 0"></div>
+                <i class="duola-iconfont icon-xiaoxi" style="color: #FFFFFF"></i>
+            </div>
+        </div>
+        <div style="height: 2rem;background-color: #FF7400; position: relative" @click="openWallet()">
+            <div style="position: absolute; text-align: left; color: #FFFFFF; left: 1rem; top: 0.75rem;font-size: 0.6rem">
+                有效期至:{{vipDate}}
+            </div>
+            <div class="feather" style="position: absolute; top: 0.75rem;right: 0.75rem">
+            </div>
+        </div>
+    </div>
+    <div class="shadow-l"></div>
+    <div class="contenttem0">
+        <div style="height: 2.7rem; position: relative">
+            <div style="font-size: 0.8rem;position: absolute; left: 1rem; height: 2.7rem; line-height: 2.7rem">
+                订单
+            </div>
+            <div style="font-size: 0.7rem;position: absolute; right: 2rem; color: #8B8B8B;height: 2.7rem; line-height: 2.7rem">
+                全部订单
+            </div>
+            <div class="feather-black" style="right: 1rem;top: 1rem; border-color: #8B8B8B;"></div>
+        </div>
+        <div class="shadow-s"></div>
+    </div>
+
+    <div class="content-item1" >
+        <section class="aui-grid" style="height: 3.9rem;">
+            <div class="aui-row">
+                <div class="aui-col-xs-4" @click="showWuliu(exp_no)">
+                    <div class="red-dot hide"></div>
+                    <i class="duola-iconfont icon-wuliu"></i>
+                    <div class="aui-grid-label  font1">物流</div>
+                </div>
+                <div class="aui-col-xs-4">
+                    <div class="red-dot hide"></div>
+                    <i class="duola-iconfont icon-dangqiandingdan"></i>
+                    <div class="aui-grid-label font1">当前订单</div>
+                </div>
+                <div class="aui-col-xs-4" @click="openOrderComment()">
+                    <div class="red-dot" v-if="canComment != 0"></div>
+                    <i class="duola-iconfont icon-daipingjia"></i>
+                    <div class="aui-grid-label font1">待评价</div>
+                </div>
+            </div>
+        </section>
+        <div class="shadow-l"></div>
+
+    </div>
+
+    <div class="content-item3">
+        <section class="aui-grid" style="height: 4.0rem">
+            <div class="aui-row">
+                <div class="aui-col-xs-4" @click="pay(xufei)" id="xufei">
+                    <i class="duola-iconfont icon-xufei"></i>
+                    <div class="aui-grid-label font1">续费</div>
+                </div>
+                <div class="aui-col-xs-4" @click="openNewBespeak(yijianhuanyi)" id="yijianhuanyi">
+                    <i class="duola-iconfont icon-yijianhuanyi1"></i>
+                    <div class="aui-grid-label font1">一键还衣</div>
+                </div>
+                <div class="aui-col-xs-4" @click="Renew(renew)" id="renew">
+                    <i class="duola-iconfont icon-biangengfuwu"></i>
+                    <div class="aui-grid-label font1">变更服务</div>
+                </div>
+
+            </div>
+        </section>
+        <div class="shadow-l"></div>
+    </div>
+
+    <div class="contentItem3">
+        <section class="aui-grid">
+            <div class="aui-row" style="height: 3rem">
+                <div class="aui-col-xs-5" style="padding: 0rem">
+                    <div class="font2">账户</div>
+                </div>
+                <div class="aui-col-xs-7" style="padding: 0rem">
+                    <div class="red-dot" style="top: 1.25rem; right: 1.85rem; width: 0.6rem; height: 0.6rem; border-radius: 0.3rem"></div>
+                    <div class="feather-black" style="top: 1.25rem; right: 1rem"></div>
+                </div>
+            </div>
+            <div class="shadow-s"></div>
+            <div class="aui-row" style="height: 3rem" @click="openRecommend(yaoqinghaoyou)">
+                <div class="aui-col-xs-5" style="padding: 0rem" id="yaoqinghaoyou">
+                    <div class="font2">邀请好友</div>
+                </div>
+                <div class="aui-col-xs-7" style="padding: 0rem">
+                    <div class="feather-black" style="top: 1.25rem; right: 1rem"></div>
+                </div>
+            </div>
+            <div class="shadow-s"></div>
+            <div class="aui-row" style="height: 3rem" @click="goChat()">
+                <div class="aui-col-xs-5" style="padding: 0rem">
+                    <div class="font2">客服</div>
+                </div>
+                <div class="aui-col-xs-7" style="padding: 0rem">
+                    <div class="red-dot" style="top: 1.25rem; right: 1.85rem; width: 0.6rem; height: 0.6rem; border-radius: 0.3rem" v-if="meiqiaCount !=0 "></div>
+                    <div class="feather-black" style="top: 1.25rem; right: 1rem"></div>
+                </div>
+            </div>
+            <div class="shadow-s"></div>
+            <div class="aui-row" style="height: 3rem" @click="openManual(bangzhu)">
+                <div class="aui-col-xs-5" style="padding: 0rem" id="bangzhu">
+                    <div class="font2">帮助</div>
+                </div>
+                <div class="aui-col-xs-7" style="padding: 0rem">
+                    <div class="feather-black" style="top: 1.25rem; right: 1rem"></div>
+                </div>
+            </div>
+            <div class="shadow-s"></div>
+            <div class="aui-row" style="height: 3rem" @click="goMore()">
+                <div class="aui-col-xs-5" style="padding: 0rem">
+                    <div class="font2">设置</div>
+                </div>
+                <div class="aui-col-xs-7" style="padding: 0rem">
+                    <div class="feather-black" style="top: 1.25rem; right: 1rem"></div>
+                </div>
+            </div>
+        </section>
+        <div class="shadow-l"></div>
+    </div>
+
+
+
+</div>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/sendInfo.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/progressively.js"></script>
+<script type="text/javascript" src="../../script/meiqia_sdk.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript">
+    var vm;
+    var isMember;
+    var reverseAvailable = true;
+    var reverseMsg='暂停服务';
+    var dist;
+    var count;
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {
+                newCount: 0,
+                canComment: 0,
+                meiqiaCount: 0,
+                exp_no: '',
+                avatar: '../../image/avatar.png',
+                userName: '一只小蝴蝶',
+                vipDate: '努力加载中...',
+
+
+            },
+            mounted: function () {
+                var self = this;
+//                挂载成功
+//                初始化美洽
+                mqInit(function (count) {
+                    //客服
+                    self.meiqiaCount = count;
+                });
+                self.init();
+                self.messages();
+                api.addEventListener({
+                    name: 'clearMqCountIndex'
+                }, function (ret, err) {
+                    self.meiqiaCount = 0;
+                });
+            },
+            methods: {
+                init:function (flag) {
+                    var self = this;
+                    if (!flag) {
+                        loadingShow();
+                    }
+                    self.userName = $api.getStorage('userNickname')||'';
+                    count = $api.getStorage('count');
+                    var userheader = $api.getStorage('userHead');
+                    self.avatar = isDefine(userheader)?userheader:'../../image/avatar.png';
+
+                    isMember = $api.getStorage('isMember');
+                    if (!isDefine(isMember)) {
+                        self.getData("noVip");
+                    } else {
+                        self.getData("vip");
+                    }
+
+                    loadingHide();
+                },
+                getData: function (type) {
+                    var self = this;
+                    var url = serviceNew + 'user/me';
+                    var headers = _getAjaxHeaders(true, true);
+                    var data = _getAjaxData();
+                    var extra = {type: type};
+                    _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                        reverseAvailable=ret.express.reverse.available;
+                        reverseMsg=ret.express.reverse.message;
+                        if (!dist) {
+                            dist = ret.dist;
+                        }
+                        if (extra == 'noVip'){
+                            self.vipDate = "未开通会员";
+                        }else {
+                            self.vipDate = ret.user.dueTime;
+                        }
+                        canComment = ret.orders.canComment
+
+                        var express = ret.express;
+                        var posted = express.posted.hasNoOrder;
+                        //处理物流信息 给快递单号赋值
+                        self.exp_no = '123456'
+
+                    }, function (err, extra) {
+
+                    }, 0, extra);
+                },
+                messages: function () {
+                    var self = this;
+                    var time = (new Date()).format("yyyy-MM-dd hh:mm:ss.S");
+                    var url = serviceUser + 'messages/count';
+                    var headers = _getAjaxHeaders(false, true);
+                    var data = _getAjaxData({
+                        type: "unread",
+                        readAt: time
+                    });
+                    var extra = null;
+                    _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                        if (ret.statusCode == '200') {
+                            self.newCount = ret.count;
+                        } else {
+                            toastMsg(ret.msg);
+                        }
+                    }, function (err, extra) {
+
+                    }, 0, extra);
+                },
+                openMsg: function () {
+                    sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
+                        name: '我的信息'
+                    });
+                    sendEventUmeng(CONSTANT.UMENGEVENT.MSG, {
+                        from: '我的'
+                    });
+                    var name = 'msg';
+                    var title = '我的信息';
+                    var leftIcon = 'duola-iconfont icon-left';
+                    var leftCallback = 'execCloseSlefWin';
+                    var leftNav = setNavData(leftIcon, null, leftCallback);
+                    var border = false;
+                    var params = {};
+                    params.nav = setNav(leftNav, border);
+                    var from = {
+                        winName: api.winName,
+                        frameName: api.frameName
+                    };
+                    var url = '../header_new.html';
+                    var animation = {
+                        type: "push",                //动画类型（详见动画类型常量）
+                        subType: "from_right",       //动画子类型（详见动画子类型常量）
+                        duration: 300                //动画过渡时间，默认300毫秒
+                    };
+                    var page = 'msg.html';
+                    openNewWinFrame(name, title, params, from, url, animation, page);
+                },
+                openOrderComment: function () {
+                    console.log("openOrderComment")
+                    var name = 'order_comment';
+                    var title = '可评价';
+                    var leftIcon = 'duola-iconfont icon-left';
+                    var leftText = '';
+                    var leftExtra = '';
+                    var leftCallback = 'execCloseSlefWin';
+                    var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+                    var border = true;
+                    var bounces = false;
+                    var params = {};
+                    params.nav = setNav(leftNav, border);
+                    params.frame = setFrame(bounces, null, true);
+                    var from = {
+                        winName: api.winName,
+                        frameName: api.frameName
+                    };
+                    var url = '../header_new.html';
+                    var animation = '';
+                    var page = 'order_comment.html';
+                    openNewWinFrame(name, title, params, from, url, animation, page);
+                },
+                openWallet: function () {
+                    var name = 'wallet_new';
+                    var title = '我的服务';
+                    var params = {
+                    };
+                    var from = {
+                        winName: api.winName,
+                        frameName: api.frameName
+                    };
+                    var url = '../wallet_new.html';
+                    openNewWin(name, title, params, from, url, {
+                        type: "push",                //动画类型（详见动画类型常量）
+                        duration: 300                //动画过渡时间，默认300毫秒
+                    });
+                },
+                goChat: function () {
+                    var self = this;
+                    sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
+                        name: '在线客服'
+                    });
+                    sendEventUmeng(CONSTANT.UMENGEVENT.ONLINE_SERVICE, {
+                        from: '我的'
+                    });
+                    openChat();
+                    api.sendEvent({
+                        name: 'clearMqCountUser'
+                    });
+                    //清楚美洽显示
+                    this.meiqiaCount = 0;
+
+                },
+                openNewBespeak: function (el) {
+                    if(!isTrue(reverseAvailable)){
+                        openDialogAlert({
+                            texts: {
+                                content: reverseMsg,
+                                leftBtnTitle: '我知道啦'
+                            },
+                            styles: {
+                                bg: '#F8F8F8',
+                                w: 325,
+                                corner: 4,
+                                content: {
+                                    marginT: 50,
+                                    marginB: 50,
+                                    color: '#4A4A4A',
+                                    size: 16
+                                },
+                                left: {
+                                    marginB: 0,
+                                    marginL: 0,
+                                    w: 325,
+                                    h: 50,
+                                    corner: 4,
+                                    bg: '#FFFFFF',
+                                    color: '#FF6100',
+                                    size: 18
+                                }
+                            },
+                            tapClose:true
+                        },function(ret){
+                            if(ret.eventType == 'left'){
+
+                            }
+                        });
+                        return;
+                    }else{
+                        console.log("el == "+el)
+                        sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
+                            name: $api.text(el).replace(/\s/g, '')
+                        });
+                        var carton = api.getPrefs({
+                                sync: true,
+                                key: 'also'
+                            }) || null;
+                        var name, title, url;
+                        if (carton) {
+                            name = 'bespeak_header';
+                            title = '一键还衣';
+                            url = '../bespeak_header.html';
+                        } else {
+                            name = 'bespeak_rule';
+                            title = '一键还衣服务条例';
+                            url = '../header_web.html';
+                        }
+                        var leftIcon = 'duola-iconfont icon-left';
+                        var leftNav = setNavData(leftIcon);
+                        var border = true;
+                        var bounces = false;
+                        var params = {};
+                        params.nav = setNav(leftNav, border);
+                        params.frame = setFrame(bounces);
+                        var from = {
+                            winName: api.winName,
+                            frameName: api.frameName
+                        };
+                        openNewWinFrame(name, title, params, from, url);
+                    }
+                },
+                showWuliu: function (exp_no) {
+                    var name = 'wuLiuInfo';
+                    var title = '物流信息';
+                    var leftIcon = 'duola-iconfont icon-left';
+                    var leftCallback = 'execCloseSlefWin';
+                    var leftNav = setNavData(leftIcon, null, leftCallback);
+                    var border = false;
+                    var params = {};
+                    params.nav = setNav(leftNav, border);
+                    var from = {
+                        winName: api.winName,
+                        frameName: api.frameName
+                    };
+                    var url = '../header_new.html';
+                    var animation = {
+                        type: "push",                //动画类型（详见动画类型常量）
+                        subType: "from_right",       //动画子类型（详见动画子类型常量）
+                        duration: 300                //动画过渡时间，默认300毫秒
+                    };
+                    var bounces = true;
+                    params.frame = setFrame(bounces, {
+                        exp_no: exp_no
+                    });
+                    var page = 'wuLiuInfo.html';
+                    openNewWinFrame(name, title, params, from, url, animation, page);
+
+                },
+                pay: function (el) {
+                    sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
+                        name: $api.text(el).replace(/\s/g, '')
+                    });
+                    api.openWin({
+                        name: 'Pay',
+                        url: '../win.html',
+                        pageParam: {
+                            page: 'Pay',
+                            title: '缴费',
+                            bagNum: count ,
+                            type: "serviceFee"
+                        }
+                    });
+                },
+                Renew: function (el) {
+                    sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
+                        name: $api.text(el).replace(/\s/g, '')
+                    });
+                    var name = 'renew';
+                    var title = '变更多啦袋';
+                    var leftIcon = 'duola-iconfont icon-left';
+                    var leftCallback = 'execCloseSlefWin';
+                    var leftNav = setNavData(leftIcon, null, leftCallback);
+                    var border = true;
+                    var params = {};
+                    params.nav = setNav(leftNav, border);
+                    var from = {
+                        winName: api.winName,
+                        frameName: api.frameName
+                    };
+                    var url = '../header_web.html';
+                    var animation = {
+                        type: "push",                //动画类型（详见动画类型常量）
+                        subType: "from_right",       //动画子类型（详见动画子类型常量）
+                        duration: 300               //动画过渡时间，默认300毫秒
+                    };
+                    var bounces = true;
+                    var page = 'user/userRenew.html';
+                    openNewWinFrame(name, title, params, from, url, animation, page);
+                },
+                openRecommend: function (el) {
+                    sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
+                        name: $api.text(el).replace(/\s/g, '')
+                    });
+                    sendEventUmeng(CONSTANT.UMENGEVENT.SHARE_AWARD, {
+                        from: '我的'
+                    });
+                    var name = 'Recommend';
+                    var title = '推荐有奖';
+                    var leftIcon = 'duola-iconfont icon-left';
+                    var leftText = '';
+                    var leftExtra = '';
+                    var leftCallback = 'execCloseSlefWin';
+                    var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+                    var border = true;
+                    var bounces = false;
+                    var params = {};
+                    params.nav = setNav(leftNav, border);
+                    params.frame = setFrame(bounces, null, true);
+                    var from = {
+                        winName: api.winName,
+                        frameName: api.frameName
+                    };
+                    var url = '../header_new.html';
+                    var animation = '';
+                    var page = 'user/userRecommend.html';
+                    openNewWinFrame(name, title, params, from, url, animation, page);
+                },
+                goMore: function () {
+                    var name = 'userMore';
+                    var title = '更多';
+                    var leftIcon = 'duola-iconfont icon-left';
+                    var leftCallback = 'execCloseSlefWin';
+                    var leftNav = setNavData(leftIcon, null, leftCallback);
+                    var border = true;
+                    var params = {};
+                    params.nav = setNav(leftNav, border);
+                    var from = {
+                        winName: api.winName,
+                        frameName: api.frameName
+                    };
+                    var url = '../header_web.html';
+                    var bounces = true;
+                    var page = 'user/userMore.html';
+                    openNewWinFrame(name, title, params, from, url, false, page);
+                },
+                openManual: function (el) {
+                    sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
+                        name: $api.text(el).replace(/\s/g, '')
+                    });
+                    var url = serviceNew + 'user/help/manual';
+                    var headers = _getAjaxHeaders(false, true);
+                    var data = _getAjaxData();
+                    var extra = null;
+                    _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                        if (ret.statusCode == '200') {
+                            api.openWin({
+                                name: '新手指南',
+                                url: '../winWeb.html',
+                                pageParam: {
+                                    page: 'winWeb',
+                                    title: '新手指南',
+                                    url: ret.url
+                                }
+                            });
+                        } else {
+                            toastMsg(ret.msg);
+                        }
+                    }, function (err, extra) {
+                        toastMsg(err.msg);
+                    }, 0, extra);
+                },
+                openInfo: function () {
+                    sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
+                        name: '个人信息'
+                    });
+                    var name = 'myInfo';
+                    var title = '个人信息';
+                    var leftIcon = 'duola-iconfont icon-left';
+                    var leftCallback = 'execCloseSlefWin';
+                    var leftNav = setNavData(leftIcon, null, leftCallback);
+                    var border = false;
+                    var params = {};
+                    params.nav = setNav(leftNav, border);
+                    var from = {
+                        winName: api.winName,
+                        frameName: api.frameName
+                    };
+                    var url = '../header_new.html';
+                    var animation = {
+                        type: "push",                //动画类型（详见动画类型常量）
+                        subType: "from_right",       //动画子类型（详见动画子类型常量）
+                        duration: 300                //动画过渡时间，默认300毫秒
+                    };
+                    var page = 'myInfo_new.html';
+                    openNewWinFrame(name, title, params, from, url, animation, page);
+                }
+            }
+        })
+    }
+    function execCloseSlefWin(extra, winName, value) {
+        api.closeWin({
+            name: winName
+        });
+        vm.getData("vip")
+        vm.messages();
+    }
+    function init() {
+        vm.init();
+    }
+</script>
+</body>
+</html>

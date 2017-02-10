@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>个人信息</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+
+    <style>
+        html, body{
+            font-family: SourceHanSansCN-Regular;
+            background: transparent;
+        }
+        .shadow-l{
+            background-color: #E6E6E6;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            background-color: #E6E6E6;
+            height: 1px;
+        }
+        .avatar-con{
+            /*height: 3.65rem;*/
+            position: relative;
+        }
+        .avatar-con .avatar{
+            width: 2.7rem;
+            height: 2.7rem;
+            position: absolute;
+            right: 2.2rem;
+            top: 0.5rem;
+            border: solid #000000 1px;
+            border-radius: 1.35rem;
+        }
+        .item-text{
+            height: 3.65rem;
+            line-height: 3.65rem;
+            margin-left: 1rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 16px;
+            color: #000000;
+        }
+        .item-text2{
+            height: 2.95rem;
+            line-height: 2.95rem;
+            margin-left: 1rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 16px;
+            color: #000000;
+        }
+        .jiantou{
+            width: 0.75rem;
+            height: 0.75rem;
+            color: #8B8B8B;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="shadow-l"></div>
+    <div class="avatar-con">
+        <div class="item-text">
+            头像
+        </div>
+        <img :src="avatar" class="avatar">
+        <i class="duola-iconfont icon-jiantou jiantou"></i>
+
+
+        <div class="shadow-s"></div>
+    </div>
+
+    <div class="item-con" v-for="item in list">
+        <div class="item-text2">
+            {{item.title}}
+        </div>
+        <div class="shadow-s"></div>
+    </div>
+
+</div>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/vue/vue.min.js"></script>
+<script type="text/javascript">
+    var vm;
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {
+                avatar: '../image/avatar.png',
+                list: [
+                    {
+                        title: '姓名',
+                        data: '王小丫'
+                    },
+                    {
+                        title: '昵称',
+                        data: '未填写'
+                    },
+                    {
+                        title: '绑定手机',
+                        data: '18595926262'
+                    },
+                    {
+                        title: '邮箱',
+                        data: '6699@gmail.com'
+                    },
+                    {
+                        title: 'QQ',
+                        data: '123456'
+                    },
+                    {
+                        title: '身材信息',
+                        data: '未填写'
+                    },
+                    {
+                        title: '收获地址',
+                        data: '未填写'
+                    },
+                    {
+                        title: '寄回地址',
+                        data: '默认'
+                    },
+                    {
+                        title: '实名认真',
+                        data: '未认证'
+                    }
+                ]
+            },
+            mounted:function () {
+
+            },
+            methods: {
+
+            }
+
+        });
+    }
+</script>
+</body>
+</html>

@@ -63,12 +63,12 @@
 		            	<i class="aui-iconfont aui-icon-favor aui-bg-pink"></i>身材信息
 		            </a>
 	            </li>
-                <li class="aui-list-view-cell " onclick="WinFigure('user/setPassword', '设定密码')">
+                <li class="aui-list-view-cell" onclick="WinFigure('user/setPassword', '设定密码')">
                     <a class="aui-arrow-right">
-                        <i class="aui-iconfont aui-icon-edit aui-bg-pink"></i>修改密码
+                        <i class="aui-iconfont aui-icon-edit aui-bg-pink"></i>设定密码
                     </a>
                 </li>
-                <li class="aui-list-view-cell hide" onclick="WinFigure('user/resetPassword', '修改密码')">
+                <li class="aui-list-view-cell" onclick="WinFigure('user/resetPassword', '修改密码')">
                     <a class="aui-arrow-right">
                         <i class="aui-iconfont aui-icon-edit aui-bg-pink"></i>修改密码
                     </a>

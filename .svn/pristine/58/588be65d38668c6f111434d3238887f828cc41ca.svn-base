@@ -468,7 +468,7 @@
             </div>
     </ul>
 </div>
-<div class="aui-row shadow-11"></div>
+<div class="aui-row shadow-11" style="padding: 0.5rem"></div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/url.js"></script>
@@ -573,7 +573,6 @@
         }
     }
     function init(flag) {
-
         if (!flag) {
             loadingShow();
         }
@@ -1487,7 +1486,6 @@
         _ajaxData(url, 'post', headers, data, messagesSuccessCallback, messagesErrorCallback, 0, extra);
     }
     function messagesSuccessCallback(ret) {
-        console.log("messagesSuccessCallback ret == "+JSON.stringify(ret))
         if (ret.statusCode == '200') {
             if (messagesCount !== ret.count) {
                 $api.setStorage('messagesCount', ret.count);

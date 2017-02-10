@@ -755,9 +755,13 @@
     }
     //刷新顶部图片轮放
     function refreshAdHtml(ad) {
+        console.log("refreshAdHtml == "+JSON.stringify(ad))
         if (!isDefine(UIScrollPicture)) {
+            console.log("undefine UIScrollPicture")
             getAdHtml(ad);
         } else {
+
+            console.log("ad ===== "+JSON.stringify(ad));
             UIScrollPictureUrls = ad.list.map(function (value) {
                 return {url: value.url, name: value.name, type:value.type};
             });

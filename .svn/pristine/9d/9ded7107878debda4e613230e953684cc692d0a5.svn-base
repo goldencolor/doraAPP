@@ -253,6 +253,45 @@
 <div class="shadow-5"></div>
 
 <div id="similar-container" class="similar">
+
+    <!--<div class="like">他们的穿衣风格和你很接近哟</div>-->
+    <!--<div class="like-bottom">看看她们都在怎么穿</div>-->
+    <!--<div class="swiper-container">-->
+    <!--<div class="swiper-wrapper">-->
+    <!--<div class="swiper-slide item" tapmode onclick="openCommunity(this)" data-info='{"time":"2016-10-14","tel":"18381334038","similar":"80%","avatar":"FqBvQ8beih2BpPjKP/avatar/1478331917503280550","nickname":"一言不和就开车"}'>-->
+    <!--<div class="imgBox">-->
+    <!--<img onload="cacheImgNew(this,'img','no')" src="../image/avatar.png" class="opacity0 transition-opacity" data-url="http://wx.qlogo.cn/mmopen/PiajxSqBRaEIyXDySaWrUAT09D8SaBmetadxA0boB1jgFJPe5j9Bkmk2xzpEiahk61GibGn3v9AEqlAjmbQayqEDQ/0" width="100%" />-->
+    <!--</div>-->
+    <!--<div class="discribleBox">-->
+    <!--<div class="name word-wrap-2">乌拉乌拉乌拉乌拉乌拉乌拉乌拉乌拉乌拉乌拉乌拉乌拉乌拉乌拉</div>-->
+    <!--<div class="text">衣橱相似度80%</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="swiper-slide item">-->
+    <!--<div class="imgBox"><img src="../image/weixin.png" alt=""></div>-->
+    <!--<div class="discribleBox">-->
+    <!--<div class="name">乌拉乌拉</div>-->
+    <!--<div class="text">衣橱相似度80%</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="swiper-slide item">-->
+    <!--<div class="imgBox"><img src="../image/weixin.png" alt=""></div>-->
+    <!--<div class="discribleBox">-->
+    <!--<div class="name">乌拉乌拉</div>-->
+    <!--<div class="text">衣橱相似度80%</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="swiper-slide item">-->
+    <!--<div class="imgBox"><img src="../image/weixin.png" alt=""></div>-->
+    <!--<div class="discribleBox">-->
+    <!--<div class="name">乌拉乌拉</div>-->
+    <!--<div class="text">衣橱相似度80%</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="shadow-5"></div>-->
+
 </div>
 
 <div id="theme-group-container">
@@ -428,6 +467,7 @@
     var UIScrollPictureUrls = null;
     var isWechat = false;
     var similarData = null;//穿衣同好数据
+    var guessYouLikeData = null;//猜你喜欢数据
     var indexBtnStatus = null;//首页按钮状态 0未注册 1为缴费 null 正常会员
     apiready = function () {
         appAdInit();//开屏广告初始化
@@ -501,10 +541,6 @@
 
     //    初始化穿衣同好
     function getSimilar() {
-        //暂时不显示穿衣同好
-
-
-        return;
         if (!isLogin()) {
             return;
         }
@@ -515,7 +551,6 @@
     }
 
     function getSimilarSuccessCallback(ret) {
-        console.log("getSimilarSuccessCallback ==== "+JSON.stringify(ret))
         if (ret.statusCode == 200 && ret.count) {
             similarData = ret;
             var html = doTHtml('similar-container-template', ret);
@@ -555,7 +590,6 @@
     }
     function initSuccessCallback(ret, extra) {
         var action = extra.action;
-        console.log("ret == "+JSON.stringify(ret))
         if (action == CONSTANT.ACTIONREFRESH) {
             pullRefreshDone();
         } else {
@@ -770,7 +804,7 @@
                 }
             });
             UIScrollPicture.setCurrentIndex({
-                index: 0
+                index: 1
             });
         }
     }
