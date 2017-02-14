@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>修改个人信息</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+
+    <style type="text/css">
+        html body{
+        background: transparent;
+            height: 10rem;
+        }
+        .shadow-l{
+            background-color: #E6E6E6;
+            height: 0.5rem;
+        }
+        .shadow-s {
+            background-color: #E6E6E6;
+            height: 1px;
+        }
+        .close{
+            position: absolute;
+            top: 1.15rem;
+            right: 1.35rem;
+        }
+        .inputText{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 16px;
+            color: #000000;
+            height: 3rem;
+            width: 100%;
+            line-height: 1rem;
+            padding-left: 1rem !important;
+        }
+        .saveButton{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 18px;
+            color: #FFFFFF;
+            position: absolute;
+            background: #FF6100;
+            border-radius: 0.2rem;
+            width: 2.75rem;
+            height: 1.35rem;
+            bottom: 0.6rem;
+            right: 1rem;
+            text-align: center;
+            padding: 0rem;
+            line-height: 1.35rem
+
+        }
+
+        .aui-active .tab-span{
+            height: 1.8rem;
+            font-size: 0.9rem;
+            border-bottom: 0.1rem solid #1B1B1B;
+        }
+
+        .duola-header .nav-left-icon {
+            margin-right: 0rem;
+            margin-left: 0.3rem;
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <header id="header" class="duola-header flex" style="position: relative">
+        <a id="nav-left" class="duola-icon-area" @click="closeWebWin()">
+            <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
+        </a>
+        <div id="nav-title" class="nav-title flex-1">
+        </div>
+        <a id="nav-right" class="duola-icon-area">
+            <span id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon"></span>
+        </a>
+        <div class="saveButton" @click="save()">
+            保存
+        </div>
+    </header>
+    <div class="shadow-l"></div>
+    <div style="height: 3rem;width: 100%; position: relative">
+        <input class="inputText" type="text" :placeholder="placeholder" v-model="text">
+        <i class="duola-iconfont icon-Close1 close"></i>
+    </div>
+    <div class="shadow-s"></div>
+
+</div>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript">
+    var vm;
+    var umengPage = null;
+    var frameData = null;
+    apiready = function () {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var page = api.pageParam.page;//页面url
+        var name = api.pageParam.name;//页面名称
+        var title = api.pageParam.title;//页面标题
+        umengPage = api.pageParam.umengPage;//友盟页面ID
+        var from = api.pageParam.from;//来源于那个页面
+        var data = api.pageParam.data;//页面数据object
+        //获取frame
+        var frame = data.frame ? data.frame : {};
+        var bounces = frame.bounces ? frame.bounces : false; //页面弹动
+        var progress = frame.progress ? frame.progress : false; //页面加载进度条
+        var allowEdit = frame.allowEdit ? frame.allowEdit : false; //长按页面是否可以编辑
+        var scaleEnabled = frame.scaleEnabled ? frame.scaleEnabled : false; //页面缩放
+        var vScrollBarEnabled = frame.vScrollBarEnabled ? frame.vScrollBarEnabled : true; //页面垂直滚动条
+        var frameData = frame.data ? frame.data : {}; //frame 页面参数
+
+        //获取nav
+        var nav = data.nav ? data.nav : {};
+        var leftNav = nav.leftNav ? nav.leftNav : {};//导航栏左侧
+        var rightNav = nav.rightNav ? nav.rightNav : {};//导航栏右侧
+        var border = nav.border ? nav.border : false;//导航栏底部边框
+
+        frameData.from = from;
+        frameData.leftNavCallback = leftNav.callback ? leftNav.callback : '';
+        frameData.leftNavExtra = leftNav.extra ? leftNav.extra : '';
+        frameData.rightNavCallback = rightNav.callback ? rightNav.callback : '';
+        frameData.rightNavExtra = rightNav.extra ? rightNav.extra : '';
+
+        onPageUmeng(umengPage);
+        getTitle(title);
+        getNavLeft(leftNav);
+        getNavRight(rightNav);
+        getNavBorder(border);
+        vm = new Vue({
+            el: '#app',
+            data: {
+                placeholder: '',
+                text: ''
+            },
+            mounted: function () {
+              var self = this;
+                self.placeholder = data.text;
+//                self.text = data.text;
+            },
+            methods: {
+                closeWebWin: function () {
+                    onPageEndUmeng(umengPage);
+                    api.closeWin();
+                },
+                save: function () {
+                    var self = this;
+                    console.log("save text=== "+self.text);
+                }
+
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -15,6 +15,7 @@
         html, body{
             font-family: SourceHanSansCN-Regular;
         }
+
         .header {
             width: auto;
             height: 7.75rem;
@@ -186,7 +187,7 @@
 
     <div class="contentItem3">
         <section class="aui-grid">
-            <div class="aui-row hide" style="height: 3rem">
+            <div class="aui-row" style="height: 3rem">
                 <div class="aui-col-xs-5" style="padding: 0rem">
                     <div class="font2">账户</div>
                 </div>
@@ -312,26 +313,19 @@
                     var data = _getAjaxData();
                     var extra = {type: type};
                     _ajaxData(url, 'post', headers, data, function (ret, extra) {
-                        if(ret.statusCode == 200){
-                            //是否设置过密码
-                            $api.setStorage('hasPwd', ret.user.hasPwd);
-                            reverseAvailable=ret.express.reverse.available|| '';
-                            reverseMsg=ret.express.reverse.message|| '';
-                            if (!dist) {
-                                dist = ret.dist;
-                            }
-                            if (extra == 'noVip'){
-                                self.vipDate = "未开通会员";
-                            }else {
-                                self.vipDate = ret.user.dueTime && ret.user.dueTime.split(' ')[0];
-                            }
-                            self.canComment = ret.orders.canComment;
-                            var express = ret.express;
-                            var posted = express.posted.hasNoOrder;
-                        }else if(ret.statusCode == 10104){
-                            goLogin(null,'../win_regin.html');
+                        reverseAvailable=ret.express.reverse.available|| '';
+                        reverseMsg=ret.express.reverse.message|| '';
+                        if (!dist) {
+                            dist = ret.dist;
                         }
-
+                        if (extra == 'noVip'){
+                            self.vipDate = "未开通会员";
+                        }else {
+                            self.vipDate = ret.user.dueTime.split('.')[0];
+                        }
+                        self.canComment = ret.orders.canComment;
+                        var express = ret.express;
+                        var posted = express.posted.hasNoOrder;
 
                     }, function (err, extra) {
 

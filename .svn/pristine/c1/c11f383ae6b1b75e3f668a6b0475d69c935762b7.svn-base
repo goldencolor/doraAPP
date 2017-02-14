@@ -1293,7 +1293,7 @@
                         return;
                     }
                     openOtherAdDialog(i,type,data,path,dialogCallback);
-                }, function(err){_loadingHide();toastMsg(err.msg)}, 0);
+                }, null, 0);
             }else{
                 openOtherAdDialog(i,type,data,path);
             }

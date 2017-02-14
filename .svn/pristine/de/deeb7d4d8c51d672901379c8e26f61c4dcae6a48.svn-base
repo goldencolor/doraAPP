@@ -708,15 +708,6 @@ function checkLogin(){
 }
 //关闭页面
 function closeThisWin(){
-	//api.execScript({
-	//	name:'root',
-	//	script: 'hideLoading()'
-	//});
-	//api.execScript({
-	//	name:'root',
-	//	frameName:'footer_tab_1',
-	//	script: 'init()'
-	//});
 	api.closeWin();
 }
 //跳转登录页面

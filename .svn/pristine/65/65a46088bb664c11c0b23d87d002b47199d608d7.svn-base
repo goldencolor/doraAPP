@@ -223,11 +223,11 @@ function loadingHide(){
 }
 
 //截取字符串长度
-function subStr(str,lenght){
+function subStr(str,length){
 	if(!isDefine(str)){
 		str = '...';
 	}
-	return str.length > lenght ? str.substring(0, lenght-2) + '...' : str;
+	return str.length > length ? str.substring(0, length-2) + '...' : str;
 }
 //下拉刷新
 function pullRefresh(callback){
@@ -424,9 +424,12 @@ function goWXTelBind(from){
 }
 
 //打开新窗体
-function openNewWin(name,title,params,from,url,animation,page){
+function openNewWin(name,title,params,from,url,animation,page,scrollEnabled){
 	if (!isDefine(url)) {
 		url = 'win.html';
+	}
+	if (!isDefine(scrollEnabled) && scrollEnabled){
+        scrollEnabled = true;
 	}
 	if(from == CONSTANT.INDEX){
 		url = './html/' + url;
@@ -445,6 +448,7 @@ function openNewWin(name,title,params,from,url,animation,page){
 	console.log(getLogStr(new Array('openNewWin',name,url,animation,{
 		page: page,
 		title: title,
+        scrollEnabled: scrollEnabled,
 		name: name,
 		data: params
 	})));
@@ -453,6 +457,7 @@ function openNewWin(name,title,params,from,url,animation,page){
 		url: url,
 		animation: animation,
 		softInputMode:'resize',
+        scrollEnabled: scrollEnabled,
 		pageParam:{
 			page: page,
 			title: title,
@@ -464,8 +469,8 @@ function openNewWin(name,title,params,from,url,animation,page){
 
 //打开新窗体和内置frame
 function openNewWinFrame(name,title,params,from,url,animation,page,umengPage){
-	if (!isDefine(url)) {
-		url = 'header_new.html';
+    if (!isDefine(url)) {
+		url = 'header_web.html';
 	}
 	if(api.winName == 'root' && (from.frameName == null || from.frameName == '')){
 		url = './html/' + url;
@@ -708,15 +713,6 @@ function checkLogin(){
 }
 //关闭页面
 function closeThisWin(){
-	//api.execScript({
-	//	name:'root',
-	//	script: 'hideLoading()'
-	//});
-	//api.execScript({
-	//	name:'root',
-	//	frameName:'footer_tab_1',
-	//	script: 'init()'
-	//});
 	api.closeWin();
 }
 //跳转登录页面
@@ -759,52 +755,52 @@ function toLogin(source){
 //跳转我的多啦袋页面
 function toMyBag(mybag){
 	api.openWin({
-		name: 'myDrabag',
-		url: 'winBag.html',
-		animation: {
-			type:"none",
-			subType:'from_bottom',
-			duration:600
+	    name: 'myDrabag',
+	    url: 'winBag.html',
+	    animation: {
+		    type:"none",               
+		    subType:'from_bottom',       
+		    duration:600               
 		},
-		pageParam: {
-			title: '我的多啦袋',
-			page: 'myDrabag',
-			bounces: true,
-			data: mybag
-		}
+	    pageParam: {
+	        title: '我的多啦袋',
+	        page: 'myDrabag',
+	        bounces: true,
+	        data: mybag
+	    }
 	});
 }
 //客服
 var token;
 function openMeChat(){
-	token = $api.getStorage('token');
-	if(token=='undefined'||token==undefined){
-		api.openWin({
-			name: 'login',
-			url: 'win.html',
-			pageParam:{
-				page: 'login',
-				title: '登录'
-			},
-			animation:{
-				type:'movein',
-				subType:'from_bottom'
-			}
-		});
-	}else{
-		sendEventUmeng(CONSTANT.UMENGEVENT.ONLINE_SERVICE,{
-			from:'我的'
-		});
-		api.openWin({
-			name: '在线客户',
-			url: 'winWeb.html',
-			pageParam:{
-				page: 'winWeb',
-				title: '在线客服',
-				url:'http://m.duolayimeng.com/chatService?token='+token
-			}
-		});
-	}
+		token = $api.getStorage('token');
+		if(token=='undefined'||token==undefined){
+			api.openWin({
+			    name: 'login',
+			    url: 'win.html',
+			    pageParam:{
+	                page: 'login',
+	                title: '登录'
+	            },
+			    animation:{
+			    	type:'movein',
+			    	subType:'from_bottom'
+			    }
+		    });
+		}else{
+			sendEventUmeng(CONSTANT.UMENGEVENT.ONLINE_SERVICE,{
+				from:'我的'
+			});
+			api.openWin({
+	            name: '在线客户',
+	            url: 'winWeb.html', 
+	            pageParam:{
+	                page: 'winWeb',
+	                title: '在线客服',
+	                url:'http://m.duolayimeng.com/chatService?token='+token
+	            }
+	        });
+        }
 //	toastMsg('暂未开通此服务')
 //	return
 //	var systemType = api.systemType;
@@ -829,22 +825,22 @@ function openMeChat(){
 
 //过滤字符
 function _stripscript(s) {
-	var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）&;—|{}【】‘；：”“'。，、？]")
-	var rs = "";
-	for (var i = 0; i < s.length; i++) {
-		rs = rs + s.substr(i, 1).replace(pattern, '');
-	}
-	return rs;
+    var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）&;—|{}【】‘；：”“'。，、？]")
+        var rs = "";
+    for (var i = 0; i < s.length; i++) {
+        rs = rs + s.substr(i, 1).replace(pattern, '');
+    }
+    return rs;
 }
 //打开新窗口
 function _openWin(t,w,f){
 	api.openWin({
-		name: w,
-		url: w+'.html',
-		pageParam: {
-			title: t,
-			page: f
-		}
+	    name: w,
+	    url: w+'.html',
+	    pageParam: {
+	        title: t,
+	        page: f
+	    }
 	});
 }
 //显示PAGE
@@ -863,12 +859,12 @@ function _closeWin(){
 //打开新网页
 function _openWeb(t,w,url){
 	api.openWin({
-		name: w,
-		url: w+'.html',
-		pageParam: {
-			title: t,
-			url: url
-		}
+	    name: w,
+	    url: w+'.html',
+	    pageParam: {
+	        title: t,
+	        url: url
+	    }
 	});
 }
 
@@ -901,24 +897,24 @@ function _httpErr(functionName,submit){
 		msg = '请点击确定重试'
 	}
 	api.confirm({
-		title: '网络故障',
-		msg: msg,
-		buttons: ['确定', '取消']
+	    title: '网络故障',
+	    msg: msg,
+	    buttons: ['确定', '取消']
 	}, function(ret, err) {
-		var index = ret.buttonIndex;
-		if(index == 1){
-			eval(functionName);
-		}
+	    var index = ret.buttonIndex;
+	    if(index == 1){
+	    	eval(functionName);
+	    }
 	});
 }
 //loading
 function _loadingShow(title){
 	api.showProgress({
-		style: 'default',
-		animationType: 'fade',
-		title: title||'数据加载中',
-		text: '请稍候',
-		modal: true
+	    style: 'default',
+	    animationType: 'fade',
+	    title: title||'数据加载中',
+	    text: '请稍候',
+	    modal: true
 	});
 }
 
@@ -1136,7 +1132,7 @@ function getLocalCacheUrl(url){
 	}else{
 		return api.cacheDir +'/cache/img/' + pref + suffix;
 	}
-	z
+z
 }
 
 //下载url文件，缓存到本地
@@ -1177,7 +1173,7 @@ function domImgUrl2(className,url){
 	//	$api.attr(el[(el.length - 1)], 'src', url);
 	//}
 }
-
+	
 //尺码
 function _sizeStatus(str){
 	if(str=='J'){
@@ -1250,13 +1246,13 @@ function _sizeWuLiuState(str){
 		return '揽件';
 	}else if(str=='2'){
 		return '疑难';
-	}else if(str=='3'){
+	}else if(str=='3'){ 
 		return '签收';
-	}else if(str=='4'){
+	}else if(str=='4'){ 
 		return '退签';
 	}else if(str=='5'){
 		return '派件';
-	}else if(str=='6'){
+	}else if(str=='6'){ 
 		return '退回';
 	}else{
 		return str;
@@ -1295,58 +1291,58 @@ function starImg2(s){
 
 //js BUG
 function add(a, b) {
-	var c, d, e;
-	try {
-		c = String(a).split(".")[1].length;
-	} catch (f) {
-		c = 0;
-	}
-	try {
-		d = String(b).split(".")[1].length;
-	} catch (f) {
-		d = 0;
-	}
-	return e = Math.pow(10, Math.max(c, d)), (mul(a, e) + mul(b, e)) / e;
+    var c, d, e;
+    try {
+        c = String(a).split(".")[1].length;
+    } catch (f) {
+        c = 0;
+    }
+    try {
+        d = String(b).split(".")[1].length;
+    } catch (f) {
+        d = 0;
+    }
+    return e = Math.pow(10, Math.max(c, d)), (mul(a, e) + mul(b, e)) / e;
 }
-
+ 
 function sub(a, b) {
-	var c, d, e;
-	try {
-		c = String(a).split(".")[1].length;
-	} catch (f) {
-		c = 0;
-	}
-	try {
-		d = String(b).split(".")[1].length;
-	} catch (f) {
-		d = 0;
-	}
-	return e = Math.pow(10, Math.max(c, d)), (mul(a, e) - mul(b, e)) / e;
+    var c, d, e;
+    try {
+        c = String(a).split(".")[1].length;
+    } catch (f) {
+        c = 0;
+    }
+    try {
+        d = String(b).split(".")[1].length;
+    } catch (f) {
+        d = 0;
+    }
+    return e = Math.pow(10, Math.max(c, d)), (mul(a, e) - mul(b, e)) / e;
 }
-
+ 
 function mul(a, b) {
-	var c = 0,
-		d = String(a),
-		e = String(b);
-	try {
-		c += d.split(".")[1].length;
-	} catch (f) {}
-	try {
-		c += e.split(".")[1].length;
-	} catch (f) {}
-	return Number(d.replace(".", "")) * Number(e.replace(".", "")) / Math.pow(10, c);
+    var c = 0,
+        d = String(a),
+        e = String(b);
+    try {
+        c += d.split(".")[1].length;
+    } catch (f) {}
+    try {
+        c += e.split(".")[1].length;
+    } catch (f) {}
+    return Number(d.replace(".", "")) * Number(e.replace(".", "")) / Math.pow(10, c);
 }
-
+ 
 function div(a, b) {
-	var c, d, e = 0,
-		f = 0;
-	try {
-		e = String(a).split(".")[1].length;
-	} catch (g) {}
-	try {
-		f = String(b).split(".")[1].length;
-	} catch (g) {}
-	return c = Number(String(a).replace(".", "")), d = Number(String(b).replace(".", "")), mul(c / d, Math.pow(10, f - e));
+    var c, d, e = 0,
+        f = 0;
+    try {
+        e = String(a).split(".")[1].length;
+    } catch (g) {}
+    try {
+        f = String(b).split(".")[1].length;
+    } catch (g) {}
+    return c = Number(String(a).replace(".", "")), d = Number(String(b).replace(".", "")), mul(c / d, Math.pow(10, f - e));
 }
 //查询 数组 元素位置 
 function checkArrIn(arr,val){
@@ -1354,7 +1350,7 @@ function checkArrIn(arr,val){
 		if (arr[i] == val) return i;
 	}
 	return -1;
-}
+} 
 //删除 数组元素 
 function removeArrValue(arr,val) {
 	var index = checkArrIn(arr,val);
@@ -1368,9 +1364,9 @@ function toastMsg(msg){
 		msg = '未知错误';
 	}
 	api.toast({
-		msg: msg,
-		duration:2000,
-		location: 'bottom'
+	    msg: msg,
+	    duration:2000,
+	    location: 'bottom'
 	});
 }
 /**
@@ -1533,7 +1529,7 @@ function _ajaxData(url,method,headers,data,successCallback,errorCallback,retryTi
 }
 
 /**
- * 判断对象变量是否为空对象{}
+ * 判断对象变量是否为空对象{} 
  * @param obj 选填 对象
  * @param ISYESNO 选填 是否返回字符串格式 无默认值
  * @return 默认返回 布尔值true,false，当YESNO为true时返回 字符串YES,NO

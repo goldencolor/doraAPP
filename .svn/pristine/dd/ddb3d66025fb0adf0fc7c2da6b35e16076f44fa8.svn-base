@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>设置</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style type="text/css">
+        html, body{
+            font-family: SourceHanSansCN-Regular;
+            background: transparent;
+        }
+        .shadow-l{
+            background-color: #E6E6E6;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            background-color: #E6E6E6;
+            height: 1px;
+        }
+        .row{
+            position: relative;
+            width: auto;
+            /*height: 3rem;*/
+        }
+        .row-text{
+            height: 3rem;
+            line-height: 3rem;
+            margin-left:1rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 16px;
+            color: #4A4A4A;
+        }
+        .jiantou2{
+            line-height: 0.75rem;
+            color: #8B8B8B;
+            position: absolute;
+            top: 1.1rem;
+            right: 1rem;
+        }
+        .item-data{
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 16px;
+            color: #8B8B8B;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="shadow-l"></div>
+    <div class="row" @click="openFeedback(yijian)" id="yijian">
+        <div class="row-text">意见建议</div>
+        <i class="duola-iconfont icon-jiantou jiantou2"></i>
+        <div class="shadow-s"></div>
+    </div>
+    <div class="row" @click="myScore(guli)" id="guli">
+        <div class="row-text">鼓励开发者</div>
+        <i class="duola-iconfont icon-jiantou jiantou2"></i>
+        <div class="shadow-s"></div>
+    </div>
+    <div class="row" @click="openPwd(anquan)" id="anquan">
+        <div class="row-text">账户安全</div>
+        <i class="duola-iconfont icon-jiantou jiantou2"></i>
+    </div>
+    <div class="shadow-l"></div>
+    <div class="row">
+        <div class="row-text">当前版本</div>
+        <div class="item-data">{{appVersion}}</div>
+        <div class="shadow-s"></div>
+    </div>
+    <div class="row" @click="clearCache">
+        <div class="row-text">清除缓存</div>
+        <div class="item-data">{{cacheSize}}</div>
+        <div class="shadow-s"></div>
+    </div>
+    <!--<div class="row">-->
+        <!--<div class="row-text">检测新版APP</div>-->
+        <!--<div class="shadow-s"></div>-->
+    <!--</div>-->
+    <div class="row" @click="logout(tuichu)" id="tuichu">
+        <div class="row-text">退出账号</div>
+        <div class="shadow-s"></div>
+    </div>
+
+</div>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript">
+    var vm;
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {
+                cacheSize: '0M',
+                appVersion: ''
+
+            },
+            mounted:function () {
+                var self = this;
+                self.init();
+            },
+            methods: {
+                init: function () {
+                    var self = this;
+                    self.getCacheSize();
+                    self.getMyVersion();
+                },
+                getCacheSize: function () {
+                    var self = this;
+                    var size = api.getCacheSize({
+                        sync: true
+                    });
+                    size = (size/(1024*1024)).toFixed(1) + "M";
+                    self.cacheSize = size;
+                    self.appVersion = api.version;
+                },
+                clearCache: function () {
+                    var self = this;
+                    _loadingHide();
+                    var dialogBox = api.require('dialogBox');
+                    var text = self.cacheSize;
+                    dialogBox.sendMessage({
+                        texts: {
+                            title: '清空缓存',
+                            content: "您当前的缓存数据为"+text,
+                            leftBtnTitle: '暂不清理',
+                            rightBtnTitle: '立即清除'
+                        },
+                        styles: {
+                            bg: '#fff',
+                            w: 300,
+                            title: {
+                                h: 60,
+                                show: {
+                                    marginL: 35,
+                                    titleSize: 18,
+                                    titleColor: '#000'
+                                }
+                            },
+                            content: {
+                                marginT: 10,
+                                color: '#000',
+                                size: 14
+                            },
+                            left: {
+                                marginB: 20,
+                                marginL: 130,
+                                w: 70,
+                                h: 35,
+                                corner: 2,
+                                bg: '#FFF',
+                                size: 14,
+                                color: '#000'
+                            },
+                            right: {
+                                marginB: 20,
+                                marginL: 10,
+                                w: 70,
+                                h: 35,
+                                corner: 2,
+                                bg: '#FFF',
+                                size: 14,
+                                color: '#FF6100'
+                            }
+                        }
+                    }, function(ret) {
+                        if (ret.eventType !== 'left') {
+                            sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+                                name:'清除缓存'
+                            });
+                            api.clearCache(function(ret,err){
+                                self.cacheSize = '0M';
+                                api.toast({
+                                    msg:'清除完成'
+                                });
+                                $api.html($api.byId('cache'), '0M');
+                            });
+                        }
+                        dialogBox.close({
+                            dialogName: 'sendMessage'
+                        });
+                    });
+                },
+                getMyVersion: function () {
+                    var self = this;
+                    var version = api.appVersion;
+                    var versionArray = version.split('.');
+                    var versionTemp =versionArray.map(function(value){
+                        return parseInt(value);
+                    });
+                    var repair =  api.getPrefs({
+                            sync: true,
+                            key: 'appRepair'
+                        }) || 0;
+                    self.appVersion = 'V'+versionTemp.toString().replace(/,/g,'.')+'_'+repair;
+
+                },
+                openFeedback: function (el) {
+                    sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+                        name:$api.text(el).replace(/\s/g,'')
+                    });
+                    api.openWin({
+                        name: 'feedback',
+                        url: '../win.html',
+                        pageParam:{
+                            page: 'feedback',
+                            title: '意见建议',
+                            name:"feedback"
+                        }
+                    });
+                },
+                myScore: function (el) {
+                    sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+                        name:$api.text(el).replace(/\s/g,'')
+                    });
+                    if (api.systemType == 'android') {
+                        var smarket = api.require('marketScore');
+                        if (!smarket) {
+                            toastMsg('正在开发，敬请期待！');
+                            return;
+                        }
+                        smarket.myScore({
+                            appname: 'com.biku.dorasdream'
+                        });
+                    } else {
+                        api.installApp({
+                            appUri: 'https://itunes.apple.com/cn/app/duo-la-yi-meng/id1065704878?mt=8'
+                        });
+                    }
+                },
+                openPwd: function (el) {
+                    sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER, {
+                        name: $api.text(el).replace(/\s/g, '')
+                    });
+                    api.openWin({
+                        name: 'updatePwd',
+                        url: '../win.html',
+                        pageParam: {
+                            page: 'updatePwd',
+                            title: CONSTANT.PAGE.UPDATEPWD
+                        }
+                    });
+                },
+                logout: function (el) {
+                    sendEventUmeng(CONSTANT.UMENGEVENT.USER_CENTER,{
+                        name:$api.text(el).replace(/\s/g,'')
+                    });
+                    api.confirm({
+                        msg:'是否确定退出?'
+                    },function(ret,err){
+                        if(ret.buttonIndex=='2'){
+                            umengLogout();
+                            api.showProgress({
+                                style: 'default',
+                                animationType: 'fade',
+                                title: '正在退出',
+                                text: '请稍候',
+                                modal: true
+                            });
+                            $api.clearStorage();
+                            setTimeout(function(){
+                                api.sendEvent({
+                                    name: 'loginOut'
+                                });
+                                //清除我的衣橱内容
+                                api.execScript({
+                                    frameName:'footer_tab_3',
+                                    script: 'removeInfo()'
+                                });
+                            },500);
+                            setTimeout(function(){
+                                api.hideProgress();
+                                api.closeToWin({name:'root'});
+                            },2000);
+                        }
+                    });
+                }
+
+            }
+
+        });
+    }
+
+</script>
+</body>
+</html>
