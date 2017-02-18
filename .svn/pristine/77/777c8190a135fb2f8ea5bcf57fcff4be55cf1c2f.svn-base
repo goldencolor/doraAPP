@@ -13,6 +13,11 @@
         .headerBtnBox.active {
             color: #ff6100;
         }
+        .headerBtnBox .headerBtn{
+
+            font-size: 16px;
+
+        }
         .buy{
             height: 1.5rem;
             line-height: 1.5rem;
@@ -26,33 +31,69 @@
             top: 0.5rem;
             right: 0.5rem;
         }
+        .title{
+            width: 100%;
+            height: 2.5rem;
+            text-align: center;
+            line-height: 2.5rem;
+            position: absolute;
+            left: 0rem;
+            border-bottom: solid #F5F5F5 1px;
+
+        }
+        .red-dot{
+            width: 0.6rem;
+            height: 0.6rem;
+            background-color: #FF0000;
+            border-radius: 0.3rem;
+            border: solid #FFFFFF 1px;
+            position: absolute;
+            top: 0.9rem;
+            right: 2.4rem
+        }
     </style>
 </head>
 <body>
-<header id="header" class="duola-header flex">
-    <a id="nav-left" class="duola-icon-area" tapmode onclick="closeOrderGroup()">
-        <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
-    </a>
-    <div id="nav-switch" class="flex-1 flex">
-        <div id="switch_now_order" class="headerBtnBox flex-1 flex flex-center" tapmode
-             onclick="switchBtn(this,'当前订阅',0)">
+<header id="header" >
+    <div class="duola-header flex border-bottom">
+        <a id="nav-left" class="duola-icon-area" tapmode onclick="closeOrderGroup()">
+            <span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
+        </a>
+        <div class="flex-1 flex flex-center" style="font-family: SourceHanSansCN-Normal;font-size: 18px;color: #1B1B1B;">全部订单</div>
+        <a id="nav-right" class="duola-icon-area">
+            <span id="nav-right-text" class="nav-text"><div id="buy" class="buy aui-hide" tapmode onclick="openBuy()">购买</div></span><span id="nav-right-icon" class="nav-right-icon"></span>
+        </a>
+    </div>
+    <div id="nav-switch" class="flex-1 flex" style="height: 2.5rem">
+        <div id="express_info" class="headerBtnBox active flex-1 flex flex-center" tapmode
+             onclick="switchBtn(this,'物流信息',0)">
             <!--<span class="duola-iconfont icon-newcome-active"></span>-->
-            <span id="headBtnOne" class="headerBtn">当前订单</span>
+            <span id="headBtn0" class="headerBtn active">物流信息</span>
+        </div>
+        <div id="switch_now_order" class="headerBtnBox  flex-1 flex flex-center" tapmode
+             onclick="switchBtn(this,'当前订单',1)">
+            <!--<span class="duola-iconfont icon-newcome-active"></span>-->
+            <span id="headBtn1" class="headerBtn ">当前订单</span>
         </div>
 
-        <!--<div id="switch_his_order" class="headerBtnBox flex-1 flex flex-center" tapmode-->
-             <!--onclick="switchBtn(this,'历史订阅',1)">-->
-            <!--&lt;!&ndash;<span class="duola-iconfont icon-dress"></span>&ndash;&gt;-->
-            <!--<span id="headBtnTwo" class="headerBtn">历史订单</span>-->
-        <!--</div>-->
+        <div id="switch_his_order" class="headerBtnBox flex-1 flex flex-center" tapmode
+             onclick="switchBtn(this,'历史订单',2)">
+            <!--<span class="duola-iconfont icon-dress"></span>-->
+            <span id="headBtn2" class="headerBtn">历史订单</span>
+        </div>
+        <div id="order_comment" class="headerBtnBox  flex-1 flex flex-center" style="position: relative;" tapmode
+             onclick="switchBtn(this,'待评价',3)">
+            <div class="red-dot hide" style="position: absolute; top: 0.45rem; right: 0.8rem" id="red_dot"></div>
+            <!--<span class="duola-iconfont icon-newcome-active"></span>-->
+            <span id="headBtn3" class="headerBtn ">待评价</span>
+        </div>
     </div>
-    <a id="nav-right" class="duola-icon-area">
-        <span id="nav-right-text" class="nav-text"><div id="buy" class="buy aui-hide" tapmode onclick="openBuy()">购买</div></span><span id="nav-right-icon" class="nav-right-icon"></span>
-    </a>
 </header>
+
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
 <script type="text/javascript" src="../script/umeng_sdk.js"></script>
 <script type="text/javascript">
     var umengPage = null;
@@ -121,8 +162,24 @@
                         data: frameData
                     }
                 }, {
+                    name: 'order_one',
+                    url: 'order_frm.html',
+                    bounces: bounces,
+                    vScrollBarEnabled: false,
+                    pageParam: {
+                        data: frameData
+                    }
+                }, {
                     name: 'order_two',
                     url: 'historyOrder.html',
+                    bounces: bounces,
+                    vScrollBarEnabled: false,
+                    pageParam: {
+                        data: frameData
+                    }
+                }, {
+                    name: 'order_one',
+                    url: 'order_comment.html',
                     bounces: bounces,
                     vScrollBarEnabled: false,
                     pageParam: {
@@ -134,7 +191,17 @@
 
         });
 
+        init();
+
     };
+    function init(){
+        var isMember = $api.getStorage('isMember');
+        if (!isDefine(isMember)) {
+            getData("noVip");
+        } else {
+            getData("vip");
+        }
+    }
 
     function switchBtn(el, name, index) {
         var header = $api.byId('nav-switch');
@@ -156,25 +223,66 @@
             index: index
         });
     }
+    function removeCls() {
+        $api.removeCls($api.byId('express_info'), 'active');
+        $api.removeCls($api.byId('switch_now_order'), 'active');
+        $api.removeCls($api.byId('switch_his_order'), 'active');
+        $api.removeCls($api.byId('order_comment'), 'active');
+
+
+    }
     function switchActive(index) {
+        removeCls();
         if (index == 0) {
+            $api.addCls($api.byId('express_info'), 'active');
+        } else if (index == 1) {
             $api.addCls($api.byId('switch_now_order'), 'active');
             $api.removeCls($api.byId('switch_his_order'), 'active');
             //标记为betaUser的用户才能看见购买按钮
             if(!!betaUser){
                 $api.removeCls($api.byId('buy'), 'aui-hide');
             }
-        } else if (index == 1) {
+
+        } else if (index == 2){
             $api.removeCls($api.byId('switch_now_order'), 'active');
             $api.addCls($api.byId('switch_his_order'), 'active');
             $api.addCls($api.byId('buy'), 'aui-hide');
-
+        } else if (index == 3){
+            $api.addCls($api.byId('order_comment'), 'active');
         }
     }
 
     function closeOrderGroup() {
         onPageEndUmeng(umengPage);
         closeWin();
+    }
+    function getData(type) {
+
+        var url = serviceNew + 'user/me';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData();
+        var extra = {type: type};
+        _ajaxData(url, 'post', headers, data, function (ret, extra) {
+
+            if(ret.statusCode == 200){
+                var canComment = ret.orders.canComment;
+                if (canComment !== 0){
+//                    显示待评价小红点
+                    $api.removeCls($api.byId('red_dot'), 'hide');
+
+                }else {
+//                    隐藏待评价小红点
+                    $api.addCls($api.byId('red_dot'), 'hide');
+                }
+
+            }else if(ret.statusCode == 10104){
+                goLogin(null,'../win_regin.html');
+            }
+
+
+        }, function (err, extra) {
+
+        }, 0, extra);
     }
 
     function openBuy(){

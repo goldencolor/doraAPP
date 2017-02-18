@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="email=no,date=no,address=no">
+    <title>退押金frame</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        /*时间轴*/
+        .line-wrap{
+            background: #ff6100;
+        }
+        .line-container{
+            padding: 2rem 0 1.7rem 0;
+        }
+        .dot{
+            width: 0.6rem;
+            height: 0.6rem;
+            background: #FF904C;
+            border-radius: 100%;
+            position: relative;
+            z-index: 3;
+        }
+        .dot.active{
+            background: #ffffff;
+        }
+        .bg-dot{
+            position: absolute;
+            top:-0.3rem;
+            left: 50%;
+            margin-left: -0.6rem;
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 100%;
+            opacity: 0.5;
+            background: #FFFFFF;
+            z-index: 2;
+        }
+        .line-item{
+            position: relative;
+        }
+        .line-item:not(:last-child):after {
+            content: '';
+            position: absolute;
+            top: 0.25rem;
+            left: 50%;
+            width: 100%;
+            height: 0.1rem;
+            background: #FF904C;
+            z-index: 1;
+        }
+        .line-item.active:after{
+            background: #ffffff;
+        }
+
+        .triangle-up {
+            width:0;
+            height:0;
+            border-left:0.4rem solid transparent;
+            border-right:0.4rem solid transparent;
+            border-bottom:0.4rem solid #ffffff;
+        }
+        .text-container{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            padding-bottom: 1rem;
+        }
+        .text-container div{
+            opacity: 0.6;
+        }
+        .text-container .active{
+            color: white;
+            opacity: 1;
+        }
+
+        /*中间部分*/
+        .body-item{
+            height: 5rem;
+            padding-left: 1rem;
+        }
+        .item-label{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #8B8B8B;
+            padding-left: 0.3rem;
+        }
+        .body-item .money{
+            margin-top: 0.4rem;
+        }
+        .body-section{
+            padding: 2.8rem 1rem 0 1rem;
+            min-height: 11rem;
+            font-family: SourceHanSansCN-Normal;
+        }
+        .body-border{
+            border-bottom: 1px solid #E6E6E6;
+        }
+        .body-section .title{
+            font-size: 1rem;
+            color: #000000;
+            margin-bottom: 0.9rem;
+            font-weight: bold;
+        }
+        .body-section .sub-title{
+            font-size: 0.7rem;
+            color: #4A4A4A;
+        }
+
+        .money{
+            font-family: ArialMT;
+            font-size: 1.5rem;
+            color: #313131;
+            line-height: 1.5rem;
+            margin-top: 0.5rem;
+            font-weight: bold;
+        }
+        .moeny-desc{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 1rem;
+            color: #313131;
+            line-height: 1rem;
+        }
+        /*尾部部分*/
+        .footer-section{
+            padding: 0.6rem 1rem 0 1rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #8B8B8B;
+            line-height: 1.2rem;
+        }
+        /*尾部按钮*/
+        .footer-btn{
+            background: #D8D8D8;
+            border-radius: 0.2rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 1rem;
+            color: #FFFFFF;
+            margin: 3.5rem 1rem 0 1rem;
+            height: 2.5rem;
+        }
+        .hit-bg{
+            background: #ff6100;
+        }
+    </style>
+</head>
+<body>
+    <div id="body-container">
+
+<!--时间轴-->
+    <div class="line-wrap" id="line-wrap">
+        <div class="line-container flex">
+            <div class="flex-1 flex flex-center line-item ">
+                <div class="dot active"></div>
+                <div class="bg-dot active"></div>
+            </div>
+            <div class="flex-1 flex flex-center line-item ">
+                <div class="dot "></div>
+
+            </div>
+            <div class="flex-1 flex flex-center line-item">
+                <div class="dot"></div>
+            </div>
+        </div>
+        <div class="text-container flex">
+            <div class="flex-1 flex flex-center active">退款申请</div>
+            <div class="flex-1 flex flex-center ">退款等待</div>
+            <div class="flex-1 flex flex-center">退款完成</div>
+        </div>
+        <div class="flex">
+            <div class="flex-1 flex flex-center">
+            </div>
+            <div class="flex-1 flex flex-center">
+                <div class="triangle-up "></div>
+            </div>
+            <div class="flex-1 flex flex-center">
+            </div>
+        </div>
+    </div>
+
+        <!--<div class="body-item body-border flex flex-vertical-center ">-->
+            <!--<div>-->
+                <!--<div class="item-label">押金总数</div>-->
+                <!--<div class="money">￥300.00</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="body-item body-border flex flex-vertical-center ">-->
+            <!--<div>-->
+                <!--<div class="item-label">衣服持有</div>-->
+                <!--<div class="money" style="padding-left: 0.3rem">3件 <span class="moeny-desc">(当前最多可持有6件)</span></div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="body-item body-border flex flex-vertical-center ">-->
+            <!--<div>-->
+                <!--<div class="item-label">可退押金</div>-->
+                <!--<div class="money">￥300.00</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="footer-btn flex flex-center">立即申请</div>-->
+
+        <!--<div class="body-section body-border">-->
+            <!--<div class="title">-->
+                <!--押金退款已提交，等待银行处理-->
+            <!--</div>-->
+            <!--<div class="sub-title">-->
+                <!--预计于2月30日晚12:00到账-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="footer-section">-->
+            <!--若你对退押金服务有任何疑问 <br>-->
+            <!--可联系人工客服 <a class="hit-color" href="javascript:xx()">400 080 0876</a> <br>-->
+            <!--或联系 <a class="hit-color text-underline" href="xx()">在线客服</a> 咨询 <br>-->
+        <!--</div>-->
+        <!--<div class="body-section body-border flex flex-center flex-vertical">-->
+            <!--<div class="title">-->
+                <!--押金已成功退款!-->
+                <!--<div class="money">￥300.00</div>-->
+            <!--</div>-->
+            <!--<div class="sub-title">-->
+                <!--请你在账户中查询-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="footer-section">-->
+            <!--若你对退押金服务有任何疑问 <br>-->
+            <!--可联系人工客服 <a class="hit-color" href="javascript:xx()">400 080 0876</a> <br>-->
+            <!--或联系 <a class="hit-color text-underline" href="xx()">在线客服</a> 咨询 <br>-->
+        <!--</div>-->
+    </div>
+<!--进度条模板-->
+<script id="body-container-template" type="text/x-dot-template">
+    <div class="line-wrap">
+        <div class="line-container flex">
+            <div class="flex-1 flex flex-center line-item {{=it.index == 1 || it.index == 2 ? 'active': ''}}">
+                <div class="dot active"></div>
+                {{? it.index == 0}}
+                <div class="bg-dot "></div>
+                {{?}}
+            </div>
+            <div class="flex-1 flex flex-center line-item {{=it.index == 2 ? 'active': ''}}">
+                <div class="dot {{=it.index == 1 || it.index == 2 ? 'active': ''}}"></div>
+                {{? it.index == 1}}
+                <div class="bg-dot "></div>
+                {{?}}
+            </div>
+            <div class="flex-1 flex flex-center line-item">
+                <div class="dot {{=it.index == 2 ? 'active': ''}}"></div>
+                {{? it.index == 2}}
+                <div class="bg-dot "></div>
+                {{?}}
+            </div>
+        </div>
+        <div class="text-container flex">
+            <div class="flex-1 flex flex-center {{=it.index == 0 ? 'active': ''}}">退款申请</div>
+            <div class="flex-1 flex flex-center {{=it.index == 1 ? 'active': ''}}">退款等待</div>
+            <div class="flex-1 flex flex-center {{=it.index == 2 ? 'active': ''}}">{{=it.status == 'failed' ? '退款失败' : '退款成功'}}</div>
+        </div>
+        <div class="flex">
+            <div class="flex-1 flex flex-center">
+                {{? it.index == 0}}
+                <div class="triangle-up "></div>
+                {{?}}
+            </div>
+            <div class="flex-1 flex flex-center">
+                {{? it.index == 1}}
+                <div class="triangle-up "></div>
+                {{?}}
+            </div>
+            <div class="flex-1 flex flex-center">
+                {{? it.index == 2}}
+                <div class="triangle-up "></div>
+                {{?}}
+            </div>
+        </div>
+    </div>
+    {{?it.index == 0}}
+        <div class="body-item body-border flex flex-vertical-center ">
+            <div>
+                <div class="item-label">押金总数</div>
+                <div class="money">￥{{=it.userDeposit}}.00</div>
+            </div>
+        </div>
+        <div class="body-item body-border flex flex-vertical-center ">
+            <div>
+                <div class="item-label">衣服持有</div>
+                <div class="money" style="padding-left: 0.3rem">{{=it.clothes}}件 <span class="moeny-desc">(当前最多可持有{{=it.maxClothes}}件)</span></div>
+            </div>
+        </div>
+        <div class="body-item body-border flex flex-vertical-center ">
+            <div>
+                <div class="item-label">可退押金</div>
+                <div class="money">￥{{=it.refundDeposit}}.00</div>
+            </div>
+        </div>
+        <div class="footer-btn flex flex-center {{=it.refundDeposit > 0 ? 'hit-bg' : ''}}" tapmode onclick="refundDeposit({{=it.refundDeposit}})">立即申请</div>
+    {{??it.index == 1 || it.index == 2}}
+        <div class="body-section body-border {{=it.index == 2 ? 'flex flex-center flex-vertical': ''}}" style="{{=it.index == 2 ? 'padding: 0;': ''}}">
+            <div class="title">
+                {{?it.index == 1}}
+                押金退款已提交，等待银行处理
+                {{??it.index == 2}}
+                    {{?it.status == 'failed'}}
+                        退款失败!
+                    {{??}}
+                        押金已成功退款!
+                        <div class="money">￥{{=Math.abs(it.amount)}}.00</div>
+                    {{?}}
+
+                {{?}}
+            </div>
+            <div class="sub-title">
+                {{=it.index == 1 ? '预计于'+it.leaveDay+'个工作日内到账' : '请你在账户中查询'}}
+            </div>
+        </div>
+        <div class="footer-section">
+            若你对退押金服务有任何疑问 <br>
+            可联系人工客服 <a class="hit-color" href="javascript:callTel('4000800876')">400 080 0876</a> <br>
+            或联系 <a class="hit-color text-underline" href="javascript:openChat()">在线客服</a> 咨询 <br>
+        </div>
+        {{?it.index == 2}}
+            <div class="footer-btn flex flex-center hit-bg" tapmode onclick="readResult('{{=it._id}}')">我知道了</div>
+        {{?}}
+    {{?}}
+</script>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/meiqia_sdk.js"></script>
+
+<script>
+    function setCurrIndex(data){
+        var html = doTHtml('body-container-template',data);
+//        console.log(html);
+        $api.byId('body-container').innerHTML = html;
+    }
+    apiready = function(){
+        init(CONSTANT.ACTIONINIT);
+        api.parseTapmode();
+        api.setRefreshHeaderInfo({
+            visible: true,
+            loadingImg: 'widget://image/refresh.png',
+            bgColor: '#ff6100',
+            textColor: '#FF904C',
+            textDown: '下拉刷新',
+            textUp: '松开刷新',
+            showTime: true
+        }, function(ret, err){
+            if(ret){
+                loadRefresh();
+            }
+        });
+    }
+    //刷新
+    function loadRefresh(){
+        init(CONSTANT.ACTIONREFRESH);
+    }
+
+//    setCurrIndex({"index":2,"status":"succeeded","userDeposit":0,"clothes":0,"_id":"jzCmYBn9X6AFQQCMa","maxClothes":3,"refundDeposit":0});
+    //请求退押金
+    function init(action){
+        if(action == CONSTANT.ACTIONINIT){
+            _loadingShow();
+        }
+        var url = serviceUser + 'service/deposit';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData();
+        var extra = {action:action};
+        _ajaxData(url, 'post', headers, data, initSuccessCallback, initErrorCallback, 0,extra);
+    }
+
+    function initSuccessCallback(ret, extra) {
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        if (ret.statusCode == '200') {
+            var index = 0;
+            var leaveDay = 0;
+            if(ret.info.status == 'pending'){
+                index = 1;
+                leaveDay = 7 - parseInt((new Date() - new Date(ret.info.createdAt.split('.')[0].replace(/-/g,'/')))/ 1000 / 60 / 60 / 24);
+                leaveDay = leaveDay > 0 ? leaveDay : 1;
+            }else if(ret.info.status == 'succeeded' || ret.info.status == 'failed'){
+                index = 2;
+                //退款成功后，更新押金
+                api.execScript({
+                    name:'wallet_new',
+                    frameName:'wallet_new_frame',
+                    script:'execInit()'
+                });
+            }
+//            console.log(getLogStr([{
+//                index:index,
+//                status:ret.info.status,
+//                userDeposit:ret.info.userDeposit,
+//                clothes:ret.info.clothes,
+//                _id:ret.info._id,
+//                leaveDay:leaveDay,
+//                amount:ret.info.amount,
+//                maxClothes:ret.info.maxCount,
+//                refundDeposit:ret.info.refundOptions.extra || ret.info.refundOptions.all || 0
+//            }]));
+            setCurrIndex({
+                index:index,
+                status:ret.info.status,
+                userDeposit:ret.info.userDeposit,
+                clothes:ret.info.clothes,
+                _id:ret.info._id,
+                maxClothes:ret.info.maxCount,
+                leaveDay:leaveDay,
+                amount:ret.info.amount,
+                refundDeposit:ret.info.refundOptions.extra || ret.info.refundOptions.all || 0
+            });
+        } else if (ret.statusCode == '10104') {
+            toLogin();
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+
+    function initErrorCallback(err, extra) {
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+
+    //点击我知道了退款结果
+    function readResult(_id){
+        if(!_id){
+            return;
+        }
+        _loadingShow();
+        var url = serviceUser + 'service/deposit/read';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData({
+            refundId:_id
+        });
+        _ajaxData(url, 'post', headers, data, readResultSuccessCallback, readResultErrorCallback, 0);
+    }
+    function readResultErrorCallback(err, extra) {
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+    function readResultSuccessCallback(ret, extra) {
+        _loadingHide();
+        if (ret.statusCode == '200') {
+            init();
+        }else if (ret.statusCode == '10104') {
+            toLogin();
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+
+    //点击申请退押金
+    function refundDeposit(refundDeposit){
+        if(refundDeposit <= 0){
+            toastMsg('你暂时没有可退押金!');
+            return;
+        }
+        openDialogComfirm('亲，确定要申请退押金吗?',function(ret){
+            if(ret.eventType == 'right'){
+                _loadingShow();
+                var url = serviceUser + 'service/deposit/refund';
+                var headers = _getAjaxHeaders(true, true);
+                var data = _getAjaxData({
+                    amount:parseInt(refundDeposit)
+                });
+                _ajaxData(url, 'post', headers, data, refundDepositSuccessCallback, refundDepositErrorCallback, 0);
+            }
+        });
+    }
+    function refundDepositErrorCallback(err, extra) {
+        _loadingHide();
+        toastMsg(err.msg);
+    }
+    function refundDepositSuccessCallback(ret, extra) {
+        _loadingHide();
+        if (ret.statusCode == '200') {
+            init();
+        }else if (ret.statusCode == '10104') {
+            toLogin();
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+
+    //拨打电话
+    function callTel(number){
+        api.call({
+            number: number
+        });
+    }
+</script>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="email=no,date=no,address=no">
+    <title>退押金</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        /*header*/
+        .duola-header{
+            background: #ff6100;
+            color: #ffffff;
+        }
+        .duola-header .nav-left-icon{
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <header id="header" class="duola-header flex">
+        <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWin()">
+            <span id="nav-left-icon" class="nav-left-icon duola-iconfont icon-left"></span><span id="nav-left-text" class="nav-text"></span>
+        </a>
+        <div id="nav-title" class="nav-title flex-1">退押金</div>
+        <a id="nav-right" class="duola-icon-area">
+            <span id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon"></span>
+        </a>
+    </header>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+
+<script>
+    apiready = function(){
+        var headerEl  = $api.byId('header');
+        $api.fixStatusBar(headerEl);
+        api.parseTapmode();
+        api.openFrame({
+            name: 'myDepositFrame',
+            url: 'myDepositFrame.html',
+            rect: {
+                x: 0,
+                y: $api.offset(headerEl).h,
+                w: 'auto',
+                h: 'auto'
+            },
+            bounces: true,
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: false
+        });
+    }
+</script>
+</html>

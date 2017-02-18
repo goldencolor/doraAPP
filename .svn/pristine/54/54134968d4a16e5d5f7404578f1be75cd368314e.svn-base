@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>我的账户win</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html,body{
+            background: #F8F8F8;
+        }
+        #header-container{
+            width: 100%;
+            height: 7.75rem;
+            background: -webkit-linear-gradient(top, #FF9A00 0%, #FF6100 100%);
+            background: linear-gradient(top, #FF9A00 0%, #FF6100 100%);
+            color: #FFFFFF;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+        }
+        .header-section{
+            padding: 0.6rem 0.7rem 1rem 0.7rem;
+        }
+        #dueTime{
+            font-family: Arial-BoldMT;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 0.2rem;
+        }
+        .time-line{
+            position: relative;
+            margin-top: 1.75rem;
+        }
+        .time-line:before{
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 0.1rem;
+            background: #FFFFFF;
+            z-index: 1;
+        }
+        .time-line:after{
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 0.1rem;
+            background: #FF904C;
+            z-index: 2;
+            opacity: 0.7;
+        }
+        .time-dot{
+            position: absolute;
+            top:-0.3rem;
+            left:0%;
+            margin-left: -0.6rem;
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 100%;
+            background: #FFFFFF;
+            z-index: 3;
+        }
+        .dot-text{
+            font-size: 0.6rem;
+            opacity: 0.7;
+            position: absolute;
+            top:0.95rem;
+            left: -0.9rem;
+            z-index: 4;
+        }
+        .start-text{
+            font-size: 0.6rem;
+            opacity: 0.7;
+            position: absolute;
+            top:0.65rem;
+            left: 0;
+            z-index: 4;
+        }
+        .end-text{
+            font-size: 0.6rem;
+            opacity: 0.7;
+            position: absolute;
+            top:0.65rem;
+            right: 0;
+            z-index: 4;
+        }
+        .end-text-up{
+            font-size: 0.6rem;
+            opacity: 0.7;
+            position: absolute;
+            top:-1.4rem;
+            right: 0;
+            z-index: 4;
+        }
+
+        .item-container{
+            background: #FFFFFF;
+        }
+        .item-container .item{
+            height: 3rem;
+            padding: 0 0.7rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #000000;
+            border-bottom: 1px solid #E6E6E6;
+        }
+        .item-container .item .badge{
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 100%;
+            background: #FF0000;
+        }
+        .item-container .item:last-child{
+            border-bottom: none;
+        }
+        .icon-right{
+            color: #8B8B8B;
+        }
+        .desc{
+            font-size: 0.7rem;
+            color: #8B8B8B;
+            margin-left: 0.75rem;
+        }
+        .desc-right{
+            font-size: 0.7rem;
+            color: #8B8B8B;
+        }
+        .desc-right .icon-right{
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="header-container">
+            <div class="header-section">
+                <div>会员有效期至</div>
+                <div id="dueTime" v-cloak>{{dueTime | timeFormat('-')}}{{dueDay < 0 ? '(过期了)' : ''}} </div>
+                <div class="time-line">
+                    <div class="end-text-up" v-cloak>剩余{{dueDay < 0 ? 0 : dueDay}}天</div>
+                    <div class="time-dot" v-bind:style="{left:timeDot}">
+                        <div class="dot-text " v-bind:class="{hide:dotText}" v-cloak>{{currTime | timeFormat('.')}}</div>
+                    </div>
+                    <div class="start-text" v-cloak>{{startTime | timeFormat('.')}}</div>
+                    <div class="end-text" v-cloak>{{dueTime | timeFormat('.')}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="item-container">
+            <div class="item flex flex-center" tapmode @click="openPayService()">
+                <div class="flex-1">
+                    <span>续费</span> <span class="badge" v-if="dueDay <= 3"></span>
+                </div>
+                <span class="duola-iconfont icon-right"></span>
+            </div>
+            <div class="item flex flex-center" tapmode @click="openChangeService()">
+                <div class="flex-1">
+                    <span>变更服务</span> <span class="desc" v-cloak>{{leasedLimit}}件衣服 {{serviceFee | serviceName}}</span>
+                </div>
+                <span class="duola-iconfont icon-right"></span>
+            </div>
+            <div class="item flex flex-center" v-if="extraService" tapmode @click="openExtraService(new Date(extraService.expiredAt.split('.')[0].replace(/-/g,'/')))">
+                <div class="flex-1">
+                    <span>额外服务</span> <span class="desc" v-cloak>{{extraService.bags}}个多啦袋 </span>
+                </div>
+                <span class="desc-right" v-cloak="">{{new Date(extraService.expiredAt.split('.')[0].replace(/-/g,'/')) | timeLeave}}<span class="duola-iconfont icon-right"></span></span>
+            </div>
+            <div class="item flex flex-center" tapmode @click="openPayDeposit()">
+                <div class="flex-1">
+                    <span>我的押金</span><span  class="desc" v-cloak>￥{{deposit}}元</span>
+                </div>
+                <span class="desc-right">充押金<span class="duola-iconfont icon-right"></span></span>
+            </div>
+            <div class="item flex flex-center" tapmode @click="openMyDeposit()">
+                <div class="flex-1">
+                    <span>退押金</span>
+                </div>
+                <span class="duola-iconfont icon-right"></span>
+            </div>
+            <div class="item flex flex-center" tapmode @click="openCoupon()">
+                <div class="flex-1">
+                    <span>优惠券</span> <span class="desc" v-cloak>{{couponsCount | couponsCountName}}</span>
+                </div>
+                <span class="duola-iconfont icon-right"></span>
+            </div>
+            <div class="item flex flex-center hide" tapmode @click="openApplyNoney()">
+                <div class="flex-1">
+                    <span>提现</span>
+                </div>
+                <span class="duola-iconfont icon-right"></span>
+            </div>
+            <div class="item flex flex-center" tapmode @click="frozenService()">
+                <div class="flex-1">
+                    <span>冻结会员</span>
+                </div>
+                <span class="desc-right" v-cloak>{{ frozenAt ? '已冻结' : '未冻结' }}<span class="duola-iconfont icon-right"></span></span>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/vue/vue.min.js"></script>
+
+<script type="text/javascript">
+    var vm;
+    apiready = function () {
+        vueData();
+        api.setRefreshHeaderInfo({
+            visible: true,
+            loadingImg: 'widget://image/refresh.png',
+            bgColor: '#ff9a00',
+            textColor: '#ffe1b3',
+            textDown: '下拉刷新',
+            textUp: '松开刷新',
+            showTime: true
+        }, function(ret, err){
+            if(ret){
+                loadRefresh();
+            }
+        });
+    }
+    //刷新
+    function loadRefresh(){
+        init(CONSTANT.ACTIONREFRESH);
+    }
+//    vueData();
+    function vueData(){
+        vm = new Vue({
+            el: '#app',
+            data: {
+//                meiqiaCount:0,
+//                frozenAt:'',
+//                dueTime:new Date('2017-01-17 06:53:55.600'),
+//                startTime:new Date('2017-01-14 21:38:40.16'),
+//                currTime: new Date(),
+//                leasedLimit:3,
+//                isMember:'monthly',
+//                deposit:300,
+//                serviceFee:'',
+//                extraService:{
+//                    "expiredAt":"2017-03-17 15:59:05.391",
+//                    "bags":1
+//                },
+//                couponsCount:''
+
+                meiqiaCount:0,
+                frozenAt:'',
+                startTime:'',
+                currTime: new Date(),
+                dueTime:new Date(),
+                endTime:'',
+                leasedLimit:'',
+                isMember:'',
+                serviceFee:'',
+                deposit:0,
+                extraService:'',
+                couponsCount:''
+            },
+            mounted: function () {
+                init(CONSTANT.ACTIONINIT);
+                api.parseTapmode();
+            },
+            methods: {
+            },
+            computed: {
+                dueDay: function () {
+                    return Math.ceil((this.dueTime - this.currTime)/ 1000 / 60 / 60 / 24);
+                },
+                timeDot:function(){
+                    if(this.dueDay < 0){
+                        return '100%';
+                    }
+                    var rate = parseInt((this.currTime - this.startTime) / (this.dueTime - this.startTime) * 100) + '%';
+                    var style = document.createElement('style');
+                    style.innerText = '.time-line:after{width:'+rate+'}';
+                    document.body.appendChild(style);
+                    return rate;
+                },
+                dotText:function(){
+                    if(this.dueDay < 0){
+                        return '100%';
+                    }
+                    var rate = parseInt((this.currTime - this.startTime) / (this.dueTime - this.startTime) * 100);
+                    return rate < 20 || rate > 80
+                }
+            },
+            filters:{
+                timeFormat: function(date,replaceStr){
+                    if(typeof date == 'string'){
+                        return '';
+                    }
+                    return date.format("yyyy/M/d").replace(/\//g,replaceStr);
+                },
+                serviceName : function(serviceFee){
+                    if(!serviceFee){
+                        return '';
+                    }
+                    return '￥'+serviceFee+'元/月';
+                },
+                couponsCountName : function(couponsCount){
+                    if(!couponsCount){
+                        return '';
+                    }
+                    return couponsCount+'张';
+                },
+                timeLeave(date){
+                    if(typeof date == 'string'){
+                        return '';
+                    }
+                    var leaveDay = Math.ceil((date - new Date()) / 1000 / 60 / 60 / 24);
+                    if(leaveDay < 0){
+                        return '已到期';
+                    }else{
+                        return leaveDay+'天后到期';
+                    }
+                }
+            }
+        });
+    }
+
+    function init(action){
+        if(action == CONSTANT.ACTIONINIT){
+            _loadingShow();
+        }
+        var url = serviceNew + 'user';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData();
+        var extra = {action:action};
+        _ajaxData(url, 'post', headers, data, initSuccessCallback, initErrorCallback, 0,extra);
+    }
+
+    function initSuccessCallback(ret, extra) {
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        if (ret.statusCode == '200') {
+            if(ret.data.user.frozenAt){
+                vm.frozenAt = new Date(ret.data.user.frozenAt.split('.')[0].replace(/-/g, '/'));
+            }else{
+                vm.frozenAt = null;
+            }
+            if(ret.data.user.extraService){
+                vm.extraService = ret.data.user.extraService;
+            }else{
+                vm.extraService = null;
+            }
+            if(ret.data.user.dueTime){
+                vm.dueTime = new Date(ret.data.user.dueTime.split('.')[0].replace(/-/g, '/'));
+            }
+            if(ret.data.user.startTime){
+                vm.startTime = new Date(ret.data.user.startTime.split('.')[0].replace(/-/g, '/'));
+            }
+            if(ret.data.user.serviceFee){
+                vm.serviceFee = ret.data.user.serviceFee;
+            }
+            vm.couponsCount = ret.data.user.couponsCount;
+
+            if(ret.data.user.dorabag.count && ret.data.user.dorabag.perBag){
+                vm.leasedLimit = ret.data.user.dorabag.count * ret.data.user.dorabag.perBag;
+            }
+            if(ret.data.user.isMember){
+                vm.isMember = ret.data.user.isMember;
+            }
+            vm.deposit = ret.data.user.deposit;
+
+            //更新缓存数据
+            var vipType = '';
+            var isMember = ret.data.user.isMember;
+            if (isMember == 'monthly') {
+                vipType = '月费会员';
+            }else if (isMember == 'activity') {
+                vipType = '活动会员';
+            }else if (isMember == 'annual') {
+                vipType = '年费会员';
+            }
+            $api.setStorage('isMember', isMember);
+            $api.setStorage('username', ret.data.user.username);
+            $api.setStorage('dueTime', ret.data.user.dueTime ? ret.data.user.dueTime : "");
+            $api.setStorage('count', ret.data.user.dorabag.count);
+            $api.setStorage('vipType', vipType); //会员类型
+            $api.setStorage('frozenAt', ret.data.user.frozenAt);
+            $api.setStorage('extraService', ret.data.user.extraService ? "YES" : "NO");
+            //押金
+            $api.setStorage('deposit', ret.data.user.deposit || '');
+            //多啦袋数量
+            $api.setStorage('extraBags',ret.data.user.extraService ?   ret.data.user.extraService.bags : 0);
+
+        } else if (ret.statusCode == '10104') {
+            toLogin();
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+
+    function initErrorCallback(err, extra) {
+        var action = extra.action;
+        if(action == CONSTANT.ACTIONREFRESH){
+            pullRefreshDone();
+        }else if(action == CONSTANT.ACTIONLOAD){
+            loadingHide();
+        }else{
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+
+    //点击续费
+    function openPayService(){
+        var count = $api.getStorage('count') || 0;
+        api.openWin({
+            name: 'Pay',
+            url: 'win.html',
+            pageParam: {
+                page: 'Pay',
+                title: '缴费',
+                bagNum: count,
+                type: "serviceFee"
+            }
+        });
+    }
+
+    //点击变更服务
+    function openChangeService(){
+        var name = 'renew';
+        var title = '变更多啦袋';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftNav = setNavData(leftIcon);
+        var border = true;
+        var params = {};
+        params.nav = setNav(leftNav, border);
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'header_web.html';
+        var bounces = true;
+        params.frame = setFrame(bounces);
+        var page = 'user/userRenew.html';
+        openNewWinFrame(name, title, params, from, url, null, page);
+    }
+
+    //点击押金
+    function openMyDeposit(){
+        var name = 'myDeposit';
+        var title = '我的押金';
+        var url = 'myDeposit.html';
+        openNewWin(name,title,null,null,url);
+    }
+
+    //点击优惠券
+    function openCoupon(){
+        var name = 'user_coupon_header';
+        var title = '我的优惠劵';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftNav = setNavData(leftIcon);
+        var border = false;
+        var params = {};
+        params.nav = setNav(leftNav, border);
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'user/user_coupon_header.html';
+        openNewWinFrame(name, title, params, from, url);
+    }
+
+    //点击提现
+    function openApplyNoney(){
+        console.log('openApplyNoney');
+    }
+
+    //点击冻结
+    function frozenService(){
+        api.openWin({
+            name: 'Frost',
+            url: 'win.html',
+            pageParam: {
+                page: 'Frost',
+                title: '冻结账号'
+            }
+        });
+    }
+
+    //充押金
+    function openPayDeposit() {
+        var name = 'userDeposit';
+        var title = '充押金';
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftNav = setNavData(leftIcon);
+        var border = true;
+        var bounces = false;
+        var params = {};
+        params.nav = setNav(leftNav, border);
+        params.frame = setFrame(bounces, null, true);
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'header_web.html';
+        var animation = '';
+        var page = 'user/userDeposit.html';
+        openNewWinFrame(name, title, params, from, url, animation, page);
+    }
+
+    //点击额外服务
+    function openExtraService(date){
+        var leaveDay = Math.ceil((date - new Date()) / 1000 / 60 / 60 / 24);
+        var content = '亲，你的赠包活动时间';
+        if(leaveDay < 0){
+            content+= '已到期';
+        }else{
+            content+= leaveDay+'天后到期';
+        }
+        content += '，需要继续使用该服务吗？'
+        openDialogComfirm(content,function(ret){
+            if(ret.eventType == 'left'){
+                
+            }else if(ret.eventType == 'right'){
+                openPayService();
+            }
+        },'知道了','去续费');
+    }
+
+    //在其他页面异步执行刷新数据
+    function execInit(){
+        init();
+    }
+</script>
+</html>
