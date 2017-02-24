@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的衣橱头部</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+		
+		.aui-tab-item {
+			font-size: 0.9rem;
+			color: #989A9C;
+		}
+		.aui-tab {
+			position: static;
+		}
+		.aui-tab-item.aui-active {
+			color: #1B1B1B;
+			border-bottom: 0;
+			z-index: 100;
+			/*text-decoration:underline;*/
+			text-decoration: none;
+		}
+		.aui-active .tab-span{
+			height: 1.8rem;
+			font-size: 0.9rem;
+			border-bottom: 0.1rem solid #1B1B1B;
+		}
+		#nav-scan{
+			position: relative;
+			right: 5%;
+		}
+
+		/*aui-tab样式 底部边框*/
+		.aui-tab:after{
+			height: 0;
+		}
+
+
+		.duola-header .nav-left-icon {
+			margin-right: 0rem;
+			margin-left: 0.3rem;
+		}
+
+    </style>
+</head>
+<body>
+	<!--frame2我的衣橱头部-->
+	<header id="header" class="duola-header flex border-bottom">
+		<a class="duola-icon-area " tapmode onclick="closeSelf()" style="width: 10%">
+			<i class="nav-right-icon duola-iconfont icon-left"></i>
+		</a>
+		<div  class="aui-tab" id="tab" style="width: 80%;">
+			<div class="aui-tab-item aui-active aui-col-xs-4">
+				<span class="tab-span">在库</span></div>
+			<div class="aui-tab-item aui-col-xs-4"><span class="tab-span">暂无货</span></div>
+			<div class="aui-tab-item aui-col-xs-4"><span class="tab-span">品牌</span></div>
+		</div>
+		<a id="nav-scan" class="duola-icon-area " tapmode onclick="opencategory()" style="width: 10%">
+			<i class="nav-right-icon duola-iconfont icon-tuxing2"></i>
+		</a>
+	</header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/2_0/aui_tab.js" ></script>
+<script type="text/javascript">
+	var header = $api.byId("header"),
+		isOpencategory = false;	//是否打开云衣橱弹窗
+	apiready = function(){
+	
+		$api.fixStatusBar(header);
+		initTab();
+		openClosetFrame();
+	};
+	
+	function initTab(){
+		var tab = new auiTab({
+			element: document.getElementById("tab"),
+			index: 1,
+			repeatClick: false
+		}, function (ret) {
+			api.sendEvent({
+				name: 'tabClothList',
+				extra: {
+					key: ret.index
+				}
+			});
+		});
+	}
+	
+	function openClosetFrame(){
+		var	name = api.pageParam.name,
+			title = api.pageParam.title,
+			page = api.pageParam.page,
+			from = api.pageParam.from,
+			rect = {
+				x:0,
+				y:$api.offset(header).h,
+				w:"auto",
+				h:"auto"
+			},
+			data = {
+				backable:true
+			}
+		
+		
+		openNewFrame(name, page, false, rect, data);
+	}
+	
+	function closeSelf(){	//关闭我的衣橱
+		//alert(JSON.stringify(api.pageParams));
+		var fromWinName = api.pageParam.from.winName;
+		api.execScript({
+			name:fromWinName,
+			script:"execCloseSlefWin(null,'closet_headerWin')"
+		})
+	}
+	
+	function opencategory(){	//打开云衣橱
+		if(isOpencategory){
+			isOpencategory = false;
+			api.closeFrame({
+				name: 'category'
+			});
+		}else {
+			isOpencategory = true;
+			api.openFrame({
+				name: 'category',
+				url: './category.html',
+				rect: {
+					x:0,
+					y:70,
+					w:"auto",           //宽度，若传'auto'，页面从x位置开始自动充满父页面宽度
+					h:"auto"
+				},
+				pageParam: {
+					backable:true
+				},
+				vScrollBarEnabled: false
+			});
+		}
+	}
+
+</script>
+</html>

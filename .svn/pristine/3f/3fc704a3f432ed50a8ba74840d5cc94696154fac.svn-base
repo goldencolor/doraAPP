@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>分享</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style type="text/css">
+        body,html{
+            -webkit-user-select: text;
+            user-select: text;
+        }
+        #sharePicture{
+            width: 100%;
+            height: 15.8rem;
+            background-color: #fff;
+            background-image: url(../../image/shared-top.png);
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            -webkit-background-size:100% auto;
+            background-position: top;
+            position: relative;
+        }
+        #shared-tip{
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            width: 11rem;
+            margin-left: -5.5rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #4A4A4A;
+            text-align: center;
+        }
+        .share-middle-container{
+            position: relative;
+        }
+        .share-middle{
+            padding: 0 0.5rem;
+            height: 7.35rem;
+            background: #FF3C54;
+            box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.20);
+        }
+        .share-middle .item{
+            width: 2.25rem;
+            height: 2.25rem;
+            margin: 0 0.5rem;
+            border-radius: 100%;
+            background: #FF3C54;
+            box-shadow: 0px 3px 7px 0px rgba(0,0,0,0.20);
+        }
+        .share-middle .item .duola-iconfont{
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .share-btn{
+            width: 7.6rem;
+            height: 1.8rem;
+            background: #FF3C54;
+            box-shadow: 0px 2px 7px 0px rgba(0,0,0,0.20);
+            border-radius: 4px;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            position: absolute;
+            z-index: 2;
+            left: 50%;
+            margin-left: -3.8rem;
+            margin-top: -0.9rem;
+        }
+        .share-bootom{
+            background: #262B30;
+            color: #ffffff;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+        }
+        .share-bootom .desc{
+            margin-top: 0.3rem;
+            opacity: 0.8;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="flex flex-vertical" style="height: 100%">
+    <div id="sharePicture">
+        <span id="shared-tip" class="hide"></span>
+    </div>
+    <div class="share-middle-container">
+        <div class="share-middle flex flex-center">
+            <div class="item  flex flex-center hide" id="wx-icon" tapmode onclick="sharedIconHandler('wx')">
+                <span class="duola-iconfont icon-weixin1"></span>
+            </div>
+            <div class="item  flex flex-center hide" id="wx-line-icon" tapmode onclick="sharedIconHandler('wx-line')">
+                <span class="duola-iconfont icon-time-line1"></span>
+            </div>
+            <div class="item  flex flex-center hide" id="qq-icon"  tapmode onclick="sharedIconHandler('qq')">
+                <span class="duola-iconfont icon-QQ1"></span>
+            </div>
+            <div class="item  flex flex-center hide" id="weibo-icon"  tapmode onclick="sharedIconHandler('weibo')">
+                <span class="duola-iconfont icon-xinlang1"></span>
+            </div>
+            <div class="item  flex flex-center" id="sms-icon" tapmode onclick="sharedIconHandler('sms')">
+                <span class="duola-iconfont icon-shouji1"></span>
+            </div>
+        </div>
+        <span class="share-btn flex flex-center" tapmode onclick="showSharedQR(this)">
+            查看分享二维码
+        </span>
+    </div>
+    <div class="share-bootom flex-1 flex flex-center">
+
+        <span>分享给好友 得100RMB 现金劵</br><div class="desc">穿衣从此不用买</div></span>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/weibo_sdk.js"></script>
+<script type="text/javascript" src="../../script/wx_sdk.js"></script>
+<script type="text/javascript" src="../../script/qq_sdk.js"></script>
+<script type="text/javascript">
+    //可以复制页面内容
+
+    //全局变量
+    var contentUrl = null;
+    var userCode = 'tPaqoHgS';
+    var sharedTipEl = null;
+    //所有代码放在apiready中
+    apiready = function(){
+        sharedTipEl = $api.byId('shared-tip');
+        initSharedIcon();
+        initData();
+    };
+
+    //初始化显示分享图标
+    function initSharedIcon(){
+        var wxIconEl = $api.byId('wx-icon');
+        var wxLineIconEl = $api.byId('wx-line-icon');
+        wx_install(function(ret){
+            if(ret){
+                $api.removeCls(wxIconEl,'hide');
+                $api.removeCls(wxLineIconEl,'hide');
+            }
+        });
+        var qqIconEl = $api.byId('qq-icon');
+        qq_install(function(ret){
+            if(ret){
+                $api.removeCls(qqIconEl,'hide');
+            }
+        });
+        var weiboIconEl = $api.byId('weibo-icon');
+        weibo_install(function(ret){
+            if(ret){
+                $api.removeCls(weiboIconEl,'hide');
+            }
+        });
+    }
+
+    //向服务器请求初始化数据
+    function initData(){
+        loadingShow();
+        var url = serviceUser + 'invite';
+        var headers = _getAjaxHeaders(true,true);
+        var data = _getAjaxData();
+        _ajaxData(url,'post',headers,data,function(ret,extra){
+            if(ret.statusCode == '200' ){
+                if(ret.code=='undefined'||ret.code==undefined){
+                    ret.code= 200;
+                }
+                userCode = ret.code;
+                var nickname = $api.getStorage('userNickname')||'你';
+                contentUrl = 'http://m.duolayimeng.com/coupons/'+userCode;
+                $api.text(sharedTipEl,subStr(nickname,4)+'的邀请码：'+userCode);
+            }else if(ret.statusCode=='10104'){
+                goLogin('',"../win_regin.html");
+            }else{
+                toastMsg(ret.msg);
+            }
+            loadingHide();
+        },function(err,extra){
+            toastMsg(err.msg);
+            loadingHide();
+        },0);
+    }
+
+    //点击分享图标
+    function sharedIconHandler(channel){
+        //分享渠道统计
+        //检查是否是会员
+        if(!$api.getStorage('isMember')){
+            toastMsg('非会员无法邀请好友!');
+            return;
+        }
+        var title = '多啦衣梦送钱啦';
+        var description = '多啦衣梦送你100元美丽基金，快来领取吧！';
+        var thumb = 'widget://image/sharedLogo.png';
+        switch (channel){
+            case 'wx':
+                wx_share_page({
+                    scene:'session',
+                    title:title,
+                    description:description,
+                    thumb:thumb,
+                    contentUrl:contentUrl
+                },function(){
+
+                });
+                break;
+            case 'wx-line':
+                wx_share_page({
+                    scene:'timeline',
+                    title:title,
+                    description:description,
+                    thumb:thumb,
+                    contentUrl:contentUrl
+                },function(){
+
+                });
+                break;
+            case 'qq':
+                //
+                qq_share_page({
+                    type:'QFriend',
+                    title:title,
+                    url:contentUrl,
+                    description:description,
+                    imgUrl:'http://img.duolayimeng.com/provider/QGpniXETpF.jpg'
+                },function(){
+
+                });
+                break;
+            case 'weibo':
+                    //朱
+                weibo_share_page({
+                    text:'text',
+                    title:title,
+                    description:description,
+                    thumb:thumb,
+                    contentUrl:contentUrl
+                },function(){
+
+                });
+                break;
+            case 'sms':
+                var url_long = encodeURIComponent(contentUrl);
+                var url = 'http://api.t.sina.com.cn/short_url/shorten.json?source=3667761847&url_long='+url_long;
+                ajax({
+                    url: url,
+                    type: "GET",                       //请求方式
+                    dataType: "json",
+                    success: function (ret, xml) {
+                        // 此处放成功后执行的代码
+                        if(typeof ret == 'string'){
+                            ret = JSON.parse(ret);
+                        }
+                        var text = '多啦衣梦送你100元美丽基金，点击' + contentUrl + '领取吧！';
+                        if(ret[0] && ret[0].url_short){
+                            text = '多啦衣梦送你100元美丽基金，点击' + ret[0].url_short + '领取吧！';
+                        }
+                        sendSMS(text);
+                    },
+                    fail: function (status) {
+                        // 此处放失败后执行的代码
+                        sendSMS( '多啦衣梦送你100元美丽基金，点击' + contentUrl + '领取吧！');
+                    }
+                });
+                break;
+        }
+    }
+
+    //点击查看二维码
+    function showSharedQR(el){
+        //检查是否是会员
+        if(!$api.getStorage('isMember')){
+            toastMsg('非会员无法邀请好友!');
+            return;
+        }
+        if(el.innerHTML.indexOf('邀请码')!= -1){
+            return;
+        }
+        var sharePictureEl = $api.byId('sharePicture');
+        //生成二维码
+        var FNScanner = api.require('FNScanner');
+        FNScanner.encodeImg({
+            content: contentUrl,
+            type:'qr_image',
+            saveToAlbum: false,
+            saveImg:{
+                path: 'fs://a.jpg',  //字符串类型；保存的文件路径；若路径不存在，则创建此路径，只支持fs://协议
+                w: 200,
+                h: 200
+            }
+        }, function(ret, err){
+            if(ret.status == true){
+                el.innerHTML = '邀请码：'+userCode;
+                $api.css(sharePictureEl,'background-image: url('+ret.imgPath+');backgroud-size:80% auto;-webkit-background-size: 80% auto;');
+                $api.removeCls(sharedTipEl,'hide');
+            }
+        });
+    }
+
+    function sendSMS(text,number){
+        api.sms({
+            text: text
+        });
+    }
+</script>
+</body>
+</html>
