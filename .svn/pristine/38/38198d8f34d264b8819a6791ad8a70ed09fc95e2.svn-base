@@ -1,0 +1,1011 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>云衣橱</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../components/slideswipe/slideswipe.css"/>
+
+    <style>
+        #cloudset {
+            background: #FFFFFF;
+        }
+        /*重写选中样式*/
+        .my-hit-color{
+            background-color: #FF3C54 !important;
+            font-family: SourceHanSansCN-Light !important;
+            font-size: 0.8rem !important;
+            color: #FFFFFF !important;
+            border-radius: 0.3rem !important;
+        }
+
+        .waterfall .item .progressive {
+            height: 13rem;
+        }
+        /*一级分类，风格等，样式*/
+        .separated {
+            /*width: 100%;*/
+            /*height: 0.5rem;*/
+            /*background: #EBEBEB;*/
+            /*box-shadow: inset 0px 1px 1px 0px rgba(0, 0, 0, 0.15);*/
+            width: 100%;
+            height: 0.5rem;
+            background: #F8F8F8;
+        }
+
+        .almirahHeader {
+            text-align: center;
+            color: #646464;
+        }
+
+        /*--------------------two-----------------------*/
+        .almirahHeader .two {
+        }
+
+        .almirahHeader .two .style {
+            line-height: 0.8rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #646464;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        #cloudset-container, .cloudset-container {
+            margin: 0 0.375rem;
+        }
+
+        .almirahHeader .two .item {
+            margin: 0 0.375rem;
+            position: relative;
+            width: 3.5rem;
+            height: 5rem;
+        }
+
+        .two .waterfall .item {
+            padding: 0;
+        }
+
+        .almirahHeader .two .item .header {
+            width: 3.5rem;
+            height: 3.5rem;
+            margin: 0 auto;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .almirahHeader .two .item .header:active{
+            box-shadow: 0.1rem 0.1rem 0.3rem 0 rgba(172,172,172,0.5);
+            -webkit-box-shadow: 0.1rem 0.1rem 0.3rem 0 rgba(172,172,172,0.5);
+        }
+        .almirahHeader .two .item img {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+        }
+
+        .almirahHeader .two .item .styleOption {
+            height: 1.25rem;
+            line-height: 1.25rem;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            font-size: 0.7rem;
+            letter-spacing: 0;
+            font-family: SourceHanSansCN-Regular;
+            color: #646464;
+        }
+
+        /*--------------------three-----------------------*/
+        .almirahHeader .three {
+            padding-bottom: 1.8rem;
+        }
+
+        .almirahHeader .three .occasion {
+            line-height: 0.8rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #646464;
+            padding-top: 2rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .almirahHeader .three .aui-row {
+            padding: 0 0.625rem;
+        }
+
+        .almirahHeader .three .item {
+            padding: 0 0.125rem;
+        }
+
+        .almirahHeader .three .item .box {
+            border-radius: 0.2rem;
+            height: 4.5rem;
+            margin: 0 auto;
+        }
+        .almirahHeader .three .item:nth-child(3) .box,.almirahHeader .three .item:nth-child(4) .box{
+            margin-top: 0.25rem !important;
+        }
+        .almirahHeader .three .item .box img {
+            width: 100%;
+            height: 100%;
+        }
+
+
+
+        /*季节列表样式*/
+        /*尺码列表样式*/
+        /*#size-container .slide-swipe {*/
+            /*border: none;*/
+        /*}*/
+
+        /*#size-container .swiper-slide span {*/
+            /*font-family: ArialMT;*/
+        /*}*/
+
+
+        /*加载更多*/
+        #loading {
+            /*padding-bottom: 2.8rem;*/
+            text-align: center;
+        }
+
+        #pagination {
+            bottom: 4.3rem;
+        }
+        /*云衣橱改版样式*/
+        .oneNew{
+            position: relative;
+            background-color: #F6F5F4;
+        }
+        .oneNew:before{
+            content: '';
+            display: table;
+        }
+        .oneNew .mainBox{
+            margin: 1.25rem 1.5rem 0;
+            background-color: #FFFFFF;
+            border-radius: 0.2rem;
+            box-shadow: 0 0.1rem 0.3rem 0 rgba(172,172,172,0.5);
+            -webkit-box-shadow: 0 0.1rem 0.3rem 0 rgba(172,172,172,0.5);
+            z-index: 1000;
+            position: relative;
+
+        }
+        .oneNew .mainBox .title{
+            height: 1.5rem;
+            line-height: 1.5rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #646464;
+            text-align: center;
+            border-bottom: 1px solid #F5F5F5;
+        }
+        .oneNew .mainBox .chooseBox{
+
+        }
+        .oneNew .mainBox .item{
+            height: 6.2rem;
+        }
+        .oneNew .mainBox .item:nth-child(1),.oneNew .mainBox .item:nth-child(2){
+            border-bottom: 1px solid #F5F5F5;
+            border-right: 1px solid #F5F5F5;
+        }
+        .oneNew .mainBox .item:nth-child(3){
+            border-bottom: 1px solid #F5F5F5;
+        }
+        .oneNew .mainBox .item:nth-child(4),.oneNew .mainBox .item:nth-child(5){
+            border-right: 1px solid #F5F5F5;
+        }
+
+        .oneNew .mainBox .item .imgBox{
+            height: 3.4rem;
+        }
+        .oneNew .mainBox .item img{
+            height: 3rem;
+        }
+        .oneNew .mainBox .item:nth-child(5) img{
+            height: 2.5rem;
+        }
+        .oneNew .mainBox .item .text{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #646464;
+        }
+        .oneNew .whiteBg{
+            height: 6.2rem;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #FFFFFF;
+            z-index: 10;
+        }
+        .line-border{
+            height: 1px;
+            background-color: #F5F5F5;
+        }
+        .line-border:first-child{
+            margin-right: 0.5rem;
+        }
+        .line-border:last-child{
+            margin-left: 0.5rem;
+        }
+        .red-dot{
+            width: 0.4rem;
+            height: 0.4rem;
+            background: #FF3C54;
+            border-radius: 50%;
+            border: solid #FFFFFF 1px;
+            position: absolute;
+            top: 0.2rem;
+            right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!--页码-->
+    <div id="pagination">
+        <div class="pagination-bg-1" onclick="changeTop(null,null,'#hack-go-back')">
+            <div id="pagination-pag">
+                <div class="pagination-num" id="pagination-page">1页</div>
+                <div class="pagination-name" id="pagination-pageTotal"></div>
+                <!--<em id="pagination_page">111</em>/<em id="pagination_pageTotal">312</em>-->
+            </div>
+            <div id="pagination-top" class="pagination-tops hide">
+                <i class="duola-iconfont icon-dingbu"></i>
+            </div>
+        </div>
+    </div>
+    <div id="cloudset">
+        <!--季节-->
+        <div id="season-container"></div>
+        <!--尺码-->
+        <div id="size-container"></div>
+        <!--type-->
+        <div id="type-container"></div>
+        <!--style-->
+        <div id="style-container"></div>
+        <!--style-occasion-->
+        <div id="style-occasion-container"></div>
+
+        <!--衣服列表，添加锚点-->
+        <div id="hack-go-back"></div>
+        <div class="aui-grid">
+            <div id="cloudset-container" class="waterfall aui-row">
+
+                <!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+                <!--<div class="header">-->
+                <!--<img src="" alt="" />-->
+                <!--<div class="label flex flex-space-between">-->
+                <!--<div class="new">new</div>-->
+                <!--<div class="unavailable">抢光了</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="footer flex flex-space-between flex-vertical-center">-->
+                <!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫</div>-->
+                <!--<div class="number"><span class="duola-iconfont icon-love"></span>136</div>-->
+                <!--</div>-->
+                <!--<div class="size">-->
+                <!--<span>S</span>-->
+                <!--<span>M</span>-->
+                <!--<span>L</span>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+                <!--<div class="header">-->
+                <!--<img src="" alt="" />-->
+                <!--<div class="label flex flex-space-between">-->
+                <!--&lt;!&ndash;<div class="new">new</div>&ndash;&gt;-->
+                <!--<div class="design">独立设计独立设计独立设计独立设计独立设计独立设计独立设计独立设计独立设计独立设计</div>-->
+                <!--<div class="unavailable">抢光了</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="footer flex flex-space-between flex-vertical-center">-->
+                <!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩</div>-->
+                <!--<div class="number"><span class="duola-iconfont icon-love"></span>136</div>-->
+                <!--</div>-->
+                <!--<div class="size">-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+                <!--<div class="header">-->
+                <!--<img src="" alt="" />-->
+                <!--<div class="label flex flex-space-between">-->
+                <!--<div class="new">new</div>-->
+                <!--<div class="unavailable">抢光了</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="footer flex flex-space-between flex-vertical-center">-->
+                <!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫宽松蕾罩衫</div>-->
+                <!--<div class="number"><span class="duola-iconfont icon-love"></span>136</div>-->
+                <!--</div>-->
+                <!--<div class="size">-->
+                <!--<span>S</span>-->
+                <!--<span>M</span>-->
+                <!--<span>L</span>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item aui-col-xs-6" tapmode onclick="showClothes()">-->
+                <!--<div class="header">-->
+                <!--<img src="" alt="" />-->
+                <!--<div class="label flex flex-space-between">-->
+                <!--<div class="annual">年费专享</div>-->
+                <!--<div class="unavailable">抢光了</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="footer flex flex-space-between flex-vertical-center">-->
+                <!--<div class="name flex-1 aui-ellipsis-1">宽松蕾罩</div>-->
+                <!--<div class="number"><span class="duola-iconfont icon-love"></span>136</div>-->
+                <!--</div>-->
+                <!--</div>-->
+
+            </div>
+        </div>
+        <div id="loading" style="font-size: 12px; color: #999999;">
+            <img src="../icon/loading.gif" width="16"/>
+            <div>更多数据加载中</div>
+        </div>
+    </div>
+
+
+<!--  季节和尺码模板 -->
+<script id="slideswipe-template2" type="text/x-dot-template">
+    <div class="slide-swipe swiper-container">
+        <div class="swiper-wrapper">
+            {{~it.data.list:value:index}}
+            <div class="swiper-slide flex flex-center" style="position: relative"  tapmode onclick="{{=" onSlideSwipeClick2(this,
+            '"+index+"','"+value+"','"+it.data.type+"','"+it.callback+"')"}}"/>
+            <span class="{{=index == it.activeIndex ? 'my-hit-color' : ''}}" title="{{=index}}"><div class="red-dot hide"></div>{{=value}}</span>
+        </div>
+        {{~}}
+    </div>
+</script>
+    <script id="slideswipe-template3" type="text/x-dot-template">
+        <div class="slide-swipe swiper-container">
+            <div class="swiper-wrapper">
+                {{~it.data.list:value:index}}
+                <div class="swiper-slide flex flex-center" tapmode onclick="{{=" onSlideSwipeClick3(this,
+                '"+index+"','"+value+"','"+it.data.type+"','"+it.callback+"')"}}">
+                <span class="{{=it.activeData[index] ? 'my-hit-color' : ''}}" title="{{=index}}"><div  class="red-dot hide"></div>{{=value}}</span>
+            </div>
+            {{~}}
+        </div>
+    </script>
+
+<!--衣服列表模板-->
+<script id="cloudset-container-template" type="text/x-dot-template">
+    {{ for(var i = 0; i < it.count; i++) { }}
+    <div class="item aui-col-xs-6" tapmode
+         onclick="{{='showClothes(\''+ (it.list[i] && it.list[i]._id ? it.list[i]._id : 0) +'\')'}}">
+        <div class="header">
+            <div class="progressive">
+                <img class="progressive__img progressive--not-loaded"
+                     data-progressive="{{=getImgUrl(colthPath,it.list[i].img,CONSTANT.PICTUREOSS.CLOTHESLIST)}}"
+                     src="{{=getImgUrl(colthPath,it.list[i].img,CONSTANT.PICTUREOSS.CLOTHESLISTQ25)}}" width="100%"/>
+            </div>
+            <div class="label flex flex-space-between">
+                {{? it.list[i] && isTrue(it.list[i].annualOnly) }}
+                <div class="annual">{{=CONSTANT.TEXT.ANNUALONLY }}</div>
+                {{?? it.list[i] && it.list[i].brandType}}
+                <div class="design">{{=it.list[i].brandType.indexOf('品牌') != -1 ? it.list[i].brandType.substr(0,it.list[i].brandType.indexOf('品牌')) : it.list[i].brandType}}</div>
+                {{??}}
+                <div></div>
+                {{?}}
+                {{? isAvailable(it.list[i] && it.list[i].available)}}
+                <div class="unavailable">抢光了</div>
+                {{?}}
+            </div>
+        </div>
+        <div class="footer flex flex-space-between flex-vertical-center">
+            <div class="name flex-1 aui-ellipsis-1">{{=(it.list[i] && it.list[i].name) ? it.list[i].name : '多啦衣梦'}}
+            </div>
+            <div class="number">
+                <span class="duola-iconfont icon-love"></span>{{=(it.list[i] && it.list[i].like) ? it.list[i].like : 0}}
+            </div>
+        </div>
+        <div class="size">
+            {{~it.list[i].stockedSize:value:index}}
+            <span>{{=value}}</span>
+            {{~}}
+        </div>
+    </div>
+    {{ } }}
+</script>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/components/pagination.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/swiper.min.js"></script>
+<script type="text/javascript" src="../components/slideswipe/slideswipe2.js"></script>
+<script type="text/javascript" src="../components/slideswipe/slideswipe3.js"></script>
+<script type="text/javascript" src="../script/progressively.js"></script>
+<script type="text/javascript" src="../script/log_sdk.js"></script>
+<script type="text/javascript">
+
+    var currPage = 1;
+    var totalPage = 1;
+    //加载更多时候，服务器是否返回，以免用户多次触发
+    var isLoadMoreResponsed = true;
+    var searchFilter = {};
+    //var preScrollTop = 0;
+    var hackGoBackEl = null;
+    var gActiveSeason = '-1';
+    var gActiveSize = '-1';
+    var gStyle = null;
+    var gActiveType = null;
+    var gActiveStyle = null;
+    var gActiveStyleOccasion = null;
+    var filters = {};//全局的筛选条件
+    var keyWords = '';//全局的关键字
+
+    apiready = function () {
+        //请求数据拿到一级分类和风格
+        getLevels();
+        getCloudset(CONSTANT.ACTIONINIT);
+        api.parseTapmode();
+        loadMore();
+        api.setRefreshHeaderInfo({
+            visible: true,
+            loadingImg: 'widget://image/refresh.png',
+            bgColor: 'rgba(245, 245, 245, 1.0)',
+            textDown: '下刷新',
+            textUp: '松刷新',
+            showTime: true
+        }, function(ret, err){
+            if(ret){
+                loadRefresh();
+            }
+        });
+        //hack解决，用户退出导致缓存标签数据丢失
+        listenLoginOutEvent();
+        _myScroll("cloudset-container", 'div', listenScrollHeader);
+        hackGoBackEl = $api.byId('hack-go-back');
+
+    };
+
+    function onSlideSwipeClick3(el,index,value,type,callback) {
+        var state = false;
+        if (type == "type"){
+            state = gActiveType[index];
+        }else if (type == "style"){
+            state = gActiveStyle[index];
+
+        }else if (type == "style_occasion"){
+            state = gActiveStyleOccasion[index];
+        }
+
+
+        slideSwipeClick3(el,index,state,value,callback);
+
+    }
+    function onSlideSwipeClick2(el,index,value,type,callback){
+        var lastIndex = 0;
+        if (type == 'season'){
+            lastIndex = gActiveSeason
+        }else if (type == 'size'){
+            lastIndex = gActiveSize
+        }
+        slideSwipeClick2(el,index,lastIndex,value,callback);
+    }
+    //监听用户退出事件
+    function listenLoginOutEvent() {
+        api.addEventListener({
+            name: 'loginOut'
+        }, function (ret, err) {
+            getLevels();
+        });
+    }
+
+    //滚动监听
+    function listenScrollHeader(scrollTop) {
+        return;
+
+        if(scrollTop > 1){
+            api.execScript({
+                name: 'root',
+                script: "execHeader1Bg('#FFFFFF')"
+            });
+        }else{
+            api.execScript({
+                name: 'root',
+                script: "execHeader1Bg('#F5F5F5')"
+            });
+        }
+        if (hackGoBackEl && scrollTop > $api.offset(hackGoBackEl).t - 5) {
+            //显示frame1Header的折叠头部，覆盖显示header1头部
+            var execScriptFun = getExecScript('openFrame1Header', [gActiveSeason, gActiveSize, gActiveType, gActiveStyle, gActiveStyleOccasion]);
+            api.execScript({
+                name: 'root',
+                script: execScriptFun
+            });
+        } else {
+            //显示header1头部,隐藏frame1Header
+            api.execScript({
+                name: 'root',
+                script: 'hideFrame1Header2()'
+            });
+        }
+        //preScrollTop = scrollTop;
+    }
+
+    //刷新
+    function loadRefresh() {
+        currPage = 1;
+        getCloudset(CONSTANT.ACTIONREFRESH);
+//        gActiveSeason = '-1';
+//        gActiveSize = '-1';
+//        gActiveType = '-1';
+//        gActiveStyle = '-1';
+//        gActiveStyleOccasion = '-1';
+//        resetSlideSwipeHitColor2('size-container', -1);
+//        resetSlideSwipeHitColor2('season-container', -1);
+//        resetSlideSwipeHitColor3('type-container', -1);
+//        resetSlideSwipeHitColor3('style-container', -1);
+//        resetSlideSwipeHitColor3('style-occasion-container', -1);
+    }
+
+    //加载
+    function loadMore() {
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {threshold: 0}
+        }, function (ret, err) {
+            if (isLoadMoreResponsed && currPage < totalPage) {
+                currPage++;
+                isLoadMoreResponsed = false;
+                getCloudset(CONSTANT.ACTIONLOAD);
+            }
+        });
+    }
+
+    //请求数据拿到一级分类和风格和场合
+    function getLevels() {
+//		loadingShow();
+        var category = $api.getStorage('category');
+        if(category){
+            getLevelsSuccessCallback(category);
+            return;
+        }
+        var url = serviceNew + 'cloudCloset/category';
+        var headers = _getAjaxHeaders(false, true);
+        var data = _getAjaxData({
+            "position": "sidebar"
+        });
+        var extra = null;
+        _ajaxData(url, 'post', headers, data, getLevelsSuccessCallback, getLevelsErrorCallback, 0, extra);
+    }
+
+    function getLevelsSuccessCallback(ret) {
+        loadingHide();
+        if (ret.statusCode == 200 && ret.category) {
+            $api.setStorage('category',ret);
+            getLevelsHtml(ret.category);
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+
+    function getLevelsErrorCallback(err) {
+        loadingHide();
+        toastMsg(err.msg);
+    }
+
+    //渲染分类风格
+    function getLevelsHtml(datas) {
+        for (var i in datas.list) {
+            if (datas.list[i].key == 'type') {
+//            功能分类
+                var data = {};
+                data.list = datas.list[i].list.map(function (item) {
+                    return item.value
+                });
+                data.type = 'type';
+                gActiveType = new Array(datas.list[i].list.length).map(function (item) {
+                    return false;
+                });
+                $api.setStorage('type', data);
+                getTypeHtml(data);
+            } else if (datas.list[i].key == 'style') {
+//             风格
+                var data = {};
+                data.list = datas.list[i].list.map(function (item) {
+                    return item.value
+                });
+                data.type = 'style';
+                gActiveStyle = new Array(datas.list[i].list.length).map(function (item) {
+                    return false;
+                });
+                $api.setStorage('style', data);
+                getStyleHtml(data);
+            } else if (datas.list[i].key == 'style_occasion') {
+//             场景分类
+                var data = {};
+                data.list = datas.list[i].list.map(function (item) {
+                    return item.value
+                });
+                data.type = 'style_occasion';
+                gActiveStyleOccasion = new Array(datas.list[i].list.length).map(function (item) {
+                    return false;
+                });
+                $api.setStorage('style_occasion', data);
+                getStyleOccasionHtml(data);
+
+            } else if (datas.list[i].key == 'season') {
+//                调用季节模板
+                var data = {};
+                data.list = datas.list[i].list.map(function (item) {
+                    return item.value
+                });
+                data.list = ["春装","夏装","秋装","冬装"];
+
+                data.type = 'season';
+                $api.setStorage('seasons', data);
+                getSeasonHtml(data);
+            } else if (datas.list[i].key == 'size') {
+//                调用尺码模板
+                var data = {};
+                data.list = datas.list[i].list.map(function (item) {
+                    return item.value
+                });
+                data.list = ["均码","XXS","XS","S","M","L","XL","XXL"];
+
+                data.type = 'size';
+                $api.setStorage('sizes', data);
+                getSizeHtml(data);
+            }
+        }
+        api.parseTapmode();
+    }
+    //渲染季节
+    function getSeasonHtml(data) {
+        setTimeout(function () {
+            initSlideSwipe2('season-container', data, -1, 'seasonSlideSwipeClick');
+        }, 300);
+    }
+    //渲染尺码
+    function getSizeHtml(data) {
+        setTimeout(function () {
+            initSlideSwipe2('size-container', data, -1, 'sizeSlideSwipeClick');
+        }, 300);
+    }
+    function getTypeHtml(data) {
+        setTimeout(function () {
+            initSlideSwipe3('type-container', data, gActiveType, 'typeSlideSwipeClick');
+        }, 300);
+
+    }
+    function getStyleHtml(data) {
+        setTimeout(function () {
+            initSlideSwipe3('style-container', data, gActiveStyle, 'styleSlideSwipeClick');
+        }, 300);
+
+    }
+    function getStyleOccasionHtml(data) {
+        setTimeout(function () {
+            initSlideSwipe3('style-occasion-container', data, gActiveStyleOccasion, 'styleOccasionSlideSwipeClick');
+        }, 300);
+    }
+    //size点击每一个内容
+    function sizeSlideSwipeClick(index, value, hack) {
+        sendEventUmeng(CONSTANT.UMENGEVENT.SIZE, {index: index, value: value});
+        if (index == -1) {
+            value = '全部';
+        }
+        if (currPage > 1) {
+            currPage = 1;
+            hack = 'hack';
+        }
+        gActiveSize = index;
+        filters.size = value;
+        setFrame1HeaderClickData();
+        getCloudset(CONSTANT.ACTIONINIT, hack);
+    }
+
+    //season点击每一个内容
+    //hack 表示请求数据后滚动到某个锚点
+    function seasonSlideSwipeClick(index, value, hack) {
+//        sendEventUmeng(CONSTANT.UMENGEVENT.SEASON, {index: index, value: value});
+        if (index == -1) {
+            value = '全部';
+        }
+        if (currPage > 1) {
+            currPage = 1;
+            hack = 'hack';
+        }
+        gActiveSeason = index;
+        filters.season = value;
+        setFrame1HeaderClickData();
+        getCloudset(CONSTANT.ACTIONINIT, hack);
+
+    }
+
+    //type点击每一个内容
+    //hack 表示请求数据后滚动到某个锚点
+    function typeSlideSwipeClick(index, value, hack) {
+        if (gActiveType[index]){
+            keyWords = keyWords.replace(value, '');
+            gActiveType[index] = false;
+        }else {
+            keyWords += value;
+
+            gActiveType[index] = true;
+        }
+
+        if (currPage > 1) {
+            currPage = 1;
+            hack = 'hack';
+        }
+        setFrame1HeaderClickData();
+        getCloudset(CONSTANT.ACTIONINIT, hack);
+    }
+    //style点击每一个内容
+    //hack 表示请求数据后滚动到某个锚点
+    function styleSlideSwipeClick(index, value, hack) {
+        if (gActiveStyle[index]){
+            keyWords = keyWords.replace(value, '');
+            gActiveStyle[index] = false;
+        }else {
+            keyWords += value;
+            gActiveStyle[index] = true;
+        }
+
+        if (currPage > 1) {
+            currPage = 1;
+            hack = 'hack';
+        }
+        setFrame1HeaderClickData();
+        getCloudset(CONSTANT.ACTIONINIT, hack);
+    }
+    //styleOccasion点击每一个内容
+    //hack 表示请求数据后滚动到某个锚点
+    function styleOccasionSlideSwipeClick(index, value, hack) {
+        if (gActiveStyleOccasion[index]){
+            keyWords = keyWords.replace(value, '');
+            gActiveStyleOccasion[index] = false;
+        }else {
+            keyWords += value;
+            gActiveStyleOccasion[index] = true;
+        }
+
+        if (currPage > 1) {
+            currPage = 1;
+            hack = 'hack';
+        }
+        setFrame1HeaderClickData();
+        getCloudset(CONSTANT.ACTIONINIT, hack);
+    }
+
+    function setFrame1HeaderClickData() {
+        var execScriptFun = getExecScript('setFrame1HeaderClickData', [gActiveSeason, gActiveSize, gActiveType, gActiveStyle, gActiveStyleOccasion]);
+        api.execScript({
+            name: 'root',
+            frameName: 'frame1Header',
+            script: execScriptFun
+        });
+    }
+
+    //展开头部点击季节
+    //hack 表示请求数据后滚动到某个锚点
+    function execGetCloudsetBySeason(index, season, hack) {
+//			console.log(getLogStr([index,season,hack]));
+        setSlideSwipeHitColor2('season-container', index);
+        seasonSlideSwipeClick2(index, season, hack);
+    }
+
+    //展开头部点击尺码
+    function execGetCloudsetBySize(index, size, hack) {
+//			console.log(getLogStr([index,size,hack]));
+        setSlideSwipeHitColor2('size-container', index);
+        sizeSlideSwipeClick2(index, size, hack);
+    }
+
+    //点击一级分类
+    function level1Handler2(index, value, name) {
+//		console.log(getLogStr([index,value,name]));
+        sendEventUmeng(CONSTANT.UMENGEVENT.LEVEL1, {index: index, value: value});
+        openSearchLevel('type', index, value, name);
+    }
+
+    //点击风格
+    function styleHandler2(index, value) {
+//		console.log(getLogStr([index,value]));
+        sendEventUmeng(CONSTANT.UMENGEVENT.STYLE, {index: index, value: value});
+        openSearchLevel('style', index, value);
+    }
+
+    //点击场合
+    function occasionHandler2(index, value) {
+//		console.log(getLogStr([index,value]));
+        sendEventUmeng(CONSTANT.UMENGEVENT.OCCASION, {index: index, value: value});
+        openSearchLevel('style_occasion', index, value);
+    }
+
+    //打开结果页
+    function openSearchLevel(flag, index, value, englishName) {
+        var name = 'searchLevel';
+        var title = value;
+        var leftIcon = 'duola-iconfont icon-left';
+        var leftText = '';
+        var leftExtra = '';
+        var leftCallback = 'execCloseSearchLevel';
+        var leftNav = setNavData(leftIcon, leftText, leftCallback, leftExtra);
+        var rightIcon = 'duola-iconfont icon-shaixuan';
+        var rightText = '筛选';
+        var rightCallback = 'execOpenChoose';
+        var rightExtra = '';
+        var rightNav = setNavData(rightIcon, rightText, rightCallback, rightExtra);
+        var border = true;
+        var bounces = true;
+        var params = {};
+        params.nav = setNav(leftNav, border, rightNav);
+        params.frame = setFrame(bounces, {
+            gStyle: gStyle,
+            gActiveSeason: gActiveSeason,
+            gActiveSize: gActiveSize,
+            flag: flag,
+            index: index,
+            name: englishName,
+            value: value
+        });
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'searchLevel_win.html';
+        var animation = '';
+        var page = 'searchLevel.html';
+        var umengPage = CONSTANT.PAGE.LEVEL2;
+        openNewWinFrame(name, title, params, from, url, animation, page, umengPage);
+    }
+    //异步打开筛选
+    function execOpenChoose(extra, winName, value) {
+        api.execScript({
+            name: 'searchLevelWin',
+            script: 'execOpenChoose()'
+        });
+    }
+
+    //在二级分类页面点击返回关闭二级结果页面win，并清空筛选条件
+    function execCloseSearchLevel(extra, winName, value) {
+//		gActiveSeason = 0;
+//		gActiveSize = 0;
+//		resetSlideSwipeHitColor('size-container');
+//		resetSlideSwipeHitColor('season-container');
+        api.closeWin({
+            name: winName
+        });
+    }
+
+
+    //请求云衣橱衣服列表数据
+    function getCloudset(action, hack) {
+        //请求云衣橱数据，没有任何过滤条件
+        if (action == CONSTANT.ACTIONINIT) {
+            loadingShow();
+        }
+        var url = serviceNew + 'cloudCloset/search';
+        var headers = _getAjaxHeaders(false, true);
+        var body = {
+            page: currPage,
+            pageSize: CONSTANT.PAGESIZE,
+            filters: {}
+        };
+        if (isObj(filters)) {
+            for (var key in filters) {
+                if (filters[key] != '全部') {
+                    body.filters[key] = filters[key];
+                }
+            }
+            console.log("filters == "+JSON.stringify(filters))
+
+        }
+        console.log("keyWords == "+keyWords)
+        if(isDefine(keyWords)){
+            body.keywords = keyWords;
+        }
+        var data = _getAjaxData(body);
+        var extra = {action: action, hackTop: hack == 'hack'};
+        _ajaxData(url, 'post', headers, data, getCloudsetSuccessCallback, getCloudsetErrorCallback, 0, extra);
+    }
+
+    function getCloudsetSuccessCallback(ret, extra) {
+
+        var action = extra.action;
+        if (action == CONSTANT.ACTIONREFRESH) {
+            pullRefreshDone();
+        } else if (action == CONSTANT.ACTIONLOAD) {
+            isLoadMoreResponsed = true;
+            loadingHide();
+        } else {
+            loadingHide();
+        }
+        if (ret.statusCode == 200 && ret.cloudCloset) {
+            currPage = ret.cloudCloset.page;
+            totalPage = ret.cloudCloset.pageTotal;
+            getCloudsetHtml(ret.cloudCloset, extra.hackTop);
+            _page(currPage, totalPage, ret.cloudCloset.count);
+        } else {
+            toastMsg(ret.msg);
+        }
+        if (currPage >= totalPage) {
+            $api.html($api.byId('loading'), '没有更多了');
+        }
+    }
+
+    function getCloudsetErrorCallback(err, extra) {
+        var action = extra.action;
+        if (action == CONSTANT.ACTIONREFRESH) {
+            pullRefreshDone();
+        } else if (action == CONSTANT.ACTIONLOAD) {
+            isLoadMoreResponsed = true;
+            currPage--;
+            loadingHide();
+        } else {
+            loadingHide();
+        }
+        toastMsg(err.msg);
+    }
+    //渲染衣服列表
+    function getCloudsetHtml(cloudset, hackTop) {
+//		console.log(hackTop);
+        var html = doTHtml('cloudset-container-template', cloudset);
+        var cloudsetContainer = $api.byId('cloudset-container');
+        if (currPage == 1) {
+            //首次加载或者刷新
+            //图片也刷新了，闪屏，有待于提升性能
+            cloudsetContainer.innerHTML = '';
+        }
+        $api.append(cloudsetContainer, html);
+        progressively.init({
+            delay: 0,
+            throttle: 0
+        });
+        if (hackTop) {
+            location.href = '#hack-go-back';
+        }
+        api.parseTapmode();
+
+        var Ids = cloudset.list.map(function (cloth){
+            return   {item_id: cloth._id};
+        });
+        setLogViewWrap(Ids);
+    }
+    //	testCloudsetHtml();
+    function testCloudsetHtml() {
+//			var cloudset = {"cloudCloset":{"count":20,"pageTotal":403,"page":1,"list":[{"new":"NO","_id":"1526786","name_en":"","name":"纯棉印花坎肩连帽T恤","img":"1526786-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":182,"annualOnly":"NO","size":["S","M","L"],"goodsSource":"consign"},{"new":"NO","_id":"1532026","name_en":"","name":"纯棉别针拼皮卫衣","img":"1532026-1.jpg","available":"YES","stockedSize":["S","M"],"like":86,"annualOnly":"NO","size":["S","M"],"goodsSource":null},{"new":"NO","_id":"1528336","name_en":"","name":"麻料无袖长T连衣裙","img":"1528336-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":322,"annualOnly":"NO","size":["S","M","L"],"goodsSource":null},{"new":"NO","_id":"1528147","name_en":"","name":"圆领拼织带背心开 叉刺绣连衣裙","img":"1528147-1.jpg","available":"YES","stockedSize":["L"],"like":231,"annualOnly":"NO","size":["S","M","L"],"goodsSource":null},{"new":"NO","_id":"1532408","name_en":"","name":"牛仔外套","img":"1532408-1.jpg","available":"YES","stockedSize":["均码"],"like":152,"annualOnly":"NO","size":["均码"],"goodsSource":null},{"new":"NO","_id":"1530990","name_en":"","name":"修身无裙风衣","img":"1530990-1.jpg","available":"YES","stockedSize":["M"],"like":130,"annualOnly":"NO","size":["M","L","XL"],"goodsSource":null},{"new":"NO","_id":"1532028","name_en":"","name":"纯棉拼接印花连帽卫衣","img":"1532028-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":105,"annualOnly":"NO","size":["S","M","L"],"goodsSource":null},{"new":"NO","_id":"1526789","name_en":"","name":"纯棉印花衬衫","img":"1526789-1.jpg","available":"YES","stockedSize":["S"],"like":58,"annualOnly":"NO","size":["S","L"],"goodsSource":null},{"new":"NO","_id":"1532030","name_en":"","name":"拼接西装","img":"1532030-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":80,"annualOnly":"NO","size":["S","M","L"],"goodsSource":null},{"new":"NO","_id":"1532402","name_en":"","name":"牛仔外套","img":"1532402-1.jpg","available":"YES","stockedSize":["XL"],"like":98,"annualOnly":"NO","size":["L","XL"],"goodsSource":null},{"new":"NO","_id":"1530749","name_en":"","name":"白色阔腿裤","img":"1530749-1.jpg","available":"YES","stockedSize":["M"],"like":94,"annualOnly":"NO","size":["M"],"goodsSource":null},{"new":"NO","_id":"1526790","name_en":"","name":"纯棉印花衬衫","img":"1526790-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":63,"annualOnly":"NO","size":["S","M","L"],"goodsSource":null},{"new":"NO","_id":"1532216","name_en":"","name":"条纹蕾丝拼接连衣裙","img":"1532216-1.jpg","available":"YES","stockedSize":["S","XL"],"like":304,"annualOnly":"NO","size":["S","M","L","XL"],"goodsSource":null},{"new":"NO","_id":"1528683","name_en":"","name":"牛仔网纱拼接连衣裙","img":"1528683-1.jpg","available":"YES","stockedSize":["L"],"like":767,"annualOnly":"NO","size":["S","M","L","XL"],"goodsSource":null},{"new":"NO","_id":"1531444","name_en":"","name":"无袖长款马甲","img":"1531444-1.jpg","available":"YES","stockedSize":["M","L"],"like":97,"annualOnly":"NO","size":["M","L"],"goodsSource":null},{"new":"NO","_id":"1530685","name_en":"","name":"蕾丝拼接连衣裙","img":"1530685-1.jpg","available":"YES","stockedSize":["L"],"like":275,"annualOnly":"NO","size":["S","M","L","XL"],"goodsSource":null},{"new":"NO","_id":"1530681","name_en":"","name":"中长款蕾丝连衣裙","img":"1530681-1.jpg","available":"YES","stockedSize":["S"],"like":894,"annualOnly":"NO","size":["S","M","L","XL"],"goodsSource":null},{"new":"NO","_id":"1528313","name_en":"","name":"针织短袖条修身连衣裙","img":"1528313-1.jpg","available":"YES","stockedSize":["XL"],"like":433,"annualOnly":"NO","size":["S","M","L","XL"],"goodsSource":null},{"new":"NO","_id":"1528036","name_en":"","name":"黑色开叉九分裤","img":"1528036-1.jpg","available":"YES","stockedSize":["S","M","L"],"like":33,"annualOnly":"NO","size":["S","M","L"],"goodsSource":null},{"new":"NO","_id":"1530906","name_en":"","name":"长袖连衣裙","img":"1530906-1.jpg","available":"YES","stockedSize":["S"],"like":319,"annualOnly":"NO","size":["S","M"],"goodsSource":null}]},"statusCode":200,"msg":""};
+//			var html = doTHtml('cloudset-container-template',cloudset.cloudCloset);
+//			var cloudsetContainer = $api.byId('cloudset-container');
+//			if(currPage == 1){
+//				//首次加载或者刷新
+//				//图片也刷新了，闪屏，有待于提升性能
+//				cloudsetContainer.innerHTML = '';
+//			}
+//			$api.append(cloudsetContainer, html);
+    }
+    var inputKeyWord = '';
+    function setKeyWords(keyWord) {
+        if (keyWord == '' && keyWords == ''){
+            inputKeyWord = keyWord;
+            return;
+        }
+
+        keyWords = keyWords.replace(inputKeyWord, '');
+        inputKeyWord = keyWord;
+        keyWords += keyWord;
+        currPage = 1;
+        getCloudset(CONSTANT.ACTIONINIT);
+    }
+</script>
+</html>

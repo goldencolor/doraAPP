@@ -656,7 +656,7 @@ function getExecScript(callback,paramArray){
 }
 
 //打开新的frame
-function openNewFrame(name,page,bounces,rect,data,vScrollBarEnabled,hScrollBarEnabled,allowEdit,progress,scaleEnabled,animation){
+function openNewFrame(name,page,bounces,rect,data,vScrollBarEnabled,hScrollBarEnabled,allowEdit,progress,scaleEnabled,animation,scrollEnabled){
 	if(!isDefine(vScrollBarEnabled)){
 		vScrollBarEnabled = true;
 	}else{
@@ -676,7 +676,10 @@ function openNewFrame(name,page,bounces,rect,data,vScrollBarEnabled,hScrollBarEn
 			type:'none'
 		};
 	}
-	console.log(getLogStr(new Array('openNewFrame',name,page,rect,bounces,progress,allowEdit,data,vScrollBarEnabled,hScrollBarEnabled,allowEdit,progress,scaleEnabled,animation)));
+	if(typeof scrollEnabled == 'undefined'){
+		scrollEnabled = true;
+	}
+	console.log(getLogStr(new Array('openNewFrame',name,page,rect,bounces,progress,allowEdit,data,vScrollBarEnabled,hScrollBarEnabled,allowEdit,progress,scaleEnabled,animation,scrollEnabled)));
 	api.openFrame({
 		name: name,
 		url: page,
@@ -684,6 +687,7 @@ function openNewFrame(name,page,bounces,rect,data,vScrollBarEnabled,hScrollBarEn
 		bounces: bounces,
 		progress: progress,
 		allowEdit: allowEdit,
+		scrollEnabled:scrollEnabled,
 		scaleEnabled: scaleEnabled,
 		softInputMode:'resize',
 		pageParam:{
@@ -1907,7 +1911,7 @@ function openDialogComfirm(content,callback,leftBtnTitle,rightBtnTitle){
 				w: 163,
 				h: 50,
 				corner: 0,
-				bg: '#FF6100',
+				bg: '#FF3C54',
 				color: '#ffffff',
 				size: 18
 			}

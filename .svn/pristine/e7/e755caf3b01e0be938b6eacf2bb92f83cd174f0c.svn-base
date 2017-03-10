@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>提示更新</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+    	html,body{
+    		background:rgba(0,0,0,0.3);
+    	}
+    	
+		/* 模态框(版本更新) */
+		
+		.modal-open{
+			position:fixed;
+			width:100%;
+			height:100%;
+			overflow:hidden;
+		}
+		.modal{
+			position:fixed;
+			top:0;
+			left:0;
+			width:100%;
+			height:100%;
+			
+		}
+		.modal-content{
+			position:absolute;
+			left:0;
+			top:0;
+			right:0;
+			bottom:0;
+			width:16.35rem;
+			height:12rem;
+			border-radius: 0.2rem;
+			margin:auto;
+			background:#F8F8F8;
+		}
+		.modal-head{
+			font-family:SourceHanSansCN-Bold;
+			text-align:left;
+			color:#767676;
+			height:3rem;
+			font-size:0.9rem;
+			line-height:3rem;
+			padding:0 1.5rem;
+		}
+		.modal-body{
+			padding:0 1.5rem 1rem 1.5rem;
+			height:6rem;
+			overflow-y:auto;
+			font-family: SourceHanSansCN-Regular;
+			font-size: 0.8rem;
+			color: #767676;
+			line-height: 1.2rem;
+		}
+		.modal-footer{
+			overflow:hidden;
+		}
+		.modal button{
+			width:50%;
+			border:none;
+			outline:none;
+			height:3rem;
+			float:left;
+			font-family: SourceHanSansCN-Regular;
+			font-size: 1rem;
+		}
+		button.cancel{
+			background: #FFFFFF;
+			color:#FF3C54;
+			border-radius: 0px 0px 0px 0.2rem;
+		}
+		button.confirm{
+			background: #FF3C54;
+			color:#FFFFFF;
+			border-radius: 0px 0px 0.2rem 0px;
+		}
+    </style>
+</head>
+<body>
+	<div class="modal modal-update">
+		<div class="modal-content">
+			<div class="modal-head">多啦提示</div>
+			<div class="modal-body">
+				<p>亲，确定要申请退押金吗？在在一要用一玩耍奇妙枯超大型厅要中立一玩耍奇妙枯超大型厅要中立一玩耍奇妙枯超大型厅要中立一玩耍奇妙枯超大型厅要中立上亠为这 一在在一是中国；同地主要地上产为地在民了。</p>
+			</div>
+			<div class="modal-footer">
+				<button class="cancel" id="btn-cancel">取消</button>
+				<button class="confirm" id="btn-confirm">确定</button>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script src="../script/uz.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		initUpdate();
+	};
+	
+	function initUpdate(){
+		var btnCancel = document.getElementById("btn-cancel"),
+			btnConfirm = document.getElementById("btn-confirm"),
+			forcedUpdate = false;  // 是否强制更新
+		
+		if(forcedUpdate){
+			btnCancel.innerHTML = "退出";
+		}
+			
+		btnCancel.addEventListener("click", cancelUpdate.bind(null, forcedUpdate));
+		btnConfirm.addEventListener("click", confirmUpdate);
+	}
+	
+	function cancelUpdate(forcedUpdate){  // 用户点击取消按钮的操作
+		
+		if(forcedUpdate){
+			api.closeWidget({
+				silent:true
+			})
+		}else{
+			api.closeFrame();
+		}
+	}
+	
+	function confirmUpdate(){  // 用户点击确认按钮的操作
+	
+	}
+</script>
+</html>
