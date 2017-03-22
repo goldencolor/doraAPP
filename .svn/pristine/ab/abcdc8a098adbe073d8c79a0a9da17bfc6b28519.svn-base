@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>女神-发布照片</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+    	.header{
+    		font-family: SourceHanSansCN-Normal;
+			font-size: 0.8rem;
+			color: #FFFFFF;
+			background: #FF3C54;
+			padding:0 0.8rem;
+			box-sizing:border-box;
+			overflow:hidden;
+    	}
+    	header a:nth-of-type(1){
+    		float:left;
+    	}
+    	header a:nth-of-type(2){
+    		float:right;
+    	}
+    	#pic-group{
+    		position:relative;
+    		width:17.2rem;
+    		margin:auto;
+    		padding:0.8rem 0;
+    		overflow:hidden;
+    	}
+    	#pic-group:after{
+			content:"";
+			position:absolute;
+			left:0;
+			bottom:0;
+			width:100%;
+			height:1px;
+			transform:scaleY(0.5);
+			background:#E6E6E6;
+		}
+		#pic-group li{
+			position:relative;
+			float:left;
+			width:4rem;
+			height:4rem;
+			margin-right:0.4rem;
+			margin-bottom:0.4rem;
+			overflow:hidden;
+		}
+		#pic-group li:nth-of-type(4n){
+			margin-right:0;
+		}
+		#pic-group li img{
+			width:100%;
+			height:100%;
+		}
+		.close{
+			position:absolute;
+			top:0;
+			right:0;
+			display: block;
+			padding:0.4rem;
+			font-size:0.8rem;
+			color:#fff;
+		}
+		.close:before{
+			content:"\e6e3";
+		}
+		.close i{
+			z-index:-1;
+			vertical-align: super;
+		}
+		.commit{
+			padding:0.7rem 0;
+			text-align:center;
+		}
+    	textarea{
+    		width:16.35rem;
+    		margin:auto;
+    		padding:0.2rem;
+    		font-family: SourceHanSansCN-Normal;
+			font-size: 0.7rem;
+			color: #000000;
+			resize:none;
+    	}
+    	textarea:focus{
+    		outline-color: #fff;
+    	}
+		footer{
+			position:relative;
+			width:17.2rem;
+    		margin:auto;
+    		padding:0.4rem 0.2rem;
+			font-family: SourceHanSansCN-Normal;
+			font-size: 0.6rem;
+			color: #000000;
+		}
+		footer:before{
+			content:"";
+			position:absolute;
+			left:0;
+			top:0;
+			width:100%;
+			height:1px;
+			transform:scaleY(0.5);
+			background:#E6E6E6;
+		}
+		footer i{
+			font-size:0.9rem;
+			margin-left:0.7rem;
+			vertical-align:middle;
+		}
+		footer i.active{
+			color:#FF3C54;
+		}
+    </style>
+</head>
+<body>
+<header id="header" class="duola-header header">
+	<a id="cancel-btn">取消</a>
+	<a id="post-btn">发布</a>
+</header>
+<div id="app">
+	<ul id="pic-group">
+<!--		<li><span class="duola-iconfont close" data-src="/storage/emulated/0/UZMap/A6918652765044/picture/p-48096f84.jpg"><img src="/storage/emulated/0/UZMap/A6918652765044/picture/p-48096f84.jpg" alt="" /></li>
+		<li><span class="duola-iconfont close" data-src="/storage/emulated/0/UZMap/A6918652765044/picture/p-48178e83.jpg"><img src="/storage/emulated/0/UZMap/A6918652765044/picture/p-48178e83.jpg" alt="" /></li>
+		<li><span class="duola-iconfont close" data-src="/storage/emulated/0/UZMap/A6918652765044/picture/p-4825b568.jpg"><img src="/storage/emulated/0/UZMap/A6918652765044/picture/p-4825b568.jpg" alt="" /></li>-->
+		<li id="pic-add"><img src="../../image/add1.png" alt="" /></li>
+	</ul>
+	<div class="commit">
+		<textarea id="life-content" rows="5" maxlength="50" placeholder="说点什么吧"></textarea>
+	</div>
+	<footer>
+		<!--<span>是否参加多啦女神排行</span>
+		<span><i class="duola-iconfont icon-Selected active"></i></span>-->
+	</footer>
+</div>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/uploadImg3.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/doT_min.js"></script>
+<script type="text/javascript" src="../../script/oss.js"></script>
+<script type="text/javascript">
+    var vm;
+//    用于判断网络请求是否完成的flag  初始化是有几个请求就有几个flag 用于处理异步显示问题
+    var isGetData = false;
+    apiready = function () {
+    	$api.fixStatusBar(document.getElementById("header"));
+//        程序入口
+		init();
+    }
+
+    function init() {
+        //                    初始化方法
+        initEventListener();  // 初始化监听事件
+		initPicGroup();		  // 初始化评论相关方法
+    }
+    function start() {
+        //                    初始化后执行
+
+    }
+    function retart() {
+        //                    页面在后台状态时，需要操作时调用
+
+    }
+    function stop() {
+        //                    页面进入后台时进行，但未关闭时进行相关操作时调用
+
+    }
+    function destroy() {
+        //                  销毁界面时调用
+
+    }
+    function showView() {
+        //                    异步控制界面组件的显示  更具flag判断来自定义 每次网络请求成功修改对应flag后都要调用
+        if (isGetData){
+            $api.removeCls($api.byId("app"), 'hide');
+        }
+
+    }
+
+
+	function initEventListener(){  // 初始化监听事件
+		var cancelBtn = document.getElementById("cancel-btn");
+		
+		cancelBtn.addEventListener("click", closeSelf);
+		
+	}
+
+	function initPicGroup(){  // 初始化评论相关方法
+		var addBtn = document.getElementById("pic-add"),
+			postBtn = document.getElementById("post-btn"),
+			picGroup = document.getElementById("pic-group"),
+			picPaths = [],	//用户选择的照片的地址
+			addPic = initPicGroup.addPic = function(path){  // 按照目前的写法，必须暴露一个可以在全局调用的添加path的方法
+				if(!path){
+					return
+				}
+				var temp = document.createElement("li");
+					temp.innerHTML = '<span class="duola-iconfont close" data-src="'+ path +'"></span><img src="' + path + '" alt="" />';
+				picGroup.insertBefore(temp, addBtn);
+				picPaths.push(path);
+				if(picPaths.length>2){ // 如果添加的照片数量达到3张，隐藏添加按钮
+					addBtn.classList.add("hide");
+				}
+			};
+			
+		addBtn.addEventListener("click", selectPic);
+		picGroup.addEventListener("click", deletePic);
+		postBtn.addEventListener("click", postLife);
+		
+		
+		
+		function selectPic(){	//选择照片
+			if(picPaths.length>2){
+				toastMsg("最多只能添加3张照片");
+				return
+			}
+			openImgAction(false,addPic,{url:"../../html/winClip_new.html"});
+		}
+		
+//		function addPic(path){	//添加照片
+//			if(!path){
+//				return
+//			}
+//			var temp = document.createElement("li");
+//				temp.innerHTML = '<span class="duola-iconfont close" data-src="'+ path +'"></span><img src="' + path + '" alt="" />';
+//			picGroup.insertBefore(temp, addBtn);
+//			picPaths.push(path);
+//			if(picPaths.length>2){ // 如果添加的照片数量达到3张，隐藏添加按钮
+//				addBtn.classList.add("hide");
+//			}
+//		}
+		
+		function deletePic(e){	//删除照片
+			var target = e.target,
+				deletePath = "";
+			if(e.target.classList.contains("close")){
+				_loadingShow("正在删除照片");
+				picGroup.removeChild(target.parentNode);
+				deletePath = target.getAttribute("data-src");
+				picPaths.splice(picPaths.indexOf(deletePath),1);
+				addBtn.classList.remove("hide"); // 如果按钮被隐藏，让按钮重新显示出来
+				loadingHide();
+			}
+		}
+		
+		function postLife(){  //发布说说
+			if(!picPaths.length){
+				toastMsg("请至少添加一张照片");
+				return;
+			}
+			loadingShow(true, "上传中");
+			var ossPaths = [],
+				content = document.getElementById("life-content").value;
+			
+			content = doT.encodeHTMLSource()(content);
+			
+			getSignature(function (signatureParam) {
+                for (var i = 0; i < picPaths.length; i++) {
+                    uploadComment(picPaths[i], signatureParam, function (key, extra) {
+                        if (!extra) {
+                            ossPaths.push(key);
+                        }
+                        if (ossPaths.length == picPaths.length && !extra) {
+                            var url = serviceNew + 'queen/add';
+                            var headers = _getAjaxHeaders(true, true);
+                            var data = _getAjaxData({
+                                content: content,
+                                imgs: ossPaths
+                            });
+                            var extra = null;
+                            _ajaxData(url, 'post', headers, data, postLifeSuccess, postLifeError, 0, extra);
+                        }
+                    });
+                }
+            });
+            
+            function postLifeSuccess(data){  //发布说说成功回调
+            	if(data.statusCode==200){
+            		loadingHide();
+            		toastMsg("发布成功");
+            		execRefreshData();  // 刷新个人中心页的数据
+            		closeSelf();
+            	}else{
+            		loadingHide();
+            		toastMsg(data.msg);
+            	}
+            }
+            function postLifeError(){  //发布说说失败回调
+            	//alert("失败");
+            	loadingHide();
+            	toastMsg("发布失败");
+            }
+		}
+	}
+	
+	function closeSelf(){  // 关闭当前页面
+		api.closeFrame();
+	}
+	
+	function execRefreshData(){	// 刷新个人中心页的数据
+		api.execScript({
+			frameName:"goddessFooter_tab_3",
+	        script: 'execRefreshData();'
+        });
+	}
+	
+	function execSaveImg(extra, winName, path){  // 安卓裁剪返回的值(此方法安卓裁剪时才有用)
+		initPicGroup.addPic(path);
+		closeWin(winName);
+	}
+</script>
+</body>
+</html>

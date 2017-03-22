@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>女神-个人中心</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <style>
+    	body{
+    		background:#fff;
+    	}
+    	.info-bg{
+    		position:relative;
+    		width:100%;
+    		height:18rem;
+    		overflow:hidden;
+    		background: url("../../image/errImg.png");
+    		background-size:cover;
+    	}
+    	.info-bg img{
+    		display:block;
+    		max-width: 100%;
+    		width: 100%;
+    	}
+    	.info-ranking{
+    		position:absolute;
+    		left:1rem;
+    		bottom:1rem;
+    		font-family:SourceHanSansCN-Normal;
+    		color: #fff;
+    	}
+    	.info-ranking i{
+    		margin-left:0.5rem;
+    		color:#FF3C53;
+    	}
+    	.info-user{
+    		position:relative;
+    		font-family:SourceHanSansCN-Normal;
+    		text-align:right;
+    		padding-right:4.5rem;
+    		padding-top:0.5rem;
+    	}
+    	.info-user img{
+    		position:absolute;
+    		right:1rem;
+    		top:-1.5rem;
+    		width:3rem;
+    		height:3rem;
+    		border-radius: 50%;
+    		overflow: hidden;
+			border: 1px solid #F8F8F8;
+    	}
+    	.info-data{
+    		position:relative;
+    		text-align:center;
+    		padding:1rem 0;
+    		overflow:hidden;
+    	}
+    	.info-data:after{
+    		content: "";
+    		position: absolute;
+    		left: 0;
+    		bottom: 0;
+    		width: 100%;
+    		height: 1px;
+    		background:#E6E6E6;
+    		transform: scaleY(0.5);
+    	}
+    	.info-data-item strong, .info-data-item span{
+    		display:block;
+    		font-weight:normal;
+    	}
+    	.info-data-item strong{
+    		font-family:SourceHanSansCN-Blob;
+    		font-size:0.8rem;
+    	}
+    	.info-data-item span{
+    		font-size:0.6rem;
+    		font-family:SourceHanSansCN-Normal;
+    	}
+    	
+    	.message-group{
+			padding: 0.2rem 0.5rem 0.5rem 0.5rem;
+    	}
+    	.message-item{
+    		position:relative;
+    		padding-top: 0.5rem;
+    	}
+    	.message-item:after{
+    		content: "";
+    		position:absolute;
+    		bottom: 0;
+    		width:100%;
+    		height: 1px;
+    		background: #E6E6E6;
+    		transform: scaleY(0.5);
+    	}
+    	.message-title{
+    		font-family:SourceHanSansCN-Blob;
+    		color:#666;
+    		font-size: 0.6rem;
+			font-weight:normal;
+    	}
+    	.message-title a{
+    		float:right;
+    		color: #666;
+    		font-family:SourceHanSansCN-Normal;
+    		font-size: 0.6rem;
+    	}
+		.message-title a i{
+			color: #666;
+			font-size: 0.6rem;
+		}
+    	.message-content{
+    		font-family:SourceHanSansCN-Normal;
+    		color:#000000;
+    		font-size: 0.7rem;
+    	}
+    	.photo-group{
+    		overflow:hidden;
+    		padding:1rem 0 1rem 0.2rem;
+    	}
+    	.photo-item{
+    		float:left;
+    		box-sizing:border-box;
+			/*临时改动样式,明天修复*/
+    		/*width:5.5rem;
+    		height:5.5rem;*/
+			width: 33.33333%;
+			height: 5rem;
+    		padding: 0 0.3rem;
+    		background: url("../../image/errImg.png");
+    		background-size:cover;
+    		background-clip: content-box;
+    		background-origin: content-box;
+    		overflow:hidden;
+    	}
+    	.photo-item img{
+    		max-width: 100%;
+    		width: 100%;
+    	}
+    	.message-action{
+    		text-align:right;
+    		padding-bottom: 0.7rem;
+			margin-right: 0.3rem;
+			color: #666;
+    	}
+    	.message-action span{
+    		margin-left:1rem;
+    	}
+    	.like i, .share i{
+    		color:#FF3C53;
+    		vertical-align:middle;
+    		margin-right:0.5rem;
+    	}
+    	
+    	#loading{
+            text-align: center;
+            font-size: 0.6rem; 
+            color: #999999;
+        }
+		.border{
+			border-left: 1px solid  #ECECEC;
+			border-right: 1px solid  #ECECEC;
+		}
+		.aui-row-text{
+			font-size: 1.2rem;
+			color: #000;
+
+		}
+		.photo-item:nth-of-type(3){
+			padding-right: 0rem;
+		}
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+	<div v-show="showInfo" class="info">
+		<div class="info-bg" id="info-bg" @click="changePic">
+			<img :src="getImageSrc(info.cover, true)" onerror="hideSelf(this)" onload="showSelf(this)" />
+			<span class="info-ranking">{{ info.votedRank?"当前排名:"+info.votedRank:"暂无排名" }}<!--当前排名: {{ info.votedRank }}--></span>
+		</div>
+		<div>
+			<div class="info-user">
+				<span class="info-name">{{ userName }}</span>
+				<img :src="userHeadPhoto" onerror="hideUserPhoto(this)" onload="showSelf(this)" />
+			</div>
+			<div class="aui-row info-data">
+				<div class="aui-col-xs-4 info-data-item">
+					<p class="aui-row-text">{{ info.topCount||0 }}</p>
+					<span>上榜次数</span>
+				</div>
+				<div class="aui-col-xs-4 info-data-item border">
+					<p class="aui-row-text">{{ info.votedCount||0 }}</p>
+					<span>本期获赞</span>
+				</div>
+				<div class="aui-col-xs-4 info-data-item">
+					<p class="aui-row-text">{{ info.sharedCount||0 }}</p>
+					<span>被分享</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div v-if="showLife">
+		<ul class="message-group">
+			<li v-for="(life, index) in lifes" class="message-item">
+				<div class="message-title">{{ life.time }} <a @click="deleteLife(life._id, index)"><i class="duola-iconfont icon-Close"></i></a></div>
+				<p class="message-content">{{ life.content }}</p>
+				<ul class="photo-group">
+					<li v-for="(img, i) in life.imgs" class="photo-item">
+						<img :src="getImageSrc(img)" @click="showPhotoGroup(life.imgs, i)" onerror="hideSelf(this)" onload="showSelf(this)" />
+					</li>
+				</ul>
+				<div class="message-action">
+					<span class="like"><i class="duola-iconfont icon-follow"></i>{{ life.votedCount }}</span>
+					<span class="share" @click="execOpenSharedMask(life._id, userName, getImageSrc(life.imgs[0]), index)"><i class="duola-iconfont icon-share"></i>{{ life.sharedCount }}</span>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div id="loading" class="hide">
+    <img src="../../icon/loading.gif" width="16"/>
+    <div>更多数据加载中</div>
+</div>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/uploadImg2.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../../script/oss.js"></script>
+<script type="text/javascript" src="../../script/weibo_sdk.js"></script>
+<script type="text/javascript" src="../../script/wx_sdk.js"></script>
+<script type="text/javascript" src="../../script/qq_sdk.js"></script>
+<script type="text/javascript">
+    var loading = document.getElementById("loading");
+    
+    var shareTitle = "多啦衣梦年度美照PK赛紧张进行中.....",
+	    shareDescription = "摘要：亲爱的，赶紧来！我正在参加美照PK大赛；快来帮我投一票吧！有很多平时不敢晒的私房照哦！（请微信用户点右上角的三个小圆点，选择在浏览器中打开，然后再进行下载。）",
+	    shareThumb = "widget://image/sharedLogo.png", // 展示图片
+	    shareContentUrl = "",  // 链接
+	    shareImageUrl = "",
+	    shareId = "",
+	    shareLifeIndex,  //分享的说说的索引
+	    isLoadingMore = false;  // 当前是否正在执行加载更多操作
+    apiready = function () {
+    	if(!isLogin()){
+    		goLogin(null, "../win_regin.html");
+    	}
+		vm = new Vue({
+            el: '#app',
+            data: {
+                showApp: false,
+                showInfo: false,  // 是否显示info
+                showLife: false,  // 是否显示说说
+                userName:"",
+                info:{avatarInfo:{}},
+                lifes:[],
+                lifePage:1,  // 下次应该加载的页数
+                lifePageTotal:null,  // 说说的总页数
+                imgPath:imgPath,  // 顶部背景图片路径
+                userPhoto:userPhoto,
+                refreshing:true,  // 是否正在刷新
+                listenerBottom:false //是否正在监听滚动到底部事件
+            },
+            mounted: function () {
+//                挂载成功  逻辑代码执行入口
+                var self = this;
+                pullRefresh(self.init.bind(self,true));  // 下拉刷新              
+    			api.refreshHeaderLoading();
+            },
+            computed:{
+            	userHeadPhoto:function(){	// 用户头像
+            		var self = this;
+            		return self.info.avatarInfo.avatarFrom?self.info.avatarInfo.avatar:(self.userPhoto + self.info.avatarInfo.avatar);
+            	}
+				
+            },
+            methods: {
+                init: function (refresh) {
+//                    初始化方法  只执行一次
+                    var self = this;
+                    
+                    if(refresh){  // 刷新
+                    	self.refreshing = true;
+                    }
+                    
+                    self.userName = $api.getStorage('userNickname')||'';
+					self.loadInfo();  // 加载个人信息
+					self.loadLife();  // 加载说说
+                },
+                destroy: function(){
+//                  销毁界面时调用
+                },
+                showView: function () {
+//                    异步控制界面组件的显示  更具flag判断来自定义 每次网络请求成功修改对应flag后都要调用
+                    var self = this;
+                    if (isGetData){
+                        self.showApp = true;
+                    }
+                },
+                loadInfo: function(){  // 加载个人信息
+					var self = this,
+						head = _getAjaxHeaders(true,true),
+						data = _getAjaxData({}),
+						url = duolaGoddess + "queen/me";
+						
+					_ajaxData(url, "post", head, data, loadInfoSuccess, loadInfoError);
+					
+					function loadInfoSuccess(data){	// 加载个人信息成功的回调
+						if(data.statusCode==200){
+							self.info = data.queen;
+							self.showInfo = true;
+						}else if(data.statusCode==10104){
+							toastMsg(data.msg);
+							goLogin(null, "../win_regin.html");
+						}
+					}
+					
+					function loadInfoError(){	// 加载个人信息失败的回调
+						
+					}
+				},
+				loadLife: function(){  // 加载说说
+					var self = this;
+					if(!self.refreshing){  // 如果refreshing==false，表示正在执行加载更多操作
+						if(isLoadingMore){ //如果上次加载更多操作还没结束，return
+							return;
+						}
+						if(self.lifePageTotal!==null && self.lifePage>self.lifePageTotal){
+							stopLoadMore();
+							return;
+						}
+					}else{  // 正在刷新
+						self.lifePage = 1;
+					}
+					if(self.lifePage>1){
+						showLoadMore();
+					}
+					
+					var head = _getAjaxHeaders(true,false),
+						data = _getAjaxData({
+							page:self.lifePage||1,
+							pageSize:10
+						}),
+						url = duolaGoddess + "queen/mLife";
+						
+					_ajaxData(url, "post", head, data, loadLifeSuccess, loadLifeError);
+					
+					function loadLifeSuccess(data){	// 加载个人信息成功的回调
+						if(data.statusCode==200){
+							if(self.refreshing){  // 正在进行刷新操作
+								self.refreshing = false;
+								self.lifes = data.mLife.list;
+								pullRefreshDone();
+							}else{  // 正在进行加载更多操作
+								self.lifes = self.lifes.concat(data.mLife.list);
+							}
+							
+							self.showLife = true;
+							self.lifePageTotal = data.mLife.pageTotal;
+							if(self.lifePage>1){
+								hideLoadMore();
+							}
+							self.lifePage += 1;
+							
+							if(!self.listenerBottom){
+								api.addEventListener({	// 监听滚动到底部事件，加载更多
+						            name: 'scrolltobottom'
+						        }, self.loadLife);
+								self.listenerBottom = true;
+							}
+						}else if(data.statusCode==10104){
+							toastMsg(data.msg);
+							goLogin(null, "../win_regin.html");
+						}else{
+							toastMsg(data.msg);
+							hideLoadMore();
+						}
+						
+						isLoadingMore = false;
+					}
+					
+					function loadLifeError(){	// 加载个人信息失败的回调
+						hideLoadMore();
+						isLoadingMore = false;
+					}
+				},
+                deleteLife: function(id, index){  // 删除说说
+                	var self = this;
+//              	if(!confirm("确定删除这条说说吗？")){
+//              		return;
+//              	}
+                	api.confirm({
+                		title: '提示',
+					    msg: '确定删除这条说说吗',
+					    buttons: ['取消', '确定']
+                    },function(ret,err){
+                    	if(ret.buttonIndex==2){
+                    		var self = this,
+	                		head = _getAjaxHeaders(true,false),
+							data = _getAjaxData({
+								lifeId:id
+							}),
+							url = duolaGoddess + "queen/del";
+                	
+                			_ajaxData(url, "post", head, data, deleteLifeSuccess, deleteLifeError);
+                    	}
+                    });
+                	
+                	
+                	function deleteLifeSuccess(data){
+                		if(data.statusCode==200){
+                			self.lifes.splice(index, 1);
+                			toastMsg(data.msg);
+                		}
+                	}
+                	function deleteLifeError(err){
+                        toastMsg(err.msg);
+                	}
+                },
+                voteLife:function(id){  //投票说说
+                	var self = this,
+                		head = _getAjaxHeaders(true,false),
+						data = _getAjaxData({
+							lifeId:id
+						}),
+						url = duolaGoddess + "queen/vote";
+                	
+                	_ajaxData(url, "post", head, data, voteLifeSuccess, voteLifeError);
+                	
+                	function voteLifeSuccess(data){
+                		if(data.statusCode==200){
+              				toastMsg(data.msg);
+                		}
+                	}
+                	function voteLifeError(){
+                	
+                	}
+                },
+                getImageSrc: function(img, head){
+                	var id = $api.getStorage("id");
+                	if(head){
+                		return this.userPhoto+ id +'/community/' + img + '?x-oss-process=image/resize,m_fill,h_800,w_800';
+                	}
+					return this.userPhoto+ id +'/community/' + img + '?x-oss-process=image/resize,m_fill,h_200,w_200';
+				},
+                showPhotoGroup: function(paths, index){
+                	var photoBrowser = api.require('photoBrowser'),
+                		id = $api.getStorage("id"),
+                		self = this;
+                	paths = paths.map(function(item, index){
+                		return self.userPhoto+ id +'/community/' + item;
+                	})
+					photoBrowser.open({
+						images:paths,
+						activeIndex:index||0,
+						bgColor:"#000"
+					}, function(ret, err){
+						if(ret.eventType=="show"){ // 如果photoBrowser为打开状态，阻止keyback的默认事件
+							var param = {},
+								winName = api.winName,
+								frameName = api.frameName;
+							param.name = "duolaGoddess";
+							param.script = getExecScript("execPreventKeyBack",[winName, frameName,"execClosePhotoBrowser()"]);
+							//param.script="execPreventKeyBack("+ winName + "," + frameName +")";
+							api.execScript(param);
+						}
+						if(ret.eventType=="click"){
+							execClosePhotoBrowser();
+						}
+					})
+                },
+                changePic:function(){
+                	selectPic(0);
+                },
+                execOpenSharedMask:function(id, userName, imgPath, index) {  // 打开分享选项
+			        var name = 'shared_mask';
+			        var page = '../shared_mask_new.html';
+			        var rect ={
+			            x: 0,
+			            y: 0,
+			            w: 'auto',
+			            h: 'auto'
+			        };
+			        var data = {id : 0,frameName: api.frameName};
+			        var bounces = false;
+			        userName = stripscript($api.getStorage('userNickname'));
+
+			        var shareContentUrlTemp = "http://cdn.duolayimeng.com/statics/dora_download.html?userName="+ userName +"&imgPath="+ imgPath;
+
+			        shareContentUrl = shareContentUrlTemp;
+			        shareImageUrl = imgPath;
+			        shareId = id;
+			        shareLifeIndex = index;
+			        
+			        openNewFrame(name,page,bounces,rect,data); 
+			    }
+            }
+        })
+    }
+
+//  function init() {
+//      //                    初始化方法
+//		initInfoBgHeight();  // 初始化背景容器的高度
+//		bindEventListener();
+//		pullRefresh(loadRefresh);
+//		
+//  }
+
+	function initInfoBgHeight(){  // 初始化背景容器的高度
+		var infoBg = document.getElementById("info-bg"),
+			width = api.winWidth;
+		
+		infoBg.style.height = width+"px";
+	}
+	
+	
+	function bindEventListener(){  // 绑定事件
+		var infoBg = document.getElementById("info-bg");
+		infoBg.addEventListener("click",selectPic.bind(null,0));
+		
+		api.addEventListener({
+            name: 'scrolltobottom'
+        }, loadMore);
+	}
+	
+	function selectPic(type){
+		/*  选择照片
+		 *  type==0打开select_photo.html
+		 *  type==camera  打开照相机
+		 *  type==library 打开相册
+		 * 
+		 * */
+		if(!type){
+			var name = "goddess_select_photo",
+	    		page = "goddess_select_photo.html",
+	    		data = {};
+	    		
+	    		data.from = {
+	    			winName:api.winName,
+	    			frameName:api.frameName
+	    		};
+			openNewFrame(name, page, null, null, data);
+			return;
+		}
+		getPic(type, false, changeBgPic);
+		api.closeFrame({
+        	name:"goddess_select_photo"
+        });
+	}
+	
+	function changeBgPic(path){  // 改变背景图
+		var ossPaths = [];
+		getSignature(function (signatureParam) {
+        	uploadComment(path, signatureParam, function (key, extra) {
+            	if (!extra) {
+                    ossPaths.push(key);
+                }
+                if (ossPaths.length == 1 && !extra) {
+                    var url = duolaGoddess + "queen/cover";
+                    var headers = _getAjaxHeaders(true, true);
+                    var data = _getAjaxData({
+	                        key: "cover",
+	                        value:ossPaths[0]
+	                    });
+                    var extra = null;
+                    _ajaxData(url, 'post', headers, data, changeBgPicSuccess, changeBgPicError, 0, extra);
+                }
+            });       
+        });
+        
+        function changeBgPicSuccess(data){
+        	if(data.statusCode==200){
+        		vm.info.cover=ossPaths[0];
+        	}else{
+        		toastMsg(data.msg);
+        	}
+        }
+        function changeBgPicError(){
+        }
+	}
+	
+	function loadRefresh(){  // 下拉刷新回调事件
+		pullRefreshDone();
+	}
+	
+	function loadMore(){  // 加载更多
+		showLoadMore();
+	}
+	
+	function showLoadMore(){  // 显示加载更多数据提示
+		loading.classList.remove("hide");
+		isLoadingMore = true;
+	}
+	
+	function hideLoadMore(){  // 隐藏加载更多数据提示
+		loading.classList.add("hide");
+		isLoadingMore = false;
+	}
+	
+	function stopLoadMore(){  // 停止加载更多事件
+		loading.innerHTML = "没有更多了";
+		loading.classList.remove("hide");
+		api.removeEventListener({
+	        name:'scrolltobottom'
+        });
+	}
+	
+    
+    function execCloseSharedMask(frameName,index){  // 分享
+	    api.closeFrame({
+	        name:frameName
+	    });
+	    if(index===undefined || index==="undefined"){
+	      	return
+	    }
+	    
+	    api.download({
+            url: shareImageUrl+'?x-oss-process=image/resize,m_fill,h_70,w_70',
+            savePath: 'fs://shareImage.png',
+            report: true,
+            cache: false,	// 如果为true， 部分ios分享的thumb会有问题
+            allowResume: true
+        },function(ret, err){
+        	if(ret.state==0){  // 如果不返回，部分安卓机分享qq时会报错
+        		return;
+        	}
+        	if (ret.state == 1) {
+                shareThumb = 'fs://shareImage.png';  // 不写fs地址的话，安卓分享图片的thumb会有问题
+            }
+            
+            
+            switch (Number(index)){
+		        case 1:
+		         	//微信
+		            wx_share_page({
+		                scene:'session',
+		                title:shareTitle,
+		                description:shareDescription,
+		                thumb:shareThumb,
+		                contentUrl:shareContentUrl
+		            },function(ret,err){
+						uploadShare("wx");
+		            });
+		            break;
+		        case 2:
+		          	//朋友圈
+		            wx_share_page({
+		                scene:'timeline',
+		                title:shareTitle,
+		                description:shareDescription,
+		                thumb:shareThumb,
+		                contentUrl:shareContentUrl
+		            },function(ret, err){
+		            	uploadShare("wx-line");
+		            });
+		            break;
+		        case 3:
+		            //qq好友
+		            qq_share_page({
+		                type:'QFriend',
+		                title:shareTitle,
+		                description:shareDescription,
+		                thumb:shareThumb,
+		                url:encodeURI(shareContentUrl),  // 不encode的话，ios分享qq会出错
+		                imgUrl:shareImageUrl+'?x-oss-process=image/resize,m_fill,h_70,w_70'  // 安卓qq分享只支持网络地址
+		            },function(ret, err){
+		            	uploadShare("qq");
+		            });
+		            break;
+		        case 4:
+		            //新浪微博
+		            weibo_share_page({
+		                text:'',
+		                title:shareTitle,
+		                description:shareDescription,
+		                thumb:shareThumb,
+		                contentUrl:shareContentUrl
+		            },function(ret, err){
+						uploadShare("weibo");
+		            });
+		            break;
+		    }
+        })
+	     	
+	    
+	    
+	    function uploadShare(from){
+	    	var head = _getAjaxHeaders(true,false),
+				data = _getAjaxData({
+					lifeId:shareId,
+					from:from
+				}),
+				url = duolaGoddess + "queen/share";
+                	
+            _ajaxData(url, "post", head, data, uploadShareSuccess, uploadShareError);
+            
+            function uploadShareSuccess(data){
+            	if(data.statusCode==200){
+            		vm.lifes[shareLifeIndex].sharedCount += 1;
+            	}
+            }
+            
+            function uploadShareError(){
+            
+            }
+	    }
+	}
+	
+	
+	function showSelf(dom){
+		dom.classList.remove("hide");
+	}
+	function hideSelf(dom){
+		dom.classList.add("hide");
+	}
+	function hideUserPhoto(dom){
+		dom.src="../../image/errImg.png";
+	}
+	
+	function execRefreshData(){  // 异步刷新数据
+		vm.init(true);
+	}
+    function stripscript(s)
+    {
+        var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]")
+        var rs = "";
+        for (var i = 0; i < s.length; i++) {
+            rs = rs+s.substr(i, 1).replace(pattern, '');
+        }
+        return rs;
+    }
+    
+    function execClosePhotoBrowser(){  // 关闭photoBrowser, 在其它页面异步调用
+    	var photoBrowser = api.require('photoBrowser');
+    	photoBrowser.close();
+    	execCancelPreventKeyBack();
+    }
+    
+    function execCancelPreventKeyBack(){  // 取消win对keyback默认行为的阻止
+    	var param = {};
+		param.name = "duolaGoddess";
+		param.script="execCancelPreventKeyBack()";
+		api.execScript(param);
+    }
+	
+//	function test(){
+//		var head = _getAjaxHeaders(true,true),
+//			data = _getAjaxData({}),
+//			url = serviceNew + "queen/me";
+//			
+//		_ajaxData(url, "post", head, data, function(data){alert(JSON.stringify(data))}, function(err){alert(JSON.stringify(err))});
+//	}
+</script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>多啦女神首页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        .header{
+            width: 100%;
+            background: #FF3C54;
+            position: relative;
+            color: #FFFFFF;
+        }
+        .paihangbai{
+            background: #FF3C54;
+            text-align: center;
+            color: #FFFFFF;
+            height: 2.5rem;
+            width: 100%;
+            line-height: 2.5rem;
+        }
+        .saiyisai{
+            background: #FF3C54;
+            text-align: center;
+            color: #FFFFFF;
+            height: 2.5rem;
+            width: 100%;
+            line-height: 2.5rem;
+        }
+        .aboutme{
+            background: #FF3C54;
+            text-align: center;
+            color: #FFFFFF;
+            height: 2.5rem;
+            width: 100%;
+            line-height: 2.5rem;
+        }
+        .backIcon{
+            position: absolute;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            text-align: center;
+            bottom: 0rem;
+            left: 0.8rem;
+        }
+        .rightIcon{
+            position: absolute;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            text-align: center;
+            bottom: 0rem;
+            right: 1rem;
+            font-size: 1.2rem;
+        }
+        .searchBox1{
+            position: absolute;
+            height: 1.6rem;
+            line-height: 1.6rem;
+            text-align: center;
+            bottom: 0.45rem;
+            left: 3rem;
+            right: 3rem;
+            background-color: #FBFBFB;
+            border-radius: 5px;
+
+        }
+    </style>
+</head>
+<body>
+<div class="header" id="header">
+    <div class="paihangbai hide" id="header0">
+        <i class="duola-iconfont icon-left backIcon" onclick="closeWin()"></i>
+        多啦女神
+        <i class="duola-iconfont icon-problem rightIcon" onclick="showRule()"></i>
+    </div>
+    <div class="saiyisai" id="header1">
+        <i class="duola-iconfont icon-left backIcon" onclick="closeWin()"></i>
+        女神广场
+        <!--<i class="duola-iconfont icon-search rightIcon" onclick="search()"></i>-->
+        <i class="duola-iconfont icon-gerenshequ rightIcon" onclick="showPostPage()"></i>
+    </div>
+    <div class="aboutme hide" id="header2">
+        <i class="duola-iconfont icon-left backIcon" onclick="closeWin()"></i>
+        我
+        <i class="duola-iconfont icon-gerenshequ rightIcon" onclick="showPostPage()"></i>
+    </div>
+    <div id="searchBox" class="saiyisai hide">
+        <i class="duola-iconfont icon-left backIcon"></i>
+        <div id="searchBox1" class="searchBox1" >
+        </div>
+        <i class="duola-iconfont icon-Close rightIcon" onclick="search()"></i>
+    </div>
+</div>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript">
+    var currIndex = 1;
+    var headerEl = null;
+    var headerHeight = 0;
+    var isShowSearchBox = false;
+    var UIInput = null;
+    apiready = function () {
+        headerEl = $api.byId('header');
+        $api.fixStatusBar(headerEl);
+        headerHeight = $api.offset(headerEl).h;
+        init();
+    }
+    function showRule() {
+        var name = 'activity_details';
+        var url = 'activity_details.html';
+        var data = {};
+        openNewWin(name,null,data,null,url,null,null);
+    }
+    function showPostPage() {
+    	if(!isMember()){
+    		toastMsg("只有会员才能发美照哦!");
+    		return;
+    	}
+    
+        var name = 'goddess_post';
+        var url = 'goddess_post.html';
+        var data = {};
+        api.openFrame({
+            name: name,
+            url: url,
+            rect: {
+                x: 0,
+                y: 0,
+                w: 'auto',
+                h: 'auto'
+            },
+            scrollEnabled: false,
+            bounces: false,
+            bgColor: 'rgba(0,0,0,0)',
+            vScrollBarEnabled: false,
+            hScrollBarEnabled: false
+        });
+    }
+    function showSearch() {
+        $api.addCls($api.byId('header1'),'hide');
+        $api.removeCls($api.byId('searchBox'),"hide")
+
+    }
+    function openUIinput(){
+        var offset = $api.offset($api.byId('searchBox1'));
+        var left = offset.l;
+        var top = offset.t;
+        var width = offset.w;
+        var height = offset.h;
+        UIInput = api.require('UIInput');
+        var placeholderText = '输入关键字';
+        UIInput.open({
+            rect: {
+                x: left+6,
+                y: top+3,
+                w: width-12,
+                h: height-6
+            },
+            styles: {
+                bgColor: '#FBFBFB',
+                size: 14,
+                color: '#000',
+                placeholder: {
+                    color: '#ccc'
+                }
+            },
+            autoFocus: true,
+            placeholder: placeholderText,
+            keyboardType: 'search',
+            fixedOn: api.frameName
+        }, function(ret, err) {
+            if (ret && ret.eventType=='change') {
+                UIInput.value(function(ret, err) {
+                    if (ret) {
+                        var searchBtnEl=$api.byId('searchBtn');
+                        var keywords=$api.trim(ret.msg);
+                    } else {
+                    }
+                });
+            }else if(ret && ret.eventType=='search'){
+
+                UIInput.value(function(ret, err) {
+                    if (ret) {
+                        var keywords=$api.trim(ret.msg);
+                        var param = {};
+                        param.name = api.winName;
+                        param.frameName = 'goddessFooter_tab_2';
+                        param.script = getExecScript('getKeyWords',[keywords.toString()])
+                        api.execScript(param);
+                        search();
+
+                    } else {
+                    }
+                });
+            } else {
+            }
+        });
+    }
+
+    function hideSearchBox() {
+        $api.addCls($api.byId('searchBox'), 'hide');
+        $api.removeCls($api.byId('header1'), 'hide');
+        isShowSearchBox = false;
+        UIInput.hide();
+        UIInput.closeKeyboard();
+    }
+    function search() {
+        if (isShowSearchBox){
+            hideSearchBox();
+            var param = {};
+            param.name = api.winName;
+            param.frameName = 'goddessFooter_tab_2';
+            param.script = getExecScript('search',[true])
+            api.execScript(param);
+            return
+        }
+        $api.removeCls($api.byId('searchBox'), 'hide');
+        $api.addCls($api.byId('header1'), 'hide');
+        isShowSearchBox = true;
+        if (UIInput == null){
+            openUIinput();
+            return;
+        }
+        UIInput.show();
+        UIInput.popupKeyboard();
+    }
+    function init() {
+        var footerHeight = 2.8 * parseInt($api.cssVal($api.dom('html'),'font-size'));
+        api.openFrameGroup({
+            name: 'goddessFrames',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                y: headerHeight,
+                w: 'auto',
+                h: api.winHeight -headerHeight - footerHeight
+            },
+            index: 1,
+            preload: 0,
+            frames: [
+                {
+                    name: 'goddessFooter_tab_1',
+                    url: 'goddessRunkingList.html',
+                    bounces: false,
+                    vScrollBarEnabled: false
+                },
+                {
+                    name: 'goddessFooter_tab_2',
+                    url: 'baskSun_new.html',
+                    bounces: false,
+                    vScrollBarEnabled: false,
+                },
+                {
+                    name: 'goddessFooter_tab_3',
+                    url: 'goddess_user.html',
+                    bounces: false,
+                    vScrollBarEnabled: false
+                }
+            ]
+        }, function (ret, err) {
+        });
+
+        api.openFrame({
+            name: 'godessFooter',
+            url: 'goddessFooter.html',
+            rect: {
+                x: 0,
+                y: Math.ceil(api.winHeight - footerHeight),
+                w: 'auto',
+                h: footerHeight
+            },
+            bounces: false,
+            vScrollBarEnabled: false,
+            hScrollBarEnabled: false
+        });
+    }
+
+    //footer单击事件监听 切换footer和Frame的显示
+    function onFooterItemClickListener(index){
+        if (index == 0){
+            sendEventUmeng(CONSTANT.UMENGEVENT.DUOLAGODDESSINDEX,{from:'首页'});
+        }else if (index == 1){
+            sendEventUmeng(CONSTANT.UMENGEVENT.DUOLAGODDESSSHAIYISHAI,{from:'首页'});
+        }else if (index == 2){
+            sendEventUmeng(CONSTANT.UMENGEVENT.DUOLAGODDESSME,{from:'首页'});
+        }
+        $api.addCls($api.byId('header1'), 'hide');
+        $api.addCls($api.byId('header'+currIndex), 'hide');
+        $api.addCls($api.byId('searchBox'),"hide");
+        $api.removeCls($api.byId('header'+index), 'hide');
+        currIndex = index;
+        api.setFrameGroupIndex({
+            name: 'goddessFrames',
+            index: index,
+            scroll: false
+        });
+    }
+
+	function execPreventKeyBack(winName, frameName, script){  // 阻止keyback, 在其它页面异步调用
+		api.addEventListener({
+			name: 'keyback'
+		}, function(ret, err) {
+		    var param = {
+		    	name: winName,
+		    	frameName: frameName,
+		    	script:script
+		    };
+		    api.execScript(param);
+		});
+	}
+	function execCancelPreventKeyBack(){  // 取消阻止keyback, 在其它页面异步调用
+		api.removeEventListener({
+	        name:'keyback'
+        });
+	}
+</script>
+</body>
+</html>

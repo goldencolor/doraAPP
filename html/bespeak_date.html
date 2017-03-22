@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>选择预约时间</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/uzui.css"/>
+    <style>
+    	html,body{
+    		background:rgba(0,0,0,0.3);
+    	}
+    	
+    	/* 选择时间 */
+    	.picker-content{
+    		position:fixed;
+    		left:0;
+    		bottom:0;
+    		width:100%;
+    		background:#FFFFFF;
+    	}
+    	.picker-head{
+    		position:relative;
+    		text-align:center;
+    		height:2.5rem;
+    		line-height: 2.5rem;
+    		font-family: SourceHanSansCN-Normal;
+			font-size: 0.8rem;
+			color: #262B30;
+    	}
+    	.picker-head:after{
+    		content:"";
+    		position:absolute;
+    		left:0;
+    		bottom:0;
+    		background:#F6F5F4;
+    		width:100%;
+    		height:1px;
+    		transform:scaleY(0.5);
+    	}
+    	.picker-action{
+    		position:absolute;
+    		right:0;
+    		font-family: SourceHanSansCN-Normal;
+			font-size: 0.7rem;
+			color: #FF3C54;
+			margin-right:1rem;
+    	}
+    	.picker-body{
+    		height:17.5rem;
+    		overflow: hidden;
+    	}
+    	.picker-day{
+    		float:left;
+    		background:#F8F8F8;
+    		text-align:center;
+    		width:35.73%;
+    		overflow-y: auto;
+    	}
+    	
+    	.picker-hour{
+    		float:left;
+    		width:64.27%;
+    		height:100%;
+    		overflow-y: auto;
+    	}
+    	.picker-day ul, .picker-hour ul{
+    		width: 100%;
+    	}
+    	.picker-day li, .picker-hour li{
+    		height:2.5rem;
+    		line-height:2.5rem;
+    		font-family: SourceHanSansCN-Light;
+			font-size: 0.7rem;
+			color: #262B30;
+    	}
+    	.picker-hour li{
+    		padding:0 1rem;
+    	}
+    	.picker-day li.active{
+    		background:#FFFFFF;
+    		color:#FF3C54;
+    	}
+    	.picker-hour li.active{
+    		color:#FF3C54;
+    	}
+    	.picker-hour li.disable{
+    		color:#C8C8C8;
+    	}
+    	.picker-hour li i{
+    		display: none;
+    		margin-left:0.5rem;
+    		font-size:0.6rem;
+    	}
+    	.picker-hour li.active i{
+    		display:inline;
+    	}
+    </style>
+</head>
+<body>
+	<div id="app" class="picker-content" v-cloak>
+		<div class="picker-head">预约时间<span class="picker-action" @click="confirmPicker(action)">{{action?"确定":"关闭"}}</span></div>
+		<div class="picker-body">
+			<div class="picker-day">
+				<ul>
+					<li v-for="(day,index) in days" :class="{active:index==currentDayIndex}" @click="selectDay(index)" >{{day.month}}月{{day.day}}日 - {{day.weekDay}}</li>
+				</ul>
+			</div>
+			<div class="picker-hour">
+				<ul>
+					<li v-for="(hour, index) in hours" :class="{disable:hour.disable, active:selectDayIndex==currentDayIndex&&index==selectHourIndex}" @click="selectHour(index, hour.disable)">{{hour.star}}:00 - {{hour.star+1}}:00<i class="duola-iconfont icon-PathCopy"></i></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript">
+	var vm;
+	apiready = function(){
+		vm = new Vue({
+			el:"#app",
+			data:{
+				days:[{hours:null}],
+				firstHours:[],	//当天可选的时间
+				secondHours:[],	//以后可选的时间
+				currentDayIndex:0,
+				selectDayIndex:undefined,
+				selectHourIndex:undefined
+			},
+			mounted:function(){
+				this.init();
+			},
+			methods:{
+				init:function(date){
+					var date = date || new Date();
+					this.days = getDays(date);
+					this.firstHours = getHour(date.getHours());
+					this.secondHours = getHour();
+				},
+				selectDay:function(index){	// 切换日期
+					this.currentDayIndex = index;
+				},
+				selectHour:function(index, disable){	// 选择时间,如果disable==true,说明当前时间不能选择
+					if(disable){
+						return
+					}
+					this.selectDayIndex = this.currentDayIndex;
+					this.selectHourIndex = index;
+				},
+				confirmPicker:function(action){
+					if(!action){	//取消操作
+						api.closeFrame();
+					}else{	//确认操作
+						var temp = {};
+						temp.year = this.days[this.selectDayIndex].year;
+						temp.month = this.days[this.selectDayIndex].month;
+						temp.day = this.days[this.selectDayIndex].day;
+						
+						temp.hour = this.secondHours[this.selectHourIndex].star;
+						temp.minute = "00";
+						
+						execPostStartTime(temp);
+					}
+				}
+			},
+			computed:{
+				action:function(){
+					if(this.selectHourIndex===undefined){	// 如果还没有选择时间，右上角按钮为取消
+						return false
+					}else{
+						return true
+					}
+				},
+				hours:function(){
+					var temp = null;
+					temp = this.days[this.currentDayIndex].hours;
+					if(this.currentDayIndex){
+						temp = this.secondHours;
+					}else{
+						temp = this.firstHours;
+					}
+					return temp;
+				}
+			}
+		})
+	};
+	
+	function getDays(date){	// 根据当前时间返回一个日期数组
+		var DAY_MILLISECONDS = 86400000,
+			weekMap = ["周日","周一","周二","周三","周四","周五","周六"],
+			dateMilliseconds = Number(date) || Date.now(),
+			days = [],
+			hours = [],
+			dayLength = 7,	// 需要计算的天数
+			year,
+			month,
+			day,
+			weekDay;
+		
+		
+		for(var i=0;i<dayLength;i++){
+			date = new Date(dateMilliseconds);
+			year = date.getFullYear();
+			month = date.getMonth()+1;
+			day = date.getDate();
+			weekDay = date.getDay();
+			
+//			if(i==0 && date.getHours()>13){	//当前时间超过13:00，则当天的时间不能选择
+//				dateMilliseconds += DAY_MILLISECONDS;
+//				continue
+//			}else if(i==0){
+////				hours = getHour(date.getHours());
+//			}
+			
+			days.push({
+				year: year,
+				month: month,
+				day: day,
+				weekDay: weekMap[weekDay]
+			})
+			dateMilliseconds += DAY_MILLISECONDS;
+		}
+		
+		return days;
+	}
+	
+	function getHour(currentTime){	// 返回一个时间数组
+		
+		var starTime = 9,	//取件最早时间
+			endTime = 19,	//取件最晚时间
+			hours = [];
+		
+		for(var i=starTime;i<endTime;i++){
+			hours.push({
+				star:i
+			})
+		}
+		if(currentTime && currentTime>6){	//如果当前时间大于7，给不能选择的时间添加disable属性
+			for(var i=0,j=currentTime-starTime+3,m=endTime-starTime;i<j&&i<m;i++){
+				hours[i].disable = true;
+			}
+		}
+		
+		return hours;
+	}
+	
+	function execPostStartTime(selectTime){
+		var data = api.pageParam.data,
+			from = data.from,
+			execScript = "",
+			postTime = "",
+			showTime = "";
+
+		postTime = selectTime.year + "-" + selectTime.month + "-" + selectTime.day + " " + selectTime.hour + ":" + selectTime.minute;
+		showTime = selectTime.year + "-" + selectTime.month + "-" + selectTime.day + " " + selectTime.hour + ":00 - " + Number(selectTime.hour+1) + ":00";
+
+
+		api.execScript({
+			name:from.winName,
+			frameName:from.frameName,
+			script:getExecScript("execPostStartTime",[postTime, showTime])
+        });
+        
+        api.closeFrame();
+	}
+</script>
+</html>

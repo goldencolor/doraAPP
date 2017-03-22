@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>女神-更换背景图</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <style>
+    	html, body{
+    		background:rgba(0,0,0,0.3);
+    	}
+    	ul{
+    		position:fixed;
+    		left:0;
+    		bottom:0;
+    		width: 100%;
+    	}
+    	ul li{
+    		width:100%;
+    		background: #fff;
+    		text-align: center;
+    		height:3rem;
+    		line-height: 3rem;
+    		font-family:SourceHanSansCN-Normal;
+    	}
+    	.title{
+    		position: relative;
+    		background: #F8F8F8;
+    		font-family:SourceHanSansCN-Blob;
+    	}
+    	.title i{
+    		position: absolute;
+    		top:0;
+    		right:1rem;
+    		line-height:3rem;
+    	}
+    </style>
+</head>
+<body>
+<ul>
+	<li class="title">更换背景图<i class="duola-iconfont icon-Close" onclick="closeSelf()"></i></li>
+	<li onclick="selectPic(1)">从相册选择</li>
+	<li onclick="selectPic(2)">拍一张</li>
+</ul>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/uploadImg2.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+    var vm;
+//    用于判断网络请求是否完成的flag  初始化是有几个请求就有几个flag 用于处理异步显示问题
+    var isGetData = false;
+    apiready = function () {
+//        程序入口
+		init();
+    }
+
+    function init() {
+        //                    初始化方法
+    }
+	
+	function selectPic(type){
+		var data = api.pageParam.data,
+			from = data.from,
+			execScript = "";
+		console.log("data===="+data)
+		
+		if(type==1){
+			type="'library'";
+		}else{
+			type="'camera'";
+		}
+			
+		execScript = "selectPic("+ type +");";
+		
+		api.execScript({
+			name:from.winName,
+			frameName:from.frameName,
+	        script: execScript
+        });
+	}
+	
+	function closeSelf(){  // 关闭当前Frame
+		api.closeFrame();
+	}
+</script>
+</body>
+</html>

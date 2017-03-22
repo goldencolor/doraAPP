@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>下载APP</title>
+   <!-- <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    &lt;!&ndash;AUI根据使用情况引入&ndash;&gt;
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>-->
+    <style>
+        html, body{
+            font-size: 20px;
+            background: #F6F6F8;
+            font-family: SourceHanSansCN-Normal;
+            padding: 0rem;
+            margin: 0rem
+        }
+        .shadow-l{
+            background-color: #ECECEC;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            background-color: #ECECEC;
+            height: 1px;
+        }
+        .download-container{
+            margin-top: 3.75rem;
+            width: 100%;
+            height: 15rem;
+            position: relative;
+        }
+        .download-container-girl{
+            width: 100%;
+            height: 100%;
+            background: pink;
+        }
+        .download-container-name{
+            width:11.5rem ;
+            height: 2rem;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            opacity: 0.89;
+            background: #FF3C54;
+            margin: 0 auto;
+            text-align: center;
+            line-height: 2rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            letter-spacing: 0.73px;
+            border-radius: 0 20px 0 0;
+        }
+        .download-container-box{
+            padding: 0.7rem 1rem 1rem 1rem;
+        }
+        .download-container-write{
+            width: 16.75rem;
+            height: 5.5rem;
+            font-family: SourceHanSansCN-Light;
+            font-size: 0.7rem;
+            color: #606060;
+            line-height: 1.1rem;
+            margin: 0 auto;
+        }
+        .download-container-app{
+            width: 100%;
+            height: 2.5rem;
+            padding-top: 2rem;
+            margin-left: 0.9rem;
+
+        }
+        .download-container-app .android,.download-container-app .iphone{
+            width:7.4rem;
+            height: 2.5rem;
+            display: inline-block;
+            border-radius: 0.2rem;
+        }
+        .download-container-app .android{
+
+        }
+        .download-container-app .iphone{
+
+            margin-left: 1.7rem;
+        }
+        .download-container-bottom{
+            padding-top: 5rem;
+            width: 100%;
+            height: 0.8rem;
+        }
+        .bottom{
+            width: 100%;
+            height: 0.8rem;
+            line-height: 0.8rem;
+            text-align: center;
+            margin: 0 auto;
+        }
+        .bottom .icon{
+            width: 0.8rem;
+            height: 0.8rem;
+           /* background: #FF3C54;*/
+            /*background-image:url("../image/alogo.png");*/
+
+            background-size: 0.8rem;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .bottom .title{
+            margin-left: 0.7rem;
+            width: 6.45rem;
+            height: 0.8rem;
+            font-family: ArialUnicodeMS;
+            font-size: 0.6rem;
+            color: #262B30;
+            text-align: left;
+
+
+        }
+
+    </style>
+</head>
+<body>
+<div id="app"style="height: 100%"class="flex flex-vertical">
+    <div class="download-container">
+        <div class="download-container-girl"></div>
+        <div class="download-container-name">嗨 宝宝,我是xxx(昵称)</div>
+    </div>
+    <div class="download-container-box">
+        <div class="download-container-write">
+            我正在多啦衣梦APP参加【多啦三月俏女神-晒美照拿万元大礼】活动；快来为我点赞投一票吧！告诉你一个秘密，我晒了很多平时不敢晒的美照哦~立即下载并登录APP，既可为我投票也可参与活动。快一起来造作吧~么么哒！
+        </div>
+
+        <div class="download-container-app" onclick="selectDownload()">
+            <!--<span class="android"></span>-->
+            <span onclick="selectDownload(1)">
+                <img src="../image/Group15.png" alt="" class="android"/>
+            </span>
+            <!--<span class="iphone"></span>-->
+            <span onclick="selectDownload(2)">
+                <img src="../image/Group14.png" alt="" class="iphone"/>
+            </span>
+
+
+        </div>
+
+        <div class="download-container-bottom">
+            <div class="bottom">
+                <img src=" ../image/alogo.png" alt="" class="icon"/>
+                <!--<span   class="icon"></span>-->
+                <span class="title">DORA’S DREAM</span>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/doT_min.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<!--<script type="text/javascript">
+    var vm;
+    //    用于判断网络请求是否完成的flag  初始化是有几个请求就有几个flag 用于处理异步显示问题
+    var isGetData = false;
+    apiready = function () {
+//        程序入口
+
+    }
+
+    function init() {
+        //                    初始化方法
+
+    }
+    function openApp(el){
+        var timer = null;
+        var startTime = Date.now();
+        var ua = navigator.userAgent.toLowerCase();
+        var config = {
+            scheme: 'duola://',
+            download_url_android: 'http://download.duolayimeng.com/duolayimeng-armv7.apk',
+            download_url_ios: 'https://itunes.apple.com/cn/app/duo-la-yi-meng-chuan-yi-cong/id1065704878?mt=8',
+            download_url_wx: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.biku.dorasdream',
+            download_url_pc: 'http://android.myapp.com/myapp/detail.htm?apkName=com.biku.dorasdream',
+            timeout: 600
+        };
+        var isIOS = /iphone|ipad|ipod/.test(ua);
+        if(isIOS){
+            window.location = config.download_url_ios;
+        }
+
+        var isAndroid = /android/.test(ua);
+        if(isAndroid){
+            var isWx = ua.match(/MicroMessenger/i) == 'micromessenger';
+            if(isWx){
+                window.location = config.download_url_wx;
+                return;
+            }
+            var isQQ = ua.indexOf('qq') !== -1;
+            if(isQQ){
+                window.location = config.download_url_wx;
+                return;
+            }
+            var ifr = document.createElement('iframe');
+            ifr.src = config.scheme
+            ifr.style.display = 'none';
+            document.body.appendChild(ifr);
+
+            timer = setTimeout(function() {
+                var endTime = Date.now();
+                if (!startTime || endTime - startTime < config.timeout + 200) {
+                    window.location = config.download_url_android;
+                }
+            }, config.timeout);
+        }
+
+        if(!isAndroid && !isIOS){
+            window.location = config.download_url_pc;
+            return;
+        }
+        window.onblur = function() {
+            clearTimeout(timer);
+        }
+    }
+    function selectDownload(type){
+        var data = api.pageParam.data,
+                from = data.from,
+                execScript = "";
+        if(type==1){
+            type="'library'";
+        }else{
+            type="'camera'";
+        }
+
+        execScript = "selectPic("+ type +");";
+    }
+
+
+
+
+
+    function start() {
+        //                    初始化后执行
+
+    }
+    function retart() {
+        //                    页面在后台状态时，需要操作时调用
+
+    }
+    function stop() {
+        //                    页面进入后台时进行，但未关闭时进行相关操作时调用
+
+    }
+    function destroy() {
+        //                  销毁界面时调用
+
+    }
+    function showView() {
+        //                    异步控制界面组件的显示  更具flag判断来自定义 每次网络请求成功修改对应flag后都要调用
+        if (isGetData){
+            $api.removeCls($api.byId("app"), 'hide');
+        }
+
+    }
+
+</script>-->
+<script type="text/javascript">
+    function selectDownload(){
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid){
+
+        }
+
+    }
+    openApp();
+    function openApp(el){
+        var timer = null;
+        var startTime = Date.now();
+        var ua = navigator.userAgent.toLowerCase();
+        var config = {
+            scheme: 'duola://',
+            download_url_android: 'http://download.duolayimeng.com/duolayimeng-armv7.apk',
+            download_url_ios: 'https://itunes.apple.com/cn/app/duo-la-yi-meng-chuan-yi-cong/id1065704878?mt=8',
+            download_url_wx: 'http://a.app.qq.com/o/simple.jsp?pkgname=com.biku.dorasdream',
+            download_url_pc: 'http://android.myapp.com/myapp/detail.htm?apkName=com.biku.dorasdream',
+            timeout: 600
+        };
+        var isIOS = /iphone|ipad|ipod/.test(ua);
+        if(isIOS){
+            window.location = config.download_url_ios;
+        }
+
+        var isAndroid = /android/.test(ua);
+        if(isAndroid){
+            var isWx = ua.match(/MicroMessenger/i) == 'micromessenger';
+            if(isWx){
+                window.location = config.download_url_wx;
+                return;
+            }
+            var isQQ = ua.indexOf('qq') !== -1;
+            if(isQQ){
+                window.location = config.download_url_wx;
+                return;
+            }
+            var ifr = document.createElement('iframe');
+            ifr.src = config.scheme
+            ifr.style.display = 'none';
+            document.body.appendChild(ifr);
+
+            timer = setTimeout(function() {
+                var endTime = Date.now();
+                if (!startTime || endTime - startTime < config.timeout + 200) {
+                    window.location = config.download_url_android;
+                }
+            }, config.timeout);
+        }
+
+        if(!isAndroid && !isIOS){
+            window.location = config.download_url_pc;
+            return;
+        }
+        window.onblur = function() {
+            clearTimeout(timer);
+        }
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>多啦女神排行榜</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <!--AUI根据使用情况引入-->
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html, body{
+            background: transparent;
+            padding: 0rem;
+            margin: 0rem
+        }
+        .shadow-l{
+            background-color: #ECECEC;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            background-color: #ECECEC;
+            height: 1px;
+        }
+        .goddessImg{
+            width: 100%;
+            height: 100vw;
+            background: transparent;
+            position: relative;
+        }
+        .goddessImgContent{
+            width: 100%;
+            height: 2.6rem;
+            background-color: rgba(0,0,0,0.3);
+            position: absolute;
+            left: 0rem;
+            bottom: 0rem;
+        }
+        .avatar{
+            width: 1.75rem;
+            height:1.75rem;
+            position: absolute;
+            left: 0.6rem;
+            border-radius: 50%;
+            bottom: 0.425rem;
+        }
+        .userContent{
+            height: 2.6rem;
+            line-height: 2.6rem;
+            position: absolute;
+            left: 3.5rem;
+            bottom: 0rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            width: 8rem;
+            overflow: hidden;
+        }
+        .like{
+            width: 1.5rem;
+            height: 2.6rem;
+            line-height: 2.6rem;
+            position: absolute;
+            right: 2.2rem;
+            bottom: 0rem;
+        }
+        .likeCount{
+            height:2.6rem;
+            line-height: 2.6rem;
+            position: absolute;
+            right: 1rem;
+            bottom: 0rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+        }
+        .runkingItem{
+            width: 100%;
+            height: 3rem;
+            position: relative;
+        }
+        .runkingNum{
+            width: 3rem;
+            height:3rem;
+            background-color: #FF3C54;
+            border-top-right-radius: 50%;
+            border-bottom-right-radius: 10%;
+            text-align: center;
+            line-height: 3rem;
+            color: #FFFFFF;
+            font-size: 1.6rem;
+        }
+        .avatar2{
+            width: 1.75rem;
+            height:1.75rem;
+            position: absolute;
+            left: 3.5rem;
+            border-radius: 50%;
+            bottom: 0.625rem;
+        }
+        .userName2{
+            height: 3rem;
+            line-height: 3rem;
+            position: absolute;
+            left: 5.5rem;
+            bottom: 0rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #000000;
+        }
+        .like2{
+            width: 1.5rem;
+            height: 3rem;
+            line-height: 3rem;
+            position: absolute;
+            right: 2.2rem;
+            bottom: 0rem;
+        }
+        .likeCount2{
+            height:3rem;
+            line-height: 3rem;
+            position: absolute;
+            right: 1rem;
+            bottom: 0rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #000000;
+        }
+        #loading {
+            /*padding-bottom: 2.8rem;*/
+            text-align: center;
+        }
+        .eldest-first{
+            position: absolute;
+            top: 0.4rem;
+            left: 1rem;
+            z-index: 999;
+
+        }
+        .eldest-first i{
+            font-size: 1.2rem;
+        }
+        .eldest-first .runkNum{
+            vertical-align: -0.1rem;
+            color:#FF3C54;
+            display: inline-block;
+            font-size: 1.2rem;
+            margin-left: 0.3rem;
+
+        }
+        
+        .tab-header{width:100%}
+        .tab-header-group{
+        	width:100%;
+        	overflow: hidden;
+        	height: 2.5rem;
+        	line-height: 2.5rem;
+        	background:#fff;
+        }
+        .tab-header-item{
+        	float: left;
+        	box-sizing: border-box;
+        	width: 50%;
+        	font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #000000;
+            text-align: center;
+        }
+        .tab-header-item.active{
+        	color:#FF3C54;
+        	border-bottom: 1px solid #FF3C54;
+        }
+        .hot-group{
+        	width:100%;
+        	background: #F8F8F8;
+        }
+        .hot-item{
+        	display:block;
+        	width:100%;
+        	overflow:hidden;
+        	padding-left:3rem;
+        	margin-top:0.5rem;
+        	padding-bottom:0.5rem;
+        	background:#FFF;
+        }
+        .hot-ranking{
+        	float:left;
+        	width:3rem;
+        	margin-left:-3rem;
+        }
+        .hot-item .runkingNum{
+        	background: #fff;
+        	color: #1A1A1A;
+        }
+        .hot-item .runkingNum span{
+        	color:#fff;
+        }
+        .hot-item:nth-of-type(1) .runkingNum{
+        	background: #FF3C54;
+        	color: #FFFFFF;
+        }
+        .hot-item:nth-of-type(2) .runkingNum{
+        	background: #ff596d;
+        	color: #FFFFFF;
+        }
+        .hot-item:nth-of-type(3) .runkingNum{
+        	background: #ff7d8d;
+        	color: #FFFFFF;
+        }
+        .hot-life{
+        	float:left;
+        	width:100%;
+        }
+        .hot-life-head{
+        	overflow:hidden;
+        	padding: 0.5rem 1rem;
+        	line-height: 2rem;
+        }
+        .hot-life-head img{
+        	width:2rem;
+        	height: 2rem;
+        	border-radius:50%;
+        }
+        .hot-life-author{
+        	line-height: 2rem;
+        	padding-left:0.5rem;
+        	font-family: SourceHanSansCN-Blob;
+        	color:#000;
+        	width: 8rem;
+        	white-space: nowrap;
+        	overflow:hidden;
+        	text-overflow:ellipsis;
+        }
+        .hot-life-action{
+        	float:right;
+        }
+        .hot-life-action i{
+        	color:#FF3C54;
+        	margin-right: 0.5rem;
+        	font-size:0.8rem;
+        	vertical-align: middle;
+        }
+        .hot-life-body{
+        	width:100%;
+        }
+        .hot-life-body ul{
+        	width:100%;
+        	overflow:hidden;
+        }
+        .hot-life-body ul li{
+        	float:left;
+        	width: 33.33333%;
+        	box-sizing: border-box;
+        	padding:0.5rem;
+        }
+        .hot-life-body ul li img{
+        	max-width: 100%;
+        	width: 100%;
+        }
+    </style>
+</head>
+<body>
+<header class="tab-header">
+	<ul class="tab-header-group">
+		<li id="tab-header-hot" class="tab-header-item active" onclick="showTab(this, 'hotListContainer')">最热排行</li>
+		<li class="tab-header-item" onclick="showTab(this, 'goddessListContainer')">累计排行</li>
+	</ul>
+</header>
+<div id="app">
+	<div id="hotListContainer">
+		<!--<ul class="hot-group">
+			<li class="hot-item">
+				<div class="hot-ranking">
+					<span class="runkingNum">
+			            1<span style="font-size: 0.7rem;">st</span>
+			        </span>
+				</div>
+				<div class="hot-life">
+					<div class="hot-life-head">
+						<img src="" alt="" />
+						<span>这是一个用户名</span>
+						<span><i class="duola-iconfont icon-follow"></i>3000</span>
+					</div>
+					<div class="hot-life-body">
+						<ul>
+							<li><img src="" /></li>
+						</ul>
+						<p>这是我发的说说的内容额呵呵呵</p>
+					</div>
+				</div>
+			</li>
+		</ul>-->
+	</div>
+    <div id="goddessListContainer" class="hide">
+    </div>
+
+
+    <!--<div id="loading" style="font-size: 12px; color: #999999;">-->
+        <!--<img src="../../icon/loading.gif" width="16"/>-->
+        <!--<div>更多数据加载中</div>-->
+    <!--</div>-->
+</div>
+<script id="hotList-template" type="text/x-dot-template">
+	<ul class="hot-group">
+		{{ for(var i=0,j=it.mLife.list.length;i<j;i++ ){ }}
+		<li class="hot-item">
+			<div class="hot-ranking">
+				<span class="runkingNum">
+			        {{= i+1 }}<span style="font-size: 0.7rem;">{{= i!=0?i!=1?i!=2?"":"rd":"nd":"st" }}</span>
+			    </span>
+			</div>
+			<div class="hot-life">
+				<div class="hot-life-head">
+					<img src="{{= it.mLife.list[i].avatarInfo.avatarFrom?it.mLife.list[i].avatarInfo.avatar:userPhoto+it.mLife.list[i].avatarInfo.avatar }}" 
+							onerror="this.src='../../image/errImg.png'" />
+					<span class="hot-life-author">{{= it.mLife.list[i].nickName }}</span>
+					<span class="hot-life-action"><i class="duola-iconfont icon-follow"></i>{{= it.mLife.list[i].votedCount }}</span>
+				</div>
+				<div class="hot-life-body">
+					<ul>
+						{{ for(var m=0,n=it.mLife.list[i].imgs.length;m<n;m++){ }}
+						<li><img src="{{= userPhoto + it.mLife.list[i].userId + '/community/' + it.mLife.list[i].imgs[m] + '?x-oss-process=image/resize,m_fill,h_200,w_200' }}"
+								onclick="{{=getExecScript('showPhotoGroupProxy',[it.mLife.list[i].imgs.join(','),userPhoto + it.mLife.list[i].userId+ '/community/', m])}}"
+								onerror="this.src='../../image/errImg.png'" /></li>
+						{{ } }}
+					</ul>
+					<p>{{= it.mLife.list[i].content }}</p>
+				</div>
+			</div>
+		</li>
+		{{ } }}
+	</ul>
+</script>
+<script id="goddessList-template" type="text/x-dot-template">
+
+    <div class="goddessImg" style="position: relative">
+        <div class="eldest-first">
+            <i class="duola-iconfont icon-nianfeihuiyuan" style="color: #FF3C54"></i>
+        <span class="runkNum">
+            1<span style="font-size: 0.7rem;">st</span>
+        </span>
+        </div>
+
+        {{?!it.mLife.list||!it.mLife.list[0]}}
+        <div style="width: 100%;text-align: center;font-size: 0.7rem">暂无排名</div>
+        {{}}}
+        {{?it.mLife.list&&it.mLife.list[0]}}
+        <img src="{{=!it.mLife.list||!it.mLife.list[0]||it.mLife.list[0].cover == ''?'../../image/errImg.png':userPhoto + it.mLife.list[0]._id+ '/community/' +it.mLife.list[0].cover+'?x-oss-process=image/resize,m_fill,h_400,w_400'}}"
+             style="position: absolute; left: 0rem; top: 0rem; width: 100%; height: 100vw;
+background-image: url(../../image/errImg.png);background-position: center; background-repeat: no-repeat;background-size: 100%"
+             onerror='this.src="../../image/errImg.png"'>
+        <div class="goddessImgContent">
+            <img class="avatar" src="{{=!it.mLife.list||!it.mLife.list[0]||it.mLife.list[0].avatarInfo.avatar == null?'../../image/avatar.png':it.mLife.list[0].avatarInfo.isWxAvatar == 'YES'?it.mLife.list[0].avatarInfo.avatar:userPhoto+it.mLife.list[0].avatarInfo.avatar+'?x-oss-process=image/resize,m_fill,h_100,w_100'}}">
+            <div class="userContent aui-ellipsis-1">
+                {{=!it.mLife.list||!it.mLife.list[0]||it.mLife.list[0].content == ''?'':it.mLife.list[0].content}}
+            </div>
+            <i class="duola-iconfont icon-follow like" style="color: #FF3C54"></i>
+            <div class="likeCount">{{=!it.mLife.list||!it.mLife.list[0]||it.mLife.list[0].votedCount}}</div>
+        </div>
+    </div>
+        {{}}}
+
+    {{for(var i = 0, len = it.mLife.count; i < len; i++){}}
+    <div class="runkingItem" onclick="">
+        {{?i == 0}}
+        <div class="runkingNum">
+            1<span style="font-size: 0.7rem;">st</span>
+        </div>
+        {{?}}
+        {{?i == 1}}
+        <div class="runkingNum"style=" background: #ff596d">
+            2<span style="font-size: 0.7rem;">nd</span>
+        </div>
+        {{?}}
+        {{?i == 2}}
+        <div class="runkingNum" style="background: #ff7d8d">
+            3<span style="font-size: 0.7rem;">rd</span>
+        </div>
+        {{?}}
+        {{?i > 2}}
+        <div class="runkingNum" style="background-color: #FFFFFF; color: #1A1A1A">
+            {{=i+1}}
+        </div>
+        {{?}}
+        <!--<div class="avatar2">-->
+        <!--</div>-->
+        <img src="{{=it.mLife.list[i].avatarInfo.avatar == null?'../../image/avatar.png':it.mLife.list[i].avatarInfo.isWxAvatar == 'YES'?it.mLife.list[i].avatarInfo.avatar:userPhoto+it.mLife.list[i].avatarInfo.avatar+'?x-oss-process=image/resize,m_fill,h_100,w_100'}}" class="avatar2" />
+
+        <div class="userName2">
+            {{=it.mLife.list[i].nickName}}
+        </div>
+        <i class="duola-iconfont icon-love-fill like2" style="color: #FF3C54"></i>
+        <div class="likeCount2">{{=it.mLife.list[i].votedCount}}</div>
+    </div>
+    <div class="shadow-s"></div>
+    {{}}}
+
+    </div>
+</script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/doT_min.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript">
+    var vm;
+//    用于判断网络请求是否完成的flag  初始化是有几个请求就有几个flag 用于处理异步显示问题
+    var isGetData = false;
+    apiready = function () {
+//        程序入口
+        init();
+    }
+    function getData() {
+        var url = duolaGoddess + 'queen/top';
+        var headers = _getAjaxHeaders(false, true);
+        var data = {
+            body:{
+                page:1,
+                pageSize:50
+            }
+        };
+        var extra = {};
+        _ajaxData(url, 'post', headers, data, function (ret, extra) {
+            if (ret.statusCode == 200){
+                var html = doTHtml('goddessList-template', ret);
+                var beskSunContainer = $api.byId('goddessListContainer');
+                $api.html(beskSunContainer, html);
+            }
+            //pullRefreshDone();
+        }, function (err, extra) {
+            //pullRefreshDone();
+        }, 0, extra);
+
+    }
+    function getHotData(){  // 获取热门排行数据
+    	var url = duolaGoddess+"queen/topSingle",
+    		headers = _getAjaxHeaders(false, false),
+    		data = _getAjaxData({
+    			page:1,
+    			pageSize:50
+    		});
+    	
+    	_ajaxData(url, "post", headers, data, getHotDataSuccess, getHotDataError);
+    	
+    	function getHotDataSuccess(data){
+    		if(data.statusCode==200){
+    			var hotList = document.getElementById("hotListContainer"),
+    				content = "";
+    			
+    			content = doTHtml("hotList-template",data);
+    			
+    			hotList.innerHTML = content;
+    		}else{
+    			toastMsg(data.msg);
+    		}
+    		pullRefreshDone();
+    	}
+    	
+    	function getHotDataError(err){
+    		pullRefreshDone();
+    	}
+    }
+    function loadMore() {
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {threshold: 0}
+        }, function (ret, err) {
+            toastMsg("加载更多")
+        });
+    }
+    function init() {
+        //                    初始化方法
+        api.setRefreshHeaderInfo({
+            visible: true,
+            loadingImg: 'widget://image/refresh.png',
+            bgColor: 'rgba(245, 245, 245, 1.0)',
+            textDown: '下刷新',
+            textUp: '松刷新',
+            showTime: true
+        }, function(ret, err){
+            if(ret){
+            	getHotData();
+                getData();
+            }
+        });
+        api.refreshHeaderLoading();
+        getHotData();
+        getData();
+//        loadMore();
+    }
+    
+    function showTab(self, id){  // 显示tab
+    	if(!showTab.currentHeader){
+    		showTab.currentHeader = document.getElementById("tab-header-hot");
+    		showTab.currentBody = document.getElementById("hotListContainer");
+    	}
+    	if(showTab.currentHeader==self){
+    		return
+    	}
+    	
+    	var targetBody = document.getElementById(id);
+    	
+    	showTab.currentHeader.classList.remove("active");
+    	self.classList.add("active");
+    	showTab.currentBody.classList.add("hide");
+    	targetBody.classList.remove("hide");
+    	showTab.currentHeader = self;
+    	showTab.currentBody = targetBody;
+    }
+    
+    function showPhotoGroupProxy(imgs,srcPath, index){ // 查看大图代理
+    	var paths = [];
+    	imgs = imgs.split(",");
+    	if(imgs.length){
+    		paths = imgs.map(function(item,index){
+    			return srcPath+item;
+    		})
+    		
+    		showPhotoGroup(paths, index);
+    	}
+    }
+    function showPhotoGroup(paths, index){	// 查看大图
+		var photoBrowser = api.require('photoBrowser');
+		photoBrowser.open({
+			images:paths,
+			bgColor:"#000",
+			placeholderImg:"widget://image/errImg.png",
+			activeIndex:index||0
+		}, function(ret, err){
+			if(ret.eventType=="show"){ // 如果photoBrowser为打开状态，阻止keyback的默认事件
+				var param = {},
+					winName = api.winName,
+					frameName = api.frameName;
+				param.name = "duolaGoddess";
+				param.script = getExecScript("execPreventKeyBack",[winName, frameName,"execClosePhotoBrowser()"]);
+				api.execScript(param);
+			}
+			if(ret.eventType=="click"){
+				execClosePhotoBrowser();
+			}
+		})
+	}
+	
+	function execClosePhotoBrowser(){  // 关闭photoBrowser, 在其它页面异步调用
+    	var photoBrowser = api.require('photoBrowser');
+    	photoBrowser.close();
+    	execCancelPreventKeyBack();
+    }
+    
+    function execCancelPreventKeyBack(){  // 取消win对keyback默认行为的阻止
+    	var param = {};
+		param.name = "duolaGoddess";
+		param.script="execCancelPreventKeyBack()";
+		api.execScript(param);
+    }
+    
+
+    //打开详情页面
+    function goDesignDatail(_id) {
+        var name = 'goddess_user';
+        var title ='';
+        var leftIcon = 'duola-iconfont icon-left';
+        var rightIcon = 'duola-iconfont icon-share';
+        var leftNav = setNavData(leftIcon);
+        var rightNav = setNavData(rightIcon);
+        var border = false;
+        var bounces = true;
+        var params = {};
+        params.nav = setNav(leftNav, border,rightNav);
+        params.frame = setFrame(bounces, {
+        });
+        params._id=_id
+        var from = {
+            winName: api.winName,
+            frameName: api.frameName
+        };
+        var url = 'goddess_user.html';
+        openNewWinFrame(name, title, params, from, url, null, null, null);
+    }
+    function start() {
+        //                    初始化后执行
+
+    }
+    function retart() {
+        //                    页面在后台状态时，需要操作时调用
+
+    }
+    function stop() {
+        //                    页面进入后台时进行，但未关闭时进行相关操作时调用
+
+    }
+    function destroy() {
+        //                  销毁界面时调用
+
+    }
+    function showView() {
+        //                    异步控制界面组件的显示  更具flag判断来自定义 每次网络请求成功修改对应flag后都要调用
+        if (isGetData){
+            $api.removeCls($api.byId("app"), 'hide');
+        }
+
+    }
+
+</script>
+</body>
+</html>

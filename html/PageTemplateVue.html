@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Vue新页面模板</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <!--AUI根据使用情况引入-->
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+
+    </style>
+</head>
+<body>
+<div id="app" v-cloak v-if="showApp">
+</div>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/vue/vue.min.js"></script>
+<script type="text/javascript">
+    var vm;
+//    用于判断网络请求是否完成的flag  初始化是有几个请求就有几个flag 用于处理异步显示问题
+    var isGetData = false;
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {
+                showApp: false
+            },
+            mounted: function () {
+//                挂载成功  逻辑代码执行入口
+                var self = this;
+            },
+            mothods: {
+                init: function () {
+//                    初始化方法  只执行一次
+                    var self = this;
+
+                },
+                start: function () {
+//                    初始化后执行
+                    var self = this;
+
+                },
+                stop: function () {
+//                    页面进入后台时进行，但未关闭时进行相关操作时调用
+                    var self = this;
+
+                },
+                restart: function () {
+//                    页面在后台状态时，需要操作时调用
+                    var self = this;
+
+                },
+                destroy: function(){
+//                  销毁界面时调用
+                },
+                showView: function () {
+//                    异步控制界面组件的显示  更具flag判断来自定义 每次网络请求成功修改对应flag后都要调用
+                    var self = this;
+                    if (isGetData){
+                        self.showApp = true;
+                    }
+                }
+            }
+        })
+    }
+//    用于apicloud的execScript方法调用Vue中各个生命周期中的方法
+    function start() {
+        vm.start();
+    }
+    function retart() {
+        vm.restart();
+    }
+    function stop() {
+        vm.stop();
+    }
+
+</script>
+</body>
+</html>

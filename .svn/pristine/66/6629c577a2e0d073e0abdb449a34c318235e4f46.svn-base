@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>晒一晒</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html, body{
+            background: transparent;
+            padding: 0rem;
+            margin: 0rem
+        }
+        .shadow-l{
+            background-color: #ECECEC;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            margin-left: 1rem;
+            background-color: #ECECEC;
+            height: 1px;
+        }
+        .photoItem{
+        	padding-bottom: 1rem;
+        }
+        .photo{
+            width: 100%;
+            height: 100vw;
+            overflow:hidden;
+            position: relative;
+        }
+        .photo img{
+        	max-width:100%;
+        	width:100%;
+        }
+        .photoAction{
+            width: 100%;
+            height:3rem;
+            position: relative;
+        }
+        .avatar{
+            width: 1.75rem;
+            height:1.75rem;
+            position: absolute;
+            left: 1rem;
+            border-radius: 50%;
+            top: 0.6rem;
+        }
+        .userName{
+            height: 3rem;
+            line-height: 3rem;
+            position: absolute;
+            left: 3.15rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #000000;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width:7rem;
+        }
+        .unlike{
+            width: 1.5rem;
+            height: 3rem;
+            line-height: 3rem;
+            position: absolute;
+            right: 6.2rem;
+            top: 0rem;
+            color: #FF3C54
+        }
+        .liked{
+            width: 1.5rem;
+            height: 3rem;
+            line-height: 3rem;
+            position: absolute;
+            right: 6.2rem;
+            top: 0rem;
+            color: #FF3C54
+
+        }
+        .share{
+            width: 1.5rem;
+            height: 3rem;
+            line-height: 3rem;
+            position: absolute;
+            right: 3.5rem;
+            top: 0rem;
+        }
+        .report{
+        	font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #000000;
+        	display:block;
+        	float: right;
+        	line-height:3rem;
+        	padding-right: 1rem;
+        }
+        .photoLike{
+            width: 100%;
+            height: 1.8rem;
+            position: relative;
+        }
+        .likeIcon{
+            width: 1rem;
+            height:1.8rem;
+            line-height: 1.8rem;
+            position: absolute;
+            left: 1rem;
+            top: 0rem;
+        }
+        .likeCount{
+            height:1.8rem;
+            line-height: 1.8rem;
+            position: absolute;
+            left: 2.25rem;
+            top: 0rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #000000;
+        }
+        .likeRanking{
+            height:1.8rem;
+            line-height: 1.8rem;
+            position: absolute;
+            right: 1rem;
+            top: 0rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #000000;
+        }
+        .photoContent{
+            width: 100%;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            font-family: PingFangSC-Regular;
+            font-size: 0.7rem;
+            color: #000000;
+        }
+        .photodate{
+            width: 100%;
+            height: 2.5rem;
+            padding-top: 0.5rem;
+            padding-left: 1rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #8B8B8B;
+        }
+        #loading {
+            /*padding-bottom: 2.8rem;*/
+            text-align: center;
+        }
+        #btn{
+            width: 2rem;
+            height:2rem;
+            position:fixed;
+            right:1rem;
+            bottom:1.3rem;
+            display:none;
+            border: 1px solid #f7f7f7;
+            background-color: #FFFFFF;
+            border-radius: 50%;
+        }
+        #btn i{
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            line-height: 2rem;
+            margin: 0 auto;
+            font-size: 0.55rem;
+            color: #000;
+            text-align: center;
+
+        }
+        #btn:active { background: #F8F8F8;}
+        .line{
+            width: 100%;
+            height: 0.5rem;
+            background: #ECECEC;
+        }
+        .search{
+            padding:0.5rem 1.5rem 0 1.5rem;
+            width: 100%;
+            height: 2.5rem;
+            background: #F8F8F8;
+        }
+        .search-box{
+            width: 100%;
+            height: 1.5rem;
+            margin: 0 auto;
+            text-align: center;
+            border: 1px solid #e5e5e5;
+            border-radius:0.5rem ;
+        }
+        .search-box .rightIcon{
+             color: #999;
+             margin-left: 1rem;
+             display: inline-block;
+             height: 1.5rem;
+             line-height: 1.5rem;
+             font-size: 0.7rem;
+         }
+        .search-box .rightIcon .left{
+            color: #999;
+            margin-left: 0.5rem;
+            display: inline-block;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            font-size: 0.7rem;
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="search" >
+        <div class="search-box" onclick="search()" >
+            <i class="duola-iconfont icon-search rightIcon">  <i class="left">娘娘您想找谁</i>    </i>
+        </div>
+    </div>
+    <div id="beskSunContainer">
+    </div>
+    <div id="loading" style="font-size: 12px; color: #999999;">
+        <img id="loadImg" src="../../icon/loading.gif" width="16"/>
+        <div id="loadText">更多数据加载中</div>
+    </div>
+    <a href="javascript:;" id="btn" title="回到顶部" >
+        <i class="duola-iconfont icon-dingbu"></i>
+    </a>
+</div>
+<script id="beskSun-template" type="text/x-dot-template">
+    {{for(var i = 0, len = it.mLife.count; i < len; i++){}}
+    <div class="photoItem">
+        <div class="photo" tapmode
+             onclick="{{=getExecScript('showPhotoGroupProxy',[it.mLife.list[i].imgs.join(','),userPhoto + it.mLife.list[i].userId+ '/community/'])}}">
+            <Img src="{{=it.mLife.list[i].imgs[0] == ''?'../../image/errImg.png':userPhoto + it.mLife.list[i].userId+ '/community/' +it.mLife.list[i].imgs[0]+'?x-oss-process=image/resize,m_fill,h_800,w_800'}}"
+                 style="position: absolute; left: 0rem; top: 0rem;width: 100%;
+                 background-image: url(../../image/errImg.png);background-position: center; background-repeat: no-repeat;background-size: 100%"
+                 onerror='this.src="../../image/errImg.png"'>
+        </div>
+        <div class="photoAction">
+            <img src="{{=it.mLife.list[i].avatarInfo.avatar == ''?'../../image/avatar.png':it.mLife.list[i].avatarInfo.isWxAvatar == 'YES'?it.mLife.list[i].avatarInfo.avatar:userPhoto+it.mLife.list[i].avatarInfo.avatar+'?x-oss-process=image/resize,m_fill,h_100,w_100'}}" class="avatar">
+            <div class="userName">
+                {{=it.mLife.list[i].nickName}}
+            </div>
+            {{?it.mLife.list[i].voted == 'NO'}}
+            <i class="duola-iconfont icon-nofollow unlike" data-index="1" tapmode onclick="goRecommend(this, '{{=it.mLife.list[i]._id}}',{{=i}})"></i>
+            {{?}}
+            {{?it.mLife.list[i].voted != 'NO'}}
+            <i class="duola-iconfont icon-follow liked" data-index="2" tapmode onclick="goRecommend(this, '{{=it.mLife.list[i]._id}}',{{=i}})"></i>
+            {{?}}
+            <i id="shared-btn" class="duola-iconfont icon-fenxiang share" tapmode onclick="execOpenSharedMask('{{=it.mLife.list[i]._id}}','{{=it.mLife.list[i].nickName}}','{{=userPhoto + it.mLife.list[i].userId+ '/community/' +it.mLife.list[i].imgs[0]}}')" style="display: block">
+
+            </i>
+            <span class="report" tapmode onclick="reportLife(this, '{{=it.mLife.list[i]._id}}')">举报</span>
+        </div>
+        <div class="shadow-s"></div>
+        <div class="photoLike">
+            <i class="duola-iconfont icon-love-fill likeIcon" style="color: #FF3C54"></i>
+            <div class="likeCount {{=it.mLife.list[i]._id}}">{{=it.mLife.list[i].votedCount}}</div>
+            <div class="likeRanking"></div>
+        </div>
+        <div class="photoContent">
+            {{=it.mLife.list[i].content}}
+        </div>
+        <div class="photodate">
+            {{=it.mLife.list[i].time}}
+        </div>
+    </div>
+    <div class="line"></div>
+    {{}}}
+</script>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/doT_min.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/weibo_sdk.js"></script>
+<script type="text/javascript" src="../../script/wx_sdk.js"></script>
+<script type="text/javascript" src="../../script/qq_sdk.js"></script>
+<script type="text/javascript">
+    var sharedBtnEl = null;
+    var id;
+    var page = 1;
+    var keyWords = '';
+    var dataObj = new Array();
+    var pageTotle = 0;
+//    用于判断网络请求是否完成的flag  初始化是有几个请求就有几个flag 用于处理异步显示问题
+    var isGetData = false;
+    var name,imgPath;
+    apiready = function () {
+//        程序入口
+        init();
+    };
+    function search(hide){ // 点击搜索后调用header的search方法
+    	if(hide){
+    		document.getElementById("search-btn").classList.remove("hide"); // 显示搜索框
+    		return;
+    	}
+    
+    	var param = {};
+    	
+    	param.script='search()';
+    	param.name = "duolaGoddess";
+    
+    	api.execScript(param);
+    	document.getElementById("search-btn").classList.add("hide");  // 隐藏搜索框
+    }
+    function getKeyWords(keyWords) {
+        this.keyWords = keyWords;
+//        getData(1)
+        api.refreshHeaderLoading();
+        document.getElementById("search-btn").classList.remove("hide"); // 显示搜索框
+    }
+    function getData(flag) {
+        if (page == 1){
+            $api.addCls($api.byId('loadImg'), 'hide');
+            $api.addCls($api.byId('loadText'), 'hide');
+        }else {
+            $api.removeCls($api.byId('loadImg'), 'hide');
+            $api.removeCls($api.byId('loadText'), 'hide');
+        }
+        var url = duolaGoddess + 'queen/latest';
+        var headers = _getAjaxHeaders(false, true);
+        var data = {
+            body:{
+                page:page,
+                pageSize:10,
+                keywords:keyWords
+            }
+        };
+        var extra = {};
+        _ajaxData(url, 'post', headers, data, function (ret, extra) {
+            if (ret.statusCode == 200){
+                pageTotle = ret.mLife.pageTotal;
+                $api.removeCls($api.byId('loadImg'), 'hide');
+                $api.text($api.byId('loadText'), '更多数据加载中');
+                var html = doTHtml('beskSun-template', ret);
+                var beskSunContainer = $api.byId('beskSunContainer');
+                if (ret.mLife.count == 0){
+                    $api.addCls($api.byId('loadImg'), 'hide');
+                    $api.removeCls($api.byId('loadText'), 'hide');
+                    $api.text($api.byId('loadText'), '没有更多数据');
+//                    pullRefreshDone();
+//                    return;
+                }
+                if (flag == 1){
+                    $api.html(beskSunContainer, html);
+                }else if (flag == 2){
+                    $api.append(beskSunContainer, html);
+                }
+            }
+            pullRefreshDone();
+        }, function (err, extra) {
+            pullRefreshDone();
+        }, 0, extra);
+
+
+    }
+    function showImgInfo(data) {
+        var name = 'goddess_queen_detail';
+        var url = 'goddess_queen_detail.html';
+        var data = {
+            _id:data
+        };
+        openNewWin(name,null,data,null,url,null,null);
+    }
+    function showPhotoGroupProxy(imgs,srcPath){ // 查看大图代理
+    	var paths = [];
+    	imgs = imgs.split(",");
+    	if(imgs.length){
+    		paths = imgs.map(function(item,index){
+    			return srcPath+item;
+    		})
+    		
+    		showPhotoGroup(paths);
+    	}
+    }
+    function showPhotoGroup(paths){	// 查看大图
+		var photoBrowser = api.require('photoBrowser');
+		photoBrowser.open({
+			images:paths,
+			bgColor:"#000",
+			placeholderImg:"widget://image/errImg.png"
+		}, function(ret, err){
+			if(ret.eventType=="show"){ // 如果photoBrowser为打开状态，阻止keyback的默认事件
+				var param = {},
+					winName = api.winName,
+					frameName = api.frameName;
+				param.name = "duolaGoddess";
+				param.script = getExecScript("execPreventKeyBack",[winName, frameName,"execClosePhotoBrowser()"]);
+				api.execScript(param);
+			}
+			if(ret.eventType=="click"){
+				execClosePhotoBrowser();
+			}
+		})
+	}
+    function loadMore() {
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {threshold: 0}
+        }, function (ret, err) {
+            //if (page < pageTotle+1){  // 说说改为随机后，不再需要判断pageTotal
+                ++page;
+                getData(2)
+            //}
+        });
+    }
+    
+    function reportLife(self, id){ // 举报说说
+    	var url = duolaGoddess+"queen/illegal",
+    		headers = _getAjaxHeaders(false, false),
+    		data = _getAjaxData({
+    			lifeId:id,
+    			type:"",
+    			mark:""
+    		});
+    	
+    	_ajaxData(url, "post", headers, data, reportLifeSuccess, reportLifeError);
+    	
+    	function reportLifeSuccess(data){
+    		if(data.statusCode==200){
+    			if(data.isAdmin.toLowerCase()=="no"){
+    				toastMsg(data.msg);
+    			}else if(data.isAdmin.toLowerCase()=="yes"){ // 如果是管理员的话，直接删除说说
+    				toastMsg("删除成功");
+    				self.parentNode.parentNode.classList.add("hide");
+    			}
+    		}else{
+    			toastMsg(data.msg);
+    		}
+    	}
+    	function reportLifeError(err){
+    		toastMsg("举报失败");
+    	}
+    }
+    
+    var isLikeing = false;
+    function goRecommend (el, lifeId, index) {
+        //var position = (page-1)*10+index;
+        //var conuntDom = $api.domAll('.likeCount')[parseInt(position)];
+        var conuntDom = el.parentNode.parentNode.querySelectorAll("."+lifeId)[0];
+        if (isLikeing){
+            return;
+        }
+        if (!isLogin()){
+            toastMsg('请先登录');
+            return;
+        }
+        isLikeing = true;
+        var url;
+        var flag = el.dataset.index;
+        flag == 1?url = duolaGoddess + 'queen/vote':url = duolaGoddess + 'queen/unvote';
+        var headers = _getAjaxHeaders(true, true);
+        var data = {
+            body:{
+                lifeId:lifeId
+            }
+        };
+        var extra = {};
+        _ajaxData(url, 'post', headers, data, function (ret, extra) {
+            isLikeing = false;
+            if (ret.statusCode == 200){
+                if (flag == 1){
+                    $api.removeCls(el,'icon-nofollow')
+                    $api.addCls(el,'icon-follow');
+                    $api.removeCls(el,'unlike');
+                    $api.addCls(el,'liked');
+                    el.dataset.index = 2;
+                    $api.text(conuntDom, parseInt(conuntDom.innerHTML)+1)
+                }else {
+                    $api.removeCls(el,'icon-follow');
+                    $api.addCls(el,'icon-nofollow');
+                    $api.removeCls(el,'liked');
+                    $api.addCls(el,'unlike');
+                    el.dataset.index = 1;
+                    $api.text(conuntDom, parseInt(conuntDom.innerHTML)-1)
+
+                }
+            }
+        }, function (err, extra) {
+            isLikeing = false;
+            toastMsg("点赞失败")
+        }, 0, extra);
+    }
+    function init() {
+        //                    初始化方法
+        api.setRefreshHeaderInfo({
+            visible: true,
+            loadingImg: 'widget://image/refresh.png',
+            bgColor: 'rgba(245, 245, 245, 1.0)',
+            textDown: '下刷新',
+            textUp: '松开刷新',
+            showTime: true
+        }, function(ret, err){
+            if(ret){
+                page = 1;
+                getData(1);
+                /*api.refreshHeaderLoading();*/
+            }
+        });
+        getData(1);
+        api.refreshHeaderLoading();
+        loadMore();
+    }
+    function start() {
+        //                    初始化后执行
+    }
+    function stripscript(s)
+    {
+        var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]")
+        var rs = "";
+        for (var i = 0; i < s.length; i++) {
+            rs = rs+s.substr(i, 1).replace(pattern, '');
+        }
+        return rs;
+    }
+    //点击分享按钮
+    function execOpenSharedMask(id,name,imgPath) {
+        this.name = stripscript(name);
+        this.imgPath = imgPath;
+        this.id = id;
+        var name = 'shared_mask';
+        var page = '../shared_mask_new.html';
+        var rect ={
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto'
+        };
+        var data = {id : id,frameName: api.frameName};
+        var bounces = false;
+        openNewFrame(name,page,bounces,rect,data);
+    }
+
+    function execCloseSharedMask(frameName,index){
+        api.closeFrame({
+            name:frameName
+        });
+        sharedIconHandler(index);
+    }
+    function sharedIconHandler(index){
+        //分享渠道统计
+        //检查是否是会员
+        api.download({
+            url: imgPath+'?x-oss-process=image/resize,m_fill,h_70,w_70',
+            savePath: 'fs://shareImage.png',
+            report: true,
+            cache: false, // 如果为true， 部分ios分享的thumb会有问题
+            allowResume: true
+        }, function(ret, err) {
+            var thumb = 'widget://image/sharedLogo.png';
+            if(ret.state==0){  // 如果不返回，部分安卓机分享qq时会报错
+        		return;
+        	}
+            if (ret.state == 1) {
+                thumb = 'fs://shareImage.png';  // 不写fs地址的话，安卓分享图片的thumb会有问题
+            }
+            index = parseInt(index);
+            var title = '多啦衣梦年度美照PK赛紧张进行中.....';
+            var description = '摘要：亲爱的，赶紧来！我正在参加美照PK大赛；快来帮我投一票吧！有很多平时不敢晒的私房照哦！（请微信用户点右上角的三个小圆点，选择在浏览器中打开，然后再进行下载。）';
+
+            var contentUrl= 'http://cdn.duolayimeng.com/statics/dora_download.html?userName='+name+'&imgPath='+imgPath;
+            switch (index){
+                case 1:
+                    wx_share_page({
+                        scene:'session',
+                        title:title,
+                        description:description,
+                        thumb:thumb,
+                        contentUrl:contentUrl
+                    },function(){
+                        addShareCount(1);
+
+                    });
+                    break;
+                case 2:
+                    wx_share_page({
+                        scene:'timeline',
+                        title:title,
+                        description:description,
+                        thumb:thumb,
+                        contentUrl:contentUrl
+                    },function(){
+                        addShareCount(2);
+                    });
+                    break;
+                case 3:
+                    qq_share_page({
+                        type:'QFriend',
+                        title:title,
+                        url:encodeURI(contentUrl), // 不encode的话，ios分享qq会出错
+                        thumb:thumb,
+                        description:description,
+                        imgUrl:imgPath+'?x-oss-process=image/resize,m_fill,h_70,w_70'  // 安卓qq分享只支持网络地址
+                    },function(){
+                        addShareCount(3);
+                    });
+                    break;
+                case 4:
+                    weibo_share_page({
+                        text:'',
+                        title:title,
+                        description:description,
+                        thumb:thumb,
+                        contentUrl:contentUrl
+                    },function(){
+                        addShareCount(4)
+                    });
+                    break;
+                default:
+                    break;
+            }
+        })
+
+    }
+    function addShareCount(index) {
+        var from  = index == 1? 'wx':index == 2? 'wx-line':index == 3? 'qq': index == 4?'weibo':'未知';
+        var url = duolaGoddess + 'queen/share';
+        var headers = _getAjaxHeaders(true, true);
+        var data = {
+            body:{
+                "lifeId":id,
+                "from":from
+            }
+        };
+        var extra = {};
+        _ajaxData(url, 'post', headers, data, function (ret, extra) {
+            if (ret.statusCode == 200){
+            }
+            pullRefreshDone();
+        }, function (err, extra) {
+
+        }, 0, extra);
+
+    }
+
+    //返回顶部
+    window.onload = function(){
+        var obtn = document.getElementById('btn');  //获取回到顶部按钮的ID
+        var clientHeight = document.documentElement.clientHeight;   //获取可视区域的高度
+        var timer = null; //定义一个定时器
+        var isTop = true; //定义一个布尔值，用于判断是否到达顶部
+
+        window.onscroll = function(){         //滚动条滚动事件
+
+            //获取滚动条的滚动高度
+            var osTop = document.documentElement.scrollTop || document.body.scrollTop;
+
+            if(osTop >= clientHeight){  //如果滚动高度大于可视区域高度，则显示回到顶部按钮
+                obtn.style.display = 'block';
+            }else{         //否则隐藏
+                obtn.style.display = 'none';
+            }
+
+            //主要用于判断当 点击回到顶部按钮后 滚动条在回滚过程中，若手动滚动滚动条，则清除定时器
+            if(!isTop){
+
+                clearInterval(timer);
+            }
+            isTop = false;
+
+        }
+
+        obtn.onclick = function(){    //回到顶部按钮点击事件
+            //设置一个定时器
+            timer = setInterval(function(){
+                //获取滚动条的滚动高度
+                var osTop = document.documentElement.scrollTop || document.body.scrollTop;
+                //用于设置速度差，产生缓动的效果
+                var speed = Math.floor(-osTop / 6);
+                document.documentElement.scrollTop = document.body.scrollTop = osTop + speed;
+                isTop =true;  //用于阻止滚动事件清除定时器
+                if(osTop == 0){
+                    clearInterval(timer);
+                }
+            },30);
+        };
+    };
+    
+    function execClosePhotoBrowser(){  // 关闭photoBrowser, 在其它页面异步调用
+    	var photoBrowser = api.require('photoBrowser');
+    	photoBrowser.close();
+    	execCancelPreventKeyBack();
+    }
+    
+    function execCancelPreventKeyBack(){  // 取消win对keyback默认行为的阻止
+    	var param = {};
+		param.name = "duolaGoddess";
+		param.script="execCancelPreventKeyBack()";
+		api.execScript(param);
+    }
+    function retart() {
+        //                    页面在后台状态时，需要操作时调用
+
+    }
+    function stop() {
+        //                    页面进入后台时进行，但未关闭时进行相关操作时调用
+
+    }
+    function destroy() {
+        //                  销毁界面时调用
+
+    }
+    function showView() {
+        //                    异步控制界面组件的显示  更具flag判断来自定义 每次网络请求成功修改对应flag后都要调用
+        if (isGetData){
+            $api.removeCls($api.byId("app"), 'hide');
+        }
+
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>晒一晒</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html,body{
+            background: #F6F6F8;
+            font-family: SourceHanSansCN-Normal;
+        }
+        #header-container{
+            width: 100%;
+            height: 3.7rem;
+            background: #FF3C54;
+            font-size: 0.9rem;
+            color: #FFFFFF;
+            position: fixed;
+            z-index: 1;
+            margin-top: 0rem;
+        }
+        .shadow-l{
+            background-color: #ECECEC;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            background-color: #ECECEC;
+            height: 1px;
+        }
+        .header-section{
+            padding-top: 1.2rem;
+            width: 100%;
+            height: 2.5rem;
+
+        }
+        .header-section .title{
+            width: 100%;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #FFFFFF;
+        }
+
+        .item-container{
+            /*padding-top: 0.4rem;*/
+            height: 15rem;
+        }
+        .item-container .picture{
+            height: 15rem;
+            background: pink;
+            width: 100%;
+        }
+        .head-container{
+            width: 100%;
+            height: 3rem;
+            padding:0.8rem 1rem 0 1rem;
+
+        }
+        .clear{
+            display: block;
+            content: "";
+            clear: both;
+        }
+        .comment-item{
+            float: left;
+        }
+        .comment-item .avatar{
+            width: 1.75rem;
+            height: 1.75rem;
+            background: pink;
+        }
+        .comment-item .name{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #000000;
+            margin-left: 0.4rem;
+            width: 2.1rem;
+            height: 0.7rem;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        .text{
+            float: right;
+        }
+        .text .heart{
+            width: 1.3rem;
+            height: 1.2rem;
+            margin-right: 1.5rem;
+            line-height: 1.2rem;
+            background: pink;
+        }
+        .text .return{
+            width: 1.2rem;
+            height: 1.1rem;
+            line-height: 1.1rem;
+            background: palegreen;
+        }
+        .line{
+            width: 100%;
+            height: 0.1rem;
+            background: #E6E6E6;
+        }
+        .box-container{
+            padding:0.8rem 1rem 0 1rem;
+            height: 6.5rem;
+            width: 100%;
+        }
+        .ranking-list{
+            float: left;
+            height: 1.6rem;
+            line-height: 1.6rem;
+        }
+        .ranking-list .heart{
+            display: inline-block;
+            float: left;
+            width: 0.85rem;
+            height: 0.75rem;
+            margin-right: 0.4rem;
+        }
+        .ranking-list .number{
+            font-size: 0.7rem;
+            color: #000000;
+            margin-top: -0.5rem;
+        }
+        .ranking{
+            float: right;
+            font-size: 0.7rem;
+            color: #000000;
+        }
+        .input{
+            width: 16.5rem;
+            height: 2.2rem;
+            font-size: 0.7rem;
+            color: #000000;
+            overflow: hidden;
+            padding-bottom: 0.5rem;
+        }
+        .time{
+            width: 1.9rem;
+            height: 0.6rem;
+            font-size: 12px;
+            color: #8B8B8B;
+        }
+        ul li{
+        padding-top: 4rem;
+         }
+        /*加载更多*/
+        #loading{
+            text-align: center;
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--上拉加载-->
+    <div id="loading" style="font-size: 12px; color: #999999;">
+        <img src="../../icon/loading.gif" width="16"/>
+        <div>更多数据加载中</div>
+    </div>
+
+</div>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+
+<script type="text/javascript">
+    var UIScrollPicture = null;
+    var UIScrollPictureUrls = null;
+    var currPage = 1;
+    var totalPage = 1;
+    //加载更多时候，服务器是否返回，以免用户多次触发
+    var isLoadMoreResponsed = true;
+
+    apiready = function () {
+        loadMore();
+    };
+
+    //下拉刷新
+    function loadRefresh() {
+
+    }
+
+    //加载更多
+    function loadMore() {
+        api.addEventListener({
+            name: 'scrolltobottom',
+        }, function (ret, err) {
+        });
+    }
+</script>
+</html>

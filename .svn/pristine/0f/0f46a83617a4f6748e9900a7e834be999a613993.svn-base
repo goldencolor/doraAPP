@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>分享弹出遮罩</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+
+    <style>
+        html{
+            background: rgba(0,0,0,0.0);
+        }
+        body{
+            background: rgba(0,0,0,0.3);
+        }
+        @keyframes containerBox {
+            from{
+                transform: translateY(10rem);
+                -webkit-transform: translateY(10rem);
+                display: none;
+            }
+            to{
+                transform: translateY(0);
+                -webkit-transform: translateY(0);
+                display: block;
+            }
+        }
+        @-webkit-keyframes containerBox {
+            from{
+                transform: translateY(10rem);
+                -webkit-transform: translateY(10rem);
+                display: none;
+            }
+            to{
+                transform: translateY(0);
+                -webkit-transform: translateY(0);
+                display: block;
+            }
+        }
+        #mask-container{
+            box-shadow: 0rem -0.1rem 0.2rem 0rem rgba(0,0,0,0.22);
+            background: #F7F7F7;
+            height: 12.5rem;
+            animation: containerBox 500ms ease 0ms;
+            -webkit-animation: containerBox 500ms ease 0ms;
+        }
+        #mask-container .header{
+            height: 2.8rem;
+            line-height: 2.8rem;
+            /*border-bottom: 1px solid #F1F1F1;*/
+            padding: 0 1rem;
+            text-align: center;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.9rem;
+            color: #828282;
+        }
+        #mask-container .body{
+            padding-top: 2.1rem;
+            padding-left: 0rem;
+            padding-right: 1rem;
+            height: 6.9rem;
+            width: 100%;
+        }
+        #mask-container .body p{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #828282;
+        }
+        #mask-container .weixin .icon,#mask-container .weixinquan .icon{
+            margin-bottom: 0.7rem;
+        }
+        .shareItem{
+            text-align: center;
+            margin-left: 1rem;
+            /*background-color: #00A7E9;*/
+        }
+        .shareItem .icon{
+            width: 3.4rem;
+            height: 3.4rem;
+            line-height: 3.4rem;
+            background: #FFFFFF;
+            box-shadow: 0rem 0.15rem 0.45rem 0rem rgba(0,0,0,0.04);
+            border-radius: 0.8rem;
+            color: #767676;
+        }
+        .shareItem .text{
+            width: 3.4rem;
+            text-align: center;
+            font-family: SourceHanSansCN-Light;
+            font-size: 13px;
+            color: #262B30;
+            letter-spacing: -0.47px;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex flex-vertical" style="height: 100%;">
+        <div class="flex-1" tapmode onclick="closeMask()">
+
+        </div>
+        <div id="mask-container" >
+            <div class="header">
+                <span style="float: left;font-family: SourceHanSansCN-Normal;font-size: 18px;color: #262B30;">分享给小伙伴</span>
+                <span style="float: right;font-family: SourceHanSansCN-Light;font-size: 14px;color: #FF3C54;letter-spacing: -0.5px;" tapmode onclick="closeMask()">取消</span>
+            </div>
+            <div class="body flex">
+                <div class="shareItem  weixin flex-1 flex flex-vertical flex-center" tapmode onclick="closeMask(1)">
+                    <div class="icon">
+                        <i class="duola-iconfont icon-weixin1" style="font-size: 1.2rem"></i>
+                    </div>
+                    <div class="text">微信</div>
+                </div>
+                <div class="shareItem weixinquan flex-1 flex flex-vertical flex-center" tapmode onclick="closeMask(2)">
+                    <div class="icon">
+                        <i class="duola-iconfont icon-time-line1" style="font-size: 1.2rem"></i>
+                    </div>
+                    <div class="text">朋友圈</div>
+                </div>
+                <div class="shareItem weixin flex-1 flex flex-vertical flex-center" tapmode onclick="closeMask(3)">
+                    <div class="icon">
+                        <i class="duola-iconfont icon-QQ1" style="font-size: 1.2rem"></i>
+                    </div>
+                    <div class="text">QQ好友</div>
+                </div>
+                <div class="shareItem weixinquan flex-1 flex flex-vertical flex-center" tapmode onclick="closeMask(4)">
+                    <div class="icon">
+                        <i class="duola-iconfont icon-xinlang1" style="font-size: 1.2rem"></i>
+                    </div>
+                    <div class="text">新浪微博</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+
+    apiready = function(){
+        api.parseTapmode();
+    }
+
+    function closeMask(index){
+//        console.log(JSON.stringify(api.pageParam));
+        var params = {
+            script: 'execCloseSharedMask("'+api.frameName+'","'+index+'")'
+        };
+        if(api.pageParam.data && api.pageParam.data.winName){
+            params.name = api.pageParam.data.winName;
+        }
+        if(api.pageParam.data && api.pageParam.data.frameName){
+            params.frameName = api.pageParam.data.frameName;
+        }
+        api.execScript(params);
+    }
+
+</script>
+</html>

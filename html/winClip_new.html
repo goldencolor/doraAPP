@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>图片裁剪</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css" />
+	<link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+</head>
+<body>
+	<header id="header" class="duola-header flex">
+		<a id="nav-left" class="duola-icon-area" tapmode onclick="closeWin()">
+			<span id="nav-left-icon" class="nav-left-icon"></span><span id="nav-left-text" class="nav-text"></span>
+		</a>
+		<div id="nav-title" class="nav-title flex-1"></div>
+		<a id="nav-right" class="duola-icon-area" tapmode onclick="save()">
+			<span id="nav-right-text" class="nav-text"></span><span id="nav-right-icon" class="nav-right-icon"></span>
+		</a>
+	</header>
+
+</body>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/url.js"></script>
+    <script type="text/javascript" src="../script/uz.js"></script>
+	<script type="text/javascript">
+	
+	var imageClip = '';
+
+	apiready = function(){
+		api.parseTapmode();
+		var header = $api.byId('header');
+        $api.fixStatusBar(header); 
+        var imgPath = api.pageParam.imgPath;
+        var title = api.pageParam.title;
+		var leftNav = api.pageParam.leftNav ? api.pageParam.leftNav : {};//导航栏左侧
+		var rightNav = api.pageParam.rightNav ? api.pageParam.rightNav : {};//导航栏右侧
+		var border = api.pageParam.border ? api.pageParam.border : false;//导航栏底部边框
+		getTitle(title);
+		getNavLeft(leftNav);
+		getNavRight(rightNav);
+		getNavBorder(border);
+		var headerHeight = $api.offset(header).h;
+		var bodyHeight = $api.offset($api.dom('body')).h;
+//  	var w1 = (bodyHeight - headerHeight) * 0.5;
+//  	var w2 = api.winWidth * 0.5;
+		var w1 = (bodyHeight - headerHeight);
+    	var w2 = api.winWidth;
+    	var w = w1 < w2 ? w1 : w2;
+    	var w = w > 400 ? 400 : w;
+    	var clipRect = {
+    		x: (api.winWidth - w) / 2,
+    		y: (bodyHeight - headerHeight - w) / 2 ,
+    		w: w,
+    		h: w,
+    		fixation:true
+    	};
+    	imageClip = api.require('FNImageClip');
+		imageClip.open({
+			srcPath:imgPath,
+			rect:{
+				x: 0,
+	            y: headerHeight,
+	            w: 'auto',
+	            h: bodyHeight - headerHeight,
+			},
+			style:{
+				mask:'rgba(0,0,0,150)',
+				clip:clipRect,
+				borderWidth:1,
+				borderColor: '#0f0'
+			},
+			mode:'image',
+			bg:'rgba(0,0,0,0)',
+			layerColor:'rgba(0,0,0,150)',
+			
+		},function(ret, err){
+			if( err ){
+                toastMsg(err.msg);
+            }
+		});
+	};
+
+	function closeWin(){
+		api.closeWin();
+	}
+	
+	//android保存图片
+	function save(){
+		if(!imageClip){
+			toastMsg('图片裁剪错误');
+			return ;
+		}
+		imageClip.save({
+			quality:0.6
+		},function(ret, err){
+//			console.log(getLogStr([ret,err]));
+			if(ret && ret.destPath){
+				var winName = api.pageParam.winName;
+				var frameName = api.pageParam.frameName;
+				var rightNav = api.pageParam.rightNav ? api.pageParam.rightNav : {};//导航栏右侧
+				var callback = rightNav.callback ? rightNav.callback : '';
+				if(!isDefine(callback)){
+					return;
+				}
+				var extra = rightNav.rightExtra ? rightNav.rightExtra : '';
+				var params = {
+					script: getExecScript(callback,new Array(extra,api.winName,ret.savePath))
+				};
+				if(isDefine(winName)){
+					params.name = winName;
+				}
+				if(isDefine(frameName)){
+					params.frameName = frameName;
+				}
+				api.execScript(params);
+			}else if(err){
+	    		toastMsg(err.msg);
+			}else{
+				toastMsg('图片裁剪错误');
+			}
+		});
+	}
+
+	</script>
+</html>

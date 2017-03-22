@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>多啦女神首页footer</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html, body{
+            background-color: #FFFFFF;
+        }
+        .shadow-s{
+            background-color: #ECECEC;
+            height: 1px;
+        }
+        .footFont{
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 9px;
+            color: #262B30;
+            padding-top: 0.5rem;
+        }
+        .footIconActive{
+            color: #FF3C54;
+        }
+    </style>
+</head>
+<body>
+<div class="shadow-s"></div>
+<div class="aui-row footFont" id="footContainer">
+    <div id="foot1" class="aui-col-xs-4" onclick="switchFooter(1)">
+        <i id="footIcon1" class="duola-iconfont icon-gerenshequ"></i>
+        <div >女神广场</div>
+    </div>
+    <div id="foot0" class="aui-col-xs-4 footIconActive" onclick="switchFooter(0)">
+        <i id="footIcon0" class="duola-iconfont icon-paihangbang1 icon-paihangbang"></i>
+        <div >排行榜</div>
+    </div>
+    <div id="foot2" class="aui-col-xs-4" onclick="switchFooter(2)">
+        <i id="footIcon2" class="duola-iconfont icon-wo"></i>
+        <div >我</div>
+    </div>
+</div>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript">
+    var lastItem = 0;
+    apiready = function () {
+        switchFooter(1)
+    }
+    function switchFooter(index) {
+        if (index == 2 && !isLogin()){
+            toastMsg('请先登录');
+            return;
+        }
+        if (index != 1){
+            var params2 = {
+                script: "hideSearchBox()"
+            };
+            params2.name = api.winName;
+            api.execScript(params2);
+        }
+//        改变foot颜色
+        $api.removeCls($api.dom($api.byId('footContainer'), '.footIconActive'), 'footIconActive');
+        $api.addCls($api.byId('foot'+index), 'footIconActive');
+        $api.removeCls($api.byId('footIcon'+lastItem), lastItem == 0?'icon-paihangbang1':lastItem == 1?'icon-gerenshequ1':'icon-wo1');
+        $api.addCls($api.byId('footIcon'+lastItem), lastItem == 0?'icon-paihangbang':lastItem == 1?'icon-gerenshequ':'icon-wo');
+        $api.addCls($api.byId('footIcon'+index), index == 0?'icon-paihangbang1':index == 1?'icon-gerenshequ1':'icon-wo1');
+
+        var params = {
+            script: getExecScript('onFooterItemClickListener', new Array(index+''))
+        };
+        params.name = api.winName;
+        api.execScript(params);
+        lastItem = index;
+    }
+</script>
+</body>
+</html>

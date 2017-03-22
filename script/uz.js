@@ -136,6 +136,9 @@ var CONSTANT = {
 	SEASONALL : ['全部','秋装','冬装','春装','夏装'],
 	DRESS : ["全部","A字裙", "背心裙", "长裙", "包裙", "旗袍", "吊带裙", "鱼尾裙", "百褶裙", "衬衣裙", "小礼裙", "背带裙"],
 	COAT:['外套','上衣','马夹','连衣裙','裤装','半裙','套装'],
+	TYPE:['',''],
+    STYLE:['',''],
+    STYLEOCCASION:[''],
 	WEIXINAPPKEY: 'wx4a8df4d0d29958b4',
 	WEIXINAPPSECRET: '04fbbcca27b64c9e387447b867d7cf2c',
 	MEIQIAAPPKEY: 'cb0e55a92541645fc8b143bb46aa894f'
