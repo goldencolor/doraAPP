@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>我的优惠劵</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html, body {
+            background: #F8F8F8;
+        }
+        .duola-header {
+            background: #ffffff;
+        }
+        .duola-header .nav-text {
+            font-family: SourceHanSansCN-Light;
+            font-size: 0.8rem;
+            color: #FF3C54;
+            margin-right: 0.7rem;
+        }
+        #nav-right{
+            text-align: left;
+            position: relative;
+            width: 3.6rem;
+            height: 1.5rem;
+        }
+        .ticket {
+            width: 100%;
+            border-left: 1px dotted #F2F2F2;
+            height: 4.5rem;
+            text-align: center;
+        }
+        .ticket::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -4px;
+            border: 5px solid #F2F2F2;
+            border-radius: 50%;
+        }
+        .ticket::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: -4px;
+            border: 5px solid #F2F2F2;
+            border-radius: 50%;
+        }
+        .ticket div{
+            position: absolute;
+            top: 1.5rem;
+            left: 1.6rem;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            height: 1.1rem;
+            width: 1.1rem;
+            border-radius: 50%;
+            border: 1px solid #ffffff;
+        }
+        .ticket div .icon{
+            display: none;
+        }
+        .ticket .ticket-in {
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            padding: 0px 2px;
+            margin: 1.5rem 0;
+            line-height: 1rem;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            height: 1.1rem;
+            width: 1.1rem;
+            border-radius: 50%;
+            border: 1px solid #ffffff;
+            opacity: 0.01;
+        }
+        .ticket-in:checked + div{
+            z-index: 1;
+            background: #fff;
+        }
+        .ticket-in:checked + div .icon{
+            display: block;
+           font-size: 0.6rem;
+            color: #FF3C53;
+        }
+        .ticket-in.active{
+            background: #fff;
+        }
+        #nav-left {
+            text-align: left;
+            position: relative;
+            margin-left: 0.6rem;
+        }
+        .aui-row {
+            padding: 1rem;
+        }
+        .aui-row .aui-content {
+            background-color: #FF3C54;
+            height: 4.5rem;
+            border-radius: 0.2rem;
+            margin-bottom: 1rem;
+            width: 100%;
+            box-shadow: 0px 1px 3px 0px rgba(166, 166, 166, 0.86);
+        }
+        .list-item-media {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .list-item .list-item-inner {
+            flex: 1
+        }
+        .list-item-media span {
+            padding: 1.2rem 0;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 1.2rem;
+            color: #FFFFFF;
+            font-weight: 500;
+        }
+
+        .list-item-inner {
+            padding: 1rem 0;
+            font-size: 0.5rem;
+            color: #FFFFFF;
+            letter-spacing: -0.41px;
+            line-height: 0.8rem;
+            font-family: SourceHanSansCN-Regular;
+
+        }
+        .checkbox {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: #ffffff;
+        }
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak v-if="showApp">
+    <header id="header" class="duola-header flex">
+        <a id="nav-left" class="duola-icon-area" tapmode onclick="closeOrderGroup()">
+            <span id="nav-left-icon" class="nav-left-icon duola-iconfont icon-left"></span>
+        </a>
+
+        <div id="nav-title" class="nav-title flex-1">
+            我的优惠券
+        </div>
+        <a id="nav-right" class="duola-icon-area" tapmode  @click="Withdrawals">
+            <span id="nav-right-text" class="nav-text"  v-show="checkNames.length !==0" >提现</span>
+        </a>
+    </header>
+    <div class="aui-row">
+        <div class="aui-content" v-for="i in 3" >
+            <div class="aui-col-xs-3">
+                <div class="list-item-media">
+                    <!--<span>{{couopn.title}}</span>-->
+                    <span>¥100</span>
+                </div>
+            </div>
+            <div class="aui-col-xs-6">
+                <div class="list-item-inner">
+                    <div class="list-item-text">
+                        <!--{{couopn.desc}}-->
+                        推荐有奖 (可提现)
+                    </div>
+                    <div class="list-item-text ">
+                        <!--有效期 {{couopn.validateOn | newDate }}至{{couopn.validateEnd | newDate}}-->
+                        有效期至2017-01-14至数2017-12-31
+                    </div>
+                    <div class="list-item-text">
+                        会员可用
+                        <!--<span v-if="couopn.extra && couopn.extra.depoist>0">需{{couopn.extra.depoist}}元押金</span>-->
+                    </div>
+                </div>
+            </div>
+            <div class="aui-col-xs-3">
+                <!--<div class="ticket"  @click="clickEmploy(couopn.category,couopn.code)">-->
+                <div class="ticket">
+                    <input class="ticket-in" type="checkbox"  :value="i" v-model="checkNames"  />
+                    <div> <i class="icon duola-iconfont icon-PathCopy" ></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="loading aui-text-center" v-show="couopns.length === 0" style="text-align: center">
+            <p>暂无服务券</p>
+        </div>
+
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript">
+    var vm;
+    var check;
+    apiready = function () {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        if (!isLogin()) {
+            goLogin(null, "../win_regin.html");
+        }
+
+        vm = new Vue({
+            el: '#app',
+            data: {
+                showApp: true,
+                couopns: [1],
+                checked: [],
+                checkNames:[]
+            },
+            mounted: function () {
+//                挂载成功  逻辑代码执行入口
+                var self = this;
+                self.init();
+
+            },
+            beforeUpdate: function () {
+//                数据发生变化时，更新界面前的回调
+                var self = this;
+            },
+            updated: function () {
+//                数据发生变化时，更新界面结束的回调  不要做数据修改操作  否则会发生死循环
+                var self = this;
+            },
+            methods: {
+                init: function () {
+//                    初始化方法  只执行一次
+                    var self = this;
+//                    初始化监听
+                    self.setEventListener();
+//
+                },
+               /* checkValue:function(i){
+                    var self = this;
+                    self.checked[i] = !self.checked[i];
+                    alert(i)
+                },*/
+
+                Withdrawals:function(){
+                    var self = this;
+                     alert(self.checkNames)
+                },
+                initRefreshHeaderInfo: function () {
+                },
+                clickEmploy: function () {
+                    /* api.openFrame({
+                     name: 'cash-advance',
+                     url: 'cash-advance.html',
+                     rect: {
+                     x: 0,
+                     y: 0,
+                     w: 'auto',
+                     h: 'auto'
+                     },
+                     bounces: false,
+                     bgColor: 'rgba(0,0,0,0)',
+                     vScrollBarEnabled: false,
+                     hScrollBarEnabled: false
+                     });*/
+
+                },
+                setEventListener: function () {
+//                    初始化时设置监听事件
+                    var self = this;
+                    api.addEventListener({
+                        name: 'pause'
+                    }, function (ret, err) {
+                        self.pause();
+
+                    });
+                    api.addEventListener({
+                        name: 'resume'
+                    }, function (ret, err) {
+                        self.resume();
+                    });
+                    api.addEventListener({
+                        name: 'offline'
+                    }, function (ret, err) {
+                    });
+                    api.addEventListener({
+                        name: 'online'
+                    }, function (ret, err) {
+                    });
+
+                },
+                start: function () {
+//                    初始化后执行
+                    var self = this;
+
+                },
+                pause: function () {
+//                    页面进入后台时进行，但未关闭时进行相关操作时调用
+                    var self = this;
+
+                },
+                resume: function () {
+//                    页面在后台状态时，需要操作时调用
+                    var self = this;
+
+                },
+                destroy: function () {
+//                  销毁界面时调用
+                }
+            },
+            computed: {}
+        })
+    }
+    //    用于apicloud的execScript方法调用Vue中各个生命周期中的方法
+    function start() {
+        vm.start();
+    }
+    function resume() {
+        vm.resume();
+    }
+    function pause() {
+        vm.pause();
+    }
+    function closeOrderGroup() {
+        closeWin();
+    }
+
+    function navRightHandler() {
+        goWebUrl('openBuyInfo', 'http://mp.weixin.qq.com/s/aj7Gb52OVFAYehVELQOxNw', '使用规则', '../../header_web.html');
+    }
+
+</script>
+</html>

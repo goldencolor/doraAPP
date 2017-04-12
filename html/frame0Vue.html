@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <!--AUI根据使用情况引入-->
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html, body{
+            background: transparent;
+            padding: 0rem;
+            margin: 0rem
+        }
+        .shadow-l{
+            background-color: #ECECEC;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            background-color: #ECECEC;
+            height: 1px;
+        }
+        #UIScrollPicture{
+            background: url("../image/errImg.png");
+            background-position: center;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak v-if="showApp">
+    <div id="UIScrollPicture"></div>
+    <div class="aui-grid" style="margin-top:-0.5px;">
+        <div class="aui-row duola-introduce">
+            <div class="aui-col-xs-3 icon-item">
+                <!--<i class="duola-iconfont icon-tuxing"></i>-->
+
+                <div class="aui-grid-label"><span class="spot"></span> 24小时发货</div>
+            </div>
+            <div class="aui-col-xs-3 icon-item">
+                <!-- <i class="duola-iconfont icon-icon-test-copy photo"></i>-->
+                <div class="aui-grid-label"><span class="spot"></span> 无限穿衣</div>
+            </div>
+            <div class="aui-col-xs-3 icon-item">
+                <!-- <i class="duola-iconfont icon-icon-test1"></i>-->
+                <div class="aui-grid-label"><span class="spot"></span> 服装免洗</div>
+            </div>
+            <div class="aui-col-xs-3 icon-item">
+                <!--<i class="duola-iconfont icon-icon-test2"></i>-->
+                <div class="aui-grid-label"><span class="spot"></span> 往返包邮</div>
+            </div>
+        </div>
+        <div class="aui-row duola-action">
+            <div class="aui-col-xs-3 icon-item" tapmode onclick="goPopularity('model')">
+                <i class="duola-iconfont icon-hot" style="color:#FF001F;"></i>
+                <div class="aui-grid-label ">人气排名</div>
+            </div>
+            <div class="aui-col-xs-3 icon-item" tapmode onclick="goYearVip()">
+                <i class="duola-iconfont icon-nianfeihuiyuan"></i>
+                <div class="aui-grid-label">年费专享</div>
+            </div>
+            <div class="aui-col-xs-3 icon-item" tapmode onclick="goRecommend()">
+                <i class="duola-iconfont icon-tuijianyoujiang" id="c2c-icon"></i>
+                <div class="aui-grid-label" id="c2c-lable">推荐有奖</div>
+            </div>
+            <div class="aui-col-xs-3 icon-item" tapmode onclick="goddessClick()">
+                <i class="duola-iconfont icon-duolanvshen" style="color:#FF001F;"></i>
+                <div class="aui-grid-label">多啦女神</div>
+            </div>
+        </div>
+        <!--<div class="aui-row">
+            <div class="aui-col-xs-3 icon-item" tapmode onclick="goPopularity('model')">
+                <i class="duola-iconfont icon-love"></i>
+                <img src="../image/love.png" alt="" style="width: 30%;height: auto;padding-bottom: 0.3rem">
+                <div class="aui-grid-label">人气</div>
+            </div>
+            <div class="aui-col-xs-3 icon-item" tapmode onclick="goYearVip()">
+                <i class="duola-iconfont icon-annual" style="color: #FF6100;"></i>
+                <img src="../image/que.png" alt="" style="width: 30%;height: auto;padding-bottom: 0.3rem">
+                <div class="aui-grid-label">年费专享</div>
+            </div>
+            <div class="aui-col-xs-3 icon-item" tapmode onclick="goSeason()">
+                <i class="duola-iconfont icon-spring"></i>
+                <img src="../image/flower.png" alt="" style="width: 30%;height: auto ;padding-bottom: 0.3rem">
+                <div class="aui-grid-label">春季预选</div>
+            </div>
+            <div class="aui-col-xs-3 icon-item" tapmode onclick="goChoose()">
+                <i class="duola-iconfont icon-star"></i>
+                <img src="../image/star.png" alt="" style="width: 30%;height: auto;padding-bottom: 0.3rem">
+                <div class="aui-grid-label">选衣达人</div>
+            </div>
+        </div>-->
+    </div>
+
+</div>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/vue/vue.min.js"></script>
+<script type="text/javascript">
+    var vm;
+    var UIScrollPicture = null;
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {
+                showApp: true,
+                adPaths: []
+            },
+            mounted: function () {
+//                挂载成功  逻辑代码执行入口
+                var self = this;
+                self.init();
+            },
+            methods: {
+                init: function () {
+//                    初始化方法  只执行一次
+                    var self = this;
+                    self.initBanner();
+                    self.initEventListener();
+
+
+                },
+                initBanner: function () {
+                    var self = this;
+//                    更改轮播图片高宽比
+                    var w = api.winWidth;
+                    var h = w * 1 / CONSTANT.UISCROLLPICTURERATE;
+                    var UIScrollPictureEl = $api.byId('UIScrollPicture');
+                    if (UIScrollPictureEl) {
+                        $api.css(UIScrollPictureEl, 'height:' + h + 'px');
+                    }
+                    UIScrollPicture = api.require('UIScrollPicture');
+                    if (!isDefine(UIScrollPicture)) {
+                        return;//项目没有加载这个模块
+                    }
+                    UIScrollPicture.open({
+                        rect: {
+                            x: 0,
+                            y: 0,
+                            w: w,
+                            h: h
+                        },
+                        data: {
+                            paths: self.adPaths
+                        },
+                        styles: {
+                            indicator: {
+                                align: 'center',
+                                color: '#FFFFFF',
+                                activeColor: '#FF3C54'
+                            }
+                        },
+			            placeholderImg:'widget://image/errImg.png',
+                        contentMode: 'scaleToFill',
+                        interval: 4,
+                        fixedOn: api.frameName,
+                        loop: true,
+                        fixed: false
+                    }, function (ret, err) {
+                        console.log("initBanner   === callback")
+                        console.log("ret  === "+JSON.stringify(ret))
+                        console.log("err  === "+JSON.stringify(err))
+
+                        if (ret.status && ret.eventType == 'show') {
+                        } else if (ret.status && ret.eventType == 'click') {
+//                            sendEventUmeng(CONSTANT.UMENGEVENT.SCROLL_PICTURE, {
+//                                "index": ret.index+''
+//                            });
+//                            goAd(ret.index);
+                        }
+                    });
+                },
+                initEventListener: function () {
+                    //监听用户退出广播事件,切换到footer0
+                    api.addEventListener({
+                        name: 'loginOut'
+                    }, function (ret, err) {
+                        api.refreshHeaderLoading();
+                    });
+
+//                    下拉刷新监听
+                    api.setRefreshHeaderInfo({
+                        visible: true,
+                        loadingImg: 'widget://image/refresh.png',
+                        bgColor: '#eee',
+                        textColor: '#aaa',
+                        textDown: '下拉刷新',
+                        textUp: '松开刷新',
+                        showTime: true
+                    }, function(ret, err){
+                        if(ret){
+
+                        }
+                    });
+                },
+                start: function () {
+//                    初始化后执行
+                    var self = this;
+
+                },
+                stop: function () {
+//                    页面进入后台时进行，但未关闭时进行相关操作时调用
+                    var self = this;
+
+                },
+                restart: function () {
+//                    页面在后台状态时，需要操作时调用
+                    var self = this;
+
+                },
+                destroy: function(){
+//                  销毁界面时调用
+                }
+            }
+        })
+    }
+//    用于apicloud的execScript方法调用Vue中各个生命周期中的方法
+    function start() {
+        vm.start();
+    }
+    function retart() {
+        vm.restart();
+    }
+    function stop() {
+        vm.stop();
+    }
+
+</script>
+</body>
+</html>

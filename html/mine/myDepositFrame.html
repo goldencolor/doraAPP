@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>退款进度</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        #header {
+            background: #FF3C54;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.9rem;
+            color: #FFFFFF;
+
+        }
+
+        #nav-left {
+            text-align: left;
+            position: relative;
+            margin-left: 0.6rem;
+        }
+
+        .nav-title {
+            margin-left: -2.6rem;
+        }
+
+        .duola-header .nav-left-icon, .duola-header .nav-title, .duola-header {
+            color: #ffffff;
+        }
+
+        /*时间轴*/
+        .line-wrap {
+            background: #FF3C54;
+        }
+
+        .line-container {
+            padding: 2rem 0 1.7rem 0;
+        }
+
+        .dot {
+            width: 0.6rem;
+            height: 0.6rem;
+            background: #fff;
+            border-radius: 100%;
+            position: relative;
+            z-index: 3;
+        }
+
+        .dot.active {
+            background: #ffffff;
+        }
+
+        .bg-dot {
+            position: absolute;
+            top: -0.3rem;
+            left: 50%;
+            margin-left: -0.6rem;
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 100%;
+            opacity: 0.5;
+            background: #FFFFFF;
+            z-index: 2;
+        }
+
+        .line-item {
+            position: relative;
+        }
+
+        .line-item:not(:last-child):after {
+            content: '';
+            position: absolute;
+            top: 0.25rem;
+            left: 50%;
+            width: 100%;
+            height: 0.1rem;
+            background: #fff;
+            z-index: 1;
+        }
+
+        .line-item.active:after {
+            background: #ffffff;
+        }
+
+        .triangle-up {
+            width: 0;
+            height: 0;
+            border-left: 0.4rem solid transparent;
+            border-right: 0.4rem solid transparent;
+            border-bottom: 0.4rem solid #ffffff;
+        }
+
+        .text-container {
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            padding-bottom: 1rem;
+        }
+
+        .text-container div {
+            opacity: 0.6;
+        }
+
+        .text-container .active {
+            color: white;
+            opacity: 1;
+        }
+
+        /*中间部分*/
+        .body-item {
+            height: 5rem;
+            /*padding-left: 1rem;*/
+
+        }
+
+        .item-label {
+            font-size: 0.8rem;
+            padding-left: 0.3rem;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 16px;
+            color: #313131;
+        }
+
+        .body-item .money {
+            margin-top: 0.4rem;
+        }
+
+        .body-section {
+            padding: 2.7rem 0rem 0rem 0rem;
+            font-family: SourceHanSansCN-Normal;
+        }
+
+        .body-section .title {
+            font-size: 1rem;
+            margin-bottom: 0.45rem;
+            width: 100%;
+            font-family: SourceHanSansCN-Regular;
+            color: #313131;
+        }
+
+        .body-section .sub-title {
+            font-size: 0.7rem;
+            color: #4A4A4A;
+            width: 100%;
+            font-family: SourceHanSansCN-Regular;
+
+        }
+
+        .money {
+            font-family: ArialMT;
+            font-size: 2rem;
+            color: #313131;
+            line-height: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .moeny-desc {
+            font-family: SourceHanSansCN-Normal;
+            font-size: 1rem;
+            color: #313131;
+            line-height: 1rem;
+        }
+        .body-box{
+            padding: 0 1rem;
+        }
+        .line{
+            width: 100%;
+            height: 1px;
+            background: #c8c8c8;
+        }
+
+        /*尾部部分*/
+        .footer-section {
+            padding: 2.2rem 0rem 0rem 0rem;
+            font-size: 0.6rem;
+            line-height: 1.2rem;
+            font-family: SourceHanSansCN-Regular;
+            color: #9B9B9B;
+        }
+        .footerSection{
+            padding: 2.2rem 0rem 0rem 0rem;
+            font-size: 0.6rem;
+            line-height: 1.2rem;
+            font-family: SourceHanSansCN-Regular;
+            color: #9B9B9B;
+        }
+
+        .item-label{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #8B8B8B;
+            padding-left: 0.3rem;
+        }
+
+        .body-item .money{
+            margin-top: 0.4rem;
+        }
+        /*尾部按钮*/
+        .footer-btn {
+            border-radius: 0.1rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 1rem;
+            color: #FFFFFF;
+            margin: 3.5rem 0rem 0rem 0rem;
+            height: 2.5rem;
+            background: #FF3C54;
+        }
+
+        .hit-bg {
+            background: #FF3C54;
+        }
+    </style>
+</head>
+<body>
+<header id="header" class="duola-header flex" style="border-bottom: 1px solid #FF3C54;">
+    <a id="nav-left" class="duola-icon-area" tapmode onclick="closeWin()">
+        <span id="nav-left-icon" class="nav-left-icon duola-iconfont icon-left"></span><span id="nav-left-text"
+                                                                                             class="nav-text"></span>
+    </a>
+
+    <div id="nav-title" class="nav-title flex-1">退款进度</div>
+
+</header>
+
+<div id="app" v-cloak v-if="showApp">
+    <div class="line-wrap">
+        <div class="line-container flex">
+            <div class="flex-1 flex flex-center line-item " v-for="i in 3" class="active">
+                <div class="dot" :class="i==j?'active':''"></div>
+                <div :class="i==j?'bg-dot':''"></div>
+            </div>
+
+        </div>
+        <div class="text-container flex">
+            <div class="flex-1 flex flex-center " v-for="i in 3" :class="i==j?'active':''">
+                {{i==1?"退款申请":i==2?"退款等待":"退款成功"}}
+            </div>
+        </div>
+        <div class="flex">
+            <div class="flex-1 flex flex-center" v-for="i in 3">
+                <div :class="i==j?'triangle-up':''"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div v-for="i in 3" class="body-box">
+        <div v-if="i===1">
+
+            <div class="body-item body-border flex flex-vertical-center ">
+                <div>
+                    <div class="item-label">押金总数</div>
+                    <div class="money">￥{{money}}.00</div>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="body-item body-border flex flex-vertical-center ">
+                <div>
+                    <div class="item-label">衣服持有</div>
+                    <div class="money" style="padding-left: 0.3rem">{{3}}件 <span class="moeny-desc">(当前最多可持有{{3}}件)</span></div>
+                </div>
+            </div>
+            <div class="line"></div>
+
+            <div class="body-item body-border flex flex-vertical-center">
+                <div>
+                    <div class="item-label">退款进度</div>
+                    <div class="money">￥{{money}}.00</div>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="footer-btn flex flex-center" tapmode="" @click="refundDeposit(money)">立即申请</div>
+        </div>
+
+        <div v-if="i===0">
+            <div class="body-section body-border flex flex-center flex-vertical">
+                <div class="title">您的提现已提交，等待银行处理</div>
+                <div class="sub-title">预计于7个工作日内到账</div>
+            </div>
+            <div class="footer-section">
+                若你对退押金服务有任何疑问, 可联系人工客服 <a class="hit-color" href="javascript:callTel('4008108909')">400 810 8909</a>
+                或联系 <a class="hit-color text-underline" href="javascript:openChat()">在线客服</a> 咨询
+            </div>
+        </div>
+
+        <div v-if="i===0">
+            <div class="body-item body-border flex flex-vertical-center" style="padding-top: 2.2rem">
+                <div>
+                    <div class="item-label">已成功提现</div>
+                    <div class="money">￥{{money}}.00</div>
+                </div>
+            </div>
+            <div class="footerSection">
+                若你对退押金服务有任何疑问, 可联系人工客服 <a class="hit-color" href="javascript:callTel('4008108909')">400 810 8909</a>
+                或联系 <a class="hit-color text-underline" href="javascript:openChat()">在线客服</a> 咨询
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+</body>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../../script/meiqia_sdk.js"></script>
+<script type="text/javascript">
+    var vm;
+    apiready = function () {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        vm = new Vue({
+            el: '#app',
+            data: {
+                showApp: true,
+                j: 1,              //  给i赋值,i从1开始
+                money: 100
+
+            },
+            mounted: function () {
+//                挂载成功  逻辑代码执行入口
+                var self = this;
+                self.init();
+
+            },
+            beforeUpdate: function () {
+//                数据发生变化时，更新界面前的回调
+                var self = this;
+            },
+            updated: function () {
+//                数据发生变化时，更新界面结束的回调  不要做数据修改操作  否则会发生死循环
+                var self = this;
+            },
+            methods: {
+                init: function () {
+//                    初始化方法  只执行一次
+                    var self = this;
+//                    初始化监听
+                    self.setEventListener();
+                    self.xxx();
+
+                },
+                xxx: function(){
+                    var self = this;
+                    var url = serviceUser + 'service/deposit/refund';
+                    var headers = _getAjaxHeaders(true, false);
+                    var data = _getAjaxData({
+//                        amount: parseInt(refundDeposit)
+                    });
+                    _ajaxData(url, 'post', headers, data, function(ret){
+
+                    }, function(err){
+
+                    }, 0);
+                },
+                //点击立即申请
+                refundDeposit: function(refundDeposit){
+                    if (refundDeposit <= 0) {
+                        toastMsg('你暂时没有可退押金!');
+                        return;
+                    }
+                    openDialogComfirm('亲，确定要申请退押金吗?', function (ret) {
+                        if (ret.eventType == 'right') {
+                            _loadingShow();
+                            /*var url = serviceUser + 'service/deposit/refund';
+                            var headers = _getAjaxHeaders(true, false);
+                            var data = _getAjaxData({
+                                amount: parseInt(refundDeposit)
+                            });
+                            _ajaxData(url, 'post', headers, data, function(ret){
+
+                                api.openFrame({
+                                    name: 'cash-advance1',
+                                    url: 'cash-advance1.html',
+
+                                    scrollEnabled: true,
+                                    bounces: false,
+                                    bgColor: 'rgba(0,0,0,0)',
+                                    vScrollBarEnabled: false,
+                                    hScrollBarEnabled: false
+                                });
+
+                            }, function(err){
+
+                            }, 0);*/
+                            api.openFrame({
+                                name: 'cash-advance1',
+                                url: 'cash-advance1.html',
+
+                                scrollEnabled: true,
+                                bounces: false,
+                                bgColor: 'rgba(0,0,0,0)',
+                                vScrollBarEnabled: false,
+                                hScrollBarEnabled: false
+                            });
+                        }
+                    });
+                },
+
+                setEventListener: function () {
+//                    初始化时设置监听事件
+                    var self = this;
+                    api.addEventListener({
+                        name:'pause'
+                    }, function(ret, err){
+                        self.pause();
+
+                    });
+                    api.addEventListener({
+                        name:'resume'
+                    }, function(ret, err){
+                        self.resume();
+                    });
+                    api.addEventListener({
+                        name:'offline'
+                    }, function(ret, err){
+                    });
+                    api.addEventListener({
+                        name:'online'
+                    }, function(ret, err){
+                    });
+
+                },
+                clickEmploy: function (category, code) {
+                    var self = this;
+                    if (dueTime.getTime() < self.nowTime.getTime()) {
+                        toastMsg("您的会员已经过期，无法使用");
+                        return;
+                    }
+                    if (category === "bagPlus") {
+                        self.fnInit(code);
+                        self.choiceCode = code;
+                    }
+                    if (category === "dueTimeExt") {
+                        self.promptlyAlert("dueTimeExt", code)
+                    }
+                },
+                start: function () {
+//                    初始化后执行
+                    var self = this;
+
+                },
+                pause: function () {
+//                    页面进入后台时进行，但未关闭时进行相关操作时调用
+                    var self = this;
+
+                },
+                resume: function () {
+//                    页面在后台状态时，需要操作时调用
+                    var self = this;
+
+                },
+                destroy: function () {
+//                  销毁界面时调用
+                }
+            },
+            computed: {}
+        })
+    }
+    //    用于apicloud的execScript方法调用Vue中各个生命周期中的方法
+    function start() {
+        vm.start();
+    }
+    function resume() {
+        vm.resume();
+    }
+    function pause() {
+        vm.pause();
+    }
+    function closeOrderGroup() {
+//        onPageEndUmeng(umengPage);
+        closeWin();
+    }
+
+
+    function callTel(number) {
+        api.call({
+            number: number
+        });
+    }
+
+</script>
+</html>

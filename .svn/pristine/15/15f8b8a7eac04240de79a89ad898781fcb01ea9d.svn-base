@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>InvitationCodeDialog</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <!--AUI根据使用情况引入-->
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html, body{
+            background: transparent;
+            padding: 0rem;
+            margin: 0rem
+        }
+        .shadow-l{
+            background-color: #ECECEC;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            background-color: #ECECEC;
+            height: 1px;
+        }
+        #app{
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.2);
+            /*background-color: #00A7E9;*/
+            padding-top: 40%;
+            z-index: 0;
+        }
+        .dialogBody{
+            width: 80%;
+            height: 11rem;
+            background-color: #FFFFFF;
+            /*margin-top: 60%;*/
+            margin-left: 10%;
+            border-radius: 0.2rem;
+            z-index: 1;
+        }
+        .title{
+            width: 100%;
+            height: 2.5rem;
+            background-color: #FF3C54;
+            position: relative;
+            text-align: center;
+            line-height: 2.5rem;
+            font-size: 0.8rem;
+            border-top-left-radius: 0.2rem;
+            border-top-right-radius: 0.2rem;
+            color: #FFFFFF;
+
+        }
+        .skip{
+            height: 2.5rem;
+            line-height: 2.5rem;
+            position: absolute;
+            right: 0;
+            top: 0;
+            text-align: center;
+            width: 2.5rem;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+        }
+        .inputBox{
+            width: 80%;
+            margin-left: 10%;
+            margin-right: 10%;
+            margin-top: 0.6rem;
+            height: 1.6rem;
+            position: relative;
+        }
+        .searchForm{
+            height: 1.6rem;
+            width: 100%;
+            position: relative;
+        }
+        #invtationCode{
+            width: 100%;
+            height: 1.6rem !important;
+            line-height: 1.0rem;
+            background-color: #ffffff;
+            padding: 0.3rem;
+            border-radius: 0.4rem;
+            border: solid #9A9A9A 1px;
+            font-size: 0.6rem;
+            display: inline-block;
+            min-height: 1.6rem;
+        }
+        .codeScan{
+            position: absolute;
+            height: 1.6rem;
+            line-height: 1.6rem;
+            text-align: center;
+            width: 2rem;
+            top: 0;
+            right: 22%;
+        }
+        .sureCode{
+            background-color: #FF3C54;
+            text-align: center;
+            height: 1.6rem;
+            width: 2.5rem;
+            line-height: 1.6rem;
+            border-radius: 0.4rem;
+            position: absolute;
+            color: #FFFFFF;
+            font-size: 0.8rem;
+            top: 0rem;
+            right: 0rem;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak v-if="showApp" @click="closeDialog()">
+    <div class="dialogBody" @click="return clickBody()">
+        <div class="title">
+            请输入优惠码
+            <div class="skip" @click="skip()">跳过</div>
+        </div>
+        <div class="inputBox">
+            <form onsubmit="return search()" onclick="iskeyboradSHow = true;" class="searchForm">
+                <input onkeyup="test()" type="text" :disabled="inputAbled" :placeholder="inputLaceHolder" id="invtationCode"></input>
+            </form>
+            <div class="duola-iconfont icon-Scan codeScan" tapmode onclick="codeScan();"></div>
+            <div class="sureCode" onclick="search()">
+                确认
+            </div>
+        </div>
+        <div style="padding-left: 10%;padding-right: 10%; color: #000000; font-size: 0.7rem; padding-top: 0.6rem">{{invataionCodeStatus == 0?'无效优惠码':invataionCodeStatus == 1?'有效优惠码':invataionCodeStatus == 2?'有效优惠码':''}}</div>
+        <div style="padding-left: 10%;padding-right: 10%; color: #9A9A9A; font-size: 0.7rem; padding-top: 0.6rem">优惠码获取方式：</div>
+        <div style="padding-left: 10%;padding-right: 10%; color: #000000;font-size: 0.6rem">
+            1.扫描会员朋友的邀请二维码获取优惠码<br>
+            2.输入会员朋友的邀请优惠码<br>
+            二维码/优惠码在APP里我的-邀请好友查看
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript">
+    var vm;
+    var iskeyboradSHow = false;
+    var invtationCode = '';
+    var clickDialogBody = false;
+    function search() {
+        if(vm.inputAbled){
+            vm.openPage();
+        }
+        document.activeElement.blur();
+        iskeyboradSHow = false;
+        if (!vm.inputAbled){
+            vm.checkInviteCode($api.byId('invtationCode').value)
+        }
+        if (vm.invataionCodeStatus  != 0){
+            vm.openPage();
+        }
+        return false;
+    }
+    //扫码推荐码
+    function codeScan(){
+        if(vm.inputAbled){
+            return;
+        }
+        vm.fromScan = true;
+        if(api.systemType == 'ios'){
+            api.removeEventListener({
+                name:'viewdisappear'
+            });
+        }
+        //打开摄像头,手动触发检查验证码
+        openScan(function(content){
+            var index = content.lastIndexOf('/');
+            if(index != -1){
+                content = content.substr(index+1);
+                if(content){
+                    console.log("content === "+content);
+                    $api.val($api.byId('invtationCode'),content);
+                    vm.checkInviteCode($api.byId('invtationCode').value);
+                }
+            }else {
+                toastMsg('不是邀请码，请重新扫描');
+            }
+            if(api.systemType == 'ios'){
+                api.addEventListener({
+                    name:'viewdisappear'
+                },function(ret,err){
+
+                });
+            }
+        });
+    }
+    function getEvent() {
+        if (document.all) {
+            return window.event; //如果是ie
+        }
+        func = getEvent.caller;
+        while (func != null) {
+            var arg0 = func.arguments[0];
+            if (arg0) {
+                if ((arg0.constructor == Event || arg0.constructor == MouseEvent) || (typeof(arg0) == "object" && arg0.preventDefault && arg0.stopPropagation)) {
+                    return arg0;
+                }
+            }
+            func = func.caller;
+        }
+        return null;
+    }
+    function test() {
+        vm.checkInviteCode($api.byId('invtationCode').value)
+    }
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {
+                showApp: true,
+                invataionCodeStatus: -1,
+                inputAbled: false,
+                inputLaceHolder: '输入优惠码立减100元',
+                fromScan: false
+            },
+            mounted: function () {
+//                挂载成功  逻辑代码执行入口
+                var self = this;
+                self.init();
+            },
+            beforeUpdate: function () {
+//                数据发生变化时，更新界面前的回调
+                var self = this;
+            },
+            updated: function () {
+//                数据发生变化时，更新界面结束的回调  不要做数据修改操作  否则会发生死循环
+                var self = this;
+            },
+            methods: {
+                init: function () {
+//                    初始化方法  只执行一次
+                    var self = this;
+//                    初始化监听
+                    self.setEventListener();
+//                    初始化下拉刷新 根据需求选择调用
+                    self.initRefreshHeaderInfo();
+                    self.getCode();
+
+                },
+                skip: function () {
+                    var self = this;
+                    self.invataionCodeStatus = 'skip';
+                    self.openPage();
+                },
+                checkInviteCode: function (inviteCode) {
+                    var self = this;
+                    if (!isDefine(inviteCode)){
+                        toastMsg('未填写推荐码');
+                        return false;
+                    }
+                    if (inviteCode.length >= 10){
+                        var url = serviceUser + 'service/experience/';
+                        var headers = _getAjaxHeaders(true,false);
+                        var data = _getAjaxData({
+                            'code':inviteCode
+                        });
+                        _ajaxData(url,'post',headers,data,function(ret){
+
+                            if(ret.statusCode=='200'){
+                                self.invataionCodeStatus = 2;
+                                return true;
+                            }else{
+                                self.invataionCodeStatus = 0;
+                                return false;
+                            }
+                        },function (err){
+                            toastMsg(err.msg);
+                            return false;
+                        },0);
+
+                    }else {
+                        var url = serviceUser + 'service/open/invite_code/member/check';
+                        var headers = _getAjaxHeaders(true,false);
+                        var data = _getAjaxData({
+                            'inviteCode':inviteCode
+                        });
+                        _ajaxData(url,'post',headers,data,function(ret){
+                            if(ret.statusCode=='200'){
+                                //有效
+                                self.invataionCodeStatus = 1;
+                                self.inputLaceHolder = inviteCode;
+                                self.inputAbled = true;
+                                return true;
+                            }else{
+                                self.invataionCodeStatus = 0;
+                                return false;
+                            }
+                        },function (err){
+                            toastMsg(err.msg);
+                            return false;
+                        },0);
+                    }
+                },
+                getCode:function () {
+                    var self = this;
+                    var url = serviceUser + 'service/open/invite_code/member/';
+                    var headers = _getAjaxHeaders(true,false);
+                    var data = _getAjaxData({});
+                    _ajaxData(url,'post',headers,data,function(ret){
+                        console.log("getCode == "+JSON.stringify(ret))
+                        if (ret.statusCode == 200 && ret.inviteCode != ""){
+                            self.inputLaceHolder = ret.inviteCode;
+                            self.inputAbled = true;
+                            self.invataionCodeStatus = '你已绑定了推荐码';
+                            return;
+                        }
+                        self.inputLaceHolder = '输入优惠码立减100元';
+                        self.inputAbled = false;
+
+                    },function (err){
+                        toastMsg(err.msg);
+                    },0);
+                },
+                openPage: function () {
+                    var self = this;
+                    var invtationCode = $api.byId('invtationCode').value;
+                    if(!isLogin()){
+                        //跳转注册
+                        sendEventUmeng(CONSTANT.UMENGEVENT.BTN_REGIN_INDEX,{from:'首页'});
+                        goLogin(null,'../win_regin.html');
+                    }else if(self.invataionCodeStatus == 2){
+                        var url = serviceUser + 'service/experience/use';
+                        var headers = _getAjaxHeaders(true,false);
+                        var data = _getAjaxData({
+                            'code':$api.byId('invtationCode').value
+                        });
+                        _ajaxData(url,'post',headers,data,function(ret){
+                            if(ret.statusCode=='200'){
+                                //ios系统打开新页面触发了viewdisappear事件
+                                if(api.systemType == 'ios'){
+                                    api.removeEventListener({
+                                        name:'viewdisappear'
+                                    });
+                                }
+                                updateUsers();
+                                //跳转到新用户缴费成功立即使用页面
+                                var account = $api.getStorage('userPhone') ? 'tel' : '3th';
+                                var name = 'newVip_success';
+                                var url = '../newVip_success.html';
+                                if(account == '3th'){
+                                    //第三方登录缴费成功后未绑定手机号
+                                    name = 'bindPhone';
+                                    url = '../bind_new.html';
+                                }
+                                setTimeout(function(){
+                                    api.openWin({
+                                        name: name +"win",
+                                        url: url,
+                                        slidBackType:'edge',
+                                        delay:100,
+                                        softInputMode: "resize",
+                                        pageParam:{
+                                            from:{
+                                                winName:api.winName,
+                                                frameName:api.frameName
+                                            }
+                                        }
+                                    });
+                                },50);
+//                                api.closeFrame({
+//                                    name: 'InvitationCodeDialog'
+//                                });
+                                self.inputLaceHolder = $api.byId('invtationCode').value;
+                                self.inputAbled = true;
+                            }else {
+                                toastMsg(ret.msg)
+                            }
+
+                        },function (err){
+                            toastMsg(err.msg);
+//                            api.closeFrame({
+//                                name: 'InvitationCodeDialog'
+//                            });
+                        },0);
+                    } else {
+                        sendEventUmeng(CONSTANT.UMENGEVENT.BTN_VIP,{from:'首页'});
+                        //跳转开通会员
+                        var name = 'userPayNew';
+                        var url = '../user/userPayNew.html';
+                        api.openWin({
+                            name: name +"win",
+                            url: url,
+                            slidBackType:'edge',
+                            delay:100,
+                            allowEdit:true,
+                            softInputMode: "resize",
+                            bounces: false,
+                            scrollEnabled: false,
+                            pageParam: {
+                                invtationCode: invtationCode
+                            }
+                        });
+//                        api.closeFrame({
+//                            name: 'InvitationCodeDialog'
+//                        });
+                    }
+
+                },
+                clickBody: function () {
+                    clickDialogBody = true;
+                  return false;
+                },
+                closeDialog: function () {
+                    if (clickDialogBody == true){
+                        clickDialogBody = false;
+                        return;
+                    }
+                    api.closeFrame({
+                        name: 'InvitationCodeDialog'
+                    });
+                },
+                initRefreshHeaderInfo: function () {
+
+                },
+                setEventListener: function () {
+//                    初始化时设置监听事件
+                    var self = this;
+                    api.addEventListener({
+                        name:'pause'
+                    }, function(ret, err){
+                        self.pause();
+
+                    });
+                    api.addEventListener({
+                        name:'resume'
+                    }, function(ret, err){
+                        self.resume();
+                    });
+                    api.addEventListener({
+                        name:'scrolltobottom',
+                        extra:{
+                            threshold:0            //设置距离底部多少距离时触发，默认值为0，数字类型
+                        }
+                    }, function(ret, err){
+                    });
+                    api.addEventListener({
+                        name:'offline'
+                    }, function(ret, err){
+                    });
+                    api.addEventListener({
+                        name:'online'
+                    }, function(ret, err){
+                    });
+
+                    document.addEventListener('touchmove',function (event) {
+                        if (iskeyboradSHow){
+                            document.activeElement.blur();
+                            iskeyboradSHow = false;
+                        }
+
+                    },false);
+
+                },
+                start: function () {
+//                    初始化后执行
+                    var self = this;
+
+                },
+                pause: function () {
+//                    页面进入后台时进行，但未关闭时进行相关操作时调用
+                    var self = this;
+                    if (self.fromScan){
+
+                    }else {
+                        api.closeFrame({
+                            name: 'InvitationCodeDialog'
+                        });
+
+                    }
+                    self.fromScan = false;
+
+                },
+                resume: function () {
+                    var self = this;
+
+                },
+                destroy: function(){
+//                  销毁界面时调用
+                }
+            }
+        })
+    }
+    //    用于apicloud的execScript方法调用Vue中各个生命周期中的方法
+    function start() {
+        vm.start();
+    }
+    function resume() {
+        vm.resume();
+    }
+    function pause() {
+        vm.pause();
+    }
+    //缴费成功后更新用户缓存
+    function updateUsers(){
+        var url = serviceNew + 'user';
+        var headers = _getAjaxHeaders(true, false);
+        var data = _getAjaxData();
+        _ajaxData(url, 'post', headers, data, updateUsersSuccessCallback, null, 0);
+    }
+    function updateUsersSuccessCallback(ret) {
+        if (ret.statusCode == '200') {
+            var isMember = ret.data.user.isMember;
+            var vipType = '';
+            if (isMember == 'monthly') {
+                vipType = '月费会员';
+            }else if (isMember == 'activity') {
+                vipType = '活动会员';
+            }else if (isMember == 'annual') {
+                vipType = '年费会员';
+            }
+            //是否新用户
+//				$api.setStorage('isNewUser', false);
+            $api.setStorage('vipType', vipType); //会员类型
+            $api.setStorage('isMember', isMember);//会员类型
+            $api.setStorage('dueTime', ret.data.user.dueTime ? ret.data.user.dueTime : "");//会员截止时间
+            $api.setStorage('count', ret.data.user.dorabag.count);//多啦袋个数
+            $api.setStorage('perBag', ret.data.user.dorabag.perBag);//每个多啦袋放衣服数量
+            $api.setStorage('deposit', ret.data.user.deposit || 0);//押金
+            $api.setStorage('userInviteCode',ret.data.user.secfile.inviteCode || '');//用户的邀请码
+        } else {
+            toastMsg(ret.msg);
+        }
+    }
+
+</script>
+</body>
+</html>

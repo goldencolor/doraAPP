@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>支付宝提现</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html,body{
+            background:rgba(0,0,0,0.3);
+        }
+        .modal-open{
+            position:fixed;
+            width:100%;
+            height:100%;
+            overflow:hidden;
+        }
+        .modal{
+            position:fixed;
+            top: 0rem;
+            left:0;
+            width:100%;
+            height:100%;
+
+        }
+        .modal-content{
+            position:absolute;
+            left:0;
+            top:0;
+            right:0;
+            bottom:0;
+            width:16.35rem;
+            height:18.75rem;
+            border-radius: 0.2rem;
+            margin:auto;
+            background:#F8F8F8;
+            box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.28);
+            padding: 2rem 0 0 0;
+        }
+        .modal-head{
+            text-align:left;
+            font-family: SourceHanSansCN-Medium;
+            color: #262B30;
+            padding: 0 1.5rem 0 1.5rem;
+            font-size: 0.9rem;
+        }
+        .modal-list{
+            padding:1.2rem 1.5rem 0 1.5rem ;
+
+        }
+        .modal-item{
+            height: 2.5rem;
+            width: 100%;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #262B30;
+        }
+        .modal-inner{
+            position: relative;
+            top: 0rem;
+            left: 0rem;
+        }
+        .modal-label{
+            display: inline-block;
+            width: 2.1rem;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            text-align: center;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #767676;
+        }
+
+        .modal-input{
+            display: inline-block;
+            position: relative;
+            top: -2.5rem;
+            left: 3rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #262B30;
+        }
+        .input{
+            width: 2.1rem;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            text-align: left;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #262B30;
+        }
+        .line{
+            width: 100%;
+            height: 1px;
+            background: #c8c8c8;
+        }
+
+        .modal-footer{
+            overflow:hidden;
+            padding-top:1.35rem;
+        }
+        .modal button{
+            width:50%;
+            border:none;
+            outline:none;
+            height:3rem;
+            float:left;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 1rem;
+        }
+
+        .modal-cancel{
+            background: #FFFFFF;
+            color:#FF3C54;
+            border-radius: 0px 0px 0px 0.2rem;
+            height: 3rem;
+            line-height: 3rem;
+            font-size: 0.8rem;
+        }
+        .modal-confirm{
+            background: #FF3C54;
+            color:#FFFFFF;
+            height: 3rem;
+            line-height: 3rem;
+            border-radius: 0px 0px 0.2rem 0px;
+            font-size: 0.8rem;
+        }
+        .modal-button{
+            position: absolute;
+            right: 0rem;
+            bottom: 3.2rem;
+            width: 3.7rem;
+            height: 1.2rem;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.6rem;
+            color: #FF3C54;
+            border: 1px solid #FF3C53;
+            border-radius: 2px;
+            text-align: center;
+            line-height: 1.2rem;
+
+        }
+
+    </style>
+</head>
+<body>
+<div class="modal modal-update" id="app" v-cloak v-if="showApp">
+    <div class="modal-content" id="modalContent">
+        <div class="modal-head">请验证提现支付宝信息</div>
+        <ul class="modal-list" >
+            <li class="modal-item" >
+                <div class="modal-inner">
+                    <div class="modal-label">
+                        姓    名
+                    </div>
+                    <div class="line"></div>
+                    <!--<div class="modal-input"  onclick="touchstart()" >-->
+                    <div class="modal-input">
+                        <input type="text" class="input" id="name"  placeholder="请输入姓名" v-model="name"/>
+                    </div>
+                </div>
+
+            </li>
+
+            <li class="modal-item" >
+                <div class="modal-inner">
+                    <div class="modal-label">
+                        支付宝
+                    </div>
+                    <div class="line"></div>
+                    <div class="modal-input">
+                        <input type="text" class="input" id="modalLabel" placeholder="请输入支付宝号" v-model="account"/>
+                    </div>
+                </div>
+
+            </li>
+
+            <li class="modal-item" >
+                <div class="modal-inner">
+                    <div class="modal-label">
+                        手机号
+                    </div>
+                    <div class="line"></div>
+                    <div class="modal-input">
+                        <input type="tel" class="input" id="phone" maxlength="11" oninput="validatemobile(this.value)" placeholder="请输入手机号" v-model="phone" />
+                    </div>
+                </div>
+
+            </li>
+            <li class="modal-item" >
+                <div class="modal-inner">
+                    <div class="modal-label">
+                        验证码
+                    </div>
+                    <div class="line"></div>
+                    <div class="modal-input">
+                        <input type="number" class="input" id="code" placeholder="请输入验证码" v-model="veriCode"/>
+                    </div>
+
+                    <div  class="modal-button" id="codeBtn" @click="mobileButton()" >获取验证码</div>
+
+                </div>
+
+            </li>
+
+        </ul>
+        <div class="modal-footer">
+            <button class="modal-cancel"  onclick="btnCancel()">取消</button>
+            <button class="modal-confirm" onclick="btnConfirm()">确定</button>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../../script/meiqia_sdk.js"></script>
+<script type="text/javascript">
+
+    var vm;
+    var phone;
+    var canSend=false;
+    var codeCanSend=true;
+    apiready = function () {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        vm = new Vue({
+            el: '#app',
+            data: {
+                showApp: true,
+                name:"",
+                account:"",//支付宝号
+                phone:"",
+                veriCode:''//验证码
+            },
+            mounted: function () {
+//                挂载成功  逻辑代码执行入口
+                var self = this;
+                self.init();
+
+                //请求发送验证码
+                sendMsg: function sendMsg(phone){
+                    str = 'appkey=37e08411ef0e84597e073c53c2c7fe5d&mobile='+phone+'&url=http://localhost:7000/app/user/settings/alipayInfo/';
+//        var url = serviceUser+'mobile/verify/create';
+                    var url='http://localhost:7000/app/user/settings/alipayInfo/';
+                    var headers = _getAjaxHeaders(false,true);
+                    var data = _getAjaxData({
+                        sendToBound: true,
+                        mobile : String(phone),
+                        sign:str,
+                        url:'http://localhost:7000/app/user/settings/alipayInfo/',
+                        name:name,
+                        account:account,//支付宝号
+                        phone:phone,
+                        veriCode:veriCode  //验证码
+                    });
+                    _ajaxData(url,'post',headers,data,function(ret){
+                        if(ret.statusCode=='200'){
+                            key =  ret.authKey;
+                            bindTel(ret.authKey);
+                        }else{
+                            _loadingHide();
+                            toastMsg('验证码有误');
+                        }
+                    },function(err){
+                        _loadingHide();
+                        toastMsg(err.msg);
+                    },0);
+                }
+                //请求验证验证码
+                verify: function verify(){
+                    if(!!canLogin){
+                        var code = $api.val($api.byId('code'));
+                        var url = serviceUser+'mobile/verify';
+                        var headers = _getAjaxHeaders(false,true);
+                        var data = _getAjaxData({
+                            mobile: phone, // 手机号
+                            veriCode:code, // 短信验证码
+                            sign: str
+                        });
+
+                        _ajaxData(url,'post',headers,data,function(ret){
+
+                        },function(err){
+
+                        },0);
+                    }else{
+                        toastMsg('请输入完整信息');
+                    }
+                }
+
+            },
+
+
+
+            beforeUpdate: function () {
+//                数据发生变化时，更新界面前的回调
+                var self = this;
+            },
+            updated: function () {
+//                数据发生变化时，更新界面结束的回调  不要做数据修改操作  否则会发生死循环
+                var self = this;
+            },
+            methods: {
+                init: function () {
+//                    初始化方法  只执行一次
+                    var self = this;
+//                    初始化监听
+                    self.setEventListener();
+
+                },
+                setEventListener: function () {
+//                    初始化时设置监听事件
+                    var self = this;
+                    api.addEventListener({
+                        name:'pause'
+                    }, function(ret, err){
+                        self.pause();
+
+                    });
+                    api.addEventListener({
+                        name:'resume'
+                    }, function(ret, err){
+                        self.resume();
+                    });
+                    api.addEventListener({
+                        name:'offline'
+                    }, function(ret, err){
+                    });
+                    api.addEventListener({
+                        name:'online'
+                    }, function(ret, err){
+                    });
+
+                },
+                clickEmploy: function (category, code) {
+                    var self = this;
+                    if (dueTime.getTime() < self.nowTime.getTime()) {
+                        toastMsg("您的会员已经过期，无法使用");
+                        return;
+                    }
+                    if (category === "bagPlus") {
+                        self.fnInit(code);
+                        self.choiceCode = code;
+                    }
+                    if (category === "dueTimeExt") {
+                        self.promptlyAlert("dueTimeExt", code)
+                    }
+                },
+                start: function () {
+//                    初始化后执行
+                    var self = this;
+
+                },
+                pause: function () {
+//                    页面进入后台时进行，但未关闭时进行相关操作时调用
+                    var self = this;
+
+                },
+                resume: function () {
+//                    页面在后台状态时，需要操作时调用
+                    var self = this;
+
+                },
+                destroy: function () {
+//                  销毁界面时调用
+                }
+            },
+            computed: {}
+        })
+    }
+    //    用于apicloud的execScript方法调用Vue中各个生命周期中的方法
+    function start() {
+        vm.start();
+    }
+    function resume() {
+        vm.resume();
+    }
+    function pause() {
+        vm.pause();
+    }
+    function closeOrderGroup() {
+        onPageEndUmeng(umengPage);
+        closeWin();
+    }
+
+
+    function callTel(number) {
+        api.call({
+            number: number
+        });
+    }
+    //点击取消按钮
+    function  btnCancel(){
+        api.closeFrame({
+            name: api.frameName
+        });
+    }
+    //点击确定按钮
+    function btnConfirm(){
+        var oName=document.getElementById('name').value;
+        var oModalLabel=document.getElementById('modalLabel').value;
+        var oPhone=document.getElementById('phone').value;
+        var oModalLabe=document.getElementById('code').value;
+        alert([oName,oModalLabel,oPhone,oModalLabe]);
+        api.closeFrame({
+            name: api.frameName
+        });
+    }
+    //检查输入的手机号
+     function validatemobile(telVal){
+        var reg = /^1[34578]\d{9}$/;
+        if (!reg.test(telVal)) {
+            if(canSend){
+                canSend=false;
+            }
+            $api.css($api.byId('codeBtn'),'background-color: #fff;');
+            $api.css($api.byId('codeBtn'),'color: #FF3C54;');
+            return console.log('请输入有效的手机号码');
+        }
+        canSend=true;
+        $api.css($api.byId('codeBtn'),'background-color: #FF3C54;');
+        $api.css($api.byId('codeBtn'),'color: #fff;');
+
+    }
+
+    //点击获取验证码
+     function mobileButton(){
+        if(canSend){
+            if(codeCanSend){
+                phone = $api.val($api.byId('phone'));
+                var reg = /^1[34578]\d{9}$/;
+                if (!reg.test(phone)) {
+                    api.toast({
+                        msg: '请输入正确的11位手机号',
+                        duration: 3000,
+                        location: 'bottom'
+                    });
+                }else{
+                    alert(111)
+                    api.showProgress({
+                        style: 'default',
+                        animationType: 'fade',
+                        title: '正在发送验证码',
+                        text: '请稍候',
+                        modal: true
+                    });
+                }
+            }
+        }else{
+            toastMsg("请输入正确手机号码");
+        }
+    }
+
+   /* //检查输入的手机号
+    function validatemobile(telVal){
+        var reg = /^1[34578]\d{9}$/;
+        if (!reg.test(telVal)) {
+            if(canSend){
+                canSend=false;
+            }
+            $api.css($api.byId('codeBtn'),'background-color: #fff;');
+            $api.css($api.byId('codeBtn'),'color: #FF3C54;');
+            return console.log('请输入有效的手机号码');
+        }
+        canSend=true;
+        $api.css($api.byId('codeBtn'),'background-color: #FF3C54;');
+        $api.css($api.byId('codeBtn'),'color: #fff;');
+
+    }
+
+    //点击获取验证码
+    function mobileButton(){
+        if(canSend){
+            if(codeCanSend){
+                phone = $api.val($api.byId('phone'));
+                var reg = /^1[34578]\d{9}$/;
+                if (!reg.test(phone)) {
+                    api.toast({
+                        msg: '请输入正确的11位手机号',
+                        duration: 3000,
+                        location: 'bottom'
+                    });
+                }else{
+                    alert(111)
+                    api.showProgress({
+                        style: 'default',
+                        animationType: 'fade',
+                        title: '正在发送验证码',
+                        text: '请稍候',
+                        modal: true
+                    });
+                    sendMsg(phone);
+                }
+            }
+        }else{
+            toastMsg("请输入正确手机号码");
+        }
+    }
+
+    //请求发送验证码
+    function sendMsg(phone){
+        str = 'appkey=37e08411ef0e84597e073c53c2c7fe5d&mobile='+phone+'&url=http://localhost:7000/app/user/settings/alipayInfo/';
+//        var url = serviceUser+'mobile/verify/create';
+        var url='http://localhost:7000/app/user/settings/alipayInfo/';
+        var headers = _getAjaxHeaders(false,true);
+        var data = _getAjaxData({
+            sendToBound: true,
+            mobile : String(phone),
+            sign:str,
+            url:'http://localhost:7000/app/user/settings/alipayInfo/',
+            name:name,
+            account:account,//支付宝号
+            sign:str,
+            phone:phone,
+            veriCode:veriCode
+        });
+        alert(123)
+        _ajaxData(url,'post',headers,data,function(ret){
+            if(ret.statusCode=='200'){
+                key =  ret.authKey;
+                bindTel(ret.authKey);
+            }else{
+                _loadingHide();
+                toastMsg('验证码有误');
+            }
+        },function(err){
+            _loadingHide();
+            toastMsg(err.msg);
+        },0);
+    }
+    //请求验证验证码
+    function verify(){
+        if(!!canLogin){
+            var code = $api.val($api.byId('code'));
+            var url = serviceUser+'mobile/verify';
+            var headers = _getAjaxHeaders(false,true);
+            var data = _getAjaxData({
+                mobile: phone, // 手机号
+                veriCode:code, // 短信验证码
+                sign: str
+            });
+
+            _ajaxData(url,'post',headers,data,function(ret){
+
+            },function(err){
+
+            },0);
+        }else{
+            toastMsg('请输入完整信息');
+        }
+    }*/
+
+
+</script>
+</html>

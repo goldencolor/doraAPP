@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>云衣橱</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <!--AUI根据使用情况引入-->
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html, body{
+            background: transparent;
+            padding: 0rem;
+            margin: 0rem
+        }
+        .shadow-l{
+            background-color: #ECECEC;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            background-color: #ECECEC;
+            height: 1px;
+        }
+        .red-dot{
+            width: 0.4rem;
+            height: 0.4rem;
+            background: #FF3C54;
+            border-radius: 50%;
+            border: solid #FFFFFF 1px;
+            position: absolute;
+            top: -0.2rem;
+            right: -0.3rem;
+        }
+        .filters-item{
+            position: relative;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            padding: 0rem 0.5rem;
+            width: auto;
+            margin: 0.5rem 1rem;
+            font-family: SourceHanSansCN-Light;
+            font-size: 0.8rem;
+            color: #4A4A4A;
+        }
+        .filters-item-active{
+            position: relative;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            padding: 0rem 0.5rem;
+            width: auto;
+            margin: 0.5rem 1rem;
+            background: #FF3C54;
+            border-radius: 0.3rem;
+            font-family: SourceHanSansCN-Light;
+            font-size: 0.8rem;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak v-if="showApp">
+    <!--页码-->
+    <div id="pagination">
+        <div class="pagination-bg-1" @click="changeTop()">
+            <div id="pagination-pag">
+                <div class="pagination-num" id="pagination-page">{{currPage}}页</div>
+                <div class="pagination-name" id="pagination-pageTotal">{{totalPage}}</div>
+                <!--<em id="pagination_page">111</em>/<em id="pagination_pageTotal">312</em>-->
+            </div>
+            <div id="pagination-top" class="pagination-tops hide">
+                <i class="duola-iconfont icon-dingbu"></i>
+            </div>
+        </div>
+    </div>
+    <!--衣服列表，添加锚点-->
+    <div id="hack-go-back"></div>
+    <div class="size">
+        <div class="swiper-container" id="sizeContainer">
+            <div class="swiper-wrapper">
+                <div @click="filtersClick('size',index)" class="swiper-slide" v-bind:class="{ 'filters-item': !item.isActive, 'filters-item-active': item.isActive }"  v-for="(item, index) in size">
+                    {{item.value}}
+                    <div class="red-dot" v-if="item.isActive"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shadow-s" v-if="size.length > 0"></div>
+    <div class="type">
+        <div class="swiper-container" id="typeContainer">
+            <div class="swiper-wrapper">
+                <div @click="filtersClick('type',index)" class="swiper-slide" v-bind:class="{ 'filters-item': !item.isActive, 'filters-item-active': item.isActive }"  v-for="(item, index) in type">
+                    {{item.value}}
+                    <div class="red-dot" v-if="item.isActive"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shadow-s" v-if="type.length > 0"></div>
+    <div class="season">
+        <div class="swiper-container" id="seasonContainer">
+            <div class="swiper-wrapper">
+                <div @click="filtersClick('season',index)" class="swiper-slide" v-bind:class="{ 'filters-item': !item.isActive, 'filters-item-active': item.isActive }"  v-for="(item, index) in season">
+                    {{item.value}}
+                    <div class="red-dot" v-if="item.isActive"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shadow-s" v-if="season.length > 0"></div>
+    <div class="style_occasion">
+        <div class="swiper-container" id="style_occasionContainer">
+            <div class="swiper-wrapper">
+                <div @click="filtersClick('style_occasion',index)" class="swiper-slide" v-bind:class="{ 'filters-item': !item.isActive, 'filters-item-active': item.isActive }"  v-for="(item, index) in style_occasion">
+                    {{item.value}}
+                    <div class="red-dot" v-if="item.isActive"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shadow-s" v-if="style_occasion.length > 0"></div>
+    <div class="aui-grid">
+        <div id="cloudset-container" class="waterfall aui-row">
+            <div class="item aui-col-xs-6" tapmode v-for="(item, index) in closetData.list"
+                 @click="showClothes(item&& item._id ? item._id : 0)">
+                <div class="header">
+                    <div class="progressive">
+                        <img class="progressive__img progressive--not-loaded"
+                             :data-progressive="item.img|imagePath"
+                             :src="item.img|imagePath" width="100%"/>
+                    </div>
+                    <div class="label flex flex-space-between">
+                        <div class="annual" v-if="item && isTrue(item.annualOnly)">{{CONSTANT.TEXT.ANNUALONLY }}</div>
+                        <div class="design" v-if="item && item.brandType">{{item.brandType.indexOf('品牌') != -1 ? item.brandType.substr(0,item.brandType.indexOf('品牌')) : item.brandType}}</div>
+                        <div>
+
+                        </div>
+                        <div class="unavailable" v-if="isAvailable(item && item.available)">
+                            抢光了
+                        </div>
+                    </div>
+                </div>
+                <div class="footer flex flex-space-between flex-vertical-center">
+                    <div class="name flex-1 aui-ellipsis-1">{{(item && item.name) ? item.name : ''}}
+                    </div>
+                    <div class="number">
+                        <span class="duola-iconfont icon-love"></span>{{(item && item.like) ? item.like : 0}}
+                    </div>
+                </div>
+                <div class="size">
+                    <span v-for="(item1, index1) in item.stockedSize">{{item1}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="shadow-s hide" id="guess-you-like-shadow"></div>
+        <div id="guess-you-like-container" class="waterfall aui-row">
+        </div>
+    </div>
+    <div id="loading" style="font-size: 12px; color: #999999;text-align: center" v-if="showLoadingMoreImg">
+        <img id="loadImg" src="../icon/loading.gif" width="16" v-if="showLoadingMoreImg1"/>
+        <div id="loadText">{{showLoadingMoreText}}</div>
+    </div>
+</div>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/swiper.min.js"></script>
+<script type="text/javascript" src="../script/vue/vue.min.js"></script>
+<script type="text/javascript">
+    var vm;
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {
+                showApp: true,
+                filters: {
+                    size:[],
+                    type:[],
+                    season:[],
+                    style_occasion:[]
+                },
+                size:[
+                    {
+                        value:'均码',
+                        isActive:false
+                    },
+                    {
+                        value:'XXS',
+                        isActive:false
+                    },
+                    {
+                        value:'XS',
+                        isActive:false
+                    },
+                    {
+                        value:'S',
+                        isActive:false
+                    },
+                    {
+                        value:'M',
+                        isActive:false
+                    },
+                    {
+                        value:'L',
+                        isActive:false
+                    },
+                    {
+                        value:'XL',
+                        isActive:false
+                    },
+                    {
+                        value:'XXL',
+                        isActive:false
+                    }
+                ],
+                type:[
+                    {
+                        value:'外套',
+                        isActive:false
+                    },
+                    {
+                        value:'上衣',
+                        isActive:false
+                    },
+                    {
+                        value:'连衣裙',
+                        isActive:false
+                    },
+                    {
+                        value:'裤装',
+                        isActive:false
+                    },
+                    {
+                        value:'半裙',
+                        isActive:false
+                    },
+                    {
+                        value:'套装',
+                        isActive:false
+                    }
+                ],
+                season:[
+                    {
+                        value:'春装',
+                        isActive:false
+                    },
+                    {
+                        value:'夏装',
+                        isActive:false
+                    },
+                    {
+                        value:'秋装',
+                        isActive:false
+                    },
+                    {
+                        value:'冬装',
+                        isActive:false
+                    }
+                ],
+                style_occasion:[
+                    {
+                        value:'日常',
+                        isActive:false
+                    },
+                    {
+                        value:'通勤',
+                        isActive:false
+                    },
+                    {
+                        value:'聚会',
+                        isActive:false
+                    },
+                    {
+                        value:'度假',
+                        isActive:false
+                    }
+                ],
+                style:[],
+                color:[],
+                style_collar:[],
+                style_sleeve_length:[],
+                style_model:[],
+                stockOut:[],
+                closetData:[],
+                currPage: 1,
+                totalPage: 0,
+                showLoadingMoreImg: false,
+                showLoadingMoreImg1: true,
+                showLoadingMoreText: '更多数据加载中',
+                keyWord:''
+            },
+            mounted: function () {
+                var self = this;
+                self.init();
+            },
+            methods: {
+                init: function () {
+//                    初始化方法  只执行一次
+                    var self = this;
+                    self.initSwipers();
+//                    self.getFiltersData();
+                    self.loadMore()
+                    api.setRefreshHeaderInfo({
+                        visible: true,
+                        loadingImg: 'widget://image/refresh.png',
+                        bgColor: 'rgba(245, 245, 245, 1.0)',
+                        textDown: '下刷新',
+                        textUp: '松刷新',
+                        showTime: true
+                    }, function(ret, err){
+                        if(ret){
+                            self.loadRefresh();
+                        }
+                    });
+                    self.start();
+                },
+                loadMore: function () {
+                    var self = this;
+                    api.addEventListener({
+                        name: 'scrolltobottom',
+                        extra: {threshold: 0}
+                    }, function (ret, err) {
+                        if (self.currPage < self.totalPage){
+                            ++self.currPage;
+                            self.getCLosetData();
+                        }else {
+                            self.showLoadingMoreImg1 = false;
+                            self.showLoadingMoreText = '没有更多数据'
+                        }
+                    });
+                },
+                changeTop: function () {
+                    $api.byId("hack-go-back").scrollIntoView();
+                },
+                loadRefresh: function () {
+                    var self = this;
+                    self.currPage = 1;
+                    self.getCLosetData();
+                },
+                showClothes: function (_id) {
+                  showClothes(_id);
+                },
+                getCLosetData: function () {
+                    var self = this;
+                    self.showLoadingMoreImg1 = true;
+                    self.showLoadingMoreText = '更多数据加载中'
+                    var url = serviceNew + 'cloudCloset/search';
+                    var headers = _getAjaxHeaders(false, true);
+                    var body = {
+                        page: self.currPage,
+                        pageSize: CONSTANT.PAGESIZE,
+                        keywords: self.keyWord,
+                        filters: self.filters
+                    };
+                    var data = {};
+                    data.body = body;
+                    var extra = {};
+                    _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                        if (ret.statusCode == 200){
+                            self.totalPage = ret.cloudCloset.pageTotal;
+                            if (self.currPage == 1 ){
+                                self.closetData = ret.cloudCloset;
+                            }else {
+                                for(var i = 0, len = ret.cloudCloset.count; i < len; i++){
+                                    self.closetData.list.push(ret.cloudCloset.list[i])
+                                }
+                            }
+                            self.showLoadingMoreImg = true;
+                            if (self.totalPage == 0){
+                                self.showLoadingMoreImg = false;
+                            }
+                        }
+                        pullRefreshDone();
+
+                    }, function (err,extra) {
+                        pullRefreshDone();
+                    }, 0, extra);
+                },
+                getFiltersData: function () {
+                    var self = this;
+                    var url = serviceNew + 'cloudCloset/category';
+                    var headers = _getAjaxHeaders(true, false);
+
+                    var data = _getAjaxData({
+                        "position": "sidebar"
+                    });
+                    var extra = {};
+                    _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                        console.log("getFiltersData  ret == "+JSON.stringify(ret))
+                    }, function (err, extra) {
+                        console.log("getFiltersData  err == "+JSON.stringify(err))
+                    }, 0, extra);
+                },
+                initSwipers: function () {
+                    var swiper = new Swiper($api.byId('sizeContainer'), {
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        speed: 100,
+                        resistanceRatio: 0.5
+                    });
+                    new Swiper($api.byId('typeContainer'), {
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        speed: 100,
+                        resistanceRatio: 0.5
+                    });
+                    new Swiper($api.byId('seasonContainer'), {
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        speed: 100,
+                        resistanceRatio: 0.5
+                    });
+                    new Swiper($api.byId('style_occasionContainer'), {
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        speed: 100,
+                        resistanceRatio: 0.5
+                    });
+                },
+                filtersClick: function (type, index) {
+                    var self = this;
+                    if (type == 'size'){
+                        if (self.size[index].isActive){
+                            self.size[index].isActive=false
+                            self.filters.size.remove(self.size[index].value);
+                        }else {
+                            self.size[index].isActive=true
+                            self.filters.size.push(self.size[index].value);
+                        }
+
+                    }else if (type == 'season'){
+                        if (self.season[index].isActive){
+                            self.season[index].isActive=false;
+                            self.filters.season.remove(self.season[index].value);
+
+                        }else {
+                            self.season[index].isActive=true;
+                            self.filters.season.push(self.season[index].value);
+                        }
+                    }else if (type == 'type'){
+                        if (self.type[index].isActive){
+                            self.type[index].isActive=false;
+                            self.filters.type.remove(self.type[index].value);
+
+                        }else {
+                            self.type[index].isActive=true;
+                            self.filters.type.push(self.type[index].value);
+                        }
+                    }else if (type == 'style_occasion'){
+                        if (self.style_occasion[index].isActive){
+                            self.style_occasion[index].isActive=false;
+                            self.filters.style_occasion.remove(self.style_occasion[index].value);
+
+                        }else {
+                            self.style_occasion[index].isActive=true;
+                            self.filters.style_occasion.push(self.style_occasion[index].value);
+                        }
+                    }
+                    self.currPage = 1;
+                    api.refreshHeaderLoading();
+                },
+                start: function () {
+//                    初始化后执行
+                    var self = this;
+                    api.refreshHeaderLoading();
+                },
+                stop: function () {
+//                    页面进入后台时进行，但未关闭时进行相关操作时调用
+                    var self = this;
+
+                },
+                restart: function () {
+//                    页面在后台状态时，需要操作时调用
+                    var self = this;
+
+                },
+                destroy: function(){
+//                  销毁界面时调用
+                },
+                showView: function () {
+//                    异步控制界面组件的显示  更具flag判断来自定义 每次网络请求成功修改对应flag后都要调用
+                    var self = this;
+                    if (isGetData){
+                        self.showApp = true;
+                    }
+                },
+                setKeyword:function (keyWord) {
+                    var self = this;
+                    self.keyWord = keyWord;
+                    self.currPage = 1;
+                    self.getCLosetData();
+                }
+
+            },
+            filters: {
+                imagePath:function (img) {
+                    return getImgUrl(colthPath,img,CONSTANT.PICTUREOSS.CLOTHESLIST);
+                }
+            }
+        })
+    }
+    function setKeyWords(keyWord) {
+        vm.setKeyword(keyWord);
+    }
+//    用于apicloud的execScript方法调用Vue中各个生命周期中的方法
+    function start() {
+        vm.start();
+    }
+    function retart() {
+        vm.restart();
+    }
+    function stop() {
+        vm.stop();
+    }
+    Array.prototype.remove = function(val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+            this.splice(index, 1);
+        }
+    };
+
+</script>
+</body>
+</html>

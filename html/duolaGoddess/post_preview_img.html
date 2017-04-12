@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>查看图片</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+    	html, body{
+    		height: 100%;
+    		overflow: hidden;
+    	}
+    	.header{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #FFFFFF;
+            background: #FF3C54;
+            height: 2.5rem;
+            width: 100%;
+            position: relative;
+        }
+        .backIcon{
+            height: 2.5rem;
+            line-height: 2.5rem;
+            bottom: 0rem;
+            left: 0rem;
+            padding-left: 1rem;
+        }
+        .title{
+            width: 60%;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 0.8rem;
+            position: absolute;
+            bottom: 0rem;
+            left: 20%;
+        }
+        .container{
+        	width: 100%;
+        	height: 80%;
+        	overflow: hidden;
+        }
+        .img-box{
+        	box-sizing: border-box;
+        	width: 100%;
+        	padding: 1rem 1.5rem 0 1.5rem;
+        	text-align: center;
+        	overflow: hidden;
+        }
+        .img-box img{
+        	max-width: 100%;
+        	max-height: 100%;
+        	margin: 0 auto;
+        }
+        .action{
+        	position: fixed;
+        	left:0;
+        	bottom: 0;
+        	padding-bottom: 1rem;
+        	z-index: 1;
+        	width: 100%;
+        	background: #fff;
+        	text-align: center;
+        }
+        .action i{
+        	font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+	<header id="header" class="duola-header header">
+	    <i class="duola-iconfont icon-left backIcon" onclick="closeWin()"></i>
+	    <div class="title">查看图片</div>
+	</header>
+	<div class="container">
+		<div class="img-box">
+			<img id="photo" src="" alt="" />
+		</div>
+		<div class="action">
+			<i onclick="delImg()" id="delete-btn" class="duola-iconfont icon-delete"></i>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript">
+	var data = null,
+		from = null;
+	apiready = function(){
+		$api.fixStatusBar(document.getElementById("header"));
+		init();
+	};
+	
+	function init(){
+		var photo = document.getElementById("photo");
+		data = api.pageParam.data;
+		from = api.pageParam.from;
+		photo.src = data.imgPath;
+
+	}
+	
+	function delImg(){
+		var param = {
+			name: from.winName,
+			frameName: from.frameName,
+			script:getExecScript("execDelImg",[data.index, api.winName])
+		}
+		
+		api.execScript(param);
+	}
+</script>
+</html>

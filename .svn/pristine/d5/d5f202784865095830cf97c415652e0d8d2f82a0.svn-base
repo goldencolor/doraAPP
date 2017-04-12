@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>芝麻信用头部</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        .header{
+            width: 100%;
+            background: #FF5065;
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.8rem;
+            color: #FFFFFF;
+            height: 2.5rem;
+            line-height: 2.5rem;
+        }
+        .backIcon{
+            float: left;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            bottom: 0rem;
+            left: 0rem;
+            padding-left: 1rem;
+        }
+        .rightIcon{
+            position: relative;
+            float: right;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            bottom: 0rem;
+            left: 0rem;
+            padding-right: 1rem;
+        }
+        .mq-msg-count{
+            position: absolute;
+            top: 0.3rem;
+            right: 0.5rem;
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.5rem;
+            background-color: red;
+            line-height: 1rem;
+            text-align: center;
+        }
+        
+        .header-white, .header-white .backIcon, .header-white .rightIcon{
+        		background: #FFFFFF;
+        		color:#000000;
+        }
+    </style>
+</head>
+<body>
+<header class="header" id="header">
+    <i class="duola-iconfont icon-left backIcon" onclick="closeWin()"></i>
+    <span id="header-title">支付押金</span>
+    <i class="duola-iconfont icon-service rightIcon" onclick="openMeChats()">
+        <span id="mq-msg-count" class="mq-msg-count hide"></span>
+    </i>
+</header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/meiqia_sdk.js"></script>
+<script type="text/javascript">
+
+    var mqMsgCountEl = null,
+    			account = "duolayimeng",
+    			password = "dlym963472",
+    			successUrl = "",  // 芝麻信用授权成功跳转的url
+    			failUrl = "",  // 芝麻信用授权失败跳转的url
+    			userName = "",  // 用户真实姓名
+    			userIdCard = "", // 用户身份证号
+    			pageParam = null;
+
+    apiready = function(){
+        $api.fixStatusBar($api.byId("header"));
+        mqMsgCountEl = document.getElementById("mq-msg-count");
+        init();
+        mqInit(function(count){
+            $api.text(mqMsgCountEl,count);
+            $api.removeCls(mqMsgCountEl,'hide');
+        });
+    };
+
+    function init(){  // 初始化
+    	
+        getPageParam();
+        openIndex();
+    }
+
+	function getPageParam(){  // 获取其他页面传来的参数
+		var data = api.pageParam;
+		
+		data && (pageParam = data);
+	}
+
+    function openIndex(){  // 打开输入信息页
+        var headerHeight = $api.offset($api.byId("header")).h,
+            name = "sesame_login",
+            page = "sesame_login.html",
+            rect = {
+                x:0,
+                y:headerHeight,
+                w:'auto',
+                h:'auto'
+            };
+
+        openNewFrame(name, page, null, rect);
+    }
+    
+    function openSesameMark(frameName){  // 打开芝麻分页面
+    		var headerHeight = $api.offset($api.byId("header")).h,
+            name = "sesame_mark",
+            page = "sesame_mark.html",
+            rect = {
+                x:0,
+                y:headerHeight,
+                w:'auto',
+                h:'auto'
+            },
+            data = {
+            		account: account,
+            		password: password,
+            		userName: userName,
+            		userIdCard: userIdCard,
+            		from: pageParam.from
+            };
+
+		api.closeFrame({
+         	name:frameName
+         });
+        openNewFrame(name, page, null, rect, data);
+        document.getElementById("header").classList.add("header-white");
+        document.getElementById("header-title").innerHTML = "认证结果";
+    }
+
+    function openMeChats() {  // 打开在线客服
+//        sendEventUmeng(CONSTANT.UMENGEVENT.ONLINE_SERVICE, {
+//            from: '芝麻认证'
+//        });
+        openChat();
+        api.sendEvent({
+            name: 'clearMqCountIndex'
+        });
+        clearMqCount();
+    }
+
+    //清除美恰未读消息
+    function clearMqCount(){
+        if(!$api.hasCls(mqMsgCountEl,'hide')){
+            $api.addCls(mqMsgCountEl,'hide');
+        }
+    }
+
+    function execAddListenerFrame(url, successCallbackUrl, failCallbackUrl, userNameTemp, userIdCardTemp){  // 异步打开需要被监听的frame( 芝麻认证 )
+        var headerHeight = $api.offset($api.byId("header")).h,
+            name = "sesame_auth",
+            page = url,
+            rect = {
+                x:0,
+                y:headerHeight,
+                w:'auto',
+                h:'auto'
+            };
+
+		/* 将一些芝麻相关的参数赋值给全局变量 */
+		successUrl = successCallbackUrl;
+		failUrl = failCallbackUrl;
+		userName = userNameTemp;
+		userIdCard = userIdCardTemp;
+
+        openNewFrame(name, page, null, rect);
+        listenerFrame(name,aliPayFrameCallback);
+        
+        document.getElementById("header").classList.add("header-white");
+        document.getElementById("header-title").innerHTML = "芝麻授权";
+    }
+
+    function listenerFrame(frameName, callback){  // 监听frame
+        api.setFrameClient({
+            frameName:frameName
+        },callback)
+    }
+
+    function aliPayFrameCallback(ret,err){  // 芝麻认证frame的url改变的回调
+    			var successUrl2 = "http://cdn.duolayimeng.com/statics/zhima_success.html";
+	        if(ret.state==4 && ret.url==successUrl2){  // 授权成功
+	            openSesameMark("sesame_auth");  // 打开芝麻分页面
+	        }else if(ret.state==4 && ret.url==failUrl){  // 授权失败
+	        		sesameAuthFail("sesame_auth");
+	        }
+	 }
+	 
+	 function sesameAuthFail(frameName){  // 授权失败后关闭授权frame
+	 	
+	        		 document.getElementById("header").classList.remove("header-white");
+        			document.getElementById("header-title").innerHTML = "支付押金";
+	 
+	 	api.closeFrame({
+         	name:frameName
+         });
+         api.hideProgress();
+         toastMsg("授权失败");
+	 }
+</script>
+</html>

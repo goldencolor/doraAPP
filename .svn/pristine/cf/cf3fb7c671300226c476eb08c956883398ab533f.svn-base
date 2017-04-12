@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>保存图片</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <style>
+    	html, body{
+    		width: 100%;
+    		height: 100%;
+    		overflow:hidden;
+    		background:rgba(0,0,0,0.3);
+    	}
+    	button{
+    		position:absolute;
+			left:0;
+			top:0;
+			right:0;
+			bottom:0;
+			margin: auto;
+			text-align:center;
+			width: 15rem;
+			height: 2rem;
+			background: #fff;
+			border: none;
+			outline: none;
+    	}
+    </style>
+</head>
+<body onclick="closeSelf()">
+	<button onclick="saveImg()">保存至相册</button>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		execPreventKeyBack();
+	};
+	
+	function saveImg(){
+		var from = api.pageParam.data.from,
+			param = {};
+		
+		param.name = from.winName;
+		param.frameName = from.frameName;
+		param.script = "execSavePhotoBrowserToAlbum()";	
+			
+		api.execScript(param);
+	}
+	
+	function closeSelf(){
+		execCancelPreventKeyBack();
+		api.closeFrame();
+	}
+	
+	function execPreventKeyBack(){	// 阻止keyback的默认事件
+		var param = {},
+			winName = api.winName,
+			frameName = api.frameName;
+			param.name = winName;
+		param.script = getExecScript("execPreventKeyBack",[winName, frameName,"closeSelf()"]);
+		api.execScript(param);
+	}
+	
+	function execCancelPreventKeyBack(){  // 取消win对keyback默认行为的阻止
+    	var param = {};
+		param.name = api.winName;
+		param.script="execCancelPreventKeyBack()";
+		api.execScript(param);
+    }
+</script>
+</html>

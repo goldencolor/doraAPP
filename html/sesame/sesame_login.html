@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>登录芝麻</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <!--AUI根据使用情况引入-->
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html, body{
+            background: #F8F8F7;
+            padding: 0rem;
+            margin: 0rem
+        }
+        .shadow-l{
+            background-color: #ECECEC;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            background-color: #ECECEC;
+            height: 1px;
+        }
+        /* 押金信息 */
+        .deposit-info{
+            box-sizing: border-box;
+            width:100%;
+            background: #FF5065;
+            color: #FFFFFF;
+            padding:0.4rem 1rem 1.3rem 1rem;
+        }
+        .deposit-number{
+            font-family: SourceHanSansCN-Bold;
+            font-size: 1rem;
+            line-height: 1.5rem;
+            color: #FFFFFF;
+            padding-bottom: 1rem;
+        }
+        .deposit-descript{
+            position: relative;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            line-height: 1rem;
+            color: #FFFFFF;
+            width: 60%;
+        }
+
+        /* 用户信息 */
+
+        .user-info{
+            margin-top: 0.5rem;
+            box-sizing: border-box;
+            width: 100%;
+            color: #333333;
+            background: #FFFFFF;
+            padding:1.5rem 1rem;
+        }
+        .user-title{
+            font-family: SourceHanSansCN-Bold;
+            font-size: 0.7rem;
+            line-height: 1rem;
+            color: #333333;
+        }
+        .input-row{
+            position:relative;
+            width:100%;
+            overflow:hidden;
+            white-space: nowrap;
+            margin-top: 0.5rem;
+        }
+        .input-row:after{
+            content:"";
+            position: absolute;
+            left:0;
+            bottom:0;
+            width: 100%;
+            height:1px;
+            background: #ddd;
+            transform: scaleY(0.5);
+        }
+        .user-info label{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            width: 4em;
+            color: #333333;
+        }
+        .user-info input{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #333333;
+            border: none;
+        }
+        .user-info input:focus{
+            border:none;
+            outline: none;
+        }
+        .auth-btn{
+            display: block;
+            width: 6rem;
+            height: 2rem;
+            margin:  1rem auto;
+            text-align: center;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 0.2rem;
+            background: #FF3C54;
+        }
+        .auth-btn:focus{
+            outline: none;
+        }
+
+        /* 芝麻验证 */
+        .user-name{
+            font-family: SourceHanSansCN-Bold;
+            font-size: 0.7rem;
+            line-height: 1rem;
+            color: #333333;
+        }
+        .user-mark{
+            padding-bottom: 1rem;
+        }
+        .user-mark span{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            color: #333333;
+        }
+        .user-mark strong{
+            font-weight: normal;
+            opacity: 0.98;
+            font-family: SourceHanSansCN-Bold;
+            font-size: 1rem;
+            color: #333333;
+            display: block;
+        }
+        .user-descript{
+            position: relative;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #666666;
+            line-height: 1rem;
+            padding-top: 1rem;
+        }
+        .action{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            z-index: 1;
+            width:100%;
+            overflow: hidden;
+        }
+        .certified-success button{
+            width: 100%;
+            height: 3rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 1rem;
+            color: #FFFFFF;
+            background: #FF3C54;
+            border: none;
+        }
+        .certified-success button:focus{
+            border:none;
+            outline: none;
+        }
+
+        .certified-fail .btn-pay{
+            position: relative;
+            overflow: hidden;
+            float: left;
+            width: 50%;
+            font-family: SourceHanSansCN-Light;
+            font-size: 1rem;
+            color: #333333;
+            text-align: center;
+            padding: 0.5rem 0;
+        }
+        .btn-pay:nth-of-type(1):before{
+            content: "";
+            position: absolute;
+            top:0;
+            right: 0;
+            width: 1px;
+            height: 100%;
+            background: #dddddd;
+        }
+        .btn-pay:nth-of-type(2):before{
+            content: "";
+            position: absolute;
+            top:0;
+            left: 0;
+            width: 1px;
+            height: 100%;
+            background: #dddddd;
+        }
+        .btn-pay i{
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+            color: #1B9DFF;
+        }
+        .btn-pay:nth-of-type(2) i{
+            color: #02D10F;
+        }
+
+        /* 支付成功 */
+        .pay-info{
+            text-align: center;
+            padding-bottom: 1rem;
+        }
+        .pay-info i{
+            font-size: 2rem;
+        }
+        .pay-info span{
+            display: block;
+            text-align: center;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            color: #333333;
+        }
+        .pay-descript{
+            position: relative;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #666666;
+            line-height: 1rem;
+            padding-top: 1rem;
+        }
+        .pay-descript span{
+            display: block;
+            text-align: center;
+        }
+
+        .user-descript:before, .pay-descript:before{
+            content: "";
+            position: absolute;
+            top:0;
+            left: 0;
+            width:100%;
+            height: 1px;
+            background: #ddd;
+            transform: scaleY(0.5);
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak v-if="showApp">
+    <div class="deposit-info">
+        <div class="deposit-descript">
+            为了评估您是否具有免押金权益
+            我们需要您的实名信息进行认证
+        </div>
+    </div>
+    <!-- 还未进行芝麻认证start -->
+    <div v-if="!certified" class="user-info">
+        <div class="user-title">{{ "芝麻信用认证" }}</div>
+        <div class="input-row">
+            <label for="name">姓名:</label><input id="name" v-model="name" type="text" maxlength="5">
+        </div>
+        <div class="input-row">
+            <label for="id-card">身份证:</label><input id="id-card" v-model="idCard" type="text" maxlength="18">
+        </div>
+        <button class="auth-btn" @click="authSesame">立即认证</button>
+    </div>
+    <!-- 还未进行芝麻认证end -->
+</div>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript">
+    var vm;
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {
+                showApp: true,
+                certified: false, // 用户是否已经进行过认证
+                name:"",
+                idCard:""
+            },
+            mounted: function () {
+//                挂载成功  逻辑代码执行入口
+                var self = this;
+                self.init();
+            },
+            beforeUpdate: function () {
+//                数据发生变化时，更新界面前的回调
+                var self = this;
+            },
+            updated: function () {
+//                数据发生变化时，更新界面结束的回调  不要做数据修改操作  否则会发生死循环
+                var self = this;
+            },
+            methods: {
+                init: function () {
+//                    初始化方法  只执行一次
+                    var self = this;
+//                    初始化监听
+                    self.setEventListener();
+//                    初始化下拉刷新 根据需求选择调用
+//                    self.initRefreshHeaderInfo();
+
+                },
+                initRefreshHeaderInfo: function () {
+                    api.setRefreshHeaderInfo({
+                        visible: true,
+                        loadingImg: 'widget://image/refresh.png',
+                        bgColor: 'rgba(245, 245, 245, 1.0)',
+                        textDown: '下刷新',
+                        textUp: '松刷新',
+                        showTime: true
+                    }, function(ret, err){
+                        if(ret){
+//                            改变下拉刷新状态
+//                            api.refreshHeaderLoading();
+//                            api.refreshHeaderLoadDone();
+                        }
+                    });
+                },
+                authSesame: function(){
+                    // 进行认证
+                    var self = this;
+                    /*
+                    *   需要调用win的方法（加载frame，并监听frame的url的变化）
+                    *   根据frame的url来判断用户芝麻分是否授权成功
+                    *
+                    * */
+                   var name = self.name.trim(),
+                   		certNo = self.idCard.trim(),
+                   		url = "http://xy.startdt.com/zmxy/generate/h5_auth_url.shtml",   // 生成h5页面授权url的接口
+                   		account = "duolayimeng",
+                   		password = "dlym963472",
+                   		callback = "http://cdn.duolayimeng.com/statics/zhima.html",  // 授权成功跳转的url
+                   		callbackFailure = "http://cdn.duolayimeng.com/statics/entrance/zhima_error.html";  // 授权失败跳转的url
+                   	if(name===""){
+                   		toastMsg("请输入姓名");
+                   		return
+                   	}else if(certNo===""){
+                   		toastMsg("请输入身份证号");
+                   		return
+                   	}
+                   	var headers = _getAjaxHeaders(false, false),
+                   			data = _getAjaxData({
+                   				account: account,
+                   				password: password,
+                   				name: name,
+                   				certNo: certNo,
+                   				callback: callback,
+                   				callbackfailure: callbackFailure
+                   			});
+                   	
+                   	_ajaxData(url, "post", headers, data, function(ret){
+                   		// 请求成功之后的回调
+                   		if(ret.code==="000"){  // 成功
+                   			var param = {};
+                   			
+                   			param.name = api.winName;
+                   			param.script = getExecScript("execAddListenerFrame", [ret.data.url, callback, callbackFailure, name, certNo]);
+                   			//param.script = "execAddListenerFrame('"+ ret.data.url +"')";
+                   					
+                   			api.execScript(param);
+                   		}else{  // 失败
+                   			toastMsg(ret.message);
+                   		}
+                   	},function(err){
+                   		// 请求失败之后的回调
+                   		console.log("error");
+                   		console.log(error);
+                   	})
+                    console.log("姓名----" + self.name.trim());
+                    console.log("身份证----" + self.idCard.trim());
+//                  if(confirm("认证是否通过")){  // 查看效果用
+//                      self.certifiedSuccess = true;
+//                  }else{
+//                      self.certifiedSuccess = false;
+//                  }
+                    //self.certified = true;
+
+                },
+                authSesameSuccess: function () {
+                    // 认证成功
+                    var self = this;
+                },
+                authSesameSuccess: function (){
+                    // 认证失败
+                    var self = this;
+                },
+                payment: function(type){
+                    // 支付押金
+                    var self = this;
+                    alert("支付成功");
+                    self.payMoney = true;
+                },
+                setEventListener: function () {
+//                    初始化时设置监听事件
+                    var self = this;
+
+                },
+                start: function () {
+//                    初始化后执行
+                    var self = this;
+
+                },
+                pause: function () {
+//                    页面进入后台时进行，但未关闭时进行相关操作时调用
+                    var self = this;
+
+                },
+                resume: function () {
+//                    页面在后台状态时，需要操作时调用
+                    var self = this;
+
+                },
+                destroy: function(){
+//                  销毁界面时调用
+                }
+            },
+            computed: {
+
+            }
+        })
+    }
+    //    用于apicloud的execScript方法调用Vue中各个生命周期中的方法
+    function start() {
+        vm.start();
+    }
+    function resume() {
+        vm.resume();
+    }
+    function pause() {
+        vm.pause();
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>C2C</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <!--AUI根据使用情况引入-->
+    <link rel="stylesheet" type="text/css" href="../css/2_0/aui_2_0.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fonts/duola_iconfont2.css"/>
+    <script type='text/javascript'>
+        var _vds = _vds || [];
+        window._vds = _vds;
+        (function(){
+            _vds.push(['setAccountId', '80b2892bb17e883d']);
+            (function() {
+                var vds = document.createElement('script');
+                vds.type='text/javascript';
+                vds.async = true;
+                vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(vds, s);
+            })();
+        })();
+    </script>
+    <style>
+        html, body{
+            background: transparent;
+            padding: 0rem;
+            margin: 0rem
+        }
+        .shadow-l{
+            background-color: #ECECEC;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            background-color: #ECECEC;
+            height: 1px;
+        }
+        .ad-img{
+            width: 100%;
+            height:10.5rem;
+            background: #D8D8D8;
+            background: url(../image/errImg.png);
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .c2c-text{
+            font-family: SourceHanSansCN-Light;
+            background-color: #262B30;
+            font-size: 0.7rem;
+            color: #FFFFFF;
+            line-height: 1.1rem;
+            padding: 0.75rem 1.4rem 1.4rem 1.4rem;
+        }
+        .clothse-container{
+            background: #F8F8F8;
+            width: 100%;
+            padding: 1.025rem;
+        }
+        .item-container{
+            height: 14.6rem;
+            width: 7.6rem;
+            margin: 0.375rem;
+            background: #FFFFFF;
+            position: relative;
+        }
+        .item-container-unavailable{
+            height: 14.6rem;
+            width: 7.6rem;
+            opacity: 0.65;
+            text-align: center;
+            line-height: 10.6rem;
+            color: #000000;
+            font-size: 0.8rem;
+            background: #F8F8F8;
+            position: absolute;
+            left: 0rem;
+            top: 0rem;
+            z-index: 2;
+         }
+        .item-container-img{
+            background-color: #FFFFFF;
+            height: 11.4rem;
+            width: 7.6rem;
+        }
+        .item-container-title{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            width: 7.6rem;
+            margin-top: 0.5rem;
+            margin-left: 0.3rem;
+            color: #262B30;
+        }
+        .item-container-brand{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #262B30;
+            margin-top: 0.5rem;
+            margin-left: 0.3rem;
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+        .item-container-brand-text{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            color: #262B30;
+            max-width: 4.5rem;
+        }
+        .item-container-brand-from{
+            font-family: SourceHanSansCN-Light;
+            font-size: 0.5rem;
+            color: #A6A6A6;
+            margin-right: 0.3rem;
+            position: absolute;
+            bottom: 0rem;
+            right: 0rem;
+        }
+        .item-container-size{
+            font-family: SourceHanSansCN-Medium;
+            font-size: 0.4rem;
+            color: #FFFFFF;
+            width: 1rem;
+            height: 0.7rem;
+            line-height: 0.7rem;
+            text-align: center;
+            background: #262B30;
+            border-radius: 100px;
+            position: absolute;
+            top: 0.6rem;
+            right: 0.6rem;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak v-if="showApp">
+    <div class="ad-img">
+        <img :src="adImg" style="width: 100%;height: 10.5rem;">
+    </div>
+    <div class="c2c-text" v-if="content != ''">
+        {{content}}
+    </div>
+    <div class="aui-row clothse-container">
+        <div class="aui-col-xs-6 item-container"
+             v-for="(item, index) in clothes.list"
+            @click="goClothesDtail(item&& item._id ? item._id : 0, item.available )">
+            <div class="item-container-unavailable" v-if="item.available == 'NO'">抢光了</div>
+            <Img :src="item.img|imagePath" class="item-container-img" onerror='this.src = "../image/errImg.png"' style="background: url(../image/errImg.png); background-size: 100%; background-position: center;background-repeat: no-repeat"/>
+            <div class="item-container-title aui-ellipsis-1 ">
+                {{item.name}}
+            </div>
+            <div class="item-container-brand aui-ellipsis-1 ">
+                <div class="item-container-brand-text aui-ellipsis-1 ">
+                    {{item.brandName}}
+                </div>
+                <span class="item-container-brand-from">个人优选</span>
+            </div>
+            <div class="item-container-size" v-if="item.size?item.size[0]?true:false:false">{{item.size?item.size[0]?item.size[0]:'':''}}</div>
+        </div>
+    </div>
+    <div id="loading" style="font-size: 12px; color: #999999;text-align: center; background: #F8F8F8" v-if="showLoadingMoreImg">
+        <img id="loadImg" src="../icon/loading.gif" width="16" v-if="loadingImg"/>
+        <div id="loadText" style="height: 1.6rem;line-height: 1.6rem">{{showLoadingMoreText}}</div>
+    </div>
+</div>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/url.js"></script>
+<script type="text/javascript" src="../script/uz.js"></script>
+<script type="text/javascript" src="../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../script/vue/vue.min.js"></script>
+<script type="text/javascript">
+    var vm;
+    //    用于判断网络请求是否完成的flag  初始化是有几个请求就有几个flag 用于处理异步显示问题
+    var isGetData = false;
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {
+                totalPage: 0,
+                currPage: 0,
+                showApp: true,
+                adImg:'',
+                content:'',
+                showLoadingMoreText: '更多数据加载中',
+                clothes:{},
+                showLoadingMoreImg: true,
+                loadingImg: true
+            },
+            mounted: function () {
+//                挂载成功  逻辑代码执行入口
+                var self = this;
+                self.init();
+            },
+            methods: {
+                init: function () {
+//                    初始化方法  只执行一次
+                    var self = this;
+
+                    api.addEventListener({
+                        name: 'scrolltobottom',
+                        extra: {threshold: 0}
+                    }, function (ret, err) {
+                        if (true){
+                            ++self.currPage;
+                            self.getData();
+                        }else {
+                            self.showLoadingMoreText = '没有更多数据';
+                            self.loadingImg = false;
+                        }
+                    });
+                    api.setRefreshHeaderInfo({
+                        visible: true,
+                        loadingImg: 'widget://image/refresh.png',
+                        bgColor: 'rgba(245, 245, 245, 1.0)',
+                        textDown: '下刷新',
+                        textUp: '松刷新',
+                        showTime: true
+                    }, function(ret, err){
+                        if(ret){
+                            self.loadRefresh();
+                        }
+                    });
+                    self.start();
+
+                },
+                goClothesDtail: function (_id, available ) {
+                    if (available == 'NO'){
+                        return;
+                    }
+                    showClothes(_id);
+                },
+                loadRefresh: function () {
+                    var self = this;
+                    self.currPage = 1;
+                    self.getData();
+                },
+                getData: function () {
+                    var self = this;
+                    self.loadingImg = true;
+
+                    var url = serviceNew + 'c2c/clothes';
+                    var headers = _getAjaxHeaders(false, false);
+                    var body = {
+                        page: 1,
+                        pageSize: CONSTANT.PAGESIZE,
+                    };
+                    var data = {};
+                    data.body = body;
+                    var extra = {};
+                    _ajaxData(url, 'post', headers, data, function (ret, extra) {
+                        if (ret.statusCode == 200){
+                            self.adImg = ret.c2c.img;
+                            self.content = ret.c2c.content;
+
+                            self.totalPage = ret.clothes.pageTotal;
+                            if (self.currPage == 1 ){
+                                self.clothes = ret.clothes;
+                            }else {
+                                for(var i = 0, len = ret.clothes.count; i < len; i++){
+                                    self.clothes.list.push(ret.clothes.list[i])
+                                }
+                            }
+                        }
+                        pullRefreshDone();
+
+                    }, function (err,extra) {
+                        pullRefreshDone();
+                    }, 0, extra);
+                },
+                start: function () {
+//                    初始化后执行
+                    var self = this;
+                    api.refreshHeaderLoading();
+
+                },
+                stop: function () {
+//                    页面进入后台时进行，但未关闭时进行相关操作时调用
+                    var self = this;
+
+                },
+                restart: function () {
+//                    页面在后台状态时，需要操作时调用
+                    var self = this;
+
+                },
+                destroy: function(){
+//                  销毁界面时调用
+                },
+                showView: function () {
+//                    异步控制界面组件的显示  更具flag判断来自定义 每次网络请求成功修改对应flag后都要调用
+                    var self = this;
+                    if (isGetData){
+                        self.showApp = true;
+                    }
+                }
+            },
+            filters: {
+                imagePath: function (img) {
+
+                    return getImgUrl(colthPath,img,CONSTANT.PICTUREOSS.CLOTHESLIST);
+                }
+            }
+        })
+    }
+    //    用于apicloud的execScript方法调用Vue中各个生命周期中的方法
+    function start() {
+        vm.start();
+    }
+    function retart() {
+        vm.restart();
+    }
+    function stop() {
+        vm.stop();
+    }
+
+</script>
+</body>
+</html>

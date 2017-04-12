@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>女神-发布照片</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        .header{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #FFFFFF;
+            background: #FF3C54;
+            height: 2.5rem;
+            width: 100%;
+            position: relative;
+        }
+        .backIcon{
+            height: 2.5rem;
+            line-height: 2.5rem;
+            bottom: 0rem;
+            left: 0rem;
+            padding-left: 1rem;
+        }
+        #title{
+            width: 60%;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 0.8rem;
+            position: absolute;
+            bottom: 0rem;
+            left: 20%;
+        }
+    </style>
+</head>
+<body>
+<div id="header" class="duola-header header">
+    <i class="duola-iconfont icon-left backIcon" onclick="closeWin()"></i>
+    <div id="title">女神主页</div>
+</div>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript">
+    var headerHeight = 0;
+    apiready = function () {
+        $api.fixStatusBar($api.byId('header'));
+//        程序入口
+        headerHeight = $api.offset($api.byId('header')).h;
+        init();
+    }
+    function closeWin(){
+        api.closeWin();
+    }
+    function init() {
+        api.openFrame({
+            name: 'goddess_user1',
+            url: 'goddess_user1.html',
+            rect: {
+                x: 0,
+                y: headerHeight,
+                w: 'auto',
+                h: api.winHeight -headerHeight
+            },
+
+            pageParam: {
+                data:{
+                    _id: api.pageParam.data._id,
+                    userName: api.pageParam.data.userName
+                }
+
+            },
+            scrollEnabled: true,
+            bounces: false,
+            bgColor: 'rgba(0,0,0,0)',
+            vScrollBarEnabled: false,
+            hScrollBarEnabled: false
+        });
+    }
+    
+	function execPreventKeyBack(winName, frameName, script){  // 阻止keyback, 在其它页面异步调用
+		execPreventKeyBack.params = execPreventKeyBack.params || [];
+		
+		var param = {
+		    	name: winName,
+		    	frameName: frameName,
+		    	script:script
+		    };
+		    
+		execPreventKeyBack.params.unshift(param);  // 将要执行的方法加入监听栈
+		
+		api.addEventListener({
+			name: 'keyback'
+		}, function(ret, err) {
+		    api.execScript(execPreventKeyBack.params[0]);
+		});
+	}
+	function execCancelPreventKeyBack(){  // 取消阻止keyback, 在其它页面异步调用
+	
+		execPreventKeyBack.params.shift();  // 移除监听栈的最新一个方法
+		
+		if(execPreventKeyBack.params.length==0){
+			api.removeEventListener({
+		        name:'keyback'
+	        });
+		}
+	}
+    function start() {
+        //                    初始化后执行
+
+    }
+    function retart() {
+        //                    页面在后台状态时，需要操作时调用
+
+    }
+    function stop() {
+        //                    页面进入后台时进行，但未关闭时进行相关操作时调用
+
+    }
+    function destroy() {
+        //                  销毁界面时调用
+
+    }
+    function showView() {
+
+    }
+
+</script>
+</body>
+</html>

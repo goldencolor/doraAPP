@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>芝麻分</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <!--AUI根据使用情况引入-->
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/2_0/util.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fonts/duola_iconfont2.css"/>
+    <style>
+        html, body{
+            background: #F8F8F7;
+            padding: 0rem;
+            margin: 0rem;
+            overflow: hidden;
+        }
+        .shadow-l{
+            background-color: #ECECEC;
+            height: 0.5rem;
+        }
+        .shadow-s{
+            background-color: #ECECEC;
+            height: 1px;
+        }
+        /* 押金信息 */
+        .deposit-info{
+            box-sizing: border-box;
+            width:100%;
+            background: #FF5065;
+            color: #FFFFFF;
+            padding:1.5rem 1rem;
+        }
+        .deposit-number{
+            font-family: SourceHanSansCN-Bold;
+            font-size: 1rem;
+            line-height: 1.5rem;
+            color: #FFFFFF;
+            padding-bottom: 1rem;
+        }
+        .deposit-descript{
+            position: relative;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            line-height: 1rem;
+            color: #FFFFFF;
+            padding-top: 1rem;
+        }
+        .deposit-descript:before{
+            content: "";
+            position: absolute;
+            top:0;
+            left:0;
+            width: 2rem;
+            height:0.2rem;
+            background: #FFFFFF;
+
+        }
+
+        /* 用户信息 */
+
+        .user-info{
+            margin-top: 1rem;
+            box-sizing: border-box;
+            width: 100%;
+            color: #333333;
+            background: #FFFFFF;
+            padding:1.5rem 1rem;
+        }
+        .user-title{
+            font-family: SourceHanSansCN-Bold;
+            font-size: 0.7rem;
+            line-height: 1rem;
+            color: #333333;
+        }
+        .input-row{
+            position:relative;
+            width:100%;
+            overflow:hidden;
+            white-space: nowrap;
+            margin-top: 0.5rem;
+        }
+        .input-row:after{
+            content:"";
+            position: absolute;
+            left:0;
+            bottom:0;
+            width: 100%;
+            height:1px;
+            background: #ddd;
+            transform: scaleY(0.5);
+        }
+        .user-info label{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.6rem;
+            width: 4em;
+            color: #333333;
+        }
+        .user-info input{
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #333333;
+            border: none;
+        }
+        .user-info input:focus{
+            border:none;
+            outline: none;
+        }
+        .auth-btn{
+            display: block;
+            width: 9rem;
+            height: 2.3rem;
+            margin:  1rem auto;
+            text-align: center;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.8rem;
+            color: #FFFFFF;
+            background: #FF3C54;
+            border: none;
+            border-radius: 0.2rem;
+        }
+        .auth-btn:focus{
+            outline: none;
+        }
+
+        /* 芝麻验证 */
+       .user-info{
+       		text-align: center;
+       }
+        .user-name{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            line-height: 1rem;
+            color: #333333;
+        }
+        .user-mark{
+            padding-bottom: 1rem;
+        }
+        .user-mark span{
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.8rem;
+            color: #333333;
+        }
+        .user-mark strong{
+            font-weight: normal;
+            opacity: 0.98;
+            font-family: SourceHanSansCN-Bold;
+            font-size: 1.2rem;
+            color: #333333;
+            display: block;
+        }
+        .user-descript{
+            position: relative;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #666666;
+            line-height: 1rem;
+            padding-top: 1rem;
+        }
+        .user-deposit{
+        		text-align: center;
+        		margin-top: 1.5rem;
+        }
+        .user-deposit span{
+        		font-family: SourceHanSansCN-Bold;
+			font-size: 0.8rem;
+			color: #333333;
+			line-height: 1rem;
+        }
+        .user-deposit strong{
+        		display:block;
+        		font-family: SourceHanSansCN-Normal;
+			font-size: 1rem;
+			color: #333333;
+			line-height: 1rem;
+			padding: 0.5rem 0;
+        }
+        .action{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            z-index: 1;
+            width:100%;
+            overflow: hidden;
+        }
+        .certified-success button{
+            width: 100%;
+            height: 3rem;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 1rem;
+            color: #FFFFFF;
+            background: #FF3C54;
+            border: none;
+        }
+        .certified-success button:focus{
+            border:none;
+            outline: none;
+        }
+		.certified-fail:before{
+			content:"";
+			position: absolute;
+			top:0;
+			left: 0;
+			width:100%;
+			height: 1px;
+			background: #DDDDDD;
+			transform: scaleY(0.5);
+		}
+        .certified-fail .btn-pay{
+            position: relative;
+            overflow: hidden;
+            float: left;
+            width: 50%;
+            font-family: SourceHanSansCN-Light;
+            font-size: 1rem;
+            color: #333333;
+            text-align: center;
+            padding: 0.5rem 0;
+            background:#FFFFFF;
+        }
+        .btn-pay:nth-of-type(1):before{
+            content: "";
+            position: absolute;
+            top:0;
+            right: 0;
+            width: 1px;
+            height: 100%;
+            background: #dddddd;
+        }
+        .btn-pay:nth-of-type(2):before{
+            content: "";
+            position: absolute;
+            top:0;
+            left: 0;
+            width: 1px;
+            height: 100%;
+            background: #dddddd;
+        }
+        .btn-pay i{
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+            color: #1B9DFF;
+        }
+        .btn-pay:nth-of-type(2) i{
+            color: #02D10F;
+        }
+
+        /* 支付成功 */
+        .pay-info{
+            text-align: center;
+            padding-bottom: 1rem;
+        }
+        .pay-info i{
+            font-size: 2rem;
+        }
+        .pay-info span{
+            display: block;
+            text-align: center;
+            font-family: SourceHanSansCN-Regular;
+            font-size: 0.7rem;
+            color: #333333;
+        }
+        .pay-descript{
+            position: relative;
+            font-family: SourceHanSansCN-Normal;
+            font-size: 0.7rem;
+            color: #666666;
+            line-height: 1rem;
+            padding-top: 1rem;
+        }
+        .pay-descript span{
+            display: block;
+            text-align: center;
+        }
+
+        .user-descript:before, .pay-descript:before{
+            content: "";
+            position: absolute;
+            top:0;
+            left: 0;
+            width:100%;
+            height: 1px;
+            background: #ddd;
+            transform: scaleY(0.5);
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak v-if="showApp">
+    <!--<div class="deposit-info">
+        <div class="deposit-number">{{ certifiedSuccess?0:300 }}RMB押金</div>
+        <div class="deposit-descript">
+            {{ "此处有一行文字介绍，说明押金原因文案暂定" }}
+        </div>
+    </div>-->
+    <!-- 已经进行过芝麻认证认证 -->
+    <div class="user-info">
+        <div class="user-name">{{ userName }}</div>
+        <div class="user-mark">
+            <span>您的芝麻分为:</span>
+            <strong>{{ sesameCore }}</strong>
+        </div>
+        <div class="user-descript">
+            {{ certifiedSuccess?"恭喜您，您的评分高于":"很抱歉，您的评分未达到"}}{{ minSesameCore }} </br>
+            {{ certifiedSuccess?"您已获得免押金优惠":"暂时不能获得免押金优惠"}}
+            
+            <div v-if="!certifiedSuccess" class="user-deposit">
+            		<span>您需要支付押金:</span>
+            		<strong>{{ deposit }}RMB</strong>
+            </div>
+        </div>
+        
+        <!-- 用户芝麻分符合要求 -->
+        <div v-if="certifiedSuccess" class="action certified-success">
+            <button @click="goBag">去完成下单</button>
+        </div>
+        
+        <!-- 用户芝麻粉不符合要求 -->
+         <!--<div v-else class="action certified-success">
+           <button @click="closeWin">返回</button>
+        </div>-->
+        <div v-else class="action certified-fail">
+            <div @click="payment('alipay')" class="btn-pay"><i class="duola-iconfont icon-zfb-money"></i>支付宝支付</div>
+            <div @click="payment('wx')" class="btn-pay"><i class="duola-iconfont icon-wechat-money"></i>微信支付</div>
+        </div>
+    </div>
+    <!-- 已经进行过芝麻认证认证，但未付款end -->
+    
+    
+    <!-- 已经进行过芝麻认证认证，且已付款start -->
+    <div v-else class="user-info">
+        <div class="pay-info">
+            <i class="duola-iconfont icon-x"></i>
+            <span>押金支付成功</span>
+        </div>
+        <div class="pay-descript">
+            <span>您的押金已支付成功</span>
+            <span>快去确认订单吧</span>
+        </div>
+        <div class="action certified-success">
+            <button>去完成下单</button>
+        </div>
+    </div>
+    <!-- 已经进行过芝麻认证认证，且已付款end -->
+</div>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/url.js"></script>
+<script type="text/javascript" src="../../script/uz.js"></script>
+<script type="text/javascript" src="../../script/umeng_sdk.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../../script/pingpp.js"></script>
+<script type="text/javascript">
+    var vm;
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {
+                showApp: false,  // test, 应该改为false
+                userName: $api.getStorage("userNickname"), // 用户在哆啦衣梦的用户名
+                certifiedSuccess: false, // 用户芝麻分数是否符合要求  test, 应该改为false
+                payMoney:false, // 用户是否已经支付押金,
+                name:"",  // 真实姓名
+                idCard:"",  // 身份证号
+                sesameCore:"",  // 用户的芝麻分
+                minSesameCore:700,  // 芝麻分要求
+                deposit:300, // 用户需要缴纳的押金数
+                coupons:[]
+            },
+            mounted: function () {
+//                挂载成功  逻辑代码执行入口
+                var self = this;
+                self.init();
+            },
+            beforeUpdate: function () {
+//                数据发生变化时，更新界面前的回调
+                var self = this;
+            },
+            updated: function () {
+//                数据发生变化时，更新界面结束的回调  不要做数据修改操作  否则会发生死循环
+                var self = this;
+            },
+            methods: {
+                init: function () {
+//                    初始化方法  只执行一次
+                    var self = this;
+//                    初始化监听
+                    self.setEventListener();
+                    
+                    getDeposit2();
+                    self.getSesameMark();
+//                    初始化下拉刷新 根据需求选择调用
+                   //self.initRefreshHeaderInfo();
+
+                },
+                initRefreshHeaderInfo: function () {
+                    api.setRefreshHeaderInfo({
+                        visible: true,
+                        loadingImg: 'widget://image/refresh.png',
+                        bgColor: 'rgba(245, 245, 245, 1.0)',
+                        textDown: '下刷新',
+                        textUp: '松刷新',
+                        showTime: true
+                    }, function(ret, err){
+                        if(ret){
+                        		//self.getSesameMark();
+//                            改变下拉刷新状态
+//                            api.refreshHeaderLoading();
+//                            api.refreshHeaderLoadDone();
+                        }
+                    });
+                },
+                getSesameMark: function(){  // 获取芝麻分
+                		var self = this;
+                		var data = api.pageParam.data;
+                		
+                
+                		var url = "http://xy.startdt.com/zmxy/get/score.shtml",
+                				name = data.userName,
+                				certNo = data.userIdCard,
+                				account = data.account,
+                				password = data.password,
+                				headers = _getAjaxHeaders(false, false),
+                   			data = _getAjaxData({
+                   				account: account,
+                   				password: password,
+                   				name: name,
+                   				certNo: certNo
+                   			});
+                   			
+                   	_ajaxData(url, "post", headers, data, function(ret){
+                   		
+                   		if(ret.code==="000"){  // 获取芝麻分成功
+                   			self.sesameCore = ret.data.zm_score;
+                   			self.showApp = true;
+                   			if(Number(ret.data.zm_score) >= self.minSesameCore){
+                   				self.authSesameSuccess();
+                   			}else{
+                   				self.authSesameFail();
+                   			}
+                   		}else{  // 获取芝麻分失败
+                   			toastMsg(ret.message);
+                   		}
+                   	
+                   	}, function(err){
+                   		
+                   	})
+                },
+                authSesameSuccess: function () {
+                    // 芝麻分符合要求
+                    var self = this;
+                    
+                    self.certifiedSuccess = true;
+                },
+                authSesameFail: function (){
+                    // 芝麻分不符合要求
+                    var self = this;
+                    
+                    self.certifiedSuccess = false;
+                },
+                closeWin: function(){
+                		api.closeWin();
+                },
+                goBag: function(){
+                		var self = this;
+                		var data = api.pageParam.data;
+                		
+                
+                		var url = serviceUser + "info/certify/zhimaCreditScore/save",
+                				name = data.userName,
+                				certNo = data.userIdCard,
+                				headers = _getAjaxHeaders(false, false),
+                   			data = _getAjaxData({
+                   				name: name,
+                   				certNo: certNo,
+                   				score: self.sesameCore
+                   			});
+                   	
+                   	_ajaxData(url, "post", headers, data, function(ret){
+                   		if(ret.statusCode==200){
+                   			toastMsg("保存芝麻分成功");
+                   			execCloseModal();
+                   		}else{
+                   			toastMsg(ret.msg);
+                   		}
+                   		
+                   	}, function(err){
+                   		toastMsg(err.msg);
+                   	});
+                		//execCloseModal();
+                },
+                payment: function(type){
+                    // 支付押金
+                    var self = this;
+                    //alert("支付成功");
+                    //self.payMoney = true;
+                    //var url = serviceUser + 'service/pay/start/payDeposit';
+                    payment(type);
+                },
+                setEventListener: function () {
+//                    初始化时设置监听事件
+                    var self = this;
+
+                },
+                start: function () {
+//                    初始化后执行
+                    var self = this;
+
+                },
+                pause: function () {
+//                    页面进入后台时进行，但未关闭时进行相关操作时调用
+                    var self = this;
+
+                },
+                resume: function () {
+//                    页面在后台状态时，需要操作时调用
+                    var self = this;
+
+                },
+                destroy: function(){
+//                  销毁界面时调用
+                }
+            },
+            computed: {
+
+            }
+        })
+    }
+    //    用于apicloud的execScript方法调用Vue中各个生命周期中的方法
+    function start() {
+        vm.start();
+    }
+    function resume() {
+        vm.resume();
+    }
+    function pause() {
+        vm.pause();
+    }
+
+	function execCloseModal(){  // 异步关闭下单页面的模态框
+		var data = api.pageParam.data,
+				from = data.from,
+				param = {
+					name: from.winName,
+					frameName: from.frameName,
+					script:"execCloseModal()"
+				};
+		
+		api.execScript(param);
+		
+		api.closeWin();
+	}
+
+	function payment(type){  // 支付
+		api.showProgress({
+            style: 'default',
+            animationType: 'fade',
+            title: '正在支付···',
+            text: '请稍候'
+        });
+    		getDeposit(type);
+    }
+    
+    function getDeposit(type){  // 获取押金的相关信息
+    		var url = serviceUser + "service/pay/query/payDeposit",
+    				headers = _getAjaxHeaders(true, false),
+    				data = _getAjaxData();
+    			
+    		_ajaxData(url, "post", headers, data, function(ret){
+    			if(ret.statusCode==200){
+    				paymentDeposit(type,ret);
+    			}else{
+    				_loadingHide();
+    				toastMsg(ret.msg);
+    			}
+    		}, function(err){
+    			_loadingHide();
+    			toastMsg(err.msg);
+    		})
+    }
+    
+    function getDeposit2(){  // 获取显示需要的数据，暂时这样写，有时间了再和getDeposit合并
+    		var url = serviceUser + "service/pay/query/payDeposit",
+    				headers = _getAjaxHeaders(true, false),
+    				data = _getAjaxData();
+    			
+    		_ajaxData(url, "post", headers, data, function(ret){
+    			if(ret.statusCode==200){
+    				vm.deposit = ret.deposit;
+    			}else{
+    				toastMsg(ret.msg);
+    			}
+    		}, function(err){
+    			toastMsg(err.msg);
+    		})
+    }
+    
+    function paymentDeposit(type, param){  // 支付押金
+    		var url = serviceUser + 'service/pay/start/payDeposit',
+    				headers = _getAjaxHeaders(true, false),
+    				data = _getAjaxData({
+    					bags: 1,
+                    channel: type,
+                    amountFront: param.deposit,
+                    coupons: param.coupons,
+                    duration: 1
+    				});
+    		
+    		_ajaxData(url, 'post', headers, data, function (ret, extra) {
+        		if (ret.statusCode == '200') {
+                    ping(ret.charge,'userSesameDeposit');
+               } else if (ret.statusCode == '10104') {
+                    goLogin('',"../win_regin.html");
+                } else {
+                    _loadingHide();
+    					toastMsg(ret.msg);
+                }
+            }, function (err, extra) {
+            		_loadingHide();
+                toastMsg(err.msg);
+            });
+    }
+    
+    //    支付完成后调用check_pay接口验证
+    function check() {
+        var url = serviceUser + 'service/check/payment';
+        var headers = _getAjaxHeaders(true, true);
+        var data = _getAjaxData();
+        var extra = null;
+        _ajaxData(url, 'post', headers, data, checkSuccessCallback, checkErrorCallback, 0, extra);
+    }
+    function checkSuccessCallback(ret, extra) {
+        if (ret.statusCode == '200') {
+			execCloseModal();
+			_loadingHide();
+        } else {
+        		_loadingHide();
+            toastMsg(ret.msg);
+        }
+    }
+    function checkErrorCallback(err, extra) {
+    		_loadingHide();
+        toastMsg(err.msg);
+    }
+</script>
+</body>
+</html>
